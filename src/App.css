@@ -1,0 +1,90 @@
+body {
+  background-image: url('/src/logowhite.jpg'); /* Set your background image */
+  background-size: cover;
+  background-position: center;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.app {
+  display: flex;
+  flex-direction: column; /* Ensure the navbar and main-content are stacked vertically */
+  align-items: center; /* Center the content horizontally */
+  margin-top: 20px; /* Space between the content and the top of the viewport */
+  min-height: 100vh; /* Ensure the content takes at least the full height of the viewport */
+}
+
+.navbar {
+  background-color: #333;
+  padding: 10px;
+  font-size: 14px; /* Downscale the font size */
+  width: 82%; /* Set a width to center the navbar */
+  text-align: center; /* Center the text */
+  border-radius: 8px; /* Optional: rounded corners */
+  position: fixed;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+.navbar-brand {
+  color: #fff;
+  font-size: 18px; /* Downscale the brand font size */
+}
+
+.nav-links {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center; /* Center the nav links */
+  gap: 15px;
+}
+
+.nav-links li {
+  display: inline;
+}
+
+.nav-links button {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px; /* Downscale the button font size */
+}
+
+.dropdown {
+  background-color: rgba(68, 68, 68, 0.9); /* Semi-transparent background */
+  padding: 10px;
+  position: absolute;
+  list-style: none;
+  margin: 0;
+  border-radius: 8px; /* Optional: rounded corners */
+}
+
+.dropdown li {
+  padding: 5px 0;
+  color: #fff;
+  display: block;
+}
+
+.main-content {
+  background-color: rgba(255, 255, 255, .9); /* Semi-transparent background */
+  padding: 20px;
+  width: 80%; /* Set a width to center the main content */
+  border-radius: 8px; /* Optional: rounded corners */
+  margin-top: 120px; /* Space between navbar and main content */
+}
+
+.header {
+  margin-bottom: 20px;
+  text-align: center; /* Center the header text */
+}
+
+.hero-image {
+  width: 100%;
+  height: auto;
+}
+
+.gallery-info {
+  margin-top: 10px;
+}
