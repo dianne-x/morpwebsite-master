@@ -37,9 +37,9 @@ const Navbar = () => {
           </button>
           {morpmtlverseOpen && (
             <ul className="dropdown">
-              <li>Superman</li>
-              <li>Batman</li>
-              <li>Wonder Woman</li>
+              <li>Worlds</li>
+              <li>Character tiers</li>
+              <li>Multiverse</li>
             </ul>
           )}
         </li>

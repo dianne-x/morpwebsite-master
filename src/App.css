@@ -88,3 +88,102 @@ body {
 .gallery-info {
   margin-top: 10px;
 }
+
+.text-editor-container {
+  margin-top: 140px; /* Space between navbar and text editor */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* Ensure the container spans the full width */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.text-editor-wrapper {
+  background-color: #33333396; /* Dark background */
+  padding: 20px;
+  border-radius: 8px; /* Optional: rounded corners */
+  width: 80%; /* Set a width to center the text editor */
+  max-width: 800px; /* Optional: set a max width */
+  height: 300px;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+/* Media Queries for Responsive Design */
+
+/* Small devices (phones, 600px and down) */
+@media (max-width: 600px) {
+  .navbar {
+    font-size: 12px; /* Smaller font size for navbar */
+  }
+
+  .nav-links {
+    flex-direction: column; /* Stack nav links vertically */
+    gap: 10px;
+  }
+
+  .main-content {
+    width: 90%; /* Increase width for smaller screens */
+    margin-top: 200px; /* Adjust margin for smaller screens */
+  }
+
+  .text-editor-container {
+    margin-top: 200px; /* Adjust space between navbar and text editor */
+  }
+
+  .text-editor-wrapper {
+    width: 90%; /* Increase width for smaller screens */
+    height: auto; /* Adjust height for smaller screens */
+  }
+}
+
+/* Medium devices (tablets, 600px to 768px) */
+@media (min-width: 601px) and (max-width: 768px) {
+  .navbar {
+    font-size: 14px; /* Adjust font size for tablets */
+  }
+
+  .nav-links {
+    flex-direction: row; /* Keep nav links in a row */
+    gap: 15px;
+  }
+
+  .main-content {
+    width: 85%; /* Adjust width for tablets */
+    margin-top: 110px; /* Adjust margin for tablets */
+  }
+
+  .text-editor-container {
+    margin-top: 160px; /* Adjust space between navbar and text editor */
+  }
+
+  .text-editor-wrapper {
+    width: 85%; /* Adjust width for tablets */
+    height: auto; /* Adjust height for tablets */
+  }
+}
+
+/* Large devices (desktops, 768px and up) */
+@media (min-width: 769px) {
+  .navbar {
+    font-size: 16px; /* Larger font size for desktops */
+  }
+
+  .nav-links {
+    flex-direction: row; /* Keep nav links in a row */
+    gap: 20px;
+  }
+
+  .main-content {
+    width: 80%; /* Adjust width for desktops */
+    margin-top: 120px; /* Adjust margin for desktops */
+  }
+
+  .text-editor-container {
+    margin-top: 140px; /* Adjust space between navbar and text editor */
+  }
+
+  .text-editor-wrapper {
+    width: 80%; /* Adjust width for desktops */
+    height: 300px; /* Fixed height for desktops */
+  }
+}
