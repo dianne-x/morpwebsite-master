@@ -1,0 +1,27 @@
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from 'react-router-dom';
+
+const Home = () => {
+    const navigate = useNavigate();
+  
+    const handleButtonClick = () => {
+      navigate('/text-editor');
+    };
+  
+    return (
+      <>
+        <div className="main-content">
+          <header className="header">
+            <h1>Multiverse of Role Play</h1>
+            <p>Anything I desire can be made reality</p>
+          </header>
+          <button className="btn" onClick={handleButtonClick}>Text Editor</button>
+          <FontAwesomeIcon icon={faEnvelope} />
+        </div>
+      </>
+    );
+  };
+
+export default Home;

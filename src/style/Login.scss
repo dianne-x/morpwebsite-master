@@ -1,121 +1,100 @@
-
+@import 'colors';
 
 .login-container {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 300px;
-    text-align: center;
-    margin-top: 150px !important;
-}
-
-.login-form h2 {
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.input-group {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #ddd;
-    padding: 10px 0;
-}
-
-.input-group .icon {
-    margin-right: 10px;
-    color: #888;
-}
-
-.input-group input {
-    border: none;
-    outline: none;
-    flex: 1;
-    padding: 10px;
-    font-size: 16px;
-}
-
-.loginto-button {
-    background: #6a11cb;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background 0.3s ease;
-}
-
-.loginto-button:hover {
-    background: #2575fc;
-}
-
-.login-footer {
-    margin-top: 20px;
-}
-
-.login-footer a {
-    color: #6a11cb;
-    text-decoration: none;
-    margin: 0 10px;
-    transition: color 0.3s ease;
-}
-
-.login-footer a:hover {
-    color: #2575fc;
-}
-
-/* Media Queries for Responsive Design */
-
-/* Small devices (phones, 600px and down) */
-@media (max-width: 600px) {
-    .login-container {
-        width: 90%;
-        padding: 20px;
-        margin-top: 250px !important;
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
 
-    .input-group input {
-        font-size: 14px;
-    }
+    min-height: 100vh;
+    background-color: $main_color;
+    display: grid;
+    place-items: center;
+    color: $text_color;
+    
 
-    .login-button {
-        font-size: 14px;
-        padding: 8px 16px;
-    }
-}
+    main {
+        width: min(100%, 500px);
+        height: min(100%, 600px);
+        border: 2px solid $text_color;
+        border-radius: 1rem;
+        padding: 2.5rem 2rem;
 
-/* Medium devices (tablets, 600px to 768px) */
-@media (min-width: 601px) and (max-width: 768px) {
-    .login-container {
-        width: 80%;
-        padding: 30px;
-    }
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
-    .input-group input {
-        font-size: 15px;
-    }
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: lowercase;
+            text-align: center;
+        }
 
-    .login-button {
-        font-size: 15px;
-        padding: 9px 18px;
-    }
-}
+        img {
+            position: relative;
+            top: -100px;
+            height: 100px;
+            width: min(80%, 300px);
+            padding-inline: 2rem;
+            object-fit: contain;
+            background: $main_color;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            width: 100%;
 
-/* Large devices (desktops, 768px and up) */
-@media (min-width: 769px) {
-    .login-container {
-        width: 300px;
-        padding: 40px;
-    }
-
-    .input-group input {
-        font-size: 16px;
-    }
-
-    .login-button {
-        font-size: 16px;
-        padding: 10px 20px;
+            input {
+                width: 100%;
+                padding: 0.5rem 0;
+                margin: 1rem 0;
+                border: none;
+                border-bottom: 1px solid $text_color;
+                background-color: transparent;
+                color: $text_color;
+                font-size: 1rem;
+                font-weight: 500;
+                outline: none;
+                transition: all 0.3s;
+                &:focus {
+                    border-bottom: 2px solid $secondary_color;
+                    color: $secondary_color;
+                }
+            }
+            .password {
+                position: relative;
+                .show-password {
+                    position: absolute;
+                    right: 1rem;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    cursor: pointer;
+                    background: none;
+                    outline: none;
+                    border: none;
+                    color: $text_color;
+                }
+            }
+            button[type="submit"] {
+                background: transparent;
+                border: 2px solid $text_color;
+                color: $text_color;
+                padding: 0.75rem 1.5rem;
+                border-radius: 0.5rem;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s;
+                &:hover {
+                    color: $secondary_color;
+                    border-color: $secondary_color;
+                }
+            }
+        }
     }
 }

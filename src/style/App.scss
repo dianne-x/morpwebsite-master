@@ -1,19 +1,19 @@
 @import "colors";
 
 body {
-  background-image: url('../img/logowhite.jpg'); /* Set your background image */
-  background-size: cover;
-  background-position: center;
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
 }
 
 .app {
+  background-image: url('../img/logowhite.jpg'); /* Set your background image */
+  background-size: cover;
+  background-position: center;
   display: flex;
   flex-direction: column; /* Ensure the navbar and main-content are stacked vertically */
   align-items: center; /* Center the content horizontally */
-  margin-top: 20px; /* Space between the content and the top of the viewport */
+  padding-top: 20px; /* Space between the content and the top of the viewport */
   min-height: 100vh; /* Ensure the content takes at least the full height of the viewport */
 }
 
