@@ -5,7 +5,10 @@ import Rules from './pages/Rules';
 import CombatRules from './pages/COmbatRules.js';
 import CharacterRules from './pages/CharRules';
 import TextEditor from './TextEditor';
+import Login from './pages/Login';
 import './style/App.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
 
 function App() {
@@ -18,6 +21,7 @@ function App() {
           <Route path="/rules" element={<Rules />} />
           <Route path="/combat-rules" element={<CombatRules />} />
           <Route path="/character-rules" element={<CharacterRules />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/text-editor" element={<TextEditor />} />
         </Routes>
       </div>
@@ -40,6 +44,7 @@ const Home = () => {
         <p>Anything I desire can be made reality</p>
       </header>
       <button className="btn" onClick={handleButtonClick}>Text Editor</button>
+      <FontAwesomeIcon icon={faEnvelope} />
     </div>
   );
 };

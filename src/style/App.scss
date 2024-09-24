@@ -1,3 +1,5 @@
+@import "colors";
+
 body {
   background-image: url('../img/logowhite.jpg'); /* Set your background image */
   background-size: cover;
@@ -74,13 +76,20 @@ body {
   padding: 20px;
   width: 80%; /* Set a width to center the main content */
   border-radius: 8px; /* Optional: rounded corners */
-  margin-top: 120px; /* Space between navbar and main content */
+  margin-top: 120px !important; /* Space between navbar and main content */
 }
 
 .header {
   margin-bottom: 20px;
   text-align: center; /* Center the header text */
 }
+
+.login-button {
+  position: absolute;
+  top: 50px; /* Adjust this value to push the button upward */
+  right: 50px;
+}
+
 
 .hero-image {
   width: 100%;
@@ -188,4 +197,18 @@ body {
     width: 80%; /* Adjust width for desktops */
     height: 300px; /* Fixed height for desktops */
   }
+}
+
+.login-button button {
+  background-color: green; /* Set background color to green */
+  color: white; /* Set text color to white */
+  font-size: 16px; /* Increase font size */
+  padding: 10px 20px; /* Add padding to make the button bigger */
+  border: none; /* Remove border */
+  border-radius: 5px; /* Optional: add rounded corners */
+  cursor: pointer; /* Change cursor to pointer */
+}
+
+.login-button button:hover {
+  background-color: darkgreen; /* Change background color on hover */
 }
