@@ -125,6 +125,7 @@ body {
 @media (max-width: 600px) {
   .navbar {
     font-size: 12px; /* Smaller font size for navbar */
+    height: 230px; /* Increase height for smaller screens */
   }
 
   .nav-links {
@@ -134,7 +135,7 @@ body {
 
   .main-content {
     width: 90%; /* Increase width for smaller screens */
-    margin-top: 200px; /* Adjust margin for smaller screens */
+    margin-top: 250px !important; /* Adjust margin for smaller screens */
   }
 
   .text-editor-container {
@@ -144,6 +145,11 @@ body {
   .text-editor-wrapper {
     width: 90%; /* Increase width for smaller screens */
     height: auto; /* Adjust height for smaller screens */
+  }
+
+  .login-button {
+    top: 170px; /* Adjust position for smaller screens */
+    right: 115px; /* Adjust position for smaller screens */
   }
 }
 
@@ -170,6 +176,11 @@ body {
   .text-editor-wrapper {
     width: 85%; /* Adjust width for tablets */
     height: auto; /* Adjust height for tablets */
+  }
+
+  .login-button {
+    top: 50px; /* Adjust position for tablets */
+    right: 40px; /* Adjust position for tablets */
   }
 }
 
