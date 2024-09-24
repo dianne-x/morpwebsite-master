@@ -5,7 +5,7 @@ import Rules from './pages/Rules';
 import CombatRules from './pages/COmbatRules.js';
 import CharacterRules from './pages/CharRules';
 import TextEditor from './TextEditor';
-import './App.css';
+import './style/App.scss';
 
 
 function App() {
