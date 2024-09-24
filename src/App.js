@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar.js';
 import Rules from './pages/Rules';
+import CombatRules from './pages/COmbatRules.js';
+import CharacterRules from './pages/CharRules';
 import TextEditor from './TextEditor';
 import './App.css';
 
@@ -14,6 +16,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/rules" element={<Rules />} />
+          <Route path="/combat-rules" element={<CombatRules />} />
+          <Route path="/character-rules" element={<CharacterRules />} />
           <Route path="/text-editor" element={<TextEditor />} />
         </Routes>
       </div>

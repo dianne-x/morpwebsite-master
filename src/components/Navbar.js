@@ -64,8 +64,16 @@ const Navbar = () => {
                 <li>
                     <NavLink to="/rules" activeClassName="active">Game Rules</NavLink>
                 </li>
-              <li>Character Rules</li>
-              <li>Combat Rules</li>
+              <li>
+                <NavLink to="/combat-rules" activeClassName="active">
+                  Combat Rules
+                </NavLink>
+                </li>
+              <li>
+                <NavLink to="/character-rules" activeClassName="active">
+                  Character Rules
+                </NavLink>
+              </li>
             </ul>
             )}
         </li>

@@ -44,12 +44,14 @@ body {
   display: inline;
 }
 
-.nav-links button {
+.nav-links button,
+.nav-links a {
   background: none;
   border: none;
   color: #fff;
   cursor: pointer;
   font-size: 14px; /* Downscale the button font size */
+  text-decoration: none;
 }
 
 .dropdown {
