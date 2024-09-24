@@ -84,11 +84,7 @@ body {
   text-align: center; /* Center the header text */
 }
 
-.login-button {
-  position: absolute;
-  top: 50px; /* Adjust this value to push the button upward */
-  right: 50px;
-}
+
 
 
 .hero-image {
@@ -179,8 +175,9 @@ body {
   }
 
   .login-button {
-    top: 50px; /* Adjust position for tablets */
-    right: 40px; /* Adjust position for tablets */
+    position: absolute;
+    top: 43px !important; /* Adjust position for tablets */
+    right: 20px !important; /* Adjust position for tablets */
   }
 }
 
@@ -207,6 +204,12 @@ body {
   .text-editor-wrapper {
     width: 80%; /* Adjust width for desktops */
     height: 300px; /* Fixed height for desktops */
+  }
+
+  .login-button {
+    position: absolute;
+    top: 35px !important;/* Adjust this value to push the button upward */
+    right: 50px !important;
   }
 }
 
