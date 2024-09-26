@@ -1,0 +1,19 @@
+          <header className="header">
+            <h1>Welcome to MORP</h1>
+            <p>Anything I desire can be made reality</p>
+            <button className="btn" onClick={handleButtonClick}>Text Editor</button>
+          </header>
+
+
+          from scrastch:
+          https://app.videosdk.live/quick-start/conferencing/build-from-scratch/web/react
+          https://app.videosdk.live/quick-start/conferencing/build-from-scratch/web/javascript
+
+
+
+          demo project:
+          https://app.videosdk.live/quick-start/conferencing/clone-example/web/react
+          https://app.videosdk.live/quick-start/conferencing/clone-example/web/javascript
+
+
+          https://app.videosdk.live/quick-start?orgId=R6YA7WZXKLQ0
