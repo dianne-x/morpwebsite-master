@@ -52,7 +52,9 @@ const Navbar = () => {
           </button>
           {playerSrchOpen && (
             <ul className="dropdown">
-              <li>Search by Name</li>
+              <li>
+                <NavLink to="/player-search" activeClassName="active">Search by name</NavLink>
+              </li>
               <li>Search by ID</li>
             </ul>
           )}

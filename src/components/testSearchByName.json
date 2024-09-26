@@ -1,0 +1,34 @@
+{
+    "characters": [
+      {
+        "playerName": "Meower",
+        "CharacterName": "Aragorn Elessar",
+        "CharacterGender": "Male",
+        "CharacterTier": "High-Tier"
+      },
+      {
+        "playerName": "DiddyDisciple",
+        "CharacterName": "Eowyn Eomund",
+        "CharacterGender": "Female",
+        "CharacterTier": "Mid-Tier"
+      },
+      {
+        "playerName": "Epsteinlander",
+        "CharacterName": "Legolas Greenleaf",
+        "CharacterGender": "Male",
+        "CharacterTier": "Top-Tier"
+      },
+      {
+        "playerName": "KidToucher",
+        "CharacterName": "Gimli Gloin",
+        "CharacterGender": "Male",
+        "CharacterTier": "Low-Tier"
+      },
+      {
+        "playerName": "Rap/er",
+        "CharacterName": "Galadriel Galavani",
+        "CharacterGender": "Female",
+        "CharacterTier": "God-Tier"
+      }
+    ]
+  }

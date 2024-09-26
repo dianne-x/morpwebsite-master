@@ -15,7 +15,7 @@ const Home = () => {
       <>
         <div className="main-content">
           <header className="header">
-            <h1>Multiverse of Role Play</h1>
+            <h1>Rólunk</h1>
             <p>Anything I desire can be made reality</p>
           </header>
           <button className="btn" onClick={handleButtonClick}>Text Editor</button>

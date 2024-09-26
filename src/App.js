@@ -7,7 +7,7 @@ import CombatRules from './pages/COmbatRules.js';
 import CharacterRules from './pages/CharRules';
 import Login from './pages/Login';
 import TextEditor from './TextEditor';
-
+import SearchByName from './pages/Searchbyname';
 
 
 function App() {
@@ -21,6 +21,8 @@ function App() {
             <Route path="/combat-rules" element={<CombatRules />} />
             <Route path="/character-rules" element={<CharacterRules />} />
             <Route path="/text-editor" element={<TextEditor />} />
+            <Route path="/player-search" element={<SearchByName />} />
+
           </Route>
           
           <Route path="/login" element={<Login />} />
