@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +14,10 @@ const Home = () => {
   
     return (
       <>
+         <Helmet>
+          <title>MORP - Home Page</title>
+        </Helmet>
+
         <div className="main-content">
           <header className="header">
             <h1>Rólunk</h1>
