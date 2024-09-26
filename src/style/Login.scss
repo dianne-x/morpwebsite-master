@@ -19,23 +19,16 @@
         height: min(100%, 600px);
         border: 2px solid $text_color;
         border-radius: 1rem;
-        padding: 2.5rem 2rem;
+        padding: 2% 5%;
 
         display: flex;
         flex-direction: column;
         align-items: center;
-
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            text-transform: lowercase;
-            text-align: center;
-        }
+        justify-content: space-between;
 
         img {
             position: relative;
-            top: -100px;
+            top: -80px;
             height: 100px;
             width: min(80%, 300px);
             padding-inline: 2rem;
@@ -48,6 +41,11 @@
             align-items: center;
             gap: 0;
             width: 100%;
+            margin-top: -100px;
+
+            &>div {
+                width: 100%;
+            }
 
             input {
                 width: 100%;
@@ -85,6 +83,7 @@
                 border: 2px solid $text_color;
                 color: $text_color;
                 padding: 0.75rem 1.5rem;
+                margin-top: 2rem;
                 border-radius: 0.5rem;
                 font-size: 1rem;
                 font-weight: 600;
@@ -93,6 +92,20 @@
                 &:hover {
                     color: $secondary_color;
                     border-color: $secondary_color;
+                }
+            }
+        }
+
+        .links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+
+            p {
+                cursor: pointer;
+                &:hover {
+                    color: $secondary_color;
                 }
             }
         }
