@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import logo from '../img/morp_light_horizontal.png'
 
 const Navbar = () => {
   const [exploreOpen, setExploreOpen] = useState(false);
@@ -13,7 +14,9 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <h1 className="navbar-brand">MORP Database</h1>
+        <div class="logo-container">
+            <img src={logo} alt="logo" />
+        </div>
       <ul className="nav-links">
         <li>
           <button onClick={() => toggleDropdown(setExploreOpen)}>

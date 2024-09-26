@@ -7,7 +7,7 @@ body {
 }
 
 .app {
-  background-image: url('../img/logowhite.jpg'); /* Set your background image */
+  background-image: url('../img/logodark.jpg'); /* Set your background image */
   background-size: cover;
   background-position: center;
   display: flex;
@@ -76,7 +76,6 @@ body {
   padding: 20px;
   width: 80%; /* Set a width to center the main content */
   border-radius: 8px; /* Optional: rounded corners */
-  margin-top: 120px !important; /* Space between navbar and main content */
 }
 
 .header {
@@ -115,13 +114,18 @@ body {
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
+.logo-container img {
+  width: 100px; /* Adjust logo size */
+  margin-bottom: 20px;
+}
+
 /* Media Queries for Responsive Design */
 
 /* Small devices (phones, 600px and down) */
 @media (max-width: 600px) {
   .navbar {
     font-size: 12px; /* Smaller font size for navbar */
-    height: 230px; /* Increase height for smaller screens */
+    height: 250px; /* Increase height for smaller screens */
   }
 
   .nav-links {
@@ -131,7 +135,7 @@ body {
 
   .main-content {
     width: 90%; /* Increase width for smaller screens */
-    margin-top: 250px !important; /* Adjust margin for smaller screens */
+    margin-top: 260px !important; /* Adjust margin for smaller screens */
   }
 
   .text-editor-container {
@@ -162,7 +166,7 @@ body {
 
   .main-content {
     width: 85%; /* Adjust width for tablets */
-    margin-top: 110px; /* Adjust margin for tablets */
+    margin-top: 140px !important; /* Adjust margin for tablets */
   }
 
   .text-editor-container {
@@ -194,7 +198,7 @@ body {
 
   .main-content {
     width: 80%; /* Adjust width for desktops */
-    margin-top: 120px; /* Adjust margin for desktops */
+    margin-top: 160px !important; /* Adjust margin for desktops */
   }
 
   .text-editor-container {

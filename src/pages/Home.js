@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom';
+import logo from '../img/morp_light_horizontal.png';
 
 const Home = () => {
     const navigate = useNavigate();
