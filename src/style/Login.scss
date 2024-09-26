@@ -60,12 +60,18 @@
                 outline: none;
                 transition: all 0.3s;
                 &:focus {
-                    border-bottom: 2px solid $secondary_color;
+                    width: 102%;
                     color: $secondary_color;
+                    border-color: $secondary_color;
                 }
             }
             .password {
                 position: relative;
+
+                &:has(input:focus) .show-password {
+                    color: $secondary_color;
+                }
+
                 .show-password {
                     position: absolute;
                     right: 1rem;

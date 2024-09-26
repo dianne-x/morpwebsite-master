@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { Helmet } from 'react-helmet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
@@ -23,6 +24,9 @@ const Register = () => {
 
     return (
         <>
+        <Helmet>
+          <title>MORP - Register</title>
+        </Helmet>
             <form onSubmit={handleSubmit}>
                 <div>
                     <input

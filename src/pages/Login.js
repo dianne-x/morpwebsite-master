@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { Helmet } from 'react-helmet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import '.././style/Login.scss'; // Make sure to create and import the CSS file
@@ -51,16 +52,22 @@ const Login = () => {
 
 
     return (
-        <div className="login-container">
-            
-            <main>
-                <img src={logo} alt="logo" />
-                {pages.find(page => page.active === true).component}
-                <div className="links">
-                    {inactivePageLinks}
-                </div>
-            </main>
-        </div>
+        <>
+            <Helmet>
+              <title>MORP - Login</title>
+            </Helmet>
+
+            <div className="login-container">
+                
+                <main>
+                    <img src={logo} alt="logo" />
+                    {pages.find(page => page.active === true).component}
+                    <div className="links">
+                        {inactivePageLinks}
+                    </div>
+                </main>
+            </div>
+        </>
     );
 };
 

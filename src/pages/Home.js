@@ -14,7 +14,7 @@ const Home = () => {
   
     return (
       <>
-         <Helmet>
+        <Helmet>
           <title>MORP - Home Page</title>
         </Helmet>
 
