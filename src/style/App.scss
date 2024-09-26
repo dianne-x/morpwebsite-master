@@ -7,7 +7,8 @@ body {
 }
 
 .app {
-  background-image: url('../img/logodark.jpg'); /* Set your background image */
+  //background-image: url('../img/logodark.jpg'); /* Set your background image */
+  background-color: $main_color; /* Fallback color */
   background-size: cover;
   background-position: center;
   display: flex;
@@ -18,11 +19,13 @@ body {
 }
 
 .navbar {
-  background-color: #333;
+  background-color: lighten($color: $main_color, $amount: 3%);
   padding: 10px;
   font-size: 14px; /* Downscale the font size */
   width: 82%; /* Set a width to center the navbar */
-  text-align: center; /* Center the text */
+  display: flex; /* Use Flexbox for layout */
+  align-items: center; /* Center items vertically */
+  justify-content: space-between; /* Distribute space between items */
   border-radius: 8px; /* Optional: rounded corners */
   position: fixed;
   z-index: 1000;
@@ -36,10 +39,11 @@ body {
 
 .nav-links {
   list-style: none;
+  display: flex; /* Use Flexbox for layout */
+  margin: 0;
   padding: 0;
-  display: flex;
   justify-content: center; /* Center the nav links */
-  gap: 15px;
+  flex: 1; /* Allow the nav links to take up available space */
 }
 
 .nav-links li {
@@ -83,6 +87,17 @@ body {
   text-align: center; /* Center the header text */
 }
 
+.navbar-button {
+  background-color: $secondary_color;
+  color: $text_color;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
+
 
 
 
@@ -114,10 +129,82 @@ body {
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
-.logo-container img {
-  width: 100px; /* Adjust logo size */
-  margin-bottom: 20px;
+.logo-container {
+  display: flex;
+  align-items: center;
 }
+
+.logo-container img {
+  width: 200px; /* Adjust logo size */
+}
+
+
+.about-us,
+.section-one,
+.section-two,
+.section-three {
+  display: flex;
+  margin: 0; /* Remove margin to make sections touch each other */
+}
+
+.about-us-left,
+.about-us-right,
+.section-one-left,
+.section-one-right,
+.section-two-left,
+.section-two-right,
+.section-three-left,
+.section-three-right {
+  flex: 1;
+  padding: 20px;
+}
+
+.about-us-left {
+  background-color: $main_color;
+  color: $text_color;
+  border-right: 1px solid #ddd;
+}
+
+.about-us-right {
+  background-color: $secondary_color;
+  color: $text_color;
+}
+
+.section-one-left {
+  background-color: $third_color;
+  color: $text_color;
+  border-right: 1px solid #ddd;
+}
+
+.section-one-right {
+  background-color: $main_color;
+  color: $text_color;
+}
+
+.section-two-left {
+  background-color: $secondary_color;
+  color: $text_color;
+  border-right: 1px solid #ddd;
+}
+
+.section-two-right {
+  background-color: $third_color;
+  color: $text_color;
+}
+
+.section-three-left {
+  background-color: $main_color;
+  color: $text_color;
+  border-right: 1px solid #ddd;
+}
+
+.section-three-right {
+  background-color: $secondary_color;
+  color: $text_color;
+}
+
+
+
 
 /* Media Queries for Responsive Design */
 
@@ -218,8 +305,8 @@ body {
 }
 
 .login-button button {
-  background-color: green; /* Set background color to green */
-  color: white; /* Set text color to white */
+  background-color: $text_color; /* Set background color to green */
+  color: darken($color: $main_color, $amount: 30%); /* Set text color to white */
   font-size: 16px; /* Increase font size */
   padding: 10px 20px; /* Add padding to make the button bigger */
   border: none; /* Remove border */
@@ -228,5 +315,6 @@ body {
 }
 
 .login-button button:hover {
-  background-color: darkgreen; /* Change background color on hover */
+  background-color: darken($color: $secondary_color, $amount: 35%); /* Change background color on hover */
+  color: $text_color; /* Change text color on hover */
 }
