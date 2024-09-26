@@ -21,7 +21,6 @@ const UserLogin = () => {
 
     return (
         <>
-            <h1>Login</h1>
             <form onSubmit={handleSubmit}>
                 <div>
                     <input

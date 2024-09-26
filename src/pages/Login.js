@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import '.././style/Login.scss'; // Make sure to create and import the CSS file
@@ -9,35 +9,56 @@ import ResendPassword from '../components/loginPage/ResendPassword';
 
 import logo from '../img/morp_light_horizontal.png';
 
-/*
-<div className="login-container">
-            <div className="login-form">
-                <h2>Login</h2>
-                <form>
-                    <div className="input-group">
-                        <FontAwesomeIcon icon={faUser} className="icon" />
-                        <input type="text" placeholder="Username" required />
-                    </div>
-                    <div className="input-group">
-                        <FontAwesomeIcon icon={faLock} className="icon" />
-                        <input type="password" placeholder="Password" required />
-                    </div>
-                    <button type="submit" className="loginto-button">Login</button>
-                </form>
-                <div className="login-footer">
-                    <a href="#">Forgot Password?</a>
-                    <a href="#">Create an Account</a>
-                </div>
-            </div>
-        </div>
-*/
 
 const Login = () => {
+
+    const [pages, setPages] = useState([
+        { 
+            id: 1,
+            name: 'Login', 
+            component: <UserLogin />,
+            active: true
+        },
+        {
+            id: 2, 
+            name: 'Register', 
+            component: <Register />,
+            active: false
+        },
+        {
+            id: 3, 
+            name: 'Resend Password', 
+            component: <ResendPassword />,
+            active: false 
+        }
+    ]);
+    const inactivePages = pages.filter(page => page.active === false);
+
+    const inactivePageLinks = inactivePages.map(page => {
+        return <p onClick={() => changeActivePage(page.id)}>{page.name}</p>
+    })
+
+    function changeActivePage(id) {
+        const newPages = pages.map(page => {
+            if(page.id === id) {
+                return {...page, active: true};
+            } else {
+                return {...page, active: false};
+            }
+        });
+        setPages(newPages);
+    }
+
+
     return (
         <div className="login-container">
+            
             <main>
                 <img src={logo} alt="logo" />
-                <UserLogin />
+                {pages.find(page => page.active === true).component}
+                <div className="links">
+                    {inactivePageLinks}
+                </div>
             </main>
         </div>
     );
