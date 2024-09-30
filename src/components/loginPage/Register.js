@@ -13,7 +13,9 @@ const Register = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        //axios.post('http://localhost:3000/', {name, email, password})
+        axios.post('http://localhost/morpwebsite-master/src/php/register.php', {name, email, password})
+            .then((response) => console.log(response))
+            .catch((error) => console.log(error));
     };
 
     const [showPassword, setShowPassword] = useState(false);
