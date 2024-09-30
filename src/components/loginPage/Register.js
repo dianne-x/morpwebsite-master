@@ -13,7 +13,12 @@ const Register = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        axios.post('http://localhost/morpwebsite-master/src/php/register.php', {name, email, password})
+        const fdata = new FormData();
+        fdata.append('name', name);
+        fdata.append('email', email);
+        fdata.append('password', password);
+
+        axios.post('http://localhost/morpwebsite-master/src/php/register.php', fdata)
             .then((response) => console.log(response))
             .catch((error) => console.log(error));
     };
@@ -23,6 +28,18 @@ const Register = () => {
     
     const toggleShowPassword = () => setShowPassword(!showPassword);
     const toggleShowPasswordAgain = () => setShowPasswordAgain(!showPasswordAgain);
+
+    // EZT A FUNCTIONT MÉG CSISZOLNI KELL
+
+    function areCredentialsValid() {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const isEmailValid = emailRegex.test(email);
+        const isNameValid = name.length >= 4;
+        const isPasswordStrong = isPasswordStrong(password);
+        const arePasswordsEqual = password === passwordAgain;
+
+        return isEmailValid && isNameValid && isPasswordStrong && arePasswordsEqual;
+    }
 
     return (
         <>
