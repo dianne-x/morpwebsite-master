@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { Helmet } from 'react-helmet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -11,22 +12,22 @@ const Register = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle login logic here
-        console.log('Email:', email);
-        console.log('Password:', password);
+        
+        //axios.post('http://localhost:3000/', {name, email, password})
     };
 
     const [showPassword, setShowPassword] = useState(false);
-
-    const toggleShowPassword = () => {
-        setShowPassword(!showPassword);
-    };
+    const [showPasswordAgain, setShowPasswordAgain] = useState(false);
+    
+    const toggleShowPassword = () => setShowPassword(!showPassword);
+    const toggleShowPasswordAgain = () => setShowPasswordAgain(!showPasswordAgain);
 
     return (
         <>
-        <Helmet>
-          <title>MORP - Register</title>
-        </Helmet>
+            <Helmet>
+            <title>MORP - Register</title>
+            </Helmet>
+
             <form onSubmit={handleSubmit}>
                 <div>
                     <input
@@ -60,14 +61,14 @@ const Register = () => {
                 </div>
                 <div className='password'>
                     <input
-                        type={showPassword ? 'text' : 'password'}
+                        type={showPasswordAgain ? 'text' : 'password'}
                         value={passwordAgain}
                         onChange={(e) => setPasswordAgian(e.target.value)}
                         required
                         placeholder='password again'
                     />
-                    <button type="button" onClick={toggleShowPassword} className='show-password'>
-                        <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                    <button type="button" onClick={toggleShowPasswordAgain} className='show-password'>
+                        <FontAwesomeIcon icon={showPasswordAgain ? faEyeSlash : faEye} />
                     </button>
                 </div>
                 

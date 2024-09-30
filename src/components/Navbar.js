@@ -14,9 +14,9 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-        <div class="logo-container">
-            <img src={logo} alt="logo" />
-        </div>
+      <div class="logo-container">
+          <img src={logo} alt="logo" />
+      </div>
       <ul className="nav-links">
         <li>
           <button onClick={() => toggleDropdown(setExploreOpen)}>
@@ -82,12 +82,12 @@ const Navbar = () => {
             </ul>
             )}
         </li>
-        <div className="login-button">
-          <NavLink to="/login" activeClassName="active">
-          <button>Login</button>
-          </NavLink>
-        </div>
       </ul>
+      <div className="login-button">
+        <NavLink to="/login" activeClassName="active">
+        <button>Login</button>
+        </NavLink>
+      </div>
     </nav>
   );
 };

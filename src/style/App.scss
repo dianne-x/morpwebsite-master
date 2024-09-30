@@ -20,7 +20,7 @@ body {
 
 .navbar {
   background-color: lighten($color: $main_color, $amount: 3%);
-  padding: 10px;
+  padding: 1rem 4rem;
   font-size: 14px; /* Downscale the font size */
   width: 82%; /* Set a width to center the navbar */
   display: flex; /* Use Flexbox for layout */
@@ -43,7 +43,7 @@ body {
   margin: 0;
   padding: 0;
   justify-content: center; /* Center the nav links */
-  flex: 1; /* Allow the nav links to take up available space */
+  text-align: center; /* Center the text of the nav links */
   
   li {
     display: inline;
@@ -218,6 +218,7 @@ body {
   .navbar {
     font-size: 12px; /* Smaller font size for navbar */
     height: 250px; /* Increase height for smaller screens */
+    flex-direction: column; /* Stack navbar items vertically */
   }
 
   .nav-links {
@@ -237,11 +238,6 @@ body {
   .text-editor-wrapper {
     width: 90%; /* Increase width for smaller screens */
     height: auto; /* Adjust height for smaller screens */
-  }
-
-  .login-button {
-    top: 170px; /* Adjust position for smaller screens */
-    right: 115px; /* Adjust position for smaller screens */
   }
 }
 
@@ -269,12 +265,6 @@ body {
     width: 85%; /* Adjust width for tablets */
     height: auto; /* Adjust height for tablets */
   }
-
-  .login-button {
-    position: absolute;
-    top: 43px !important; /* Adjust position for tablets */
-    right: 20px !important; /* Adjust position for tablets */
-  }
 }
 
 /* Large devices (desktops, 768px and up) */
@@ -300,12 +290,6 @@ body {
   .text-editor-wrapper {
     width: 80%; /* Adjust width for desktops */
     height: 300px; /* Fixed height for desktops */
-  }
-
-  .login-button {
-    position: absolute;
-    top: 35px !important;/* Adjust this value to push the button upward */
-    right: 50px !important;
   }
 }
 
