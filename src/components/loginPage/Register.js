@@ -9,25 +9,29 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordAgain, setPasswordAgian] = useState('');
-    
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        
-        const fdata = new FormData();
-        fdata.append('name', name);
-        fdata.append('email', email);
-        fdata.append('password', password);
-
-        axios.post('http://localhost/morpwebsite-master/src/php/register.php', fdata)
-            .then((response) => console.log(response))
-            .catch((error) => console.log(error));
-    };
 
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordAgain, setShowPasswordAgain] = useState(false);
     
     const toggleShowPassword = () => setShowPassword(!showPassword);
     const toggleShowPasswordAgain = () => setShowPasswordAgain(!showPasswordAgain);
+
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        const url = 'http://localhost/morpwebsite-master/src/php/register.php';
+        const fdata = new FormData();
+        fdata.append('name', name);
+        fdata.append('email', email);
+        fdata.append('password', password);
+
+        axios.post(url, fdata)
+            .then((response) => console.log(response))
+            .catch((error) => console.log(error));
+    };
+
+    
 
     // EZT A FUNCTIONT MÉG CSISZOLNI KELL
 
