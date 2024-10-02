@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -8,98 +8,119 @@ const Register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [passwordAgain, setPasswordAgian] = useState('');
+    const [passwordAgain, setPasswordAgain] = useState('');
 
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordAgain, setShowPasswordAgain] = useState(false);
     
+    const [errors, setErrors] = useState({});
+    const [message, setMessage] = useState('');
+
     const toggleShowPassword = () => setShowPassword(!showPassword);
     const toggleShowPasswordAgain = () => setShowPasswordAgain(!showPasswordAgain);
 
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
         const url = 'http://localhost/morpwebsite-master/src/php/register.php';
         const fdata = new FormData();
         fdata.append('name', name);
         fdata.append('email', email);
         fdata.append('password', password);
+        fdata.append('passwordAgain', passwordAgain);
 
         axios.post(url, fdata)
-            .then((response) => console.log(response))
-            .catch((error) => console.log(error));
+            .then((response) => {
+                const { data } = response;
+
+                if (data.success) {
+                    setMessage(data.message);
+                    setErrors({}); // Clear any previous errors
+                    // Optionally clear the form fields
+                    setName('');
+                    setEmail('');
+                    setPassword('');
+                    setPasswordAgain('');
+                } else {
+                    setErrors(data.errors || {});
+                    setMessage(data.message || '');
+                }
+            })
+            .catch((error) => {
+                console.log('Error:', error);
+                setMessage('An error occurred while processing your request.');
+            });
     };
-
-    
-
-    // EZT A FUNCTIONT MÉG CSISZOLNI KELL
-
-    function areCredentialsValid() {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const isEmailValid = emailRegex.test(email);
-        const isNameValid = name.length >= 4;
-        const isPasswordStrong = isPasswordStrong(password);
-        const arePasswordsEqual = password === passwordAgain;
-
-        return isEmailValid && isNameValid && isPasswordStrong && arePasswordsEqual;
-    }
 
     return (
         <>
             <Helmet>
-            <title>MORP - Register</title>
+                <title>MORP - Register</title>
             </Helmet>
 
             <form onSubmit={handleSubmit}>
+                {/* Name Field */}
                 <div>
                     <input
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
-                        placeholder='username'
+                        placeholder="username"
                     />
+                    {errors.name && <p style={{ color: 'red' }}>{errors.name}</p>}
                 </div>
+
+                {/* Email Field */}
                 <div>
                     <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        placeholder='email'
+                        placeholder="email"
                     />
+                    {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
                 </div>
-                <div className='password'>
+
+                {/* Password Field */}
+                <div className="password">
                     <input
                         type={showPassword ? 'text' : 'password'}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                        placeholder='password'
+                        placeholder="password"
                     />
-                    <button type="button" onClick={toggleShowPassword} className='show-password'>
+                    <button type="button" onClick={toggleShowPassword} className="show-password">
                         <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
                     </button>
+                    {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
                 </div>
-                <div className='password'>
+
+                {/* Password Again Field */}
+                <div className="password">
                     <input
                         type={showPasswordAgain ? 'text' : 'password'}
                         value={passwordAgain}
-                        onChange={(e) => setPasswordAgian(e.target.value)}
+                        onChange={(e) => setPasswordAgain(e.target.value)}
                         required
-                        placeholder='password again'
+                        placeholder="password again"
                     />
-                    <button type="button" onClick={toggleShowPasswordAgain} className='show-password'>
+                    <button type="button" onClick={toggleShowPasswordAgain} className="show-password">
                         <FontAwesomeIcon icon={showPasswordAgain ? faEyeSlash : faEye} />
                     </button>
+                    {errors.passwordAgain && <p style={{ color: 'red' }}>{errors.passwordAgain}</p>}
                 </div>
-                
+
+                {/* Submit Button */}
                 <button type="submit">Register</button>
+
+                {/* Success/Error Message */}
+                {message && <p>{message}</p>}
             </form>
         </>
     );
-
 };
 
 export default Register;
