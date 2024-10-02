@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
@@ -53,7 +53,7 @@ const Register = () => {
     };
 
     return (
-        <>
+        <HelmetProvider>
             <Helmet>
                 <title>MORP - Register</title>
             </Helmet>
@@ -119,7 +119,7 @@ const Register = () => {
                 {/* Success/Error Message */}
                 {message && <p>{message}</p>}
             </form>
-        </>
+        </HelmetProvider>
     );
 };
 

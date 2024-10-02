@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const ResendPassword = () => {
 
@@ -12,7 +12,7 @@ const ResendPassword = () => {
     };
 
     return (
-        <>
+        <HelmetProvider>
             <Helmet>
               <title>MORP - Resend Password</title>
             </Helmet>
@@ -28,7 +28,7 @@ const ResendPassword = () => {
                 </div>
                 <button type="submit">Resend Password</button>
             </form>
-        </>
+        </HelmetProvider>
     );
 };
 

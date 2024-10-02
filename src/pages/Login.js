@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import '.././style/Login.scss'; // Make sure to create and import the CSS file
@@ -36,7 +36,7 @@ const Login = () => {
     const inactivePages = pages.filter(page => page.active === false);
 
     const inactivePageLinks = inactivePages.map(page => {
-        return <p onClick={() => changeActivePage(page.id)}>{page.name}</p>
+        return <p key={page.id} onClick={() => changeActivePage(page.id)}>{page.name}</p>
     })
 
     function changeActivePage(id) {
@@ -52,7 +52,7 @@ const Login = () => {
 
 
     return (
-        <>
+        <HelmetProvider>
             <Helmet>
               <title>MORP - Login</title>
             </Helmet>
@@ -67,7 +67,7 @@ const Login = () => {
                     </div>
                 </main>
             </div>
-        </>
+        </HelmetProvider>
     );
 };
 

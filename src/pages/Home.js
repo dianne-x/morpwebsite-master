@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +13,7 @@ const Home = () => {
     };
   
     return (
-      <>
+      <HelmetProvider>
         <Helmet>
           <title>MORP - Home Page</title>
         </Helmet>
@@ -57,7 +57,7 @@ const Home = () => {
             </div>
           </section>
         </div>
-      </>
+      </HelmetProvider>
     );
   };
 
