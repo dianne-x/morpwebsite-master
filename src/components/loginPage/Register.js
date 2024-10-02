@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash, faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import PasswordSpecs from './PasswordSpecs';
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -15,6 +16,8 @@ const Register = () => {
     
     const [errors, setErrors] = useState({});
     const [message, setMessage] = useState('');
+
+    const [specsHovered, setSpecsHovered] = useState(true);
 
     const toggleShowPassword = () => setShowPassword(!showPassword);
     const toggleShowPasswordAgain = () => setShowPasswordAgain(!showPasswordAgain);
@@ -95,7 +98,17 @@ const Register = () => {
                     <button type="button" onClick={toggleShowPassword} className="show-password">
                         <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
                     </button>
-                    {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
+                    {errors.password && 
+                        <div>
+                            <p style={{ color: 'red' }}>
+                                {errors.password} 
+                                <FontAwesomeIcon icon={faCircleInfo} 
+                                    onMouseEnter={() => setSpecsHovered(true)} 
+                                    onMouseLeave={() => setSpecsHovered(false)} />
+                            </p>
+                            {specsHovered && <PasswordSpecs />}
+                        </div>
+                    }
                 </div>
 
                 {/* Password Again Field */}
