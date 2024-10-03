@@ -17,7 +17,7 @@ const Register = () => {
     const [errors, setErrors] = useState({});
     const [message, setMessage] = useState('');
 
-    const [specsHovered, setSpecsHovered] = useState(true);
+    const [specsHovered, setSpecsHovered] = useState(false);
 
     const toggleShowPassword = () => setShowPassword(!showPassword);
     const toggleShowPasswordAgain = () => setShowPasswordAgain(!showPasswordAgain);
@@ -68,7 +68,6 @@ const Register = () => {
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        required
                         placeholder="username"
                     />
                     {errors.name && <p style={{ color: 'red' }}>{errors.name}</p>}
@@ -80,7 +79,6 @@ const Register = () => {
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        required
                         placeholder="email"
                     />
                     {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
@@ -92,7 +90,6 @@ const Register = () => {
                         type={showPassword ? 'text' : 'password'}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        required
                         placeholder="password"
                     />
                     <button type="button" onClick={toggleShowPassword} className="show-password">
@@ -117,7 +114,6 @@ const Register = () => {
                         type={showPasswordAgain ? 'text' : 'password'}
                         value={passwordAgain}
                         onChange={(e) => setPasswordAgain(e.target.value)}
-                        required
                         placeholder="password again"
                     />
                     <button type="button" onClick={toggleShowPasswordAgain} className="show-password">
