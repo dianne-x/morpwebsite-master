@@ -8,9 +8,16 @@ const UserLogin = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle login logic here
-        console.log('Email:', email);
-        console.log('Password:', password);
+        
+        const url = 'http://localhost/morpwebsite-master/src/php/register.php';
+        const fdata = new FormData();
+        fdata.append('email', email);
+        fdata.append('password', password);
+
+        axios.post(url, fdata)
+            .then((response) => {
+                
+            })
     };
 
     const [showPassword, setShowPassword] = useState(false);
