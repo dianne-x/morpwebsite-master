@@ -1,0 +1,51 @@
+<?php
+include 'dbConnection.php'; // Include the database connection file
+header('Content-Type: application/json'); // Ensure the response is JSON
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Get the email from the POST request
+    $email = $_POST['email'];
+
+    // Validate email format
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo json_encode(['success' => false, 'message' => 'Invalid email format.']);
+        exit;
+    }
+
+    // Prepare and execute the SQL statement
+    $stmt = $conn->prepare("SELECT email, uid, verified FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email); // 's' indicates the parameter is a string
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Check if the email exists in the database
+    if ($result->num_rows > 0) {
+        // Fetch the result as an associative array
+        $row = $result->fetch_assoc();
+        $uid = $row['uid'];
+        $verified = $row['verified'];
+
+        if ($verified !== '1') {
+            echo json_encode(['success' => false, 'message' => 'Email not verified.']);
+            exit;
+        }
+
+        // Send email to user
+        $subject = "MORP - Password change request";
+        $message = "You have requested a password change. Click the link below to reset your password: http://localhost/morpwebsite-master/src/php/passwordchange.php?uid=$uid";
+        $headers = "From: MORP team";
+
+        // Use the mail function to send the email
+        //mail($email, $subject, $message, $headers);
+        echo json_encode(['success' => true, 'message' => 'Confirmation email sent.']);
+    } else {
+        // Email does not exist
+        echo json_encode(['success' => false, 'message' => 'Email not found.']);
+    }
+
+    // Close the prepared statement and the database connection
+    $stmt->close();
+    $conn->close();
+} else {
+    echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
+}

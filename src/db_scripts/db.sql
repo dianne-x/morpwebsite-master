@@ -1,0 +1,14 @@
+CREATE DATABASE UserDatabase
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+USE UserDatabase;
+
+CREATE TABLE Users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    uid VARCHAR(100) NOT NULL UNIQUE,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    verified BOOLEAN DEFAULT 0
+);

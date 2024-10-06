@@ -22,6 +22,8 @@ const Register = () => {
     const toggleShowPassword = () => setShowPassword(!showPassword);
     const toggleShowPasswordAgain = () => setShowPasswordAgain(!showPasswordAgain);
 
+    const [isVerification, setIsVerification] = useState(false);
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -44,6 +46,8 @@ const Register = () => {
                     setEmail('');
                     setPassword('');
                     setPasswordAgain('');
+
+                    setIsVerification(true);
                 } else {
                     setErrors(data.errors || {});
                     setMessage(data.message || '');
@@ -61,6 +65,9 @@ const Register = () => {
                 <title>MORP - Register</title>
             </Helmet>
 
+            {!isVerification 
+            ? 
+            (
             <form onSubmit={handleSubmit}>
                 {/* Name Field */}
                 <div>
@@ -128,6 +135,12 @@ const Register = () => {
                 {/* Success/Error Message */}
                 {message && <p>{message}</p>}
             </form>
+            ) : 
+            (
+            <div>
+                <p>Thank you for registering! Please check your email to verify your account.</p>
+            </div>
+            )}
         </HelmetProvider>
     );
 };

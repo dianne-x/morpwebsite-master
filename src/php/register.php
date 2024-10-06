@@ -1,27 +1,12 @@
 <?php
+include 'dbConnection.php'; // Include the database connection file
+include 'strongPassword.php'; // Include the strong password function
 header('Content-Type: application/json'); // Ensure the response is JSON
 
-function isStrongPassword($password) {
-    // Check if the password is at least 8 characters long
-    if (strlen($password) < 8) {
-        return false;
-    }
-    // Check if the password contains both uppercase and lowercase letters
-    if (!preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password)) {
-        return false;
-    }
-    // Check if the password contains at least one number
-    if (!preg_match('/[0-9]/', $password)) {
-        return false;
-    }
-    // Check if the password contains at least one special character
-    if (!preg_match('/[\W]/', $password)) {
-        return false;
-    }
-    // If all checks passed, the password is strong
-    return true;
-}
 
+function uid() {
+    return bin2hex(random_bytes(16));
+}
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -58,16 +43,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['passwordAgain'] = 'Passwords do not match.';
     }
 
+    // Check if email or username is already in use
+    if (empty($errors)) {
+        // Query the database to check if the email or username already exists
+        $stmt = $conn->prepare("SELECT * FROM Users WHERE email = ? OR name = ?");
+        $stmt->bind_param("ss", $email, $name);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $existingUser = $result->fetch_assoc();
+            if ($existingUser['email'] === $email) {
+                $errors['email'] = 'Email is already in use.';
+            }
+            if ($existingUser['name'] === $name) {
+                $errors['name'] = 'Username is already in use.';
+            }
+        }
+
+        $stmt->close(); // Close the statement
+    }
+
     // If there are any errors, send them back as a JSON response
     if (!empty($errors)) {
         echo json_encode(['success' => false, 'errors' => $errors]);
     } else {
-        // If no errors, you can process the registration logic here (e.g., saving to the database)
-        
-        // Example: Send success message
-        echo json_encode(['success' => true, 'message' => 'Registration successful.']);
-    }
-}
-else echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
+        // Hash the password before storing in the database for security
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
+        $uid = uid();
+
+        // If no errors, proceed with saving the user to the database
+        $stmt = $conn->prepare("INSERT INTO Users (uid, name, email, password) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $uid, $name, $email, $hashedPassword);
+        
+        if ($stmt->execute()) {
+            /*mail(
+                $email, 
+                'MORP - Verify your email', 
+                "Click the following link to verify your email: http://localhost/morpwebsite-master/src/php/verification.php?uid=$uid"
+            ); */
+
+
+            // Send success message if user is successfully registered
+            echo json_encode(['success' => true, 'message' => 'Registration successful.']);
+        } else {
+            // Handle database insertion error
+            echo json_encode(['success' => false, 'message' => 'Database error. Please try again.']);
+        }
+
+        $stmt->close(); // Close the statement
+    }
+
+    // Close the database connection
+    $conn->close();
+} else {
+    echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
+}
 ?>
