@@ -9,6 +9,8 @@ import Login from './pages/Login';
 import TextEditor from './TextEditor';
 import SearchByName from './pages/Searchbyname';
 
+import AppLayout from './pages/App/AppLayout.js';
+
 
 function App() {
   return (
@@ -26,6 +28,10 @@ function App() {
           </Route>
           
           <Route path="/login" element={<Login />} />
+
+          <Route path="/app" element={<AppLayout />}>
+    
+          </Route>
 
         </Routes>
     </Router>
