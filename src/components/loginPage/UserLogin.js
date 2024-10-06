@@ -1,26 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const UserLogin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const [errorMessage, setErrorMessage] = useState('');
+    const [loggedIn, setLoggedIn] = useState(checkLogin());
+
+    function checkLogin() {
+        return localStorage.getItem('morp-login-user') !== null && localStorage.getItem('morp-login-admin') !== 'undefined';
+    }
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (loggedIn) {
+            navigate('/app');
+        }
+    }, [loggedIn]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         
-        const url = 'http://localhost/morpwebsite-master/src/php/register.php';
+        const url = 'http://localhost/morpwebsite-master/src/php/login.php';
         const fdata = new FormData();
         fdata.append('email', email);
         fdata.append('password', password);
 
         axios.post(url, fdata)
             .then((response) => {
-                
+                const { data } = response;
+
+                if (data.success) {
+                    setErrorMessage('');
+                    localStorage.setItem('morp-login-user', JSON.stringify(data.uid));
+                    setLoggedIn(true);
+                } else {
+                    setErrorMessage(data.message || 'An error occurred while processing your request.');
+                }
             })
+            .catch((error) => {
+                console.log('Error:', error);
+                setErrorMessage('An error occurred while processing your request.');
+            });
     };
 
     const [showPassword, setShowPassword] = useState(false);
@@ -53,6 +78,7 @@ const UserLogin = () => {
                         <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
                     </button>
                 </div>
+                {errorMessage && <div style={{color: 'red'}}>{errorMessage}</div>}
                 <button type="submit">Login</button>
             </form>
         </>
