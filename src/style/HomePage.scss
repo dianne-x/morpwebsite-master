@@ -1,0 +1,159 @@
+.homepage {
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+    height: 80vh;
+    width: 100%;
+    background-image: url('../img/galaxy.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+  
+    .friend-list {
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+      padding: 20px;
+      width: 250px; /* Fixed width for the friend list */
+      max-height: 90vh; /* Max height for scrolling */
+      overflow-y: auto; /* Enable scrolling if content exceeds height */
+      margin-right: 20px; /* Space between the list and other content */
+  
+      h2 {
+        margin-bottom: 10px;
+      }
+  
+      ul {
+        list-style: none;
+        padding: 0;
+  
+        li {
+          display: flex;
+          align-items: center;
+          margin-bottom: 10px;
+          cursor: pointer; /* Indicate clickable items */
+  
+          .friend-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 10px;
+          }
+  
+          .online {
+            background-color: green;
+          }
+  
+          .offline {
+            background-color: red;
+          }
+  
+          &:hover {
+            background: rgba(255, 255, 255, 0.2); /* Highlight on hover */
+          }
+        }
+      }
+    }
+  
+    /* Centered content styling */
+    .centered-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center align items */
+      justify-content: center; /* Center justify content */
+      flex-grow: 1; /* Allow this to take remaining space */
+      text-align: center; /* Center text */
+    }
+  
+    /* Chat window styling */
+    .text-window {
+      position: fixed; /* Keep it fixed on the screen */
+      top: 20%; /* Adjust as needed */
+      left: 30%; /* Center it based on your layout */
+      width: 300px; /* Set a width for the chat window */
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      z-index: 100; /* Keep it on top */
+  
+      .text-window-header {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: 1px solid #fff;
+  
+        button {
+          background: transparent;
+          color: #fff;
+          border: none;
+          cursor: pointer;
+        }
+      }
+  
+      .text-window-content {
+        padding: 10px;
+        max-height: 300px; /* Limit height for content */
+        overflow-y: auto; /* Enable scrolling for content */
+      }
+    }
+  
+    /* Bug Report Section */
+    .bug-report {
+      background: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+      border-radius: 10px;
+      padding: 20px;
+      width: 250px; /* Fixed width for the bug report section */
+      max-height: 90vh; /* Max height for scrolling */
+      overflow-y: auto; /* Enable scrolling if content exceeds height */
+      margin-left: 20px; /* Space between the friend list and bug report */
+  
+      h2 {
+        margin-bottom: 10px;
+      }
+  
+      form {
+        display: flex;
+        flex-direction: column;
+  
+        input,
+        textarea {
+          margin: 5px 0; /* Space between input fields */
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          width: 100%; /* Full width */
+        }
+  
+        button {
+          padding: 10px 15px;
+          background-color: #007bff; /* Change color as needed */
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+  
+          &:hover {
+            background-color: #0056b3; /* Darker color on hover */
+          }
+        }
+      }
+  
+      .feedback-message {
+        color: green;
+        margin-top: 10px;
+      }
+    }
+  
+    .logo {
+      margin-bottom: 20px; /* Spacing below the logo */
+      img {
+        width: 150px;
+        height: auto;
+      }
+    }
+  
+    .welcome-text {
+      font-size: 2rem;
+    }
+  }
+  

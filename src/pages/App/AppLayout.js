@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import Topbar from '../../components/TopBar';
+import ChannelList from '../../components/ChannelList';
+import ChatWindow from '../../components/ChatWindow';
+import HomePage from '../../components/HomePage';
+import '../../style/AppLayout.scss';
 
 const AppLayout = () => {
 
@@ -22,11 +27,29 @@ const AppLayout = () => {
     setLoggedIn(false);
   }
 
+  const [selectedServer, setSelectedServer] = useState(null);
+
+  const handleServerClick = (server) => {
+    setSelectedServer(server);
+  };
+
 
 
   return (
     <div className='app-container'>
-      This will be the app.
+
+       <Topbar onServerClick={handleServerClick} />
+      <div className="main-content">
+        {selectedServer && selectedServer.id !== 1 ? ( // If a server is selected and it's not Home
+          <>
+            <ChannelList serverId={selectedServer.id} />
+            <ChatWindow serverId={selectedServer.id} />
+          </>
+        ) : (
+          <HomePage /> // Show HomePage if no server or Home is selected
+        )}
+      </div>
+
       <button style={{color: 'red'}} onClick={() => LogOut()}>Log out</button>
       <Outlet />
     </div>

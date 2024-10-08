@@ -1,6 +1,8 @@
 <?php
 include 'dbConnection.php'; // Include the database connection file
 
+
+
 // Check if uid is set in the GET parameters
 if (isset($_GET['uid'])) {
     $uid = $_GET['uid'];

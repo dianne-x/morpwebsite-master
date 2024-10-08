@@ -1,6 +1,15 @@
 <?php
 include 'dbConnection.php'; // Include the database connection file
+// Add CORS headers
+header('Access-Control-Allow-Origin: http://localhost:3000'); // Allow requests from your React app
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS'); // Allow specific HTTP methods
+header('Access-Control-Allow-Headers: Content-Type, Authorization'); // Allow specific headers
 header('Content-Type: application/json'); // Ensure the response is JSON
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    // Handle preflight requests
+    exit(0);
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get the email from the POST request
