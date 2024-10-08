@@ -29,11 +29,13 @@ body {
 
     .main-content {
         display: flex;
-        flex: 1;
         padding: 20px;
         background: radial-gradient(circle, #1b2735, #090a0f);
         z-index: 1; /* Keeps content above background */
         overflow-y: auto; /* Allows vertical scrolling for channels and chat */
+        height: 100%;
+        width: 100%;
+        margin-top: 0 !important;
       }
   }
   

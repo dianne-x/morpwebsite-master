@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import '../style/createServerForm.scss'; // Import the SCSS file
+import '../../style/createServerForm.scss'; // Import the SCSS file
 
 const ServerCreationForm = ({ onClose }) => {
   const [serverName, setServerName] = useState('');

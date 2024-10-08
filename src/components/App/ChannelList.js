@@ -1,5 +1,5 @@
 import React from 'react';
-import '../style/ChannelList.scss';
+import '../../style/ChannelList.scss';
 
 const ChannelList = ({ serverId }) => {
   const channels = serverId === 3 ? ['#earth-general', '#earth-announcements'] : 

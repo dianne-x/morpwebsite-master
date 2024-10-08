@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import '../style/TopBar.scss';
+import '../../style/TopBar.scss';
 import ServerList from './ServerList';
 import ServerCreationForm from './createServerForm'; // Import the form modal component
 

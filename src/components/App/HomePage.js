@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import '../style/HomePage.scss';
-import logo from '../img/logodark.jpg'; // Replace with your logo path
+import '../../style/HomePage.scss';
+import logo from '../../img/logodark.jpg'; // Replace with your logo path
 
 const HomePage = () => {
     const [selectedFriend, setSelectedFriend] = useState(null);
