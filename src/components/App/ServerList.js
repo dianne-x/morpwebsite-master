@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import TopBarButton from './TopBarButton';
 
 const initialServers = [
-  { id: 1, icon: '🏠', name: 'Home' }, // Home icon
-  { id: 2, icon: '➕', name: 'Create Server' }, // Create server icon
   { id: 3, icon: '🌍', name: 'Earth' },
   { id: 4, icon: '🚀', name: 'Rocket' },
   { id: 5, icon: '🛰️', name: 'Satellite' },
@@ -21,22 +20,7 @@ const ServerList = ({ onServerClick, onCreateServerClick }) => {
   return (
     <div className="server-list">
       {servers.map((server) => (
-        <div
-          key={server.id}
-          className="server-icon"
-          onClick={() => {
-            if (server.id === 1) {
-              onServerClick(server); // Home icon click
-            } else if (server.id === 2) {
-              onCreateServerClick(); // Create server icon click
-            } else {
-              onServerClick(server); // Other server icons click
-            }
-          }}
-          title={server.name} // Tooltip with server name
-        >
-          {server.icon}
-        </div>
+        <TopBarButton key={server.id} icon={server.icon} onClick={() => onServerClick(server)} title={server.name} />
       ))}
     </div>
   );

@@ -6,6 +6,7 @@ import ChannelList from '../../components/App/ChannelList';
 import ChatWindow from '../../components/App/ChatWindow';
 import HomePage from '../../components/App/HomePage';
 import '../../style/AppLayout.scss';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const AppLayout = () => {
 
@@ -36,23 +37,30 @@ const AppLayout = () => {
 
 
   return (
-    <div className='app-container'>
+    <HelmetProvider>
+      <Helmet>
+        <title>MORP - App</title>
+      </Helmet>
 
-      <Topbar onServerClick={handleServerClick} />
-      <div className="main-content">
-        {selectedServer && selectedServer.id !== 1 ? ( // If a server is selected and it's not Home
-          <>
-            <ChannelList serverId={selectedServer.id} />
-            <ChatWindow serverId={selectedServer.id} />
-          </>
-        ) : (
-          <HomePage /> // Show HomePage if no server or Home is selected
-        )}
+
+      <div className='app-container'>
+  
+        <Topbar onServerClick={handleServerClick} />
+        <div className="main-content">
+          {selectedServer && selectedServer.id !== 1 ? ( // If a server is selected and it's not Home
+            <>
+              <ChannelList serverId={selectedServer.id} />
+              <ChatWindow serverId={selectedServer.id} />
+            </>
+          ) : (
+            <HomePage /> // Show HomePage if no server or Home is selected
+          )}
+        </div>
+  
+        <button style={{color: 'red'}} onClick={() => LogOut()}>Log out</button>
+        <Outlet />
       </div>
-
-      <button style={{color: 'red'}} onClick={() => LogOut()}>Log out</button>
-      <Outlet />
-    </div>
+    </HelmetProvider>
   );
 }
 

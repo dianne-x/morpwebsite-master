@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import '../../style/TopBar.scss';
 import ServerList from './ServerList';
 import ServerCreationForm from './createServerForm'; // Import the form modal component
+import TopBarButton from './TopBarButton';
 
 const Topbar = ({ onServerClick }) => {
   const topbarRef = useRef(null);
@@ -34,8 +35,18 @@ const Topbar = ({ onServerClick }) => {
 
   return (
     <div className="topbar" ref={topbarRef}>
+      <div className='home-list'>
+        <TopBarButton icon="🏠" title="Home" onClick={() => onServerClick({ id: 1, name: 'Home' })} />
+        <TopBarButton icon="+" title="Add Server" onClick={() => handleFormOpen()} />
+      </div>
+      
       <ServerList onServerClick={onServerClick} onCreateServerClick={handleFormOpen} />
       {isFormOpen && <ServerCreationForm onClose={handleFormClose} />}
+
+      <div className='user-list'>
+        <TopBarButton icon="🔔" title="Friendo" />
+        <TopBarButton icon="👤" title="Profile" />
+      </div>
     </div>
   );
 };
