@@ -58,7 +58,11 @@ const Topbar = ({ onServerClick }) => {
       {isFormOpen && <ServerCreationForm onClose={handleFormClose} />}
 
       <div className='user-list'>
-        <TopBarButton icon={<FontAwesomeIcon icon={(isServersSelected ? faCompass : faUsers)} />} title="Friend" onClick={() => setIsServersSelected(!isServersSelected)} />
+        <TopBarButton 
+          icon={<FontAwesomeIcon icon={(isServersSelected ? faCompass : faUsers)} />} 
+          title={(isServersSelected ? "Show Friends" : "Show Servers")} 
+          onClick={() => setIsServersSelected(!isServersSelected)} 
+        />
         <TopBarButton icon={<FontAwesomeIcon icon={faUser} />} title="Profile" />
       </div>
     </div>
