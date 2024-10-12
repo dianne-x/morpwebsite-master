@@ -7,6 +7,9 @@ body {
   }
   
   .app-container {
+    * {
+      box-sizing: border-box;
+    }
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -35,7 +38,8 @@ body {
         overflow-y: auto; /* Allows vertical scrolling for channels and chat */
         height: 100%;
         width: 100%;
-        margin-top: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
       }
   }
   
