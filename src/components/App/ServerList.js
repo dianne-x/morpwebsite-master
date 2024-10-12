@@ -18,11 +18,11 @@ const ServerList = ({ onServerClick, onCreateServerClick }) => {
   const [servers, setServers] = useState(initialServers);
 
   return (
-    <div className="server-list">
+    <>
       {servers.map((server) => (
         <TopBarButton key={server.id} icon={server.icon} onClick={() => onServerClick(server)} title={server.name} />
       ))}
-    </div>
+    </>
   );
 };
 

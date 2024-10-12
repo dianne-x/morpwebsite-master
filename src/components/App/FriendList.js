@@ -25,11 +25,11 @@ const FriendList = ({ onFriendClick }) => {
   const [friends, setFriends] = useState(initialFriends);
 
   return (
-    <div className="server-list">
+    <>
       {friends.map((friend) => (
         <TopBarButton key={friend.id} icon={friend.icon} onClick={() => onFriendClick(friend)} title={friend.name} />
       ))}
-    </div>
+    </>
   );
 };
 

@@ -39,17 +39,20 @@ const Topbar = ({ onServerClick }) => {
   };
 
   return (
-    <div className="topbar" ref={topbarRef}>
+    <div className="topbar">
       <div className='home-list'>
         <TopBarButton icon={<FontAwesomeIcon icon={faHome} />} title="Home" onClick={() => onServerClick({ id: 1, name: 'Home' })} />
         <TopBarButton icon={<FontAwesomeIcon icon={faAdd} />} title="Add Server" onClick={() => handleFormOpen()} />
       </div>
+
       
-      {isServersSelected ? 
-        <ServerList onServerClick={onServerClick} onCreateServerClick={handleFormOpen} />
-         : 
-        <FriendList onFriendClick={() => {}} />
-      }
+      <div ref={topbarRef} div className="icon-list">
+        {
+          isServersSelected ? 
+          <ServerList onServerClick={onServerClick} onCreateServerClick={handleFormOpen} /> : 
+          <FriendList onFriendClick={() => {}} />
+        }
+      </div>
         
       
       {isFormOpen && <ServerCreationForm onClose={handleFormClose} />}
