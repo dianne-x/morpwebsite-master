@@ -9,3 +9,8 @@ sevrerlist adatbaisbol befaszozza a loginned user szervereit display topbar
 btw a topbart 3 sectiora kene szedni amugy
 
 akkor mar a resposinve szarokat is megkene csinalnai
+
+
+maybe a server tablaban egy created by es azalapjan lehet
+
+servert betolteni bejelntkezett user alapjan
