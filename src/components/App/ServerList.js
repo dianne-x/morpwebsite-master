@@ -1,21 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import TopBarButton from './TopBarButton';
 
-const initialServers = [
-  { id: 3, icon: '🌍', name: 'Earth' },
-  { id: 4, icon: '🚀', name: 'Rocket' },
-  { id: 5, icon: '🛰️', name: 'Satellite' },
-  { id: 6, icon: '🌕', name: 'Moon' },
-  { id: 7, icon: '🔥', name: 'Fire' },
-  { id: 8, icon: '🪐', name: 'Planet' },
-  { id: 9, icon: '👾', name: 'Alien' },
-  { id: 10, icon: '🛸', name: 'UFO' },
-  { id: 11, icon: '🌌', name: 'Galaxy' },
-];
-
 const ServerList = ({ onServerClick, onCreateServerClick }) => {
-  const [servers, setServers] = useState(initialServers);
+  const [servers, setServers] = useState([]);
+
+  var userId = localStorage.getItem('morp-login-user');
+  
+
+  useEffect(() => {
+    // Fetch the joined servers from the backend
+    const fetchJoinedServers = async () => {
+      try {
+        const response = await fetch(`http://localhost/morpwebsite-master/src/php/getJoinedServers.php?userId=${userId}`); // Update with your actual API endpoint
+        const data = await response.json();
+        if (data.success) {
+          setServers(data.servers);
+        } else {
+          console.error('Failed to fetch servers:', data.message);
+        }
+      } catch (error) {
+        console.error('Error fetching servers:', error);
+      }
+    };
+
+    fetchJoinedServers();
+  }, []);
 
   return (
     <>

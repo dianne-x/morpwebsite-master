@@ -4,21 +4,21 @@ import '../../style/TopBar.scss';
 import FriendList from './FriendList';
 import ServerList from './ServerList';
 import ServerCreationForm from './createServerForm'; // Import the form modal component
+import JoinServerForm from './joinServer';
 import TopBarButton from './TopBarButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHome, faAdd, faUser, faUsers, faCompass } from '@fortawesome/free-solid-svg-icons'
 
 const Topbar = ({ onServerClick }) => {
-  const topbarRef = useRef(null);
-  const [isFormOpen, setIsFormOpen] = useState(false);
-
   const [isServersSelected, setIsServersSelected] = useState(true);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isJoinFormOpen, setIsJoinFormOpen] = useState(false); // State for join form
+  const topbarRef = useRef(null);
 
   useEffect(() => {
     const handleWheel = (event) => {
       if (topbarRef.current) {
-        topbarRef.current.scrollLeft += event.deltaY; // Scroll horizontally
-        event.preventDefault(); // Prevent default vertical scroll
+        topbarRef.current.scrollLeft += event.deltaY;
       }
     };
 
@@ -38,24 +38,32 @@ const Topbar = ({ onServerClick }) => {
     setIsFormOpen(false);
   };
 
+  const handleJoinFormOpen = () => {
+    setIsJoinFormOpen(true);
+  };
+
+  const handleJoinFormClose = () => {
+    setIsJoinFormOpen(false);
+  };
+
   return (
     <div className="topbar">
       <div className='home-list'>
         <TopBarButton icon={<FontAwesomeIcon icon={faHome} />} title="Home" onClick={() => onServerClick({ id: 1, name: 'Home' })} />
         <TopBarButton icon={<FontAwesomeIcon icon={faAdd} />} title="Add Server" onClick={() => handleFormOpen()} />
+        <TopBarButton icon={<FontAwesomeIcon icon={faAdd} />} title="Join" onClick={() => handleJoinFormOpen()} />
       </div>
 
-      
-      <div ref={topbarRef} div className="icon-list">
+      <div ref={topbarRef} className="icon-list">
         {
           isServersSelected ? 
           <ServerList onServerClick={onServerClick} onCreateServerClick={handleFormOpen} /> : 
           <FriendList onFriendClick={() => {}} />
         }
       </div>
-        
-      
+
       {isFormOpen && <ServerCreationForm onClose={handleFormClose} />}
+      {isJoinFormOpen && <JoinServerForm onClose={handleJoinFormClose} />} {/* Render JoinServerForm */}
 
       <div className='user-list'>
         <TopBarButton 

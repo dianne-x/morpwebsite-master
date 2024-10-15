@@ -44,5 +44,6 @@ CREATE TABLE Servers (
     main_color VARCHAR(255) NOT NULL,
     text_color VARCHAR(255) NOT NULL,
     server_font_style_id INT NOT NULL,
-    stories_id INT NOT NULL
+    stories_id INT NOT NULL,
+    invite_link VARCHAR(255) NOT NULL
 );
