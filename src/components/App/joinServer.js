@@ -5,10 +5,47 @@ import '../../style/JoinServerForm.scss'; // Import the SCSS file
 const JoinServerForm = ({ onClose }) => {
   const [inviteLink, setInviteLink] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle the invite link submission logic here
+    var userId = localStorage.getItem('morp-login-user'); // Assuming the user ID is stored in localStorage
+
+    if (!inviteLink) {
+      alert('Please enter an invite link.');
+      return;
+    }
+
+    if (!userId) {
+      alert('User ID not found. Please log in.');
+      return;
+    }
+
+
+
+    // Log the inviteLink and userId
     console.log('Invite Link:', inviteLink);
+    console.log('User ID:', userId);
+
+    try {
+      const response = await fetch(`http://localhost/morpwebsite-master/src/php/joinServer.php?userId=${userId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ inviteLink: inviteLink, userId: userId })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert(data.message);
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred while trying to join the server.');
+    }
+
     onClose(); // Close the form modal after submission
   };
 

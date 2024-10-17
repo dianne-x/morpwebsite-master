@@ -7,7 +7,7 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization'); // Allow sp
 header('Content-Type: application/json'); // Ensure the response is JSON
 
 // Assuming you have a way to get the logged-in user's ID, e.g., from session or token
-$userId = $_GET['userId'] ?? null;
+$userId = isset($_GET['userId']) ? trim($_GET['userId'], '"') : null;
 
 
 if ($userId === null) {
@@ -20,7 +20,7 @@ try {
     $stmt = $conn->prepare("SELECT s.id, s.server_name AS name, s.server_picture_path AS icon FROM Servers s
                             JOIN Server_Member sm ON s.id = sm.server_id
                             WHERE sm.user_id = ?");
-    $stmt->bind_param('i', $userId);
+    $stmt->bind_param('s', $userId);
     $stmt->execute();
     $result = $stmt->get_result();
 

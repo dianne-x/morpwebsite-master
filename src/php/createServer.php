@@ -14,7 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Retrieve user ID from the query parameter
-    $userId = $_GET['userId'] ?? null;
+    $userId = isset($_GET['userId']) ? trim($_GET['userId'], '"') : null;
+    //var userId = localStorage.getItem('morp-login-user');
+
+    error_log("User ID: " . $userId);
+    
 
     if ($userId === null) {
         echo json_encode(['success' => false, 'message' => 'User not logged in.']);
@@ -88,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     // Bind the parameters to the SQL query
                     $isOwner = 1;
                     $isModerator = 1;
-                    $stmt->bind_param('iiii', $userId, $serverId, $isOwner, $isModerator);
+                    $stmt->bind_param('siii', $userId, $serverId, $isOwner, $isModerator);
                     
                     // Execute the query
                     if (!$stmt->execute()) {
