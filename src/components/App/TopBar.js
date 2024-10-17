@@ -54,10 +54,6 @@ const Topbar = ({ onServerClick }) => {
         <TopBarButton icon={<FontAwesomeIcon icon={faAdd} />} title="Join" onClick={() => handleJoinFormOpen()} />
       </div>
 
-<<<<<<< HEAD
-      
-=======
->>>>>>> da59d45381fb40dc6ac060c0e71f71a905d4b2ec
       <div ref={topbarRef} className="icon-list">
         {
           isServersSelected ? 
