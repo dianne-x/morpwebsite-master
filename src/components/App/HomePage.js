@@ -43,17 +43,7 @@ const HomePage = () => {
   
     return (
       <div className="homepage">
-        <div className="friend-list">
-          <h2>Friends</h2>
-          <ul>
-            {friends.map((friend) => (
-              <li key={friend.id} onClick={() => handleFriendClick(friend)}>
-                <div className={`friend-status ${friend.online ? 'online' : 'offline'}`}></div>
-                {friend.name}
-              </li>
-            ))}
-          </ul>
-        </div>
+        
   
         {/* Centered content */}
         <div className="centered-content">

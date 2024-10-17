@@ -46,7 +46,7 @@ const Topbar = ({ onServerClick }) => {
       </div>
 
       
-      <div ref={topbarRef} div className="icon-list">
+      <div ref={topbarRef} className="icon-list">
         {
           isServersSelected ? 
           <ServerList onServerClick={onServerClick} onCreateServerClick={handleFormOpen} /> : 
