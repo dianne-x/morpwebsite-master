@@ -30,7 +30,7 @@ const ServerList = ({ onServerClick, onCreateServerClick }) => {
   return (
     <>
       {servers.map((server) => (
-        <TopBarButton key={server.id} icon={server.icon} onClick={() => onServerClick(server)} title={server.name} />
+        <TopBarButton key={server.id} picPath={`url(http://localhost/morpwebsite-master/src/serverPictures/${server.icon})`} onClick={() => onServerClick(server)} title={server.name} />
       ))}
     </>
   );
