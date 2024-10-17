@@ -13,6 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Retrieve user ID from the query parameter
+    $userId = $_GET['userId'] ?? null;
+
+    if ($userId === null) {
+        echo json_encode(['success' => false, 'message' => 'User not logged in.']);
+        exit();
+    }
+
     // Check if the file was uploaded without errors
     if (isset($_FILES['serverIcon']) && $_FILES['serverIcon']['error'] === UPLOAD_ERR_OK) {
         $fileTmpPath = $_FILES['serverIcon']['tmp_name'];
@@ -42,26 +50,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     exit();
                 }
 
-                // Prepare a SQL statement to insert the new server
-                $stmt = $conn->prepare("INSERT INTO Servers (uid, server_name, server_picture_path) VALUES (?, ?, ?)");
-                
-                if ($stmt === false) {
-                    echo json_encode(['success' => false, 'message' => 'Failed to prepare the query.', 'error' => $conn->error]);
-                    exit();
-                }
+                // Generate the invite link
+                $inviteLink = 'morp.ru/' . $uid;
 
-                // Bind the parameters to the SQL query
-                $stmt->bind_param('sss', $uid, $serverName, $newFileName);
-                
-                // Execute the query
-                if ($stmt->execute()) {
-                    echo json_encode(['success' => true, 'message' => 'Server created successfully.']);
-                } else {
-                    echo json_encode(['success' => false, 'message' => 'Failed to create server.', 'error' => $stmt->error]);
-                }
+                // Start a transaction
+                $conn->begin_transaction();
 
-                // Close the statement
-                $stmt->close();
+                try {
+                    // Prepare a SQL statement to insert the new server
+                    $stmt = $conn->prepare("INSERT INTO Servers (uid, server_name, server_picture_path, invite_link) VALUES (?, ?, ?, ?)");
+                    
+                    if ($stmt === false) {
+                        throw new Exception('Failed to prepare the query: ' . $conn->error);
+                    }
+
+                    // Bind the parameters to the SQL query
+                    $stmt->bind_param('ssss', $uid, $serverName, $newFileName, $inviteLink);
+                    
+                    // Execute the query
+                    if (!$stmt->execute()) {
+                        throw new Exception('Failed to create server: ' . $stmt->error);
+                    }
+
+                    // Get the ID of the newly created server
+                    $serverId = $stmt->insert_id;
+
+                    // Close the statement
+                    $stmt->close();
+
+                    // Prepare a SQL statement to insert the user as a server member, owner, and moderator
+                    $stmt = $conn->prepare("INSERT INTO Server_Member (user_id, server_id, is_owner, is_moderator) VALUES (?, ?, ?, ?)");
+                    
+                    if ($stmt === false) {
+                        throw new Exception('Failed to prepare the query: ' . $conn->error);
+                    }
+
+                    // Bind the parameters to the SQL query
+                    $isOwner = 1;
+                    $isModerator = 1;
+                    $stmt->bind_param('iiii', $userId, $serverId, $isOwner, $isModerator);
+                    
+                    // Execute the query
+                    if (!$stmt->execute()) {
+                        throw new Exception('Failed to add user as server member: ' . $stmt->error);
+                    }
+
+                    // Close the statement
+                    $stmt->close();
+
+                    // Commit the transaction
+                    $conn->commit();
+
+                    echo json_encode(['success' => true, 'message' => 'Server created successfully.', 'inviteLink' => $inviteLink]);
+                } catch (Exception $e) {
+                    // Rollback the transaction
+                    $conn->rollback();
+
+                    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+                }
             } else {
                 echo json_encode(['success' => false, 'message' => 'There was an error moving the uploaded file.']);
             }

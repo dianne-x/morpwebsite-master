@@ -8,6 +8,7 @@ const ServerCreationForm = ({ onClose }) => {
   const [uid, setUid] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  var userId = localStorage.getItem('morp-login-user');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +21,7 @@ const ServerCreationForm = ({ onClose }) => {
     formData.append('uid', uid);
 
     try {
-      const response = await fetch('http://localhost/morpwebsite-master/src/php/createServer.php', {
+      const response = await fetch(`http://localhost/morpwebsite-master/src/php/createServer.php?userId=${userId}`, {
         method: 'POST',
         body: formData,
       });

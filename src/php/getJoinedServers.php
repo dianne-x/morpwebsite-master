@@ -1,0 +1,36 @@
+<?php
+include 'dbConnection.php'; // Include the database connection file
+// Add CORS headers
+header('Access-Control-Allow-Origin: http://localhost:3000'); // Allow requests from your React app
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS'); // Allow specific HTTP methods
+header('Access-Control-Allow-Headers: Content-Type, Authorization'); // Allow specific headers
+header('Content-Type: application/json'); // Ensure the response is JSON
+
+// Assuming you have a way to get the logged-in user's ID, e.g., from session or token
+$userId = $_GET['userId'] ?? null;
+
+
+if ($userId === null) {
+    echo json_encode(['success' => false, 'message' => '{$userId}']);
+    exit();
+}
+
+try {
+    // Prepare a SQL statement to fetch the joined servers
+    $stmt = $conn->prepare("SELECT s.id, s.server_name AS name, s.server_picture_path AS icon FROM Servers s
+                            JOIN Server_Member sm ON s.id = sm.server_id
+                            WHERE sm.user_id = ?");
+    $stmt->bind_param('i', $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $servers = [];
+    while ($row = $result->fetch_assoc()) {
+        $servers[] = $row;
+    }
+
+    echo json_encode(['success' => true, 'servers' => $servers]);
+} catch (Exception $e) {
+    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+}
+?>
