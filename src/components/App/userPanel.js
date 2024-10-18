@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import '../../style/userPanel.scss'; // Import the SCSS file
+import axios from 'axios';
 
 const UserPanel = ({ onClose }) => {
   const [activeTab, setActiveTab] = useState('Profile');
@@ -123,6 +124,10 @@ const UserPanel = ({ onClose }) => {
                   value={userData.about_me}
                   onChange={handleInputChange} // Add onChange handler
                 />
+              </label>
+              <label>
+                Avatar:
+                <input type="file" />
               </label>
               <button type="submit">Save</button> {/* Use button of type "submit" */}
             </form>

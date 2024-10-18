@@ -16,3 +16,8 @@ maybe a server tablaban egy created by es azalapjan lehet
 servert betolteni bejelntkezett user alapjan
 
 ki csinalta a szervert cella az adatbazisba
+
+
+avatar megcsinalasa a profilra(feltoltes es a jobb felso sarokban kimutatni ezt majd laci megoldja mert o kemenyebb)
+
+megcsinalni az adatbazis tablakat egyesevel a Character menuponthoz es ott lehessen baszakodni
