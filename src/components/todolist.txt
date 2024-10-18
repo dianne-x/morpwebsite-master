@@ -21,3 +21,7 @@ ki csinalta a szervert cella az adatbazisba
 avatar megcsinalasa a profilra(feltoltes es a jobb felso sarokban kimutatni ezt majd laci megoldja mert o kemenyebb)
 
 megcsinalni az adatbazis tablakat egyesevel a Character menuponthoz es ott lehessen baszakodni
+
+dropdwon hogy melyik szerverre csinalod a karaktert(a dropdownba csak bekell loadolni a joinedSevrereket)
+
+megcsinalod ra a karaktert aztan osszekotni adatbazisban ja
