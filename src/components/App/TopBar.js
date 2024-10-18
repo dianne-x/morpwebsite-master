@@ -6,6 +6,7 @@ import ServerList from './ServerList';
 import ServerCreationForm from './createServerForm'; // Import the form modal component
 import JoinServerForm from './joinServer';
 import TopBarButton from './TopBarButton';
+import UserPanel from './userPanel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHome, faAdd, faUser, faUsers, faCompass } from '@fortawesome/free-solid-svg-icons'
 
@@ -13,6 +14,7 @@ const Topbar = ({ onServerClick }) => {
   const [isServersSelected, setIsServersSelected] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isJoinFormOpen, setIsJoinFormOpen] = useState(false); // State for join form
+  const [isUserPanelOpen, setIsUserPanelOpen] = useState(false);
   const topbarRef = useRef(null);
 
   useEffect(() => {
@@ -46,6 +48,15 @@ const Topbar = ({ onServerClick }) => {
     setIsJoinFormOpen(false);
   };
 
+  const handleUserPanelOpen = () => {
+    setIsUserPanelOpen(true);
+  }
+
+  const handleUserPanelClose = () => {
+    setIsUserPanelOpen(false);
+  }
+
+
   return (
     <div className="topbar">
       <div className='home-list'>
@@ -64,6 +75,7 @@ const Topbar = ({ onServerClick }) => {
 
       {isFormOpen && <ServerCreationForm onClose={handleFormClose} />}
       {isJoinFormOpen && <JoinServerForm onClose={handleJoinFormClose} />} {/* Render JoinServerForm */}
+      {isUserPanelOpen && <UserPanel onClose={handleUserPanelClose} />}
 
       <div className='user-list'>
         <TopBarButton 
@@ -71,7 +83,7 @@ const Topbar = ({ onServerClick }) => {
           title={(isServersSelected ? "Show Friends" : "Show Servers")} 
           onClick={() => setIsServersSelected(!isServersSelected)} 
         />
-        <TopBarButton icon={<FontAwesomeIcon icon={faUser} />} title="Profile" />
+        <TopBarButton icon={<FontAwesomeIcon icon={faUser} />} title="Profile"  onClick={() => handleUserPanelOpen()}/>
       </div>
     </div>
   );
