@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
-import '.././style/Login.scss'; // Make sure to create and import the CSS file
+import '../style/Login/Login.scss'; // Make sure to create and import the CSS file
 
 import UserLogin from '../components/loginPage/UserLogin';
 import Register from '../components/loginPage/Register';

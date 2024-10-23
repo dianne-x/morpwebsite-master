@@ -1,0 +1,66 @@
+@import '../colors';
+
+.home-container {
+    height: 100dvh;
+    background-color: $main-color;
+    color: $text-color;
+    display: flex;
+    flex-direction: row-reverse;
+
+    &>* {
+        padding: 3vw 4vw;
+    }
+
+    main {
+        width: 100%;
+    }
+
+    .navigate-buttons {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+
+        display: none;
+        flex-direction: column;
+        gap: 1vw;
+
+        button {
+            padding: 13px;
+            font-size: 1rem;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            border: 1px solid $text-color;
+            color: $text-color;
+            background: none;
+        }
+    }
+}
+
+@media screen and (max-width: 481px) {
+    .home-container {
+        flex-direction: column;
+    
+        .navigate-buttons {
+            display: flex;
+        }
+        main, header {
+            min-width: 100%;
+        }
+
+        header {
+            flex-direction: row;
+            ul {display: none;}
+            height: 10%;
+            width: auto;
+
+            img {
+                height: 100%;
+                width: auto;
+            }
+            a.login-button {
+                width: auto;
+                button { font-size: .8rem;}
+            }
+        }
+    }
+}

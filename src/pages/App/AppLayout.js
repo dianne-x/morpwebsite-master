@@ -5,7 +5,7 @@ import Topbar from '../../components/App/TopBar';
 import ChannelList from '../../components/App/ChannelList';
 import ChatWindow from '../../components/App/ChatWindow';
 import HomePage from '../../components/App/HomePage';
-import '../../style/AppLayout.scss';
+import '../../style/App/AppLayout.scss';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const AppLayout = () => {

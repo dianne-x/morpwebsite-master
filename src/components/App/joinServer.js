@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import '../../style/JoinServerForm.scss'; // Import the SCSS file
+import '../../style/App/JoinServerForm.scss'; // Import the SCSS file
 
 const JoinServerForm = ({ onClose }) => {
   const [inviteLink, setInviteLink] = useState('');

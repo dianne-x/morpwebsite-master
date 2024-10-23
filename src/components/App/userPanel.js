@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import '../../style/userPanel.scss'; // Import the SCSS file
+import '../../style/App/userPanel.scss'; // Import the SCSS file
 import axios from 'axios';
 
 const UserPanel = ({ onClose }) => {

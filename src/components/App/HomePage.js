@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../style/HomePage.scss';
+import '../../style/App/HomePage.scss';
 import logo from '../../img/logodark.jpg'; // Replace with your logo path
 
 const HomePage = () => {
