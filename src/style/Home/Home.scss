@@ -32,6 +32,9 @@
             border: 1px solid $text-color;
             color: $text-color;
             background: none;
+
+            display: grid;
+            place-items: center;
         }
     }
 }
