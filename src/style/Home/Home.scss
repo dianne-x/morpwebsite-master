@@ -39,7 +39,11 @@
     }
 }
 
-@media screen and (max-width: 481px) {
+@media screen and (max-width: 1280px) {
+
+}
+
+@media screen and (max-width: 769px) {
     .home-container {
         flex-direction: column;
     
@@ -66,4 +70,8 @@
             }
         }
     }
+}
+
+@media screen and (max-width: 481px) {
+    
 }

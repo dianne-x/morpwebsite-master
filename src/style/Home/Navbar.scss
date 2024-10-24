@@ -64,3 +64,24 @@
         }
     }
 }
+
+@media screen and (max-width: 1280px) {
+    .home-container {
+        header {
+
+            ul li button {
+                font-size: 1.3rem;
+            }
+            a.login-button button {
+                font-size: 1.2rem;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 769px) {
+}
+
+@media screen and (max-width: 481px) {
+
+}
