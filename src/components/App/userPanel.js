@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import Profile from './userPanel/Profile';
 
-const UserPanel = ({ onClose }) => {
+const UserPanel = ({ onClose, LogOut }) => {
   const [activeTab, setActiveTab] = useState('Profile');
 
   
@@ -24,7 +24,7 @@ const UserPanel = ({ onClose }) => {
         </div>
         <div className="content">
           {activeTab === 'Profile' && (
-            <Profile />
+            <Profile LogOut={LogOut} />
           )}
           {activeTab === 'Characters' && (
             <div>

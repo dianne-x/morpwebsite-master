@@ -10,7 +10,7 @@ import UserPanel from './userPanel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHome, faAdd, faUser, faUsers, faCompass } from '@fortawesome/free-solid-svg-icons'
 
-const Topbar = ({ onServerClick }) => {
+const Topbar = ({ onServerClick, LogOut }) => {
   const [isServersSelected, setIsServersSelected] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isJoinFormOpen, setIsJoinFormOpen] = useState(false); // State for join form
@@ -75,7 +75,7 @@ const Topbar = ({ onServerClick }) => {
 
       {isFormOpen && <ServerCreationForm onClose={handleFormClose} />}
       {isJoinFormOpen && <JoinServerForm onClose={handleJoinFormClose} />} {/* Render JoinServerForm */}
-      {isUserPanelOpen && <UserPanel onClose={handleUserPanelClose} />}
+      {isUserPanelOpen && <UserPanel onClose={handleUserPanelClose} LogOut={LogOut} />}
 
       <div className='user-list'>
         <TopBarButton 

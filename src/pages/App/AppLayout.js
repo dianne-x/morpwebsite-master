@@ -45,7 +45,7 @@ const AppLayout = () => {
 
       <div className='app-container'>
   
-        <Topbar onServerClick={handleServerClick} />
+        <Topbar onServerClick={handleServerClick} LogOut={LogOut} />
         <div className="main-content">
           {selectedServer && selectedServer.id !== 1 ? ( // If a server is selected and it's not Home
             <>
@@ -56,8 +56,7 @@ const AppLayout = () => {
             <HomePage /> // Show HomePage if no server or Home is selected
           )}
         </div>
-  
-        <button style={{color: 'red'}} onClick={() => LogOut()}>Log out</button>
+
         <Outlet />
       </div>
     </HelmetProvider>

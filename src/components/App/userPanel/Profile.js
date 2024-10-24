@@ -73,50 +73,53 @@ const Profile = (props) => {
 
 
     return (
-        <form onSubmit={handleSubmit}> {/* Use form with onSubmit handler */}
-              <h2>Profile</h2>
-              <label>
-                Name:
-                <input
-                  type="text"
-                  name="name"
-                  value={userData.name}
-                  onChange={handleInputChange} // Add onChange handler
-                />
-              </label>
-              <label>
-                Email:
-                <input
-                  type="email"
-                  name="email"
-                  value={userData.email}
-                  onChange={handleInputChange} // Add onChange handler
-                />
-              </label>
-              <label>
-                Nickname:
-                <input
-                  type="text"
-                  name="nickname"
-                  value={userData.nickname}
-                  onChange={handleInputChange} // Add onChange handler
-                />
-              </label>
-              <label>
-                About me:
-                <input
-                  type="text"
-                  name="about_me"
-                  value={userData.about_me}
-                  onChange={handleInputChange} // Add onChange handler
-                />
-              </label>
-              <label>
-                Avatar:
-                <input type="file" />
-              </label>
-              <button type="submit">Save</button> {/* Use button of type "submit" */}
-            </form>
+        <>
+          <form onSubmit={handleSubmit}> {/* Use form with onSubmit handler */}
+            <h2>Profile</h2>
+            <label>
+              Name:
+              <input
+                type="text"
+                name="name"
+                value={userData.name}
+                onChange={handleInputChange} // Add onChange handler
+              />
+            </label>
+            <label>
+              Email:
+              <input
+                type="email"
+                name="email"
+                value={userData.email}
+                onChange={handleInputChange} // Add onChange handler
+              />
+            </label>
+            <label>
+              Nickname:
+              <input
+                type="text"
+                name="nickname"
+                value={userData.nickname}
+                onChange={handleInputChange} // Add onChange handler
+              />
+            </label>
+            <label>
+              About me:
+              <input
+                type="text"
+                name="about_me"
+                value={userData.about_me}
+                onChange={handleInputChange} // Add onChange handler
+              />
+            </label>
+            <label>
+              Avatar:
+              <input type="file" />
+            </label>
+            <button type="submit">Save</button> {/* Use button of type "submit" */}
+          </form>
+          <button style={{color: 'red'}} onClick={props.LogOut}>Log out</button>
+        </>
     )
 }
 
