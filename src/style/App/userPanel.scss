@@ -1,5 +1,4 @@
 @import '../colors';
-
 .user-panel {
   position: fixed;
   top: 50%;
@@ -8,12 +7,34 @@
   width: 800px;
   max-width: 100%;
   height: 600px;
+  background-color: white;
+  border: 1px solid #ccc;
   max-height: 100%;
   background-color: $text-color;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   z-index: 1000;
+  color: black !important;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
   color: $main-color !important;
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
