@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import '../../../style/App/userPanel/profile.scss';
 
 const Profile = (props) => {
 
@@ -77,6 +78,10 @@ const Profile = (props) => {
           <form onSubmit={handleSubmit}> {/* Use form with onSubmit handler */}
             <h2>Profile</h2>
             <label>
+              Avatar:
+              <input type="file" />
+            </label>
+            <label>
               Name:
               <input
                 type="text"
@@ -112,13 +117,12 @@ const Profile = (props) => {
                 onChange={handleInputChange} // Add onChange handler
               />
             </label>
-            <label>
-              Avatar:
-              <input type="file" />
-            </label>
+            
             <button type="submit">Save</button> {/* Use button of type "submit" */}
           </form>
-          <button style={{color: 'red'}} onClick={props.LogOut}>Log out</button>
+          <button style={{color: 'red'}} onClick={props.LogOut} className="logout-btn">
+            Log out
+          </button>
         </>
     )
 }

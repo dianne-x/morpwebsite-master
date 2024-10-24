@@ -18,9 +18,9 @@ const UserPanel = ({ onClose, LogOut }) => {
       <div className="overlay" onClick={onClose}></div>
       <div className="user-panel">
         <div className="sidebar">
-          <button onClick={() => setActiveTab('Profile')}>Profile</button>
-          <button onClick={() => setActiveTab('Characters')}>Characters</button>
-          <button onClick={() => setActiveTab('Settings')}>Settings</button>
+          <button onClick={() => setActiveTab('Profile')} className={activeTab == 'Profile' && 'active'}>Profile</button>
+          <button onClick={() => setActiveTab('Characters')} className={activeTab == 'Characters' && 'active'}>Characters</button>
+          <button onClick={() => setActiveTab('Settings')} className={activeTab == 'Settings' && 'active'}>Settings</button>
         </div>
         <div className="content">
           {activeTab === 'Profile' && (

@@ -1,0 +1,22 @@
+@import '../../colors';
+
+.user-panel {
+    .content {
+        input {
+            background: none;
+            background-color: rgba($color: $text-color, $alpha: .1);
+            border: none;
+            color: $text-color;
+        }
+        button.logout-btn {
+            position: absolute;
+            bottom: 1.3rem;
+            right: 1.3rem;
+    
+            background: none;
+            border: 1px solid red;
+            padding: 10px;
+            cursor: pointer;
+        } 
+    }
+}
