@@ -64,8 +64,8 @@
 
   .close {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 0;
+    right: 0;
     background: none;
     border: none;
     font-size: 24px;
@@ -85,4 +85,39 @@
   height: 100%;
   background: rgba(0, 0, 0, .7);
   z-index: 999;
+}
+
+@media screen and (max-width: 769px) {
+  .user-panel {
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content auto;
+
+    .sidebar {
+      flex-direction: row;
+      button {
+        padding: .5rem 1rem;
+      }
+    }
+
+    .content {
+      padding-top: 0;
+    }
+  }
+}
+
+@media screen and (max-width: 481px) {
+  .user-panel {
+    .sidebar {
+      width: 90%;
+      flex-direction: column;
+      button {
+        padding: .5rem;
+        font-size: .7rem;
+      }
+    }
+
+    .close {
+      font-size: 20px;
+    }
+  }
 }

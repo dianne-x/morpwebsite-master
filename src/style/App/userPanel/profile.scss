@@ -5,18 +5,20 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        overflow-y: scroll;
 
         form {
             display: grid;
-            grid-template-columns: min-content minmax(200px, 100%);
+            grid-template-columns: min-content minmax(100px, 100%);
             gap: .6rem 1rem;
 
             label:not(#pic-label) {
+                
                 text-align: right;
                 width: 100%;
                 text-transform: uppercase;
                 letter-spacing: .1rem;
-                scale: .9;
+                scale: 1;
             }
 
             #pic-label, button {
@@ -32,7 +34,7 @@
                 position: relative;
 
                 &:before {
-                    content: 'Change';
+                    content: 'change pic';
                     position: absolute;
                     top: 0;
                     right: 0;
@@ -41,7 +43,7 @@
                     display: grid;
                     place-items: center;
                     border-radius: 50%;
-                    background-color: rgba($color: #000000, $alpha: .4);
+                    background-color: rgba($color: #000000, $alpha: .7);
                     color: $text-color;
                     font-size: .75rem;
                     font-weight: bold;
@@ -75,6 +77,49 @@
             border: 1px solid red;
             padding: 10px;
             cursor: pointer;
-        } 
+        }
+        button[type="submit"] {
+            background-color: $main-color;
+            color: $text-color;
+            border: 1px solid $text-color;
+            padding: 5px 10px;
+            width: 200px;
+            text-align: center;
+            cursor: pointer;
+        }
+    }
+}
+
+@media screen and (max-width: 769px) {
+}
+
+@media screen and (max-width: 481px) {
+    .user-panel {
+        height: 100%;
+        border: none;
+        border-radius: 0;
+        .content {
+            gap: 10px;
+            form {
+                grid-template-columns: 1fr;
+                gap: 0;
+                
+                label:not(#pic-label), button {
+                    text-align: left;
+                    letter-spacing: .05rem;
+                    margin-top: 15px;
+                    font-size: .9rem;
+                    padding-bottom: 3px;
+                }
+
+                #pic-label, button {
+                    grid-column: 1 / 2;
+                }
+
+                button[type="submit"] {
+                    width: 100%;
+                }
+            }
+        }
     }
 }
