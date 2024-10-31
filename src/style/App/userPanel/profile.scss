@@ -2,17 +2,75 @@
 
 .user-panel {
     .content {
-        input {
-            background: none;
-            background-color: rgba($color: $text-color, $alpha: .1);
-            border: none;
-            color: $text-color;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        form {
+            display: grid;
+            grid-template-columns: min-content minmax(200px, 100%);
+            gap: .6rem 1rem;
+
+            label:not(#pic-label) {
+                text-align: right;
+                width: 100%;
+                text-transform: uppercase;
+                letter-spacing: .1rem;
+                scale: .9;
+            }
+
+            #pic-label, button {
+                grid-column: 2 / 3;
+            }
+            
+            #pic-label {
+                background-position: center;
+                background-size: cover;
+                width: 7rem;
+                aspect-ratio: 1;
+                border-radius: 50%;
+                position: relative;
+
+                &:before {
+                    content: 'Change';
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    left: 0;
+                    bottom: 0;
+                    display: grid;
+                    place-items: center;
+                    border-radius: 50%;
+                    background-color: rgba($color: #000000, $alpha: .4);
+                    color: $text-color;
+                    font-size: .75rem;
+                    font-weight: bold;
+                    opacity: 0;
+                    transition: opacity .15s ease;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                }
+
+                &:hover:before {
+                    opacity: 1;
+                }
+            }
+
+            input {
+                background-color: rgba($color: $text-color, $alpha: .1);
+                border: none;
+                color: $text-color;
+                padding: 5px 10px;
+
+                &[type="file"] {
+                    display: none;
+                }
+            }
         }
         button.logout-btn {
-            position: absolute;
-            bottom: 1.3rem;
-            right: 1.3rem;
-    
+            align-self: flex-end;
             background: none;
             border: 1px solid red;
             padding: 10px;

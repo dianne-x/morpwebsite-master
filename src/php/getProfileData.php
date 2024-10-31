@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         exit();
     }
 
-    $stmt = $conn->prepare("SELECT name, email, nickname, about_me FROM Users WHERE uid = ?");
+    $stmt = $conn->prepare("SELECT profile_pic_path, name, email, nickname, about_me FROM Users WHERE uid = ?");
     $stmt->bind_param('s', $userId);
     $stmt->execute();
     $result = $stmt->get_result();

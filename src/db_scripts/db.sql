@@ -14,7 +14,7 @@ CREATE TABLE Users (
     password VARCHAR(255) NOT NULL,
     nickname VARCHAR(100) NOT NULL,
     gender_id INT NOT NULL,
-    profile_pic_path VARCHAR(255) NOT NULL,
+    profile_pic_path VARCHAR(255) NOT NULL DEFAULT 'user.png',
     language_id INT NOT NULL,
     thread_text VARCHAR(255) NOT NULL,
     thread_text_color VARCHAR(255) NOT NULL,

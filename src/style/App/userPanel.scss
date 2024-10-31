@@ -37,24 +37,24 @@
       text-transform: uppercase;
       letter-spacing: .2rem;
       position: relative;
-
+      
       &.active {
         background-color: rgba($color: $text-color, $alpha: .5);
         color: $main-color;
       }
-
+      
       &:before {
         content: '';
         top: 100%;
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba($color: $text-color, $alpha: .5);
         position: absolute;
+        background-color: rgba($color: $text-color, $alpha: .5);
+        transition: .3s ease-in-out;
       }
       &:not(.active) { cursor: pointer; }
       &:not(.active):hover:before {
-        transition: .3s ease-in-out;
         top: 0%;
       }
     }

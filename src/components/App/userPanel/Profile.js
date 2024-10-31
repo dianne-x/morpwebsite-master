@@ -4,6 +4,7 @@ import '../../../style/App/userPanel/profile.scss';
 const Profile = (props) => {
 
     const [userData, setUserData] = useState({
+        profile_pic_path: '',
         name: '',
         email: '',
         nickname: '',
@@ -74,49 +75,54 @@ const Profile = (props) => {
 
 
     return (
-        <>
+      <>
+          <h2>Profile</h2>
           <form onSubmit={handleSubmit}> {/* Use form with onSubmit handler */}
-            <h2>Profile</h2>
-            <label>
-              Avatar:
-              <input type="file" />
-            </label>
-            <label>
-              Name:
-              <input
-                type="text"
-                name="name"
-                value={userData.name}
-                onChange={handleInputChange} // Add onChange handler
+              <label 
+                htmlFor="profile_pic" id="pic-label"
+                style={{backgroundImage: `url(http://localhost/morpwebsite-master/src/pictureData/userPictures/${userData.profile_pic_path})`}}>
+              </label>
+              <input 
+                type="file"
+                name="profile_pic"
+                id="profile_pic"
               />
-            </label>
             <label>
-              Email:
-              <input
-                type="email"
-                name="email"
-                value={userData.email}
-                onChange={handleInputChange} // Add onChange handler
-              />
+              Name
             </label>
+            <input
+              type="text"
+              name="name"
+              value={userData.name}
+              onChange={handleInputChange} // Add onChange handler
+            />
             <label>
-              Nickname:
-              <input
-                type="text"
-                name="nickname"
-                value={userData.nickname}
-                onChange={handleInputChange} // Add onChange handler
-              />
+              Email
             </label>
+            <input
+              type="email"
+              name="email"
+              value={userData.email}
+              onChange={handleInputChange} // Add onChange handler
+            />
             <label>
-              About me:
-              <input
-                type="text"
-                name="about_me"
-                value={userData.about_me}
-                onChange={handleInputChange} // Add onChange handler
-              />
+              Nickname
             </label>
+            <input
+              type="text"
+              name="nickname"
+              value={userData.nickname}
+              onChange={handleInputChange} // Add onChange handler
+            />
+            <label>
+              About me
+            </label>
+            <input
+              type="text"
+              name="about_me"
+              value={userData.about_me}
+              onChange={handleInputChange} // Add onChange handler
+            />
             
             <button type="submit">Save</button> {/* Use button of type "submit" */}
           </form>
