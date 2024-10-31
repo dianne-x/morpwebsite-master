@@ -1,0 +1,59 @@
+@import '../../colors';
+
+.user-panel {
+.content {
+    gap: 1rem;
+    .character-container {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+
+        details {
+            background-color: rgba($color: $text-color, $alpha: .1);
+            padding: .3rem 1rem;
+            
+            button {
+                cursor: pointer;
+            }
+            
+            summary { cursor: pointer; }
+
+            .detail {
+                display: flex;
+                flex-direction: column;
+                gap: .5rem;
+                margin-block: 1rem;
+
+                ul {
+                    list-style: none;
+                    display: flex;
+                    flex-direction: column;
+                    gap: .4rem;
+    
+                    li {
+                        background: rgba($color: $text-color, $alpha: .1);
+                        display: flex;
+                        justify-content: space-between;
+                        padding: .5rem .7rem;
+                        border-radius: 7px;
+                        
+                        &>div {
+                            display: flex;
+                            gap: .5rem;
+                            align-items: center;
+                        }
+                        .info {
+                            img {
+                                width: 35px;
+                                aspect-ratio: 1;
+                                border-radius: 50%;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } 
+}
+}

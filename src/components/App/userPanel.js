@@ -4,6 +4,7 @@ import '../../style/App/userPanel.scss'; // Import the SCSS file
 import axios from 'axios';
 
 import Profile from './userPanel/Profile';
+import Characters from './userPanel/Characters';
 
 const UserPanel = ({ onClose, LogOut }) => {
   const [activeTab, setActiveTab] = useState('Profile');
@@ -27,10 +28,7 @@ const UserPanel = ({ onClose, LogOut }) => {
             <Profile LogOut={LogOut} />
           )}
           {activeTab === 'Characters' && (
-            <div>
-              <h2>Characters</h2>
-              {/* Add characters content */}
-            </div>
+            <Characters />
           )}
           {activeTab === 'Settings' && (
             <div>
