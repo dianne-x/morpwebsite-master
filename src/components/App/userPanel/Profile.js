@@ -19,6 +19,40 @@ const Profile = (props) => {
         });
     };
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append('profile_pic', file);
+            formData.append('name', userData.name);
+            formData.append('email', userData.email);
+            formData.append('nickname', userData.nickname);
+            formData.append('about_me', userData.about_me);
+
+            fetch(`http://localhost/morpwebsite-master/src/php/updateUser.php`, {
+                method: 'POST',
+                body: formData,
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    if (data.success) {
+                        fetchUserProfile(); // Refresh the profile data
+                    } else {
+                        alert('Failed to save user data.');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('An error occurred while saving user data.');
+                });
+        }
+    };
+
     const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission behavior (reloading the page)
 
@@ -86,6 +120,7 @@ const Profile = (props) => {
                 type="file"
                 name="profile_pic"
                 id="profile_pic"
+                onChange={handleFileChange} // Add onChange handler for file input
               />
             <label>
               Name

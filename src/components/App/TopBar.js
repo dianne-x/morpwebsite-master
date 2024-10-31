@@ -15,6 +15,7 @@ const Topbar = ({ onServerClick, LogOut }) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isJoinFormOpen, setIsJoinFormOpen] = useState(false); // State for join form
   const [isUserPanelOpen, setIsUserPanelOpen] = useState(false);
+  const [profilePicPath, setProfilePicPath] = useState('');
   const topbarRef = useRef(null);
 
   useEffect(() => {
@@ -30,6 +31,22 @@ const Topbar = ({ onServerClick, LogOut }) => {
     return () => {
       currentRef.removeEventListener('wheel', handleWheel); // Cleanup
     };
+  }, []);
+
+  useEffect(() => {
+    const fetchProfilePic = async () => {
+      try {
+        const response = await fetch(`http://localhost/morpwebsite-master/src/php/getProfilePic.php?uid=${localStorage.getItem('morp-login-user')}`);
+        const data = await response.json();
+        if (data.success) {
+          setProfilePicPath(data.profile_pic_path);
+        }
+      } catch (error) {
+        console.error('Error fetching profile picture:', error);
+      }
+    };
+
+    fetchProfilePic();
   }, []);
 
   const handleFormOpen = () => {
@@ -83,7 +100,12 @@ const Topbar = ({ onServerClick, LogOut }) => {
           title={(isServersSelected ? "Show Friends" : "Show Servers")} 
           onClick={() => setIsServersSelected(!isServersSelected)} 
         />
-        <TopBarButton icon={<FontAwesomeIcon icon={faUser} />} title="Profile"  onClick={() => handleUserPanelOpen()}/>
+        <TopBarButton 
+          icon={<FontAwesomeIcon icon={faUser} />} 
+          title="Profile"  
+          onClick={() => handleUserPanelOpen()}
+          picPath={`url(http://localhost/morpwebsite-master/src/pictureData/userPictures/${profilePicPath})`}
+        />
       </div>
     </div>
   );

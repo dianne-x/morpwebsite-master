@@ -17,7 +17,7 @@ const TopBarButton = ({ icon, onClick, title, picPath }) => {
         backgroundPosition: "center",
       }}
     >
-      {icon}
+      {!picPath && icon}
     </div>
   );
 }
