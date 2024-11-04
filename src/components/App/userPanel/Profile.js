@@ -9,77 +9,69 @@ const Profile = (props) => {
         email: '',
         nickname: '',
         about_me: '',
-      });
+    });
+
+    const [tempProfilePic, setTempProfilePic] = useState(''); // Temporary variable for profile picture
+    const [profilePicFile, setProfilePicFile] = useState(null); // File object for profile picture
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setUserData({
             ...userData,
-            [name]: value, // Dynamically update the appropriate field in the userData state
+            [name]: value,
         });
     };
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            const formData = new FormData();
-            formData.append('profile_pic', file);
-            formData.append('name', userData.name);
-            formData.append('email', userData.email);
-            formData.append('nickname', userData.nickname);
-            formData.append('about_me', userData.about_me);
-
-            fetch(`http://localhost/morpwebsite-master/src/php/updateUser.php`, {
-                method: 'POST',
-                body: formData,
-            })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    if (data.success) {
-                        fetchUserProfile(); // Refresh the profile data
-                    } else {
-                        alert('Failed to save user data.');
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    alert('An error occurred while saving user data.');
-                });
+            setProfilePicFile(file); // Set the file object
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setTempProfilePic(reader.result); // Set the temporary profile picture
+            };
+            reader.readAsDataURL(file);
         }
     };
 
     const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission behavior (reloading the page)
+        e.preventDefault();
 
-    fetch(`http://localhost/morpwebsite-master/src/php/updateUser.php`, {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData), // Send the updated user data to the server
-    })
-        .then((response) => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+        const formData = new FormData();
+        if (profilePicFile) {
+            formData.append('profile_pic', profilePicFile); // Append the file object
         }
-        return response.json();
+        formData.append('name', userData.name);
+        formData.append('email', userData.email);
+        formData.append('nickname', userData.nickname);
+        formData.append('about_me', userData.about_me);
+
+        console.log('Submitting form data:', formData); // Log the form data
+
+        fetch(`http://localhost/morpwebsite-master/src/php/updateUser.php`, {
+            method: 'POST',
+            body: formData,
         })
-        .then((data) => {
-        if (data.success) {
-            alert('User data saved successfully.');
-        } else {
-            alert('Failed to save user data.');
-        }
-        })
-        .catch((error) => {
-        console.error('Error:', error);
-        alert('An error occurred while saving user data.');
-        });
+            .then((response) => {
+                console.log('Response:', response); // Log the response
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log('Response data:', data); // Log the response data
+                if (data.success) {
+                    alert('User data saved successfully.');
+                    fetchUserProfile(); // Refresh the profile data
+                } else {
+                    alert('Failed to save user data.');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred while saving user data.');
+            });
     };
 
     useEffect(() => {
@@ -87,83 +79,82 @@ const Profile = (props) => {
     }, []);
 
     const fetchUserProfile = async () => {
-    const userId = localStorage.getItem('morp-login-user');
-    if (!userId) {
-        alert('User ID not found. Please log in.');
-        return;
-    }
-
-    try {
-        const response = await fetch(`http://localhost/morpwebsite-master/src/php/getProfileData.php?userId=${userId}`);
-        const data = await response.json();
-        if (data.success) {
-            setUserData(data.user); // Assuming the API returns user data in the format expected.
-        } else {
-            alert(data.message);
+        const userId = localStorage.getItem('morp-login-user');
+        if (!userId) {
+            alert('User ID not found. Please log in.');
+            return;
         }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred while fetching the profile data.');
-    }
+
+        try {
+            const response = await fetch(`http://localhost/morpwebsite-master/src/php/getProfileData.php?userId=${userId}`);
+            const data = await response.json();
+            if (data.success) {
+                setUserData(data.user);
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while fetching the profile data.');
+        }
     };
 
-
     return (
-      <>
-          <h2>Profile</h2>
-          <form onSubmit={handleSubmit}> {/* Use form with onSubmit handler */}
-              <label 
-                htmlFor="profile_pic" id="pic-label"
-                style={{backgroundImage: `url(http://localhost/morpwebsite-master/src/pictureData/userPictures/${userData.profile_pic_path})`}}>
-              </label>
-              <input 
-                type="file"
-                name="profile_pic"
-                id="profile_pic"
-                onChange={handleFileChange} // Add onChange handler for file input
-              />
-            <label>
-              Name
-            </label>
-            <input
-              type="text"
-              name="name"
-              value={userData.name}
-              onChange={handleInputChange} // Add onChange handler
-            />
-            <label>
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={userData.email}
-              onChange={handleInputChange} // Add onChange handler
-            />
-            <label>
-              Nickname
-            </label>
-            <input
-              type="text"
-              name="nickname"
-              value={userData.nickname}
-              onChange={handleInputChange} // Add onChange handler
-            />
-            <label>
-              About me
-            </label>
-            <input
-              type="text"
-              name="about_me"
-              value={userData.about_me}
-              onChange={handleInputChange} // Add onChange handler
-            />
-            
-            <button type="submit">Save</button> {/* Use button of type "submit" */}
-          </form>
-          <button style={{color: 'red'}} onClick={props.LogOut} className="logout-btn">
-            Log out
-          </button>
+        <>
+            <h2>Profile</h2>
+            <form onSubmit={handleSubmit}>
+                <label 
+                    htmlFor="profile_pic" id="pic-label"
+                    style={{backgroundImage: `url(${tempProfilePic || `http://localhost/morpwebsite-master/src/pictureData/userPictures/${userData.profile_pic_path}`})`}}>
+                </label>
+                <input 
+                    type="file"
+                    name="profile_pic"
+                    id="profile_pic"
+                    onChange={handleFileChange}
+                />
+                <label>
+                    Name
+                </label>
+                <input
+                    type="text"
+                    name="name"
+                    value={userData.name}
+                    onChange={handleInputChange}
+                />
+                <label>
+                    Email
+                </label>
+                <input
+                    type="email"
+                    name="email"
+                    value={userData.email}
+                    onChange={handleInputChange}
+                />
+                <label>
+                    Nickname
+                </label>
+                <input
+                    type="text"
+                    name="nickname"
+                    value={userData.nickname}
+                    onChange={handleInputChange}
+                />
+                <label>
+                    About me
+                </label>
+                <input
+                    type="text"
+                    name="about_me"
+                    value={userData.about_me}
+                    onChange={handleInputChange}
+                />
+                
+                <button type="submit">Save</button>
+            </form>
+            <button style={{color: 'red'}} onClick={props.LogOut} className="logout-btn">
+                Log out
+            </button>
         </>
     )
 }
