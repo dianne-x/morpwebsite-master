@@ -24,6 +24,11 @@ const TopBar = ({ onServerClick, LogOut }) => {
     const fetchProfilePic = async () => {
       try {
         // Fetch profile picture logic here
+        const response = await fetch(`http://localhost/morpwebsite-master/src/php/getProfilePic.php?uid=${localStorage.getItem('morp-login-user')}`);
+        const data = await response.json();
+        if (data.success) {
+          setProfilePicPath(data.profile_pic_path);
+        }
       } catch (error) {
         console.error('Error fetching profile picture:', error);
       }
