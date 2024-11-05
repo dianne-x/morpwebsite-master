@@ -11,6 +11,11 @@
         height: 100%;
         overflow-y: scroll;
 
+        .explanation {
+            width: 100%;
+            text-wrap: wrap;
+        }
+
         details {
             background-color: rgba($color: $text-color, $alpha: .1);
             padding: .3rem 1rem;
@@ -38,7 +43,11 @@
                         display: flex;
                         justify-content: space-between;
                         padding: .5rem .7rem;
-                        border-radius: 7px;
+
+                        &.not-verified {
+                            border: 1px solid #d0ff00;
+                            background: rgba($color: #d0ff00, $alpha: .1);
+                        }
                         
                         &>div {
                             display: flex;
@@ -52,7 +61,40 @@
                                 border-radius: 50%;
                             }
                         }
+                        .modify {
+                            button {
+                                background: none;
+                                border: none;
+                                color: $text-color;
+                                font-size: 1rem;
+
+                                &:hover{
+                                    &.info { color: #fcef89 }
+                                    &.edit { color: #2dfe54 }
+                                    &.delete { color: #d62929 }
+                                }
+                            }
+                        }
                     }
+                }
+
+                button.addnew-char {
+                    background: $main-color;
+                    color: $text-color;
+                    border: none;
+                    padding-block: 10px;
+                    text-transform: uppercase;
+                    letter-spacing: .05rem;
+                    margin-right: -.05rem;
+
+                    &:hover {
+                        background: lighten($color: $main-color, $amount: 2);
+                    }
+                }
+
+                ul li, button.addnew-char {
+                    border-radius: 7px;
+                    transition: 200ms;
                 }
             }
         }
