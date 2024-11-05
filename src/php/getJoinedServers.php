@@ -17,7 +17,7 @@ if ($userId === null) {
 
 try {
     // Prepare a SQL statement to fetch the joined servers
-    $stmt = $conn->prepare("SELECT s.id, s.server_name AS name, s.server_picture_path AS icon FROM Servers s
+    $stmt = $conn->prepare("SELECT s.id, s.uid, s.server_name AS name, s.server_picture_path AS icon FROM Servers s
                             JOIN Server_Member sm ON s.id = sm.server_id
                             WHERE sm.user_id = ?");
     $stmt->bind_param('s', $userId);
