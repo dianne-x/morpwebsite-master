@@ -1,7 +1,16 @@
 .channel-list {
-  width: 250px;
-  background-color: #222;
-  padding: 10px;
+  position: fixed;
+  top: 60px; // Adjust this value based on the height of your topbar
+  left: 0;
+  width: 250px; // Adjust the width as needed
+  height: calc(100% - 60px); // Adjust this value based on the height of your topbar
+  background-color: white;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000; // Ensure it appears above other elements
+  overflow-y: auto; // Add scroll if content overflows
+  color: #333;
 }
 
 .channel-item {

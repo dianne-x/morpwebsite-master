@@ -7,40 +7,23 @@ import ServerCreationForm from './createServerForm'; // Import the form modal co
 import JoinServerForm from './joinServer';
 import TopBarButton from './TopBarButton';
 import UserPanel from './userPanel';
+import ChannelList from './ChannelList';
+import ChatWindow from './ChatWindow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHome, faAdd, faUser, faUsers, faCompass } from '@fortawesome/free-solid-svg-icons'
 
-const Topbar = ({ onServerClick, LogOut }) => {
-  const [isServersSelected, setIsServersSelected] = useState(true);
+const TopBar = ({ onServerClick, LogOut }) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [isJoinFormOpen, setIsJoinFormOpen] = useState(false); // State for join form
+  const [isJoinFormOpen, setIsJoinFormOpen] = useState(false);
   const [isUserPanelOpen, setIsUserPanelOpen] = useState(false);
+  const [isServersSelected, setIsServersSelected] = useState(true);
   const [profilePicPath, setProfilePicPath] = useState('');
   const topbarRef = useRef(null);
 
   useEffect(() => {
-    const handleWheel = (event) => {
-      if (topbarRef.current) {
-        topbarRef.current.scrollLeft += event.deltaY;
-      }
-    };
-
-    const currentRef = topbarRef.current;
-    currentRef.addEventListener('wheel', handleWheel);
-
-    return () => {
-      currentRef.removeEventListener('wheel', handleWheel); // Cleanup
-    };
-  }, []);
-
-  useEffect(() => {
     const fetchProfilePic = async () => {
       try {
-        const response = await fetch(`http://localhost/morpwebsite-master/src/php/getProfilePic.php?uid=${localStorage.getItem('morp-login-user')}`);
-        const data = await response.json();
-        if (data.success) {
-          setProfilePicPath(data.profile_pic_path);
-        }
+        // Fetch profile picture logic here
       } catch (error) {
         console.error('Error fetching profile picture:', error);
       }
@@ -67,12 +50,11 @@ const Topbar = ({ onServerClick, LogOut }) => {
 
   const handleUserPanelOpen = () => {
     setIsUserPanelOpen(true);
-  }
+  };
 
   const handleUserPanelClose = () => {
     setIsUserPanelOpen(false);
-  }
-
+  };
 
   return (
     <div className="topbar">
@@ -111,8 +93,8 @@ const Topbar = ({ onServerClick, LogOut }) => {
   );
 };
 
-Topbar.propTypes = {
+TopBar.propTypes = {
   onServerClick: PropTypes.func.isRequired,
 };
 
-export default Topbar;
+export default TopBar;
