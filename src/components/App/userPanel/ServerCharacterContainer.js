@@ -56,15 +56,14 @@ const ServerCharacterContainer = (props) => {
                 <ul>
                     {characters.length > 0 ? (
                         characters.map(character => (
-                            <li key={character.character_id}>
                                 <CharacterTile 
+                                    key={character.character_id}
                                     uid={character.character_id}
                                     name={character.character_name}
                                     pic_path={character.character_pic_path || 'user.png'}
                                     verified={character.is_verified}
+                                    handleDelete={handleDelete}
                                 />
-                                <button onClick={() => handleDelete(character.character_id)}>Delete</button>
-                            </li>
                         ))
                     ) : (
                         <li>No characters found</li>
