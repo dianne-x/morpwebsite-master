@@ -39,7 +39,7 @@ const AppLayout = () => {
   };
 
   const fetchSectionsAndRooms = (serverId) => {
-    fetch(`http://localhost/morpwebsite-master-1/src/php/getSectionsandRooms.php?server_id=${serverId}`)
+    fetch(`http://localhost/morpwebsite-master/src/php/getSectionsandRooms.php?server_id=${serverId}`)
       .then(response => response.json())
       .then(data => setSections(data))
       .catch(error => console.error('Error:', error));
