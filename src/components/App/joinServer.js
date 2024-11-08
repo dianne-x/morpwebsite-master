@@ -48,10 +48,9 @@ const JoinServerForm = () => {
   };
 
   return (
-    <div className="modal">
-      <div className="modal-content">
+      <>
         <h2>Join Server</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className='joinServerForm'>
           <div>
             <label>Invite Link:</label>
             <input
@@ -63,8 +62,7 @@ const JoinServerForm = () => {
           </div>
           <button type="submit">Join</button>
         </form>
-      </div>
-    </div>
+      </>
   );
 };
 

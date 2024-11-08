@@ -1,0 +1,20 @@
+@import './../colors';
+
+.user-panel {
+    .server-content {
+        .joinServerForm {
+            margin-block: auto;
+            display: flex;
+            flex-direction: column;
+
+            &>div {
+                display: flex;
+                gap: 1rem;
+                label {
+                    width: min-content;
+                }
+                
+            }
+        }
+    }
+}

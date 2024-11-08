@@ -46,7 +46,6 @@ const ServerCreationForm = () => {
     <>
       <h2>Create New Server</h2>
       <form onSubmit={handleSubmit}>
-        <div>
           <label
             htmlFor="serverIcon"
             id='serverIcon-label'
@@ -58,8 +57,6 @@ const ServerCreationForm = () => {
             onChange={(e) => setServerIcon(e.target.files[0])}
             required
           />
-        </div>
-        <div>
           <label>Server Name:</label>
           <input
             type="text"
@@ -67,8 +64,6 @@ const ServerCreationForm = () => {
             onChange={(e) => setServerName(e.target.value)}
             required
           />
-        </div>
-        <div>
           <label>Unique ID (UID):</label>
           <input
             type="text"
@@ -76,7 +71,6 @@ const ServerCreationForm = () => {
             onChange={(e) => setUid(e.target.value)}
             required
           />
-        </div>
         {error && <p className="error">{error}</p>}
         {success && <p className="success">{success}</p>}
         <button type="submit">Create Server</button>

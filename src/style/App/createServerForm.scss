@@ -1,3 +1,86 @@
-.modal {
+@import './../colors';
 
+.user-panel {
+    .server-content {
+        display: flex;
+        flex-direction: column;
+        overflow-y: hidden;
+
+        form {
+            display: grid;
+            justify-self: center;
+            grid-template-columns: min-content minmax(100px, 100%);
+            gap: .6rem 1rem;
+            margin-block: auto;
+
+            label:not(#serverIcon-label) {
+                text-align: right;
+                text-transform: uppercase;
+                letter-spacing: .1rem;
+                scale: 1;
+            }
+
+            #serverIcon-label, button {
+                grid-column: 2 / 3;
+            }
+            
+            #serverIcon-label {
+                background-position: center;
+                background-size: cover;
+                width: 7rem;
+                aspect-ratio: 1;
+                border-radius: 50%;
+                position: relative;
+                border: 1px solid $text-color;
+
+                &:before {
+                    content: 'choose pic';
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    left: 0;
+                    bottom: 0;
+                    display: grid;
+                    place-items: center;
+                    border-radius: 50%;
+                    background-color: rgba($color: #000000, $alpha: .7);
+                    color: $text-color;
+                    font-size: .75rem;
+                    font-weight: bold;
+                    opacity: 0;
+                    transition: opacity .15s ease;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                }
+
+                &:hover:before {
+                    opacity: 1;
+                }
+            }
+
+            input {
+                background-color: rgba($color: $text-color, $alpha: .1);
+                border: none;
+                color: $text-color;
+                padding: 5px 10px;
+                width: 100%;
+
+                &[type="file"] {
+                    display: none;
+                }
+            }
+
+            button[type="submit"] {
+                background-color: $main-color;
+                color: $text-color;
+                border: 1px solid $text-color;
+                padding: 5px 10px;
+                width: 200px;
+                text-align: center;
+                cursor: pointer;
+            }
+        }
+    }
 }
