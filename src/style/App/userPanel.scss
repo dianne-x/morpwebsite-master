@@ -37,9 +37,15 @@
       text-transform: uppercase;
       letter-spacing: .2rem;
       position: relative;
+      z-index: 1;
+
+      span { 
+        z-index: 2; 
+        position: relative;
+        transition: color .3s ease-in-out;
+      }
       
       &.active {
-        background-color: rgba($color: $text-color, $alpha: .5);
         color: $main-color;
       }
       
@@ -51,11 +57,17 @@
         bottom: 0;
         position: absolute;
         background-color: rgba($color: $text-color, $alpha: .5);
-        transition: .3s ease-in-out;
+        transition: .2s ease-in-out;
+        z-index: 1;
       }
       &:not(.active) { cursor: pointer; }
+
+      &.active:before,
       &:not(.active):hover:before {
         top: 0%;
+      }
+      &:not(.active):hover span {
+        color: $main-color;
       }
     }
   }
