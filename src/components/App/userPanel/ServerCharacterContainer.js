@@ -50,8 +50,8 @@ const ServerCharacterContainer = (props) => {
     };
 
     return (
-        <details open={true}>
-            <summary>{props.name} ({props.id})</summary>
+        <details open={(characters.length > 0 ? true : false)}>
+            <summary>{props.name}</summary>
             <div className="detail">
                 <ul>
                     {characters.length > 0 ? (
