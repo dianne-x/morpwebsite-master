@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import '../../style/App/JoinServerForm.scss'; // Import the SCSS file
 
-const JoinServerForm = ({ onClose }) => {
+const JoinServerForm = () => {
   const [inviteLink, setInviteLink] = useState('');
 
   const handleSubmit = async (e) => {
@@ -45,14 +45,11 @@ const JoinServerForm = ({ onClose }) => {
       console.error('Error:', error);
       alert('An error occurred while trying to join the server.');
     }
-
-    onClose(); // Close the form modal after submission
   };
 
   return (
     <div className="modal">
       <div className="modal-content">
-        <span className="close" onClick={onClose}>&times;</span>
         <h2>Join Server</h2>
         <form onSubmit={handleSubmit}>
           <div>
@@ -71,8 +68,5 @@ const JoinServerForm = ({ onClose }) => {
   );
 };
 
-JoinServerForm.propTypes = {
-  onClose: PropTypes.func.isRequired,
-};
 
 export default JoinServerForm;

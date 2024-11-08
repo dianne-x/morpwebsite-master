@@ -33,7 +33,7 @@ const UserPanel = ({ onClose, LogOut }) => {
           </button>
           
         </div>
-        <div className="content">
+        <div className="content user-content">
           {activeTab === 'Profile' && (
             <Profile LogOut={LogOut} />
           )}

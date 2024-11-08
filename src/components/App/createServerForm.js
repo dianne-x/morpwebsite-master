@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import '../../style/App/createServerForm.scss'; // Import the SCSS file
 
-const ServerCreationForm = ({ onClose }) => {
+const ServerCreationForm = () => {
   const [serverName, setServerName] = useState('');
   const [serverIcon, setServerIcon] = useState(null);
   const [uid, setUid] = useState('');
@@ -33,7 +33,6 @@ const ServerCreationForm = ({ onClose }) => {
 
       if (result.success) {
         setSuccess('Server created successfully.');
-        onClose(); // Close the form modal after submission
       } else {
         setError(result.message);
       }
@@ -44,48 +43,46 @@ const ServerCreationForm = ({ onClose }) => {
   };
 
   return (
-    <div className="modal">
-      <div className="modal-content">
-        <span className="close" onClick={onClose}>&times;</span>
-        <h2>Create New Server</h2>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Server Name:</label>
-            <input
-              type="text"
-              value={serverName}
-              onChange={(e) => setServerName(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label>Server Icon:</label>
-            <input
-              type="file"
-              onChange={(e) => setServerIcon(e.target.files[0])}
-              required
-            />
-          </div>
-          <div>
-            <label>Unique ID (UID):</label>
-            <input
-              type="text"
-              value={uid}
-              onChange={(e) => setUid(e.target.value)}
-              required
-            />
-          </div>
-          {error && <p className="error">{error}</p>}
-          {success && <p className="success">{success}</p>}
-          <button type="submit">Create Server</button>
-        </form>
-      </div>
-    </div>
+    <>
+      <h2>Create New Server</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label
+            htmlFor="serverIcon"
+            id='serverIcon-label'
+          ></label>
+          <input
+            type="file"
+            name='serverIcon'
+            id='serverIcon'
+            onChange={(e) => setServerIcon(e.target.files[0])}
+            required
+          />
+        </div>
+        <div>
+          <label>Server Name:</label>
+          <input
+            type="text"
+            value={serverName}
+            onChange={(e) => setServerName(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label>Unique ID (UID):</label>
+          <input
+            type="text"
+            value={uid}
+            onChange={(e) => setUid(e.target.value)}
+            required
+          />
+        </div>
+        {error && <p className="error">{error}</p>}
+        {success && <p className="success">{success}</p>}
+        <button type="submit">Create Server</button>
+      </form>
+    </>
   );
-};
-
-ServerCreationForm.propTypes = {
-  onClose: PropTypes.func.isRequired,
 };
 
 export default ServerCreationForm;

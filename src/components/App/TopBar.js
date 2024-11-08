@@ -7,6 +7,7 @@ import ServerCreationForm from './createServerForm'; // Import the form modal co
 import JoinServerForm from './joinServer';
 import TopBarButton from './TopBarButton';
 import UserPanel from './userPanel';
+import CreateJoinPanel from './CreateJoinPanel';
 import ChannelList from './ChannelList';
 import ChatWindow from './ChatWindow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -66,7 +67,6 @@ const TopBar = ({ onServerClick, LogOut }) => {
       <div className='home-list'>
         <TopBarButton icon={<FontAwesomeIcon icon={faHome} />} title="Home" onClick={() => onServerClick({ id: 1, name: 'Home' })} />
         <TopBarButton icon={<FontAwesomeIcon icon={faAdd} />} title="Add Server" onClick={() => handleFormOpen()} />
-        <TopBarButton icon={<FontAwesomeIcon icon={faAdd} />} title="Join" onClick={() => handleJoinFormOpen()} />
       </div>
 
       <div ref={topbarRef} className="icon-list">
@@ -77,8 +77,7 @@ const TopBar = ({ onServerClick, LogOut }) => {
         }
       </div>
 
-      {isFormOpen && <ServerCreationForm onClose={handleFormClose} />}
-      {isJoinFormOpen && <JoinServerForm onClose={handleJoinFormClose} />} {/* Render JoinServerForm */}
+      {isFormOpen && <CreateJoinPanel onClose={handleFormClose} />}
       {isUserPanelOpen && <UserPanel onClose={handleUserPanelClose} LogOut={LogOut} />}
 
       <div className='user-list'>

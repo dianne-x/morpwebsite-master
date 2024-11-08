@@ -1,11 +1,11 @@
 @import '../../colors';
 
 .user-panel {
-    .content {
+    .user-content {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        overflow-y: scroll;
+        overflow-y: hidden;
 
         form {
             display: grid;
