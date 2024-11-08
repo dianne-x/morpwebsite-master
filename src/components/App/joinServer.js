@@ -51,7 +51,6 @@ const JoinServerForm = () => {
       <>
         <h2>Join Server</h2>
         <form onSubmit={handleSubmit} className='joinServerForm'>
-          <div>
             <label>Invite Link:</label>
             <input
               type="text"
@@ -59,7 +58,6 @@ const JoinServerForm = () => {
               onChange={(e) => setInviteLink(e.target.value)}
               required
             />
-          </div>
           <button type="submit">Join</button>
         </form>
       </>
