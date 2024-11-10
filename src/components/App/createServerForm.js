@@ -5,10 +5,24 @@ import '../../style/App/createServerForm.scss'; // Import the SCSS file
 const ServerCreationForm = () => {
   const [serverName, setServerName] = useState('');
   const [serverIcon, setServerIcon] = useState(null);
+  const [tempServerPic, setTempServerPic] = useState('');
   const [uid, setUid] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   var userId = localStorage.getItem('morp-login-user');
+
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        setServerIcon(file); // Set the file object
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setTempServerPic(reader.result); // Set the temporary profile picture
+        };
+        reader.readAsDataURL(file);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,12 +63,13 @@ const ServerCreationForm = () => {
           <label
             htmlFor="serverIcon"
             id='serverIcon-label'
+            style={{backgroundImage: `url(${tempServerPic})`}}
           ></label>
           <input
             type="file"
             name='serverIcon'
             id='serverIcon'
-            onChange={(e) => setServerIcon(e.target.files[0])}
+            onChange={handleFileChange}
             required
           />
           <label>Server Name:</label>
