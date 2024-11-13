@@ -8,8 +8,8 @@ import JoinServerForm from './joinServer';
 import TopBarButton from './TopBarButton';
 import UserPanel from './userPanel';
 import CreateJoinPanel from './CreateJoinPanel';
-import ChannelList from './ChannelList';
-import ChatWindow from './ChatWindow';
+import ChannelList from './Server/ChannelList';
+import ChatWindow from './Server/ChatWindow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHome, faAdd, faUser, faUsers, faCompass } from '@fortawesome/free-solid-svg-icons'
 

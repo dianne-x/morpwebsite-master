@@ -74,26 +74,3 @@
     }
   }
 }
-
-.main-content {
-  display: flex;
-  height: calc(100vh - 80px); // Adjust based on the height of your topbar
-  margin-top: 80px; // Adjust based on the height of your topbar
-}
-
-.channel-list {
-  flex: 0 0 250px; // Fixed width for the channel list
-  background-color: white;
-  padding: 20px;
-  border-right: 1px solid #ddd;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow-y: auto; // Add scroll if content overflows
-  color: #333;
-}
-
-.chat-window {
-  flex: 1; // Take the remaining space
-  background-color: #f9f9f9;
-  padding: 20px;
-  overflow-y: auto; // Add scroll if content overflows
-}

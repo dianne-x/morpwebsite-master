@@ -1,9 +1,9 @@
 import React from 'react';
-import '../../style/App/ChannelList.scss';
+import '../../../style/App/Server/ChannelList.scss';
 
 const ChannelList = ({ sections }) => {
   return (
-    <div className="channel-list">
+    <div className="channel-list server-side">
       <h3>Sections and Rooms:</h3>
       {sections.map((section, sectionIndex) => (
         <div key={sectionIndex} className="section-item">
