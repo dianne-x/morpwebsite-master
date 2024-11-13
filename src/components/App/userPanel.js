@@ -5,6 +5,7 @@ import axios from 'axios';
 
 import Profile from './userPanel/Profile';
 import Characters from './userPanel/Characters';
+import Inventory from './userPanel/Inventory';
 
 const UserPanel = ({ onClose, LogOut }) => {
   const [activeTab, setActiveTab] = useState('Profile');
@@ -28,6 +29,10 @@ const UserPanel = ({ onClose, LogOut }) => {
             <span>Characters</span>
           </button>
 
+          <button onClick={() => setActiveTab('Inventory')} className={activeTab == 'Inventory' ? 'active' : ''}>
+            <span>Inventory</span>
+          </button>
+
           <button onClick={() => setActiveTab('Settings')} className={activeTab == 'Settings' ? 'active' : ''}>
             <span>Settings</span>
           </button>
@@ -39,6 +44,9 @@ const UserPanel = ({ onClose, LogOut }) => {
           )}
           {activeTab === 'Characters' && (
             <Characters />
+          )}
+          {activeTab === 'Inventory' && (
+            <Inventory />
           )}
           {activeTab === 'Settings' && (
             <div>

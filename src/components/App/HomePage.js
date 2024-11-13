@@ -80,7 +80,7 @@ const HomePage = () => {
                 console.log('SUCCESS!', response.status, response.text);
                 setFeedbackMessage('Report sent! Thank you for your feedback.');
                 setIsCooldown(true);
-                setCooldownTime(20); // 10 minutes cooldown
+                setCooldownTime(250); // 10 minutes cooldown
                 localStorage.setItem('cooldownTimestamp', Date.now());
             }, (error) => {
                 console.log('FAILED...', error);
