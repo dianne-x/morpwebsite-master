@@ -6,6 +6,14 @@
 -- Létrehozás ideje: 2024. Nov 13. 12:58
 -- Kiszolgáló verziója: 10.4.28-MariaDB
 -- PHP verzió: 8.2.4
+DROP DATABASE IF EXISTS MORPDatabase;
+
+CREATE DATABASE MORPDatabase
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+USE MORPDatabase;
+
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
