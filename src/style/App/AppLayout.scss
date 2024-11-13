@@ -18,20 +18,6 @@
   //background: radial-gradient(circle, #1b2735, #090a0f); /* Space gradient background */
   background-color: $main-color;
 
-
-  .main-content {
-      display: flex;
-      z-index: 1; /* Keeps content above background */
-      overflow-y: auto; /* Allows vertical scrolling for channels and chat */
-      height: 100%;
-      width: 100%;
-      margin: 0 !important;
-      padding: 0 !important;
-
-      &>* {
-        border: 1px solid white;
-      }
-    }
 }
 
 

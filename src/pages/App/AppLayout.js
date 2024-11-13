@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import Topbar from '../../components/App/TopBar';
-import ChannelList from '../../components/App/ChannelList';
-import ChatWindow from '../../components/App/ChatWindow';
+import Server from '../../components/App/Server/Server';
 import HomePage from '../../components/App/HomePage';
 import '../../style/App/AppLayout.scss';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
@@ -55,10 +54,7 @@ const AppLayout = () => {
         <Topbar onServerClick={handleServerClick} LogOut={LogOut} />
         
         {selectedServer ? (
-          <div className="main-content">
-            <ChannelList sections={sections} />
-            <ChatWindow serverId={selectedServer.id} />
-          </div>
+          <Server selectedServer={selectedServer} sections={sections}/>
         ) : (
           <HomePage />
         )}

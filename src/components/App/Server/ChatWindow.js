@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../style/App/ChatWindow.scss';
+import '../../../style/App/Server/ChatWindow.scss';
 
 const ChatWindow = ({ serverId }) => {
   // Example chat messages for different servers
