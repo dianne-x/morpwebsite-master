@@ -11,6 +11,7 @@ const AppLayout = () => {
   const navigate = useNavigate();
   const [selectedServer, setSelectedServer] = useState(null);
   const [sections, setSections] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     if (!loggedIn) {
@@ -31,9 +32,11 @@ const AppLayout = () => {
     if (server.id === 1) {
       setSelectedServer(null);
       setSections([]);
+      setUsers([]);
     } else {
       setSelectedServer(server);
       fetchSectionsAndRooms(server.id);
+      fetchJoinedUserForServer(server.id);
     }
   };
 
@@ -43,6 +46,18 @@ const AppLayout = () => {
       .then(data => setSections(data))
       .catch(error => console.error('Error:', error));
   };
+
+
+  const fetchJoinedUserForServer = (serverId) => {
+    fetch(`http://localhost/morpwebsite-master/src/php/serverInfoUsers.php?server_id=${serverId}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log("Fetched users:", data); // Log fetched users
+        setUsers(data);
+      })
+      .catch(error => console.error('Error:', error));
+  }
+
 
   return (
     <HelmetProvider>
@@ -54,7 +69,7 @@ const AppLayout = () => {
         <Topbar onServerClick={handleServerClick} LogOut={LogOut} />
         
         {selectedServer ? (
-          <Server selectedServer={selectedServer} sections={sections}/>
+          <Server selectedServer={selectedServer} sections={sections} users={users}/>
         ) : (
           <HomePage />
         )}
