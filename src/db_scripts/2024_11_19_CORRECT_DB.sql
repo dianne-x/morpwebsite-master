@@ -3,17 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2024. Nov 13. 11:47
+-- Létrehozás ideje: 2024. Nov 19. 07:54
 -- Kiszolgáló verziója: 10.4.28-MariaDB
 -- PHP verzió: 8.2.4
-
-DROP DATABASE IF EXISTS MORPDatabase;
-
-CREATE DATABASE MORPDatabase
-CHARACTER SET utf8
-COLLATE utf8_general_ci;
-
-USE MORPDatabase;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -45,37 +37,45 @@ CREATE TABLE `alias_character` (
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `character`
+-- Tábla szerkezet ehhez a táblához `case`
 --
 
-CREATE TABLE `character` (
+CREATE TABLE `case` (
   `id` int(11) NOT NULL,
-  `servermember_id` int(11) NOT NULL,
-  `is_verified` tinyint(1) DEFAULT 0,
-  `is_oc` tinyint(1) DEFAULT 0,
-  `character_name` varchar(255) NOT NULL,
-  `nickname` varchar(255) DEFAULT NULL,
-  `gender_id` int(11) DEFAULT 0,
-  `character_pic_path` varchar(255) DEFAULT NULL,
-  `birthdate` datetime DEFAULT NULL,
-  `died` tinyint(1) DEFAULT 0,
-  `deathdate` datetime DEFAULT NULL,
-  `resurrected` tinyint(1) DEFAULT 0,
-  `resurrected_date` datetime DEFAULT NULL,
-  `species_id` int(11) DEFAULT 0,
-  `occupation` varchar(255) DEFAULT NULL,
-  `affilation` varchar(255) DEFAULT NULL,
-  `nationality` varchar(255) DEFAULT NULL,
-  `status_id` int(11) DEFAULT 0,
-  `story_id` int(11) DEFAULT 0,
-  `bio` varchar(255) DEFAULT NULL,
-  `powers` varchar(255) DEFAULT NULL,
-  `weaknesses` varchar(255) DEFAULT NULL,
-  `used_item` varchar(255) DEFAULT NULL,
-  `family` varchar(255) DEFAULT NULL,
-  `universe` varchar(255) DEFAULT NULL,
-  `fc_id` int(11) DEFAULT 0
+  `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- A tábla adatainak kiíratása `case`
+--
+
+INSERT INTO `case` (`id`, `name`) VALUES
+(1, 'Basic Case'),
+(2, 'Advanced Case');
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `case_item`
+--
+
+CREATE TABLE `case_item` (
+  `case_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- A tábla adatainak kiíratása `case_item`
+--
+
+INSERT INTO `case_item` (`case_id`, `item_id`) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(2, 2),
+(2, 3),
+(2, 4),
+(2, 5);
 
 -- --------------------------------------------------------
 
@@ -133,6 +133,59 @@ INSERT INTO `gender` (`id`, `gender`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Tábla szerkezet ehhez a táblához `inventory`
+--
+
+CREATE TABLE `inventory` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- A tábla adatainak kiíratása `inventory`
+--
+
+INSERT INTO `inventory` (`id`, `user_id`, `item_id`, `quantity`) VALUES
+(6, 1, 1, 1),
+(7, 1, 2, 2),
+(8, 1, 3, 1),
+(9, 1, 4, 1),
+(10, 1, 5, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `item`
+--
+
+CREATE TABLE `item` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `rarity_id` int(11) NOT NULL,
+  `pic_path` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- A tábla adatainak kiíratása `item`
+--
+
+INSERT INTO `item` (`id`, `name`, `rarity_id`, `pic_path`) VALUES
+(1, 'Common Sword', 1, 'path/to/common_sword.png'),
+(2, 'Uncommon Shield', 2, 'path/to/uncommon_shield.png'),
+(3, 'Rare Helmet', 3, 'path/to/rare_helmet.png'),
+(4, 'Epic Armor', 4, 'path/to/epic_armor.png'),
+(5, 'Legendary Staff', 5, 'path/to/legendary_staff.png'),
+(6, 'Common Sword', 1, 'path/to/common_sword.png'),
+(7, 'Uncommon Shield', 2, 'path/to/uncommon_shield.png'),
+(8, 'Rare Helmet', 3, 'path/to/rare_helmet.png'),
+(9, 'Epic Armor', 4, 'path/to/epic_armor.png'),
+(10, 'Legendary Staff', 5, 'path/to/legendary_staff.png');
+
+-- --------------------------------------------------------
+
+--
 -- Tábla szerkezet ehhez a táblához `languages`
 --
 
@@ -148,6 +201,29 @@ CREATE TABLE `languages` (
 INSERT INTO `languages` (`id`, `usedlanguage`) VALUES
 (1, 'English'),
 (2, 'Hungarian');
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `rarity`
+--
+
+CREATE TABLE `rarity` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `probability` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- A tábla adatainak kiíratása `rarity`
+--
+
+INSERT INTO `rarity` (`id`, `name`, `probability`) VALUES
+(1, 'Common', 0.6),
+(2, 'Uncommon', 0.25),
+(3, 'Rare', 0.1),
+(4, 'Epic', 0.04),
+(5, 'Legendary', 0.01);
 
 -- --------------------------------------------------------
 
@@ -318,7 +394,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `uid`, `name`, `email`, `password`, `nickname`, `gender_id`, `profile_pic_path`, `language_id`, `thread_text`, `thread_text_color`, `thread_color`, `status_id`, `about_me`, `about_me_color`, `bio_main_color`, `bio_text_color`, `is_admin`, `verified`) VALUES
-(1, '2fe88b43124bf5bb3ec1401eef8ac986', 'mate', 'mate.dbvari@gmail.com', '$2y$10$wXaddLKSiNE7Nf45O0T4c.9LGRyown80wwyYeWN.Ce9pj0BQ8yTvC', '', 1, 'd7dd5c036ca0a4aff32cbd0b871d51b6.png', 1, '', '#000000', '#FFFFFF', 1, '', '', '#000000', '#FFFFFF', 1, 1);
+(1, '2fe88b43124bf5bb3ec1401eef8ac986', 'mate', 'mate.dbvari@gmail.com', '$2y$10$wXaddLKSiNE7Nf45O0T4c.9LGRyown80wwyYeWN.Ce9pj0BQ8yTvC', '', 1, 'user.png', 1, '', '#000000', '#FFFFFF', 1, '', '', '#000000', '#FFFFFF', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -394,16 +470,17 @@ ALTER TABLE `alias_character`
   ADD KEY `fk_character` (`character_id`);
 
 --
--- A tábla indexei `character`
+-- A tábla indexei `case`
 --
-ALTER TABLE `character`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_servermember` (`servermember_id`),
-  ADD KEY `fk_gender` (`gender_id`),
-  ADD KEY `fk_species` (`species_id`),
-  ADD KEY `fk_status` (`status_id`),
-  ADD KEY `fk_story` (`story_id`),
-  ADD KEY `fk_fc` (`fc_id`);
+ALTER TABLE `case`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- A tábla indexei `case_item`
+--
+ALTER TABLE `case_item`
+  ADD PRIMARY KEY (`case_id`,`item_id`),
+  ADD KEY `item_id` (`item_id`);
 
 --
 -- A tábla indexei `character_fc`
@@ -430,9 +507,30 @@ ALTER TABLE `gender`
   ADD PRIMARY KEY (`id`);
 
 --
+-- A tábla indexei `inventory`
+--
+ALTER TABLE `inventory`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `item_id` (`item_id`);
+
+--
+-- A tábla indexei `item`
+--
+ALTER TABLE `item`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `rarity_id` (`rarity_id`);
+
+--
 -- A tábla indexei `languages`
 --
 ALTER TABLE `languages`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- A tábla indexei `rarity`
+--
+ALTER TABLE `rarity`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -514,10 +612,10 @@ ALTER TABLE `alias_character`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT a táblához `character`
+-- AUTO_INCREMENT a táblához `case`
 --
-ALTER TABLE `character`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `case`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT a táblához `character_fc`
@@ -544,10 +642,28 @@ ALTER TABLE `gender`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT a táblához `inventory`
+--
+ALTER TABLE `inventory`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT a táblához `item`
+--
+ALTER TABLE `item`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
 -- AUTO_INCREMENT a táblához `languages`
 --
 ALTER TABLE `languages`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT a táblához `rarity`
+--
+ALTER TABLE `rarity`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT a táblához `room`
@@ -600,6 +716,26 @@ ALTER TABLE `user_status`
 --
 -- Megkötések a kiírt táblákhoz
 --
+
+--
+-- Megkötések a táblához `case_item`
+--
+ALTER TABLE `case_item`
+  ADD CONSTRAINT `case_item_ibfk_1` FOREIGN KEY (`case_id`) REFERENCES `case` (`id`),
+  ADD CONSTRAINT `case_item_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`);
+
+--
+-- Megkötések a táblához `inventory`
+--
+ALTER TABLE `inventory`
+  ADD CONSTRAINT `inventory_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `inventory_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`);
+
+--
+-- Megkötések a táblához `item`
+--
+ALTER TABLE `item`
+  ADD CONSTRAINT `item_ibfk_1` FOREIGN KEY (`rarity_id`) REFERENCES `rarity` (`id`);
 
 --
 -- Megkötések a táblához `room`

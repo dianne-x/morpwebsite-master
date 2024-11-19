@@ -1,3 +1,0 @@
-INSERT INTO `users` (`id`, `uid`, `name`, `email`, `password`, `nickname`, `gender_id`, `profile_pic_path`, `language_id`, `thread_text`, `thread_text_color`, `thread_color`, `status_id`, `about_me`, `about_me_color`, `bio_main_color`, `bio_text_color`,`is_admin`, `verified`) VALUES
-(1, 'aec1db963d1d3df2ccadb026f1932fe0', 'mate', 'mate.dbvari@gmail.com', '$2y$10$a93v/4KRJnUTlb9Jm36BouhhLNRxDa129M0lbq/fo.IPP8ehTQoUi', '', 0, 'user.png', 0, '', '', '', 0, '', '', '', '',1, 1),
-(2, '377b7df1571ba4760c9311a5421d8235', 'asd', 'asd.asd@gmail.com', '$2y$10$ma5lkyygGt2cSsmoTyWurOILZ3..IQ9swGkvBvkLb8kShcUTmoXkW', '', 0, 'user.png', 0, '', '', '', 0, '', '', '', '', 0, 1);
