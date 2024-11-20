@@ -3,9 +3,15 @@ require 'dbConnection.php'; // Include the database connection file
 
 // CORS
 header('Access-Control-Allow-Origin: http://localhost:3000'); // Allow requests from your React app
-header('Access-Control-Allow-Methods: POST, GET, OPTIONS'); // Allow specific HTTP methods
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE, PUT'); // Allow specific HTTP methods
 header('Access-Control-Allow-Headers: Content-Type, Authorization'); // Allow specific headers
 header('Content-Type: application/json'); // Ensure the response is JSON
+
+// Handle preflight OPTIONS request
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
+    exit();
+}
 
 // Check connection
 if ($conn->connect_error) {
@@ -24,15 +30,25 @@ switch ($method) {
         }
         break;
     case 'DELETE':
-        deleteServer($input['id']);
+        if (isset($input['id'])) {
+            deleteServer($input['id']);
+        } else {
+            echo json_encode(['error' => 'Missing server ID']);
+        }
         break;
     case 'PUT':
-        if (isset($input['name'])) {
-            changeServerName($input['id'], $input['name']);
-        } elseif (isset($input['uid'])) {
-            changeServerUid($input['id'], $input['uid']);
-        } elseif (isset($input['server_picture_path'])) {
-            changeServerPicture($input['id'], $input['server_picture_path']);
+        if (isset($input['id'])) {
+            if (isset($input['name'])) {
+                changeServerName($input['id'], $input['name']);
+            } elseif (isset($input['uid'])) {
+                changeServerUid($input['id'], $input['uid']);
+            } elseif (isset($input['server_picture_path'])) {
+                changeServerPicture($input['id'], $input['server_picture_path']);
+            } else {
+                echo json_encode(['error' => 'No valid fields to update']);
+            }
+        } else {
+            echo json_encode(['error' => 'Missing server ID']);
         }
         break;
     default:
@@ -69,11 +85,26 @@ function getServerInfo($id) {
 
 function deleteServer($id) {
     global $conn;
-    $sql = "DELETE FROM servers WHERE id = $id";
+    // Delete related rows in server_member table
+    $sql = "DELETE FROM server_member WHERE server_id = $id";
+    // Debugging line
+    error_log("Executing query: $sql");
     if ($conn->query($sql) === TRUE) {
-        echo json_encode(['success' => 'Server deleted successfully']);
+        // Now delete the server
+        $sql = "DELETE FROM servers WHERE id = $id";
+        // Debugging line
+        error_log("Executing query: $sql");
+        if ($conn->query($sql) === TRUE) {
+            echo json_encode(['success' => 'Server deleted successfully']);
+        } else {
+            // Debugging line
+            error_log("Error deleting server: " . $conn->error);
+            echo json_encode(['error' => 'Error deleting server: ' . $conn->error]);
+        }
     } else {
-        echo json_encode(['error' => 'Error deleting server: ' . $conn->error]);
+        // Debugging line
+        error_log("Error deleting server members: " . $conn->error);
+        echo json_encode(['error' => 'Error deleting server members: ' . $conn->error]);
     }
 }
 
