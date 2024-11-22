@@ -7,14 +7,22 @@ import Profile from './userPanel/Profile';
 import Characters from './userPanel/Characters';
 import Inventory from './userPanel/Inventory';
 import ManageServer from './userPanel/ManageServer';
+import AdminPanel from './userPanel/adminPanel';
 
 const UserPanel = ({ onClose, LogOut }) => {
   const [activeTab, setActiveTab] = useState('Profile');
+  const [user, setUser] = useState(null);
 
-  
-
-
-
+  useEffect(() => {
+    const uid = JSON.parse(localStorage.getItem('morp-login-user'));
+    axios.get(`http://localhost/morpwebsite-master/src/php/checkAdmin.php?uid=${uid}`)
+      .then(response => {
+        setUser(response.data);
+      })
+      .catch(error => {
+        console.error('There was an error fetching the user data!', error);
+      });
+  }, []);
 
   return (
     <>
@@ -38,6 +46,12 @@ const UserPanel = ({ onClose, LogOut }) => {
             <span>Manage Server</span>
           </button>
 
+          {user && user.is_admin == 1 && (
+            <button onClick={() => setActiveTab('AdminPanel')} className={activeTab == 'AdminPanel' ? 'active' : ''}>
+              <span>Admin Panel</span>
+            </button>
+          )}
+
           <button onClick={() => setActiveTab('Settings')} className={activeTab == 'Settings' ? 'active' : ''}>
             <span>Settings</span>
           </button>
@@ -56,6 +70,9 @@ const UserPanel = ({ onClose, LogOut }) => {
           {activeTab === 'ManageServer' && (
             <ManageServer />
           )}
+          {activeTab === 'AdminPanel' && (
+            <AdminPanel />
+          )}
           {activeTab === 'Settings' && (
             <div>
               <h2>Settings</h2>
@@ -71,6 +88,7 @@ const UserPanel = ({ onClose, LogOut }) => {
 
 UserPanel.propTypes = {
   onClose: PropTypes.func.isRequired,
+  LogOut: PropTypes.func.isRequired,
 };
 
 export default UserPanel;

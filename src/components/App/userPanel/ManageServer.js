@@ -28,7 +28,8 @@ const ManageServer = () => {
             await axios({
                 method: 'DELETE',
                 url: 'http://localhost/morpwebsite-master/src/php/manage_servers.php',
-                data: { id: serverId }
+                data: { id: serverId },
+                headers: { 'Content-Type': 'application/json' } // Ensure the correct headers are set
             });
             setServers(servers.filter(server => server.id !== serverId));
         } catch (error) {
@@ -44,7 +45,7 @@ const ManageServer = () => {
                 data: { id: serverId, name: newName }
             });
             setServers(servers.map(server => 
-                server.id === serverId ? { ...server, name: newName } : server
+                server.id === serverId ? { ...server, server_name: newName } : server
             ));
         } catch (error) {
             console.error('Error changing server name:', error);
