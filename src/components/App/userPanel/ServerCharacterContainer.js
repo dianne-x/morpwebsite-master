@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import CharacterTile from "./CharacterTile";
+import CharacterCreation from './CharacterCreation';
 
 const ServerCharacterContainer = (props) => {
     const [characters, setCharacters] = useState([]);
     const userId = JSON.parse(localStorage.getItem('morp-login-user')); // Parse the user ID from localStorage
+    const [characterCreationOpen, setCharacterCreationOpen] = useState(false);
 
     useEffect(() => {
         console.log(`Fetching server members and characters for userId: ${userId} and serverId: ${props.id}`);
@@ -50,30 +52,33 @@ const ServerCharacterContainer = (props) => {
     };
 
     return (
-        <details open={(characters.length > 0 ? true : false)}>
-            <summary>{props.name}</summary>
-            <div className="detail">
-                <ul>
-                    {characters.length > 0 ? (
-                        characters.map(character => (
-                                <CharacterTile 
-                                    key={character.character_id}
-                                    uid={character.character_id}
-                                    name={character.character_name}
-                                    pic_path={character.character_pic_path || 'user.png'}
-                                    verified={character.is_verified}
-                                    handleDelete={handleDelete}
-                                />
-                        ))
-                    ) : (
-                        <li>No characters found</li>
-                    )}
-                </ul>
-                <button className="addnew-char">
-                    + Add new character
-                </button>
-            </div>
-        </details>
+        <>
+            <details open={(characters.length > 0 ? true : false)}>
+                <summary>{props.name}</summary>
+                <div className="detail">
+                    <ul>
+                        {characters.length > 0 ? (
+                            characters.map(character => (
+                                    <CharacterTile 
+                                        key={character.character_id}
+                                        uid={character.character_id}
+                                        name={character.character_name}
+                                        pic_path={character.character_pic_path || 'user.png'}
+                                        verified={character.is_verified}
+                                        handleDelete={handleDelete}
+                                    />
+                            ))
+                        ) : (
+                            <li>No characters found</li>
+                        )}
+                    </ul>
+                    <button className="addnew-char" onClick={() => setCharacterCreationOpen(true)}>
+                        + Add new character
+                    </button>
+                </div>
+            </details>
+            {characterCreationOpen && <CharacterCreation closeForm={() => setCharacterCreationOpen(false)} />}
+        </>
     );
 };
 
