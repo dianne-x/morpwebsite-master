@@ -24,5 +24,6 @@ yarn-debug.log*
 yarn-error.log*
 
 # custom
-/storage/images/*
+/storage/images/serverPictures
+/storage/images/userPictures
 
