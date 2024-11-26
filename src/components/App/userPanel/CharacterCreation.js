@@ -9,7 +9,9 @@ const CharacterCreation = (props) => {
         name: '',
         gender: '',
         species: '',
-        status: ''
+        status: '',
+        user_id: JSON.parse(localStorage.getItem('morp-login-user')), // Add user ID to form data
+        server_id: props.server_id // Add server ID to form data
     });
 
     useEffect(() => {
@@ -41,6 +43,7 @@ const CharacterCreation = (props) => {
         axios.post('http://localhost/morpwebsite-master/src/php/saveCharacter.php', formData)
             .then(response => {
                 alert('Character saved successfully!');
+                props.onCharacterSaved(response.data.character); // Notify parent component
             })
             .catch(error => {
                 console.error('There was an error saving the character!', error);

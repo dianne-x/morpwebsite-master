@@ -1,4 +1,3 @@
-
 <?php
 require 'dbConnection.php'; // Include the database connection file
 
@@ -21,10 +20,26 @@ $name = $data['name'];
 $gender = $data['gender'];
 $species = $data['species'];
 $status = $data['status'];
+$user_id = $data['user_id']; // Get the user ID from the posted data
+$server_id = $data['server_id']; // Get the server ID from the posted data
 
 // Validate the data
-if (empty($name) || empty($gender) || empty($species) || empty($status)) {
+if (empty($name) || empty($gender) || empty($species) || empty($status) || empty($user_id) || empty($server_id)) {
     $response['error'] = "All fields are required.";
+    echo json_encode($response);
+    exit();
+}
+
+// Get the server member ID
+$serverMemberQuery = "SELECT id FROM server_member WHERE user_id = ? AND server_id = ?";
+$stmt = $conn->prepare($serverMemberQuery);
+$stmt->bind_param("si", $user_id, $server_id);
+$stmt->execute();
+$serverMemberResult = $stmt->get_result();
+if ($serverMemberResult->num_rows > 0) {
+    $servermember_id = $serverMemberResult->fetch_assoc()['id'];
+} else {
+    $response['error'] = "Server member not found.";
     echo json_encode($response);
     exit();
 }
@@ -43,9 +58,18 @@ $statusResult = $conn->query($statusQuery);
 $statusId = $statusResult->fetch_assoc()['id'];
 
 // Insert the character data
-$query = "INSERT INTO user_character (character_name, gender_id, species_id, status_id) VALUES ('$name', $genderId, $speciesId, $statusId)";
+$query = "INSERT INTO user_character (character_name, gender_id, species_id, status_id, servermember_id) VALUES ('$name', $genderId, $speciesId, $statusId, $servermember_id)";
 if ($conn->query($query) === TRUE) {
     $response['success'] = "Character saved successfully!";
+    $response['character'] = [
+        'id' => $conn->insert_id,
+        'name' => $name,
+        'gender' => $gender,
+        'species' => $species,
+        'status' => $status,
+        'is_verified' => 0, // Not approved yet
+        'servermember_id' => $servermember_id
+    ];
 } else {
     $response['error'] = "Error: " . $query . "<br>" . $conn->error;
 }

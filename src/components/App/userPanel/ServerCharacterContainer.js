@@ -6,8 +6,9 @@ const ServerCharacterContainer = (props) => {
     const [characters, setCharacters] = useState([]);
     const userId = JSON.parse(localStorage.getItem('morp-login-user')); // Parse the user ID from localStorage
     const [characterCreationOpen, setCharacterCreationOpen] = useState(false);
+    const [refreshCharacters, setRefreshCharacters] = useState(false); // State variable to trigger refresh
 
-    useEffect(() => {
+    const fetchCharacters = () => {
         console.log(`Fetching server members and characters for userId: ${userId} and serverId: ${props.id}`);
         
         // Verify userId
@@ -31,7 +32,11 @@ const ServerCharacterContainer = (props) => {
                 setCharacters(responseData.data);
             })
             .catch(error => console.error('Error fetching server members and characters:', error));
-    }, [props.id, userId]);
+    };
+
+    useEffect(() => {
+        fetchCharacters();
+    }, [props.id, userId, refreshCharacters]); // Add refreshCharacters to the dependency array
 
     const handleDelete = (characterId) => {
         const deleteUrl = `http://localhost/morpwebsite-master/src/php/deleteCharacter.php?characterId=${characterId}`;
@@ -49,6 +54,12 @@ const ServerCharacterContainer = (props) => {
                 setCharacters(characters.filter(character => character.character_id !== characterId));
             })
             .catch(error => console.error('Error deleting character:', error));
+    };
+
+    const handleCharacterSaved = (newCharacter) => {
+        setCharacters([...characters, newCharacter]);
+        setCharacterCreationOpen(false);
+        setRefreshCharacters(!refreshCharacters); // Toggle the state to trigger refresh
     };
 
     return (
@@ -77,7 +88,13 @@ const ServerCharacterContainer = (props) => {
                     </button>
                 </div>
             </details>
-            {characterCreationOpen && <CharacterCreation closeForm={() => setCharacterCreationOpen(false)} />}
+            {characterCreationOpen && (
+                <CharacterCreation 
+                    server_id={props.id} 
+                    closeForm={() => setCharacterCreationOpen(false)} 
+                    onCharacterSaved={handleCharacterSaved} // Pass the handler
+                />
+            )}
         </>
     );
 };
