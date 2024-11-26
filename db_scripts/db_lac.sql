@@ -313,8 +313,8 @@ CREATE TABLE `servers` (
 --
 
 INSERT INTO `servers` (`id`, `uid`, `server_name`, `server_picture_path`, `main_color`, `text_color`, `server_font_style_id`, `stories_id`, `invite_link`) VALUES
-(3, 'femnboy', 'sleepy', '538b966772e40430a84b6ef0a19a279d.png', '#000000', '#FFFFFF', 1, 1, 'morp.ru/femnboy'),
-(4, 'asd', 'asdd', 'f0a3effc087418196c6795d5d30fd6ff.png', '#000000', '#FFFFFF', 1, 1, 'morp.ru/asd');
+(3, 'femnboy', 'sleepy', 'server.png', '#000000', '#FFFFFF', 1, 1, 'morp.ru/femnboy'),
+(4, 'asd', 'asdd', 'server.png', '#000000', '#FFFFFF', 1, 1, 'morp.ru/asd');
 
 -- --------------------------------------------------------
 
