@@ -1,37 +1,59 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../../style/App/Server/ChatWindow.scss';
+import io from 'socket.io-client';
 
-const ChatWindow = ({ serverId }) => {
-  // Example chat messages for different servers
-  const chatMessages = {
-    3: [
-      { user: 'User1', message: 'Welcome to Earth! 🌍' },
-      { user: 'User2', message: 'Excited to chat about Earth!' },
-    ],
-    4: [
-      { user: 'User3', message: 'Rocket server is ready for launch! 🚀' },
-      { user: 'User4', message: 'Let’s explore the cosmos!' },
-    ],
-    // Add more server-specific messages as needed
-    1: [ // Home server messages
-      { user: 'Bot', message: 'Welcome to the Home server! Navigate to choose a server.' },
-    ],
-    // Default messages if no specific server is matched
-    default: [
-      { user: 'Bot', message: 'Select a server to start chatting!' },
-    ],
+const socket = io.connect('http://localhost:3001'); 
+
+const ChatWindow = ({ serverId, servers = [] }) => {
+  const [selectedServer, setSelectedServer] = useState(serverId);
+  const [message, setMessage] = useState('s');
+  const [messageReceived, setMessageReceived] = useState('');
+
+  const handleServerChange = (event) => {
+    setSelectedServer(event.target.value);
   };
 
-  // Determine messages based on serverId
-  const messages = chatMessages[serverId] || chatMessages.default;
+  const handleMessageChange = (event) => {
+    setMessage(event.target.value);
+  };
+
+  const handleSendMessage = () => {
+    socket.emit("send_message", { message });
+    // Handle sending the message
+    console.log(`Message sent to server ${selectedServer}: ${message}`);
+    setMessage(''); // Clear the input after sending the message
+  };
+
+  useEffect(() => {
+    socket.on("receive_message", (data) => {
+      setMessageReceived(data.message);
+    });
+  }, [socket]); 
 
   return (
     <div className="chat-window">
-      {messages.map((msg, index) => (
-        <div key={index} className="message">
-          <strong>{msg.user}:</strong> {msg.message}
-        </div>
-      ))}
+      {/* Chat messages would be displayed here */}
+      
+      <div className="chat-controls">
+        <input
+          type="text"
+          value={message}
+          onChange={(event) => {
+            setMessage(event.target.value);
+          }}
+          placeholder="Type your message..."
+        />
+        <button onClick={handleSendMessage}>Send</button>
+        <select value={selectedServer} onChange={handleServerChange}>
+          {servers.map((server) => (
+            <option key={server.id} value={server.id}>
+              {server.name}
+            </option>
+          ))}
+        </select>
+        <h1>Message:</h1>
+        {messageReceived}
+      </div>
     </div>
   );
 };

@@ -1,0 +1,17 @@
+{
+  "name": "morpwebsite-server",
+  "version": "1.0.0",
+  "description": "Server for MORP website",
+  "main": "index.js",
+  "author": "Kornel",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "nodemon": "^3.1.7",
+    "socket.io": "^4.8.1"
+  }
+}
