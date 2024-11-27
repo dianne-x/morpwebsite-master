@@ -29,3 +29,5 @@ yarn-error.log*
 /storage/images/userPictures/*
 !storage/images/userPictures/user.png
 
+/api/vendor
+/api/.env
