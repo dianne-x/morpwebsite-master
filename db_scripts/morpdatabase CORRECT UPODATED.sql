@@ -21,6 +21,14 @@ SET time_zone = "+00:00";
 -- Adatbázis: `morpdatabase`
 --
 
+DROP DATABASE IF EXISTS morpdatabase;
+
+CREATE DATABASE morpdatabase
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+USE morpdatabase;
+
 -- --------------------------------------------------------
 
 --
@@ -326,8 +334,8 @@ CREATE TABLE `servers` (
 --
 
 INSERT INTO `servers` (`id`, `uid`, `server_name`, `server_picture_path`, `main_color`, `text_color`, `server_font_style_id`, `stories_id`, `invite_link`) VALUES
-(3, 'femboypenisstroker', 'doggyadni', '538b966772e40430a84b6ef0a19a279d.png', '#000000', '#FFFFFF', 1, 1, 'morp.ru/femboypenisstroker'),
-(5, 'whatwronk2', 'whatwronk', '624090a319c4c888dbddce777246f1e4.png', '#000000', '#FFFFFF', 1, 1, 'morp.ru/whatwronk2');
+(3, 'femboypenisstroker', 'doggyadni', 'server.png', '#000000', '#FFFFFF', 1, 1, 'morp.ru/femboypenisstroker'),
+(5, 'whatwronk2', 'whatwronk', 'server.png', '#000000', '#FFFFFF', 1, 1, 'morp.ru/whatwronk2');
 
 -- --------------------------------------------------------
 
@@ -417,7 +425,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `uid`, `name`, `email`, `password`, `nickname`, `gender_id`, `profile_pic_path`, `language_id`, `thread_text`, `thread_text_color`, `thread_color`, `status_id`, `about_me`, `about_me_color`, `bio_main_color`, `bio_text_color`, `is_admin`, `verified`) VALUES
-(1, '2fe88b43124bf5bb3ec1401eef8ac986', 'mate', 'mate.dbvari@gmail.com', '$2y$10$wXaddLKSiNE7Nf45O0T4c.9LGRyown80wwyYeWN.Ce9pj0BQ8yTvC', '', 1, 'd7dd5c036ca0a4aff32cbd0b871d51b6.png', 1, '', '#000000', '#FFFFFF', 1, '', '', '#000000', '#FFFFFF', 1, 1),
+(1, '2fe88b43124bf5bb3ec1401eef8ac986', 'mate', 'mate.dbvari@gmail.com', '$2y$10$wXaddLKSiNE7Nf45O0T4c.9LGRyown80wwyYeWN.Ce9pj0BQ8yTvC', '', 1, 'user.png', 1, '', '#000000', '#FFFFFF', 1, '', '', '#000000', '#FFFFFF', 1, 1),
 (2, 'f3dbf20964df6e1f1c9edfd356762b4a', 'hxpe', 'hxpeasd@gmail.com', '$2y$10$y6AR4z/pHcLJVZVIM6MNkOX0flotg.CGAVppUOMC.EU4YRlWHe3Tm', '', 1, 'user.png', 1, '', '#000000', '#FFFFFF', 1, '', '', '#000000', '#FFFFFF', 0, 1),
 (3, '0db39a3e19d97900be768c8b24b46a4f', 'noob', 'nonadmin@gmail.com', '$2y$10$8ja/xydsNT7DmjF3HHe3ReyyzG9QXkEcjBATT2hN3uBh0OfA0.0Ke', '', 1, 'user.png', 1, '', '#000000', '#FFFFFF', 1, '', '', '#000000', '#FFFFFF', 0, 1),
 (4, 'b0f1c66cd0fcfb2348515a39bac355f7', 'admintesz', 'adminteszt@gmail.com', '$2y$10$x/y3INSMZ5WnQzldwLQPqO3c5uobiZowFyruTw17h/g7gVNywHw4O', '', 1, 'user.png', 1, '', '#000000', '#FFFFFF', 1, '', '', '#000000', '#FFFFFF', 0, 1);
