@@ -52,6 +52,7 @@ const ServerCharacterContainer = (props) => {
                 console.log('Delete Response:', responseData);
                 // Remove the deleted character from the state
                 setCharacters(characters.filter(character => character.character_id !== characterId));
+                setRefreshCharacters(!refreshCharacters); // Toggle the state to trigger refresh
             })
             .catch(error => console.error('Error deleting character:', error));
     };
@@ -70,9 +71,11 @@ const ServerCharacterContainer = (props) => {
                     <ul>
                         {characters.length > 0 ? (
                             characters.map(character => (
+                                console.log(character),
+                                
                                     <CharacterTile 
-                                        key={character.character_id}
-                                        uid={character.character_id}
+                                        key={character.id}
+                                        uid={character.id}
                                         name={character.character_name}
                                         pic_path={character.character_pic_path || 'user.png'}
                                         verified={character.is_verified}
