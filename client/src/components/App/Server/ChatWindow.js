@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import '../../../style/App/Server/ChatWindow.scss';
 import io from 'socket.io-client';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+
 
 const socket = io.connect('http://localhost:3001'); 
 
@@ -33,8 +36,23 @@ const ChatWindow = ({ serverId, servers = [] }) => {
   return (
     <div className="chat-window">
       {/* Chat messages would be displayed here */}
-      
-      <div className="chat-controls">
+    
+      <div className='room-details-wrapper'>
+        <h1>Room name</h1>
+      </div>
+
+      <div className='chat-messages-wrapper'>
+        {messageReceived}
+      </div>
+
+      <div className='chat-input-wrapper'>
+        <select value={selectedServer} onChange={handleServerChange}>
+          {servers.map((server) => (
+            <option key={server.id} value={server.id}>
+              {server.name}
+            </option>
+          ))}
+        </select>
         <input
           type="text"
           value={message}
@@ -43,17 +61,12 @@ const ChatWindow = ({ serverId, servers = [] }) => {
           }}
           placeholder="Type your message..."
         />
-        <button onClick={handleSendMessage}>Send</button>
-        <select value={selectedServer} onChange={handleServerChange}>
-          {servers.map((server) => (
-            <option key={server.id} value={server.id}>
-              {server.name}
-            </option>
-          ))}
-        </select>
-        <h1>Message:</h1>
-        {messageReceived}
+        <button onClick={handleSendMessage}>
+          <FontAwesomeIcon icon={faPaperPlane} />
+        </button>
+        
       </div>
+      
     </div>
   );
 };
