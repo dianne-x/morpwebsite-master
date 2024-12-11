@@ -12,13 +12,16 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$serverMemberId = $_GET['serverMemberId'];
+$serverId = $_GET['serverId'];
 
-$sql = "SELECT uc.id, uc.character_name, uc.character_pic_path, uc.is_verified
-        FROM User_Character uc
-        WHERE uc.servermember_id = ?";
+$sql = "
+    SELECT uc.id, uc.character_name, uc.is_verified 
+    FROM user_character uc
+    JOIN server_member sm ON uc.servermember_id = sm.id
+    WHERE sm.server_id = ?
+";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $serverMemberId);
+$stmt->bind_param("i", $serverId);
 $stmt->execute();
 $result = $stmt->get_result();
 

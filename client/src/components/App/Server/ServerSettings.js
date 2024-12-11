@@ -5,7 +5,7 @@ import WantedElements from './ServerSettings/WantedElements';
 const ServerSettings = (props) => {
     const [activeTab, setActiveTab] = useState('CharactersControl');
 
-
+    console.log('servd', props.server)
     return (
         <>
             <div className="overlay"></div>
@@ -23,7 +23,8 @@ const ServerSettings = (props) => {
                 </div>
                 <div className="content">
                     {activeTab === 'CharactersControl' && (
-                        <CharacterControlPanel />
+                        <CharacterControlPanel serverId={props.server.id}/>
+                        
                     )}
                     {activeTab === 'CharacterWantedElements' && (
                         <WantedElements />

@@ -21,7 +21,7 @@ const Server = ({ selectedServer, sections, users }) => {
                 <ServerInfo server={selectedServer} users={users} openServerSettings={openServerSettings} />
     
             </div>
-            { isSettingsOpen && <ServerSettings onCloseForm={() => setIsSettingsOpen(false)} /> }
+            { isSettingsOpen && <ServerSettings server={selectedServer} onCloseForm={() => setIsSettingsOpen(false)} /> }
         </>
     );
 };
