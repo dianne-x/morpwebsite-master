@@ -7,7 +7,7 @@ import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 const socket = io.connect('http://localhost:3001'); 
 
-const ChatWindow = ({ serverId, servers = [] }) => {
+const ChatWindow = ({ serverId, servers = [], roomDetails }) => {
   const [selectedServer, setSelectedServer] = useState(serverId);
   const [message, setMessage] = useState('s');
   const [messageReceived, setMessageReceived] = useState('');
@@ -35,38 +35,40 @@ const ChatWindow = ({ serverId, servers = [] }) => {
 
   return (
     <div className="chat-window">
-      {/* Chat messages would be displayed here */}
-    
-      <div className='room-details-wrapper'>
-        <h1>Room name</h1>
-      </div>
+      {roomDetails ? (
+        <>
+          <div className='room-details-wrapper'>
+            <h1>{roomDetails.room_name}</h1>
+          </div>
 
-      <div className='chat-messages-wrapper'>
-        {messageReceived}
-      </div>
+          <div className='chat-messages-wrapper'>
+            {messageReceived}
+          </div>
 
-      <div className='chat-input-wrapper'>
-        <select value={selectedServer} onChange={handleServerChange}>
-          {servers.map((server) => (
-            <option key={server.id} value={server.id}>
-              {server.name}
-            </option>
-          ))}
-        </select>
-        <input
-          type="text"
-          value={message}
-          onChange={(event) => {
-            setMessage(event.target.value);
-          }}
-          placeholder="Type your message..."
-        />
-        <button onClick={handleSendMessage}>
-          <FontAwesomeIcon icon={faPaperPlane} />
-        </button>
-        
-      </div>
-      
+          <div className='chat-input-wrapper'>
+            <select value={selectedServer} onChange={handleServerChange}>
+              {servers.map((server) => (
+                <option key={server.id} value={server.id}>
+                  {server.name}
+                </option>
+              ))}
+            </select>
+            <input
+              type="text"
+              value={message}
+              onChange={(event) => {
+                setMessage(event.target.value);
+              }}
+              placeholder="Type your message..."
+            />
+            <button onClick={handleSendMessage}>
+              <FontAwesomeIcon icon={faPaperPlane} />
+            </button>
+          </div>
+        </>
+      ) : (
+        <h1>Select or create a room first</h1>
+      )}
     </div>
   );
 };

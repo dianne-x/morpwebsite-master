@@ -1,21 +1,37 @@
+@import "../../colors";
+
 .app-container {
   .server-main-content {
     .channel-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 20px;
 
-      
 
-
-      .channel-item {
-        padding: 10px;
-        margin-bottom: 5px;
-        background-color: #333;
-        border-radius: 4px;
+      .section-item {
+        display: flex;
+        flex-direction: column;
         cursor: pointer;
-      
-        &:hover {
-          background-color: #444;
+
+        ul {
+          
+
+          li {
+            grid-column: 2;
+            list-style-type: none;
+            position: relative;
+
+            &:before {
+              content: "";
+              position: absolute;
+              background-color: $text-color;
+            }
+
+          }
         }
       }
+      
     }
     
 
