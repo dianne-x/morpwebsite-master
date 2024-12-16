@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../../style/App/Server/ChannelList.scss';
 
-const ChannelList = ({ sections, changeSelectedRoomId }) => {
+const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId }) => {
   return (
     <div className="channel-list server-side">
       <h3>Sections and Rooms:</h3>
@@ -14,15 +14,25 @@ const ChannelList = ({ sections, changeSelectedRoomId }) => {
               {section.rooms.length > 0 ? (
                 section.rooms.map((room, roomIndex) => (
                   <li key={roomIndex} className="room-item">
-                    <button onClick={() => changeSelectedRoomId(room.id)}>{room.room_name}</button>
+                    <button 
+                      onClick={() => changeSelectedRoomId(room.id)}
+                      className={room.id === selectedRoomId ? 'selected' : ''}>
+                        {room.room_name}
+                    </button>
                   </li>
                 ))
               ) : (
                 <li className="room-item">No rooms available</li>
               )}
+              <li>
+                <button className='addnew'>
+                  <span>+ Add new room</span>
+                </button>
+              </li>
             </ul>
           </details>
         ))}
+        <button className='addnew'><span>+ Add new section</span></button>
       </div>
     </div>
   );

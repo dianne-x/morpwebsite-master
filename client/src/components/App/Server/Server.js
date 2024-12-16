@@ -49,7 +49,7 @@ const Server = ({ selectedServer, sections, users }) => {
     return (
         <>
             <div className="server-main-content">
-                <ChannelList sections={sections} changeSelectedRoomId={changeSelectedRoomId} />
+                <ChannelList sections={sections} changeSelectedRoomId={changeSelectedRoomId} selectedRoomId={selectedRoomId} />
                 <ChatWindow serverId={selectedServer.id} roomDetails={getRoomDetails()} />
                 <ServerInfo server={selectedServer} users={users} openServerSettings={openServerSettings} />
             </div>

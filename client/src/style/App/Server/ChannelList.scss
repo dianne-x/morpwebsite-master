@@ -8,29 +8,87 @@
       gap: 10px;
       padding: 20px;
 
-
-      .section-item {
-        display: flex;
-        flex-direction: column;
+      button {
         cursor: pointer;
+        width: 100%;
+        outline: none;
+        border: none;
+        padding: 5px 10px;
+        text-align: left;
+        
 
-        ul {
+        background: none;
+        color: $text-color;
+
+        &.selected {
+          border-left: 2px solid $third-color;
+        }
+
+        
+        &:not(.addnew):hover,
+        &.selected {
+          background-color: rgba($color: $third-color, $alpha: .1);
           
+        }
 
-          li {
-            grid-column: 2;
-            list-style-type: none;
-            position: relative;
+        &.addnew {
+          width: fit-content;
+          position: relative;
+          z-index: 2;
 
-            &:before {
-              content: "";
-              position: absolute;
-              background-color: $text-color;
-            }
+          span {
+            color: $third-color;
+            z-index: 3;
+            position: relative; // Ensure span is positioned correctly
+            transition: .15s ease;
+          }
+          
+          &::before {
+            transition: .3s ease;
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 100%;
+            background: $third-color;
+            z-index: 1; // Ensure ::before is behind the span
+          }
 
+          &:hover::before {
+            right: 0;
+          }
+
+          &:hover span {
+            color: $main-color;
           }
         }
       }
+
+      .list-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .section-item {
+          display: flex;
+          flex-direction: column;
+          cursor: pointer;
+          
+  
+          ul {
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            //gap: 5px;
+  
+            li {
+              margin-left: 20px;
+            }
+          }
+        }
+      }
+
       
     }
     
