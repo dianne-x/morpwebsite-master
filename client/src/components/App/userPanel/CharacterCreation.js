@@ -16,10 +16,11 @@ const CharacterCreation = (props) => {
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/getCharacterCreation.php`)
+            
             .then(response => {
-                setGenders(response.data.genders);
-                setSpecies(response.data.species);
-                setStatuses(response.data.statuses);
+                setGenders(response.data.genders|| []);
+                setSpecies(response.data.species|| []);
+                setStatuses(response.data.statuses|| []);
             })
             .catch(error => {
                 console.error('There was an error fetching the character data!', error);
