@@ -21,6 +21,20 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId 
     setOpenSectionCreationId(false);
   };
 
+  const handleRoomCreated = (newRoom) => {
+    const updatedSections = sectionList.map(section => {
+      if (section.id === newRoom.section_id) {
+        return {
+          ...section,
+          rooms: [...section.rooms, newRoom]
+        };
+      }
+      return section;
+    });
+    setSectionList(updatedSections);
+    setOpenRoomCreationId(null);
+  };
+
   return (
     <div className="channel-list server-side">
       <h3>Sections and Rooms:</h3>
@@ -47,7 +61,7 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId 
                 <button className='addnew' onClick={() => handleOpenRoomCreation(section.id)}>
                   <span>+ Add new room</span>
                 </button>
-                {openRoomCreationId === section.id && <RoomCreation sectionId={section.id} />}
+                {openRoomCreationId === section.id && <RoomCreation sectionId={section.id} onRoomCreated={handleRoomCreated} />}
               </li>
             </ul>
           </details>

@@ -1,16 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 /*import "../../../style/App/Server/RoomCreation.scss";*/
 
-const RoomCreation = ({ sectionId }) => {
-    return (
-        <div className="room-creation">
-        <form>
-            <label htmlFor="roomName">Room Name:</label>
-            <input type="text" id="roomName" name="roomName" />
-            <button type="submit">Create Room</button>
-        </form>
-        </div>
-    );
-    };
+const RoomCreation = ({ sectionId, onRoomCreated }) => {
+  const [roomName, setRoomName] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!sectionId) {
+      console.error("Section ID is missing");
+      return;
+    }
+    try {
+      const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/create_room.php`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          section_id: sectionId,
+          room_name: roomName,
+        }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        onRoomCreated(data);
+        setRoomName('');
+      } else {
+        console.error("Error creating room:", data);
+      }
+    } catch (error) {
+      console.error("Error creating room:", error);
+    }
+  };
+
+  return (
+    <div className="room-creation">
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="roomName">Room name:</label>
+        <input
+          type="text"
+          id="roomName"
+          name="roomName"
+          value={roomName}
+          onChange={(e) => setRoomName(e.target.value)}
+        />
+        <button type="submit">Create Room</button>
+      </form>
+    </div>
+  );
+};
 
 export default RoomCreation;
