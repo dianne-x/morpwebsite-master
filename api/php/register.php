@@ -1,6 +1,9 @@
 <?php
 include 'dbConnection.php'; // Include the database connection file
 include 'strongPassword.php'; // Include the strong password function
+include 'mailConfig.php'; // Include the mail configuration file
+
+
 // Add CORS headers
 header('Access-Control-Allow-Origin: http://localhost:3000'); // Allow requests from your React app
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS'); // Allow specific HTTP methods
@@ -87,15 +90,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("ssss", $uid, $name, $email, $hashedPassword);
         
         if ($stmt->execute()) {
-            /*mail(
-                $email, 
-                'MORP - Verify your email', 
-                "Click the following link to verify your email: http://localhost/morpwebsite-master/src/php/verification.php?uid=$uid"
-            ); */
-
-
-            // Send success message if user is successfully registered
-            echo json_encode(['success' => true, 'message' => 'Registration successful.']);
+            try {
+                sendMail(
+                    $email, 
+                    'MORP - Verify your email', 
+                    "Click the following link to verify your email: <a href='http://localhost/morpwebsite-master/api/php/verification.php?uid=$uid'>confirm your verification</a>"
+                );
+                // Send success message if user is successfully registered
+                echo json_encode(['success' => true, 'message' => 'Registration successful.']);
+            } catch (Exception $e) {
+                echo json_encode(['success' => false, 'message' => 'Registration successful, but email could not be sent.']);
+            }
         } else {
             // Handle database insertion error
             echo json_encode(['success' => false, 'message' => 'Database error. Please try again.']);

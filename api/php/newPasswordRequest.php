@@ -1,5 +1,7 @@
 <?php
 include 'dbConnection.php'; // Include the database connection file
+include 'mailConfig.php'; // Include the mail configuration file
+
 // Add CORS headers
 header('Access-Control-Allow-Origin: http://localhost:3000'); // Allow requests from your React app
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS'); // Allow specific HTTP methods
@@ -34,18 +36,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $uid = $row['uid'];
         $verified = $row['verified'];
 
-        if ($verified !== '1') {
+        if ($verified != '1') {
             echo json_encode(['success' => false, 'message' => 'Email not verified.']);
             exit;
         }
 
         // Send email to user
         $subject = "MORP - Password change request";
-        $message = "You have requested a password change. Click the link below to reset your password: http://localhost/morpwebsite-master/src/php/passwordchange.php?uid=$uid";
-        $headers = "From: MORP team";
+        $message = "You have requested a password change. Click the link below to reset your password: <a href='http://localhost/morpwebsite-master/api/php/passwordchange.php?uid=$uid'>here</a>";
 
         // Use the mail function to send the email
-        //mail($email, $subject, $message, $headers);
+        sendMail($email, $subject, $message);
         echo json_encode(['success' => true, 'message' => 'Confirmation email sent.']);
     } else {
         // Email does not exist
