@@ -1,17 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../../style/App/Server/ChannelList.scss';
+import RoomCreation from './RoomCreation';
+import SectionCreation from './SectionCreation';
 
-const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId }) => {
+const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId }) => {
+  const [openRoomCreationId, setOpenRoomCreationId] = useState(null);
+  const [openSectionCreationId, setOpenSectionCreationId] = useState(false);
+  const [sectionList, setSectionList] = useState(sections);
+
+  useEffect(() => {
+    setSectionList(sections);
+  }, [sections]);
+
+  const handleOpenRoomCreation = (sectionId) => {
+    setOpenRoomCreationId(sectionId);
+  };
+
+  const handleSectionCreated = (newSection) => {
+    setSectionList([...sectionList, newSection]);
+    setOpenSectionCreationId(false);
+  };
+
   return (
     <div className="channel-list server-side">
       <h3>Sections and Rooms:</h3>
       <div className='list-wrapper'>
-        {sections.map((section, sectionIndex) => (
+        {sectionList.map((section, sectionIndex) => (
           <details key={sectionIndex} className="section-item" open={true}>
             <summary>{section.section_name}</summary>
             <ul>
               <div className='line'></div>
-              {section.rooms.length > 0 ? (
+              {section.rooms && section.rooms.length > 0 ? (
                 section.rooms.map((room, roomIndex) => (
                   <li key={roomIndex} className="room-item">
                     <button 
@@ -25,14 +44,18 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId }) => {
                 <li className="room-item">No rooms available</li>
               )}
               <li>
-                <button className='addnew'>
+                <button className='addnew' onClick={() => handleOpenRoomCreation(section.id)}>
                   <span>+ Add new room</span>
                 </button>
+                {openRoomCreationId === section.id && <RoomCreation sectionId={section.id} />}
               </li>
             </ul>
           </details>
         ))}
-        <button className='addnew'><span>+ Add new section</span></button>
+        <button className='addnew' onClick={() => setOpenSectionCreationId(true)}>
+          <span>+ Add new section</span>
+        </button>
+        {openSectionCreationId && <SectionCreation serverId={serverId} onSectionCreated={handleSectionCreated} />}
       </div>
     </div>
   );

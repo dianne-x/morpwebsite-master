@@ -4,6 +4,7 @@ import ChatWindow from './ChatWindow';
 import ServerInfo from './ServerInfo';
 import '../../../style/App/Server/Server.scss';
 import ServerSettings from './ServerSettings';
+import SectionCreation from './SectionCreation';
 
 const Server = ({ selectedServer, sections, users }) => {
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -49,11 +50,12 @@ const Server = ({ selectedServer, sections, users }) => {
     return (
         <>
             <div className="server-main-content">
-                <ChannelList sections={sections} changeSelectedRoomId={changeSelectedRoomId} selectedRoomId={selectedRoomId} />
+                <ChannelList sections={sections} changeSelectedRoomId={changeSelectedRoomId} selectedRoomId={selectedRoomId} serverId={selectedServer.id} />
                 <ChatWindow serverId={selectedServer.id} roomDetails={getRoomDetails()} />
                 <ServerInfo server={selectedServer} users={users} openServerSettings={openServerSettings} />
             </div>
             { isSettingsOpen && <ServerSettings server={selectedServer} onCloseForm={() => setIsSettingsOpen(false)} /> }
+            <SectionCreation serverId={selectedServer.id} />
         </>
     );
 };
