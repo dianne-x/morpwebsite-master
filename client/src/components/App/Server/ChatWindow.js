@@ -9,7 +9,7 @@ const socket = io.connect('http://localhost:3001');
 
 const ChatWindow = ({ serverId, servers = [], roomDetails }) => {
   const [selectedServer, setSelectedServer] = useState(serverId);
-  const [message, setMessage] = useState('s');
+  const [message, setMessage] = useState('');
   const [messageReceived, setMessageReceived] = useState('');
 
   const handleServerChange = (event) => {
