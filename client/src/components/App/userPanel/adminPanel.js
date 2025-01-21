@@ -1,20 +1,36 @@
 import React, { useState } from 'react';
+import ManageUsersModal from './ManagaeUsersModal';
+import ManageServersModal from './ManageServersModal';
 
 const AdminPanel = () => {
     const [users, setUsers] = useState([]);
     const [servers, setServers] = useState([]);
+    const [isManageUsersModalOpen, setIsManageUsersModalOpen] = useState(false);
+    const [isManageServersModalOpen, setIsManageServersModalOpen] = useState(false);
 
-    const handleAddUser = () => {
-        // Logic to add a user
+
+    //User Manage Functions
+    const handleManageUser = () => {
+        setIsManageUsersModalOpen(true);
     };
+
+    const handleCloseManageUsersModal = () => {
+        setIsManageUsersModalOpen(false);
+    }
 
     const handleRemoveUser = (userId) => {
         // Logic to remove a user
     };
 
-    const handleAddServer = () => {
-        // Logic to add a server
+
+    //Server Manage Functions 🐱‍👤🐱‍👤
+    const handleManageServer = () => {
+        setIsManageServersModalOpen(true);
     };
+
+    const handleCloseManageServersModal = () => {
+        setIsManageServersModalOpen(false);
+        }
 
     const handleRemoveServer = (serverId) => {
         // Logic to remove a server
@@ -25,7 +41,7 @@ const AdminPanel = () => {
             <h1>Admin Panel</h1>
             <section>
                 <h2>Manage Users</h2>
-                <button onClick={handleAddUser}>Add User</button>
+                <button onClick={handleManageUser}>Manage WebApp Users</button>
                 <ul>
                     {users.map(user => (
                         <li key={user.id}>
@@ -36,8 +52,8 @@ const AdminPanel = () => {
                 </ul>
             </section>
             <section>
-                <h2>Manage Servers</h2>
-                <button onClick={handleAddServer}>Add Server</button>
+                <h2>Manage WebApp Servers</h2>
+                <button onClick={handleManageServer}>Add Server</button>
                 <ul>
                     {servers.map(server => (
                         <li key={server.id}>
@@ -47,6 +63,23 @@ const AdminPanel = () => {
                     ))}
                 </ul>
             </section>
+            {isManageUsersModalOpen && (
+                <ManageUsersModal
+                users={users}
+                onClose={handleCloseManageUsersModal}
+                onRemoveUser={handleRemoveUser}
+                />
+        
+            )}
+
+
+            {isManageServersModalOpen && (
+                <ManageServersModal
+                servers={servers}
+                onClose={handleCloseManageServersModal}
+                onRemoveServer={handleRemoveServer}
+                />
+            )}
         </div>
     );
 };
