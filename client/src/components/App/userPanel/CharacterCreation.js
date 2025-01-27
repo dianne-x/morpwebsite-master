@@ -16,11 +16,13 @@ const CharacterCreation = (props) => {
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/getCharacterCreation.php`)
-            
             .then(response => {
+                console.log('API response:', response.data); // Debugging line
                 setGenders(response.data.genders|| []);
                 setSpecies(response.data.species|| []);
                 setStatuses(response.data.statuses|| []);
+                console.log('Genders:', response.data.genders); // Debugging line
+                console.log('Species:', response.data.species); // Debugging line
             })
             .catch(error => {
                 console.error('There was an error fetching the character data!', error);
@@ -73,8 +75,8 @@ const CharacterCreation = (props) => {
                     Species:
                     <select name="species" value={formData.species} onChange={handleChange} required>
                         <option value="">Select Species</option>
-                        {species.map((specie) => (
-                            <option key={specie.id} value={specie.specie}>{specie.specie}</option>
+                        {species.map((species) => (
+                            <option key={species.id} value={species.species}>{species.species}</option>
                         ))}
                     </select>
                 </label>

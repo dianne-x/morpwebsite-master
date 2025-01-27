@@ -57,19 +57,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Generate the invite link
                 $inviteLink = 'morp.ru/' . $uid;
 
+                // Ensure server_font_style_id is set correctly
+                $defaultFontStyleId = 1; // Assuming 1 is the default font style ID
+
                 // Start a transaction
                 $conn->begin_transaction();
 
                 try {
                     // Prepare a SQL statement to insert the new server
-                    $stmt = $conn->prepare("INSERT INTO Servers (uid, server_name, server_picture_path, invite_link) VALUES (?, ?, ?, ?)");
+                    $stmt = $conn->prepare("INSERT INTO Servers (uid, server_name, server_picture_path, invite_link, server_font_style_id) VALUES (?, ?, ?, ?, ?)");
                     
                     if ($stmt === false) {
                         throw new Exception('Failed to prepare the query: ' . $conn->error);
                     }
 
                     // Bind the parameters to the SQL query
-                    $stmt->bind_param('ssss', $uid, $serverName, $newFileName, $inviteLink);
+                    $stmt->bind_param('ssssi', $uid, $serverName, $newFileName, $inviteLink, $defaultFontStyleId);
                     
                     // Execute the query
                     if (!$stmt->execute()) {

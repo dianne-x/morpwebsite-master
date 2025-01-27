@@ -27,7 +27,7 @@ if ($result->num_rows > 0) {
 }
 
 // Fetch species
-$query = "SELECT id, specie FROM character_species";
+$query = "SELECT id, species FROM character_species"; // Use 'species' as per the database column name
 $result = $conn->query($query);
 if ($result->num_rows > 0) {
     $species = array();

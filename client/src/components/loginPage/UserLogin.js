@@ -7,20 +7,20 @@ import { useNavigate } from 'react-router-dom';
 const UserLogin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
     const [errorMessage, setErrorMessage] = useState('');
     const [loggedIn, setLoggedIn] = useState(checkLogin());
 
     function checkLogin() {
         return localStorage.getItem('morp-login-user') !== null && localStorage.getItem('morp-login-admin') !== 'undefined';
     }
+
     const navigate = useNavigate();
 
     useEffect(() => {
         if (loggedIn) {
             navigate('/app');
         }
-    }, [loggedIn]);
+    }, [loggedIn, navigate]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
