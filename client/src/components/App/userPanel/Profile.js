@@ -18,7 +18,7 @@ const Profile = (props) => {
         const { name, value } = e.target;
         setUserData({
             ...userData,
-            [name]: value,
+            [name]: value || '', // Ensure value is not null
         });
     };
 
@@ -119,7 +119,7 @@ const Profile = (props) => {
                 <input
                     type="text"
                     name="name"
-                    value={userData.name}
+                    value={userData.name || ''} // Ensure value is not null
                     onChange={handleInputChange}
                 />
                 <label>
@@ -128,7 +128,7 @@ const Profile = (props) => {
                 <input
                     type="email"
                     name="email"
-                    value={userData.email}
+                    value={userData.email || ''} // Ensure value is not null
                     onChange={handleInputChange}
                 />
                 <label>
@@ -137,7 +137,7 @@ const Profile = (props) => {
                 <input
                     type="text"
                     name="nickname"
-                    value={userData.nickname}
+                    value={userData.nickname || ''} // Ensure value is not null
                     onChange={handleInputChange}
                 />
                 <label>
@@ -146,7 +146,7 @@ const Profile = (props) => {
                 <input
                     type="text"
                     name="about_me"
-                    value={userData.about_me}
+                    value={userData.about_me || ''} // Ensure value is not null
                     onChange={handleInputChange}
                 />
                 
