@@ -34,6 +34,8 @@ const JoinServerForm = () => {
         body: JSON.stringify({ inviteLink: inviteLink, userId: userId })
       });
 
+      console.log('Response:', response);
+
       const data = await response.json();
 
       if (data.success) {
