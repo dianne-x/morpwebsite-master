@@ -48,6 +48,51 @@ if ($result->num_rows > 0) {
     $response['statuses'] = $statuses;
 }
 
+$query = "SELECT id, affilation FROM affilation";
+$result = $conn->query($query);
+if ($result->num_rows > 0) {
+    $affilations = array();
+    while($row = $result->fetch_assoc()) {
+        $affilations[] = $row;
+    }
+    $response['affilations'] = $affilations;
+}
+error_log(print_r($affilations, true));
+
+$query = "SELECT id, nationality FROM nationality";
+$result = $conn->query($query);
+if ($result->num_rows > 0) {
+    $nationalities = array();
+    while($row = $result->fetch_assoc()) {
+        $nationalities[] = $row;
+    }
+    $response['nationalities'] = $nationalities;
+}
+
+$query = "SELECT id, occupation FROM occupation";
+$result = $conn->query($query);
+if ($result->num_rows > 0) {
+    $occupations = array();
+    while($row = $result->fetch_assoc()) {
+        $occupations[] = $row;
+    }
+    $response['occupations'] = $occupations;
+}
+
+
+$query = "SELECT id, fc_type FROM character_fc";
+$result = $conn->query($query);
+if ($result->num_rows > 0) {
+    $fc_types = array();
+    while($row = $result->fetch_assoc()) {
+        $fc_types[] = $row;
+    }
+    $response['fc_types'] = $fc_types;
+}
+
+error_log("From the getCharacterCreation.php file");
+error_log(print_r($fc_types, true));
+
 echo json_encode($response);
 
 $conn->close();

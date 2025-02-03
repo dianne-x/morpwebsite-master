@@ -22,7 +22,12 @@ const ServerCharacterContainer = (props) => {
         
         // Fetch server members and characters for the logged-in user
         fetch(fetchUrl)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(responseData => {
                 if (responseData.error) {
                     console.error('Error:', responseData.error);
@@ -51,7 +56,7 @@ const ServerCharacterContainer = (props) => {
                 }
                 console.log('Delete Response:', responseData);
                 // Remove the deleted character from the state
-                setCharacters(characters.filter(character => character.character_id !== characterId));
+                setCharacters(characters.filter(character => character.id !== characterId));
                 setRefreshCharacters(!refreshCharacters); // Toggle the state to trigger refresh
             })
             .catch(error => console.error('Error deleting character:', error));
@@ -71,8 +76,7 @@ const ServerCharacterContainer = (props) => {
                     <ul>
                         {characters.length > 0 ? (
                             characters.map(character => (
-                                console.log(character),
-                                
+                                character && character.id ? (
                                     <CharacterTile 
                                         key={character.id}
                                         uid={character.id}
@@ -81,6 +85,7 @@ const ServerCharacterContainer = (props) => {
                                         verified={character.is_verified}
                                         handleDelete={handleDelete}
                                     />
+                                ) : null
                             ))
                         ) : (
                             <li>No characters found</li>
