@@ -32,13 +32,13 @@ const CharacterCreation = (props) => {
                 setAffilations(response.data.affilations || []);
                 setNationalities(response.data.nationalities || []);
                 setOccupations(response.data.occupations || []);
-                setFcTypes(response.data.fcTypes || []); // Correct the state name to fcTypes
+                setFcTypes(response.data.fc_types || []); // Correct the state name to fc_types
                 console.log('Genders:', response.data.genders); // Debugging line
                 console.log('Species:', response.data.species); // Debugging line
                 console.log('Affilations:', response.data.affilations); // Debugging line
                 console.log('Nationalities:', response.data.nationalities); // Debugging line
                 console.log('Occupations:', response.data.occupations); // Debugging line
-                console.log('FcTypes:', response.data.fcTypes); // Debugging line
+                console.log('FcTypes:', response.data.fc_types); // Debugging line
             })
             .catch(error => {
                 console.error('There was an error fetching the character data!', error);
@@ -58,6 +58,8 @@ const CharacterCreation = (props) => {
             alert('Please fill out all required fields.');
             return;
         }
+
+        console.log('Form data:', formData); // Debugging line
 
         axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/saveCharacter.php`, formData)
             .then(response => {

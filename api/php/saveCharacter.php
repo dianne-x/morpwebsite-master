@@ -178,7 +178,7 @@ if ($statusResult && $statusResult->num_rows > 0) {
 // Insert the character data
 // Insert the character data
 error_log("About to execute insert query."); // Log before executing the insert query
-$query = "INSERT INTO user_character (character_name, gender_id, species_id, status_id, affilation_id, nationality_id, occupation_id, fctype_id, servermember_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$query = "INSERT INTO user_character (character_name, gender_id, species_id, status_id, affilation_id, nationality_id, occupation_id, fc_type_id, servermember_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($query);
 if (!$stmt) {
     error_log("Failed to prepare statement: " . $conn->error); // Log the error
@@ -186,7 +186,7 @@ if (!$stmt) {
     echo json_encode($response);
     exit();
 }
-$stmt->bind_param("siiiiiiii", $name, $genderId, $speciesId, $statusId, $affilationId, $nationalityId, $occupationId, $fctypeId $servermember_id);
+$stmt->bind_param("siiiiiiii", $name, $genderId, $speciesId, $statusId, $affilationId, $nationalityId, $occupationId, $fctypeId, $servermember_id);
 
 // Log the values being inserted
 error_log("Inserting character with values: Name: $name, Gender ID: $genderId, Species ID: $speciesId, Status ID: $statusId, Server Member ID: $servermember_id"); // LOGGING VALUES FOR INSERT BY BLACKBOX
