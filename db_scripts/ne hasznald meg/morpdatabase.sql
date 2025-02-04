@@ -110,7 +110,7 @@ CREATE TABLE Users (
 );
 
 CREATE TABLE servers (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     uid VARCHAR(255),
     server_name VARCHAR(255),
     server_picture_path VARCHAR(255),
