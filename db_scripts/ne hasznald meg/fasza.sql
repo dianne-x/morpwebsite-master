@@ -273,7 +273,7 @@ INSERT INTO `occupation` (`id`, `occupation`) VALUES
 CREATE TABLE `room` (
   `id` int NOT NULL AUTO_INCREMENT,
   `section_id` int(11) DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
+  `room_name` varchar(255) DEFAULT NULL,
   `text_color` varchar(7) DEFAULT '#FFFFFF',
   `main_color` varchar(7) DEFAULT '#000000',
   `header_image_path` varchar(255) DEFAULT NULL,
@@ -336,7 +336,7 @@ INSERT INTO `rp_category` (`id`, `rp_category`) VALUES
 CREATE TABLE `section` (
   `id` int NOT NULL AUTO_INCREMENT,
   `server_id` int(11) DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
+  `section_name` varchar(255) DEFAULT NULL,
   `text_color` varchar(7) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
