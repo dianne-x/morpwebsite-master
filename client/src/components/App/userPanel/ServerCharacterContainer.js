@@ -20,6 +20,8 @@ const ServerCharacterContainer = (props) => {
         const fetchUrl = `${process.env.REACT_APP_PHP_BASE_URL}/getServerMember.php?userId=${userId}&serverId=${props.id}`;
         console.log(`Fetch URL: ${fetchUrl}`);
         
+        
+        
         // Fetch server members and characters for the logged-in user
         fetch(fetchUrl)
             .then(response => {
@@ -33,8 +35,9 @@ const ServerCharacterContainer = (props) => {
                     console.error('Error:', responseData.error);
                     return;
                 }
-                console.log('Response Data:', responseData.data);
+                console.log('Characters fetched:', responseData.data);
                 setCharacters(responseData.data);
+                
             })
             .catch(error => console.error('Error fetching server members and characters:', error));
     };

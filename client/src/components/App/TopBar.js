@@ -65,7 +65,7 @@ const TopBar = ({ onServerClick, LogOut }) => {
   return (
     <div className="topbar">
       <div className='home-list'>
-        <TopBarButton icon={<FontAwesomeIcon icon={faHome} />} title="Home" onClick={() => onServerClick({ id: 1, name: 'Home' })} />
+        <TopBarButton icon={<FontAwesomeIcon icon={faHome} />} title="Home" onClick={() => onServerClick({ id: 0, name: 'Home' })} />
         <TopBarButton icon={<FontAwesomeIcon icon={faAdd} />} title="Add Server" onClick={() => handleFormOpen()} />
       </div>
 

@@ -29,7 +29,7 @@ const AppLayout = () => {
   }
 
   const handleServerClick = (server) => {
-    if (server.id === 1) {
+    if (server.id === 0) {
       setSelectedServer(null);
       setSections([]);
       setUsers([]);
