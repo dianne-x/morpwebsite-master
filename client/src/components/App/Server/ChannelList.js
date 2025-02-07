@@ -23,7 +23,7 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId 
 
   const handleRoomCreated = (newRoom) => {
     const updatedSections = sectionList.map(section => {
-      if (section.id === newRoom.section_id) {
+      if (section.id == newRoom.section_id) {
         return {
           ...section,
           rooms: [...section.rooms, newRoom]
@@ -31,7 +31,7 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId 
       }
       return section;
     });
-    setSectionList(updatedSections);
+    setSectionList([...updatedSections]);
     setOpenRoomCreationId(null);
   };
 
