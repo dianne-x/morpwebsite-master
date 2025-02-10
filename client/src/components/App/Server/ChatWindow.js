@@ -4,13 +4,15 @@ import io from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
-
 const socket = io.connect('http://localhost:3001'); 
 
 const ChatWindow = ({ serverId, servers = [], roomDetails }) => {
   const [selectedServer, setSelectedServer] = useState(serverId);
   const [message, setMessage] = useState('');
   const [messageReceived, setMessageReceived] = useState('');
+  const [verifiedCharacters, setVerifiedCharacters] = useState([]);
+
+  const user = JSON.parse(localStorage.getItem('morp-login-user'));
 
   const handleServerChange = (event) => {
     setSelectedServer(event.target.value);
@@ -31,7 +33,25 @@ const ChatWindow = ({ serverId, servers = [], roomDetails }) => {
     socket.on("receive_message", (data) => {
       setMessageReceived(data.message);
     });
-  }, [socket]); 
+  }, [socket]);
+
+  useEffect(() => {
+    // Fetch the verified characters for the selected server
+    const fetchVerifiedCharacters = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/useableCharacterForChat.php?serverId=${selectedServer}&userId=${user}`);
+        console.log(`fetch url: ${process.env.REACT_APP_PHP_BASE_URL}/useableCharacterForChat.php?serverId=${selectedServer}&userId=${user}`);
+        const data = await response.json();
+        setVerifiedCharacters(data);
+      } catch (error) {
+        console.error('Error fetching verified characters:', error);
+      }
+    };
+
+    if (selectedServer) {
+      fetchVerifiedCharacters();
+    }
+  }, [selectedServer, user]);
 
   return (
     <div className="chat-window">
@@ -53,6 +73,15 @@ const ChatWindow = ({ serverId, servers = [], roomDetails }) => {
                 </option>
               ))}
             </select>
+            
+            <select>
+              {verifiedCharacters.map((character) => (
+                <option key={character.id} value={character.character_name}>
+                  {character.character_name}
+                </option>
+              ))}
+            </select>
+            
             <input
               type="text"
               value={message}
