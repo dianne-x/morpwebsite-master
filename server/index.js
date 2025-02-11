@@ -3,9 +3,116 @@ const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
+const {Sequelize, DataTypes} = require("sequelize");
 
 app.use(cors());
 const server = http.createServer(app);
+
+// Connect to MySQL using Sequelize
+const sequelize = new Sequelize('morpdatabase2', 'root', '', {
+    host: 'localhost',
+    dialect: 'mysql'
+  });
+
+
+// Define models based on your database schema
+const User = sequelize.define('User', {
+    uid: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
+    email: DataTypes.STRING,
+    password: DataTypes.STRING,
+    name: DataTypes.STRING,
+    nickname: DataTypes.STRING,
+    gender_id: DataTypes.INTEGER,
+    profile_pic_path: DataTypes.STRING,
+    language_id: DataTypes.STRING,
+    thread_id: DataTypes.INTEGER,
+    status_id: DataTypes.INTEGER,
+    about_me: DataTypes.STRING,
+    about_me_color: DataTypes.STRING,
+    bio_main_color: DataTypes.STRING,
+    bio_text_color: DataTypes.STRING,
+    verified: DataTypes.BOOLEAN,
+    is_admin: DataTypes.BOOLEAN
+  }, {
+    tableName: 'users',
+    timestamps: false
+});
+
+const Room = sequelize.define('Room', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    section_id: DataTypes.INTEGER,
+    room_name: DataTypes.STRING,
+    text_color: DataTypes.STRING,
+    main_color: DataTypes.STRING,
+    header_image_path: DataTypes.STRING,
+    description: DataTypes.STRING
+  }, {
+    tableName: 'room',
+    timestamps: false
+});
+
+const RoomMessage = sequelize.define('RoomMessage', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    room_id: DataTypes.INTEGER,
+    character_id: DataTypes.INTEGER,
+    message: DataTypes.STRING,
+    date: DataTypes.DATE
+  }, {
+    tableName: 'room_message',
+    timestamps: false
+});
+
+
+const DirectMessage = sequelize.define('DirectMessage', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    room_id: DataTypes.INTEGER,
+    sent_from: DataTypes.INTEGER,
+    message: DataTypes.STRING,
+    sent: DataTypes.DATE,
+    seen: DataTypes.BOOLEAN,
+    seen_at: DataTypes.DATE
+  }, {
+    tableName: 'direct_message',
+    timestamps: false
+});
+
+const DirectMessageRoom = sequelize.define('DirectMessageRoom', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    user1_id: DataTypes.STRING,
+    user2_id: DataTypes.STRING,
+    main_color: DataTypes.STRING,
+    text_color: DataTypes.STRING,
+    header_image_path: DataTypes.STRING,
+    is_friend: DataTypes.BOOLEAN
+  }, {
+    tableName: 'direct_message_room',
+    timestamps: false
+});
+
+// Sync the database
+sequelize.sync().then(() => {
+    console.log('Database & tables created!');
+});
+
 
 const io = new Server(server, { 
     cors: { 
@@ -18,11 +125,33 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
     console.log("User connected", socket.id);
 
+    //join a romm
+    socket.on("join_room", (roomId) => {
+        socket.join(roomId);
+        console.log("User joined room: " + roomId);
 
-    socket.on("send_message", (data) => {
-        //console.log(data);
-        //io.emit("message", data);
-        socket.broadcast.emit("receive_message", data);
+
+        // Send previous messages in the room
+        RoomMessage.findAll({ where: { room_id: roomId }, order: [['date', 'ASC']] })
+        .then(messages => {
+        socket.emit('previous_messages', messages);
+        })
+        .catch(err => console.error(err));
+    });
+
+
+    // Handle sending messages
+    socket.on('send_message', (data) => {
+    const { roomId, userId, message } = data;
+    RoomMessage.create({ room_id: roomId, character_id: userId, message, date: new Date() })
+      .then(newMessage => {
+        io.to(roomId).emit('receive_message', newMessage);
+      })
+      .catch(err => console.error(err));
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
     });
 });
 
