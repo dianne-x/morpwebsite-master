@@ -51,11 +51,10 @@ const Server = ({ selectedServer, sections, users }) => {
         <>
             <div className="server-main-content">
                 <ChannelList sections={sections} changeSelectedRoomId={changeSelectedRoomId} selectedRoomId={selectedRoomId} serverId={selectedServer.id} />
-                <ChatWindow serverId={selectedServer.id} roomDetails={getRoomDetails()} />
+                <ChatWindow serverId={selectedServer.id} roomId={selectedRoomId} roomDetails={getRoomDetails()} />
                 <ServerInfo server={selectedServer} users={users} openServerSettings={openServerSettings} />
             </div>
             { isSettingsOpen && <ServerSettings server={selectedServer} onCloseForm={() => setIsSettingsOpen(false)} /> }
-            
         </>
     );
 };

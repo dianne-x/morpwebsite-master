@@ -6,7 +6,7 @@ import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 const socket = io.connect('http://localhost:3001'); 
 
-const ChatWindow = ({ serverId, servers = [], roomDetails }) => {
+const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
   const [selectedServer, setSelectedServer] = useState(serverId);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
@@ -23,12 +23,7 @@ const ChatWindow = ({ serverId, servers = [], roomDetails }) => {
   };
 
   const handleSendMessage = () => {
-    //socket.emit("send_message", { message });
-    // Handle sending the message
-    //console.log(`Message sent to server ${selectedServer}: ${message}`);
-    //setMessage(''); // Clear the input after sending the message
-
-    socket.emit("send_message", { roomId: selectedServer, userId: user.uid, message });
+    socket.emit("send_message", { roomId: roomId, userId: user.uid, message });
     setMessage(''); // Clear the input after sending the message
   };
 
@@ -48,10 +43,10 @@ const ChatWindow = ({ serverId, servers = [], roomDetails }) => {
   }, []);
 
   useEffect(() => {
-    if (selectedServer) {
-      socket.emit('join_room', selectedServer);
+    if (roomId) {
+      socket.emit('join_room', roomId);
     }
-  }, [selectedServer]);
+  }, [roomId]);
 
   useEffect(() => {
     // Fetch the verified characters for the selected server
@@ -81,7 +76,7 @@ const ChatWindow = ({ serverId, servers = [], roomDetails }) => {
 
           <div className='chat-messages-wrapper'>
             {messages
-              .filter((msg) => msg.room_id === selectedServer) // Filter messages by selected room
+              .filter((msg) => msg.room_id == roomId) // Filter messages by selected room
               .map((msg, index) => (
                 <div key={index}>
                   <strong>{msg.userId}</strong>: {msg.message}
