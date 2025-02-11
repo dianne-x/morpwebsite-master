@@ -9,7 +9,7 @@ const socket = io.connect('http://localhost:3001');
 const ChatWindow = ({ serverId, servers = [], roomDetails }) => {
   const [selectedServer, setSelectedServer] = useState(serverId);
   const [message, setMessage] = useState('');
-  const [messageReceived, setMessageReceived] = useState('');
+  const [messages, setMessages] = useState([]);
   const [verifiedCharacters, setVerifiedCharacters] = useState([]);
 
   const user = JSON.parse(localStorage.getItem('morp-login-user'));
@@ -23,17 +23,35 @@ const ChatWindow = ({ serverId, servers = [], roomDetails }) => {
   };
 
   const handleSendMessage = () => {
-    socket.emit("send_message", { message });
+    //socket.emit("send_message", { message });
     // Handle sending the message
-    console.log(`Message sent to server ${selectedServer}: ${message}`);
+    //console.log(`Message sent to server ${selectedServer}: ${message}`);
+    //setMessage(''); // Clear the input after sending the message
+
+    socket.emit("send_message", { roomId: selectedServer, userId: user.uid, message });
     setMessage(''); // Clear the input after sending the message
   };
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
-      setMessageReceived(data.message);
+      setMessages((prevMessages) => [...prevMessages, data]);
     });
-  }, [socket]);
+
+    socket.on("previous_messages", (messages) => {
+      setMessages(messages);
+    });
+
+    return () => {
+      socket.off("receive_message");
+      socket.off("previous_messages");
+    };
+  }, []);
+
+  useEffect(() => {
+    if (selectedServer) {
+      socket.emit('join_room', selectedServer);
+    }
+  }, [selectedServer]);
 
   useEffect(() => {
     // Fetch the verified characters for the selected server
@@ -62,7 +80,13 @@ const ChatWindow = ({ serverId, servers = [], roomDetails }) => {
           </div>
 
           <div className='chat-messages-wrapper'>
-            {messageReceived}
+            {messages
+              .filter((msg) => msg.room_id === selectedServer) // Filter messages by selected room
+              .map((msg, index) => (
+                <div key={index}>
+                  <strong>{msg.userId}</strong>: {msg.message}
+                </div>
+            ))}
           </div>
 
           <div className='chat-input-wrapper'>
