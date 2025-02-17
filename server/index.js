@@ -108,6 +108,44 @@ const DirectMessageRoom = sequelize.define('DirectMessageRoom', {
     timestamps: false
 });
 
+
+const UserCharacter = sequelize.define('UserCharacter', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  servermember_id: DataTypes.INTEGER,
+  is_verified: DataTypes.BOOLEAN,
+  is_own_character: DataTypes.BOOLEAN,
+  character_name: DataTypes.STRING,
+  nickname: DataTypes.STRING,
+  gender_id: DataTypes.INTEGER,
+  character_pic_path: DataTypes.STRING,
+  birthdate: DataTypes.DATE,
+  died: DataTypes.BOOLEAN,
+  deathdate: DataTypes.DATE,
+  resurrected: DataTypes.BOOLEAN,
+  resurrected_date: DataTypes.DATE,
+  species_id: DataTypes.INTEGER,
+  occupation_id: DataTypes.INTEGER,
+  affilation_id: DataTypes.INTEGER,
+  nationality_id: DataTypes.INTEGER,
+  status_id: DataTypes.INTEGER,
+  story_id: DataTypes.INTEGER,
+  bio: DataTypes.STRING,
+  powers: DataTypes.STRING,
+  weaknesses: DataTypes.STRING,
+  used_item: DataTypes.STRING,
+  family: DataTypes.STRING,
+  universe: DataTypes.STRING,
+  fc_type_id: DataTypes.INTEGER,
+  fc_name: DataTypes.STRING
+}, {
+  tableName: 'user_character',
+  timestamps: false
+});
+
 // Sync the database
 sequelize.sync().then(() => {
     console.log('Database & tables created!');
@@ -141,14 +179,18 @@ io.on("connection", (socket) => {
 
 
     // Handle sending messages
-    socket.on('send_message', (data) => {
-    const { roomId, userId, message } = data;
-    RoomMessage.create({ room_id: roomId, character_id: userId, message, date: new Date() })
+ socket.on('send_message', (data) => {
+    const { roomId, userId, characterId, message } = data;
+    console.log('Received message data:', data);
+    RoomMessage.create({ room_id: roomId, character_id: characterId, message, date: new Date() })
       .then(newMessage => {
+        console.log('Message saved to database:', newMessage);
         io.to(roomId).emit('receive_message', newMessage);
       })
-      .catch(err => console.error(err));
-    });
+      .catch(err => {
+        console.error('Error saving message to database:', err);
+      });
+  });
 
     socket.on('disconnect', () => {
         console.log('Client disconnected');
