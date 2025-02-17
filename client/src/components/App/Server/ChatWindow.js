@@ -12,6 +12,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
   const [messages, setMessages] = useState([]);
   const [verifiedCharacters, setVerifiedCharacters] = useState([]);
   const [selectedCharacter, setSelectedCharacter] = useState('');
+  const [selectedCharactersId , setSelectedCharactersId] = useState('');
 
   const user = JSON.parse(localStorage.getItem('morp-login-user'));
 
@@ -20,8 +21,10 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
   };
 
   const handleCharacterChange = (event) => {
-    setSelectedCharacter(event.target.value);
-    console.log(`Selected character: ${event.target.value}`);
+    const characterId = event.target.value;
+    setSelectedCharactersId(characterId);
+    setSelectedCharacter(characterId);
+    console.log(`Selected character: ${characterId}`);
   };
 
   const handleMessageChange = (event) => {
@@ -29,7 +32,8 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
   };
 
   const handleSendMessage = () => {
-    socket.emit("send_message", { roomId: roomId, userId: user.uid, message });
+    console.log('Sending message:', { roomId, userId: user.uid, characterId: selectedCharactersId, message });
+    socket.emit("send_message", { roomId: roomId, userId: user.uid, characterId: selectedCharactersId, message });
     setMessage(''); // Clear the input after sending the message
   };
 
@@ -63,7 +67,8 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
         const data = await response.json();
         setVerifiedCharacters(data);
         if (data.length > 0) {
-          setSelectedCharacter(data[0].character_name);
+          setSelectedCharacter(data[0].id);
+          setSelectedCharactersId(data[0].id);
           console.log(`Selected character: ${data[0].character_name}`);
         }
       } catch (error) {
@@ -89,7 +94,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
               .filter((msg) => msg.room_id == roomId) // Filter messages by selected room
               .map((msg, index) => (
                 <div key={index}>
-                  <strong>{msg.userId}</strong>: {msg.message}
+                   <strong>{msg.character_id}</strong>: {msg.message}
                 </div>
             ))}
           </div>
@@ -105,7 +110,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
             
             <select value={selectedCharacter} onChange={handleCharacterChange}>
               {verifiedCharacters.map((character) => (
-                <option key={character.id} value={character.character_name}>
+                <option key={character.id} value={character.id}>
                   {character.character_name}
                 </option>
               ))}
