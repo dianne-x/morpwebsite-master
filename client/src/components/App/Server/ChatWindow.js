@@ -11,11 +11,17 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [verifiedCharacters, setVerifiedCharacters] = useState([]);
+  const [selectedCharacter, setSelectedCharacter] = useState('');
 
   const user = JSON.parse(localStorage.getItem('morp-login-user'));
 
   const handleServerChange = (event) => {
     setSelectedServer(event.target.value);
+  };
+
+  const handleCharacterChange = (event) => {
+    setSelectedCharacter(event.target.value);
+    console.log(`Selected character: ${event.target.value}`);
   };
 
   const handleMessageChange = (event) => {
@@ -56,6 +62,10 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
         console.log(`fetch url: ${process.env.REACT_APP_PHP_BASE_URL}/useableCharacterForChat.php?serverId=${selectedServer}&userId=${user}`);
         const data = await response.json();
         setVerifiedCharacters(data);
+        if (data.length > 0) {
+          setSelectedCharacter(data[0].character_name);
+          console.log(`Selected character: ${data[0].character_name}`);
+        }
       } catch (error) {
         console.error('Error fetching verified characters:', error);
       }
@@ -93,7 +103,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
               ))}
             </select>
             
-            <select>
+            <select value={selectedCharacter} onChange={handleCharacterChange}>
               {verifiedCharacters.map((character) => (
                 <option key={character.id} value={character.character_name}>
                   {character.character_name}
