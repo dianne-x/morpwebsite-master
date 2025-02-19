@@ -3,111 +3,108 @@ const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
-const {Sequelize, DataTypes} = require("sequelize");
+const { Sequelize, DataTypes } = require("sequelize");
 
 app.use(cors());
 const server = http.createServer(app);
 
 // Connect to MySQL using Sequelize
 const sequelize = new Sequelize('morpdatabase2', 'root', '', {
-    host: 'localhost',
-    dialect: 'mysql'
-  });
-
+  host: 'localhost',
+  dialect: 'mysql'
+});
 
 // Define models based on your database schema
 const User = sequelize.define('User', {
-    uid: {
-      type: DataTypes.STRING,
-      primaryKey: true
-    },
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    name: DataTypes.STRING,
-    nickname: DataTypes.STRING,
-    gender_id: DataTypes.INTEGER,
-    profile_pic_path: DataTypes.STRING,
-    language_id: DataTypes.STRING,
-    thread_id: DataTypes.INTEGER,
-    status_id: DataTypes.INTEGER,
-    about_me: DataTypes.STRING,
-    about_me_color: DataTypes.STRING,
-    bio_main_color: DataTypes.STRING,
-    bio_text_color: DataTypes.STRING,
-    verified: DataTypes.BOOLEAN,
-    is_admin: DataTypes.BOOLEAN
-  }, {
-    tableName: 'users',
-    timestamps: false
+  uid: {
+    type: DataTypes.STRING,
+    primaryKey: true
+  },
+  email: DataTypes.STRING,
+  password: DataTypes.STRING,
+  name: DataTypes.STRING,
+  nickname: DataTypes.STRING,
+  gender_id: DataTypes.INTEGER,
+  profile_pic_path: DataTypes.STRING,
+  language_id: DataTypes.STRING,
+  thread_id: DataTypes.INTEGER,
+  status_id: DataTypes.INTEGER,
+  about_me: DataTypes.STRING,
+  about_me_color: DataTypes.STRING,
+  bio_main_color: DataTypes.STRING,
+  bio_text_color: DataTypes.STRING,
+  verified: DataTypes.BOOLEAN,
+  is_admin: DataTypes.BOOLEAN
+}, {
+  tableName: 'users',
+  timestamps: false
 });
 
 const Room = sequelize.define('Room', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    section_id: DataTypes.INTEGER,
-    room_name: DataTypes.STRING,
-    text_color: DataTypes.STRING,
-    main_color: DataTypes.STRING,
-    header_image_path: DataTypes.STRING,
-    description: DataTypes.STRING
-  }, {
-    tableName: 'room',
-    timestamps: false
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  section_id: DataTypes.INTEGER,
+  room_name: DataTypes.STRING,
+  text_color: DataTypes.STRING,
+  main_color: DataTypes.STRING,
+  header_image_path: DataTypes.STRING,
+  description: DataTypes.STRING
+}, {
+  tableName: 'room',
+  timestamps: false
 });
 
 const RoomMessage = sequelize.define('RoomMessage', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    room_id: DataTypes.INTEGER,
-    character_id: DataTypes.INTEGER,
-    message: DataTypes.STRING,
-    date: DataTypes.DATE
-  }, {
-    tableName: 'room_message',
-    timestamps: false
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  room_id: DataTypes.INTEGER,
+  character_id: DataTypes.INTEGER,
+  message: DataTypes.STRING,
+  date: DataTypes.DATE
+}, {
+  tableName: 'room_message',
+  timestamps: false
 });
 
-
 const DirectMessage = sequelize.define('DirectMessage', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    room_id: DataTypes.INTEGER,
-    sent_from: DataTypes.INTEGER,
-    message: DataTypes.STRING,
-    sent: DataTypes.DATE,
-    seen: DataTypes.BOOLEAN,
-    seen_at: DataTypes.DATE
-  }, {
-    tableName: 'direct_message',
-    timestamps: false
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  room_id: DataTypes.INTEGER,
+  sent_from: DataTypes.INTEGER,
+  message: DataTypes.STRING,
+  sent: DataTypes.DATE,
+  seen: DataTypes.BOOLEAN,
+  seen_at: DataTypes.DATE
+}, {
+  tableName: 'direct_message',
+  timestamps: false
 });
 
 const DirectMessageRoom = sequelize.define('DirectMessageRoom', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    user1_id: DataTypes.STRING,
-    user2_id: DataTypes.STRING,
-    main_color: DataTypes.STRING,
-    text_color: DataTypes.STRING,
-    header_image_path: DataTypes.STRING,
-    is_friend: DataTypes.BOOLEAN
-  }, {
-    tableName: 'direct_message_room',
-    timestamps: false
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  user1_id: DataTypes.STRING,
+  user2_id: DataTypes.STRING,
+  main_color: DataTypes.STRING,
+  text_color: DataTypes.STRING,
+  header_image_path: DataTypes.STRING,
+  is_friend: DataTypes.BOOLEAN
+}, {
+  tableName: 'direct_message_room',
+  timestamps: false
 });
-
 
 const UserCharacter = sequelize.define('UserCharacter', {
   id: {
@@ -148,55 +145,87 @@ const UserCharacter = sequelize.define('UserCharacter', {
 
 // Sync the database
 sequelize.sync().then(() => {
-    console.log('Database & tables created!');
+  console.log('Database & tables created!');
 });
 
+// Define associations
+RoomMessage.belongsTo(UserCharacter, { foreignKey: 'character_id' });
 
-const io = new Server(server, { 
-    cors: { 
-        origin: "http://localhost:3000",
-        methods: ["GET", "POST"]
-    }, 
-} );
-
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  },
+});
 
 io.on("connection", (socket) => {
-    console.log("User connected", socket.id);
+  console.log("User connected", socket.id);
 
-    //join a romm
-    socket.on("join_room", (roomId) => {
-        socket.join(roomId);
-        console.log("User joined room: " + roomId);
+  // Join a room
+  socket.on("join_room", (roomId) => {
+    socket.join(roomId);
+    console.log("User joined room: " + roomId);
 
+    // Send previous messages in the room
+    RoomMessage.findAll({
+      where: { room_id: roomId },
+      order: [['date', 'ASC']],
+      include: [{
+        model: UserCharacter,
+        attributes: ['character_name']
+      }]
+    })
+    .then(messages => {
+      const messagesWithCharacterNames = messages.map(msg => ({
+        id: msg.id,
+        room_id: msg.room_id,
+        character_id: msg.character_id,
+        character_name: msg.UserCharacter ? msg.UserCharacter.character_name : 'Unknown',
+        message: msg.message,
+        date: msg.date
+      }));
+      console.log('Previous messages:', messagesWithCharacterNames);
+      socket.emit('previous_messages', messagesWithCharacterNames);
+    })
+    .catch(err => console.error('Error fetching previous messages:', err));
+  });
 
-        // Send previous messages in the room
-        RoomMessage.findAll({ where: { room_id: roomId }, order: [['date', 'ASC']] })
-        .then(messages => {
-        socket.emit('previous_messages', messages);
-        })
-        .catch(err => console.error(err));
-    });
-
-
-    // Handle sending messages
- socket.on('send_message', (data) => {
+  // Handle sending messages
+  socket.on('send_message', (data) => {
     const { roomId, userId, characterId, message } = data;
     console.log('Received message data:', data);
     RoomMessage.create({ room_id: roomId, character_id: characterId, message, date: new Date() })
       .then(newMessage => {
-        console.log('Message saved to database:', newMessage);
-        io.to(roomId).emit('receive_message', newMessage);
+        return RoomMessage.findOne({
+          where: { id: newMessage.id },
+          include: [{
+            model: UserCharacter,
+            attributes: ['character_name']
+          }]
+        });
+      })
+      .then(newMessageWithCharacterName => {
+        const messageData = {
+          id: newMessageWithCharacterName.id,
+          room_id: newMessageWithCharacterName.room_id,
+          character_id: newMessageWithCharacterName.character_id,
+          character_name: newMessageWithCharacterName.UserCharacter ? newMessageWithCharacterName.UserCharacter.character_name : 'Unknown',
+          message: newMessageWithCharacterName.message,
+          date: newMessageWithCharacterName.date
+        };
+        console.log('Message saved to database:', messageData);
+        io.to(roomId).emit('receive_message', messageData);
       })
       .catch(err => {
         console.error('Error saving message to database:', err);
       });
   });
 
-    socket.on('disconnect', () => {
-        console.log('Client disconnected');
-    });
+  socket.on('disconnect', () => {
+    console.log('Client disconnected');
+  });
 });
 
-server.listen(3001, () =>{
-    console.log("SERVER IS RUNNING ON PORT 3001");
+server.listen(3001, () => {
+  console.log("SERVER IS RUNNING ON PORT 3001");
 });
