@@ -94,7 +94,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
               .filter((msg) => msg.room_id == roomId) // Filter messages by selected room
               .map((msg, index) => (
                 <div key={index}>
-                   <strong>{msg.character_id}</strong>: {msg.message}
+                   <strong>{msg.character_name}</strong>: {msg.message}
                 </div>
             ))}
           </div>
