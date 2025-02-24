@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import JoinServerForm from './joinServer';
 import ServerCreationForm from './createServerForm';
+import AddFriend from './addFriend';
+
 
 const CreateJoinPanel = ({onClose}) => {
     const [activeTab, setActiveTab] = useState('CreateServer');
@@ -32,6 +34,9 @@ const CreateJoinPanel = ({onClose}) => {
                 )}
                 {activeTab === 'JoinServer' && (
                     <JoinServerForm />
+                )}
+                {activeTab === 'AddFriend' && (
+                    <AddFriend />
                 )}
             </div>
             <button className="close" onClick={onClose}>&times;</button>
