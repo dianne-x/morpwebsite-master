@@ -602,6 +602,34 @@ CREATE TABLE `user_status` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+
+-- Table to store friend requests
+CREATE TABLE `friend_requests` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `sender_id` varchar(255) NOT NULL,
+  `receiver_id` varchar(255) NOT NULL,
+  `status` varchar(50) DEFAULT 'pending', -- 'pending', 'accepted', 'rejected'
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`sender_id`) REFERENCES `users` (`uid`),
+  FOREIGN KEY (`receiver_id`) REFERENCES `users` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Table to store friendships
+CREATE TABLE `friendships` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user1_id` varchar(255) NOT NULL,
+  `user2_id` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user1_id`) REFERENCES `users` (`uid`),
+  FOREIGN KEY (`user2_id`) REFERENCES `users` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+
+
+
 --
 -- A tábla adatainak kiíratása `user_status`
 --
