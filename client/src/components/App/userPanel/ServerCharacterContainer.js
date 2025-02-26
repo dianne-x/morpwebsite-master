@@ -84,7 +84,7 @@ const ServerCharacterContainer = (props) => {
                                         key={character.id}
                                         uid={character.id}
                                         name={character.character_name}
-                                        pic_path={character.character_pic_path || 'user.png'}
+                                        pic_path={character.character_pic_path || 'character.png'}
                                         verified={character.is_verified}
                                         handleDelete={handleDelete}
                                     />

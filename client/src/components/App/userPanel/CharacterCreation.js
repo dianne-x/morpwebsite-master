@@ -19,8 +19,11 @@ const CharacterCreation = (props) => {
         occupation: '',
         fc_type: '', // Correct the field name to fc_type
         user_id: JSON.parse(localStorage.getItem('morp-login-user')), // Add user ID to form data
-        server_id: props.server_id // Add server ID to form data
+        server_id: props.server_id, // Add server ID to form data
+        character_pic_path: null // Add profile picture to form data
     });
+    const [tempProfilePic, setTempProfilePic] = useState(''); // Temporary variable for profile picture
+    const [profilePicFile, setProfilePicFile] = useState(null); // File object for profile picture
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/getCharacterCreation.php`)
@@ -53,6 +56,18 @@ const CharacterCreation = (props) => {
         });
     };
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setProfilePicFile(file); // Set the file object
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setTempProfilePic(reader.result); // Set the temporary profile picture
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleSubmit = () => {
         if (!formData.name || !formData.gender || !formData.species || !formData.status || !formData.affilation || !formData.nationality || !formData.occupation || !formData.fc_type) {
             alert('Please fill out all required fields.');
@@ -61,7 +76,21 @@ const CharacterCreation = (props) => {
 
         console.log('Form data:', formData); // Debugging line
 
-        axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/saveCharacter.php`, formData)
+        const formDataToSend = new FormData();
+        for (const key in formData) {
+            formDataToSend.append(key, formData[key]);
+        }
+        if (profilePicFile) {
+            formDataToSend.append('character_pic_path', profilePicFile); // Append the file object
+        } else {
+            formDataToSend.append('character_pic_path', tempProfilePic); // Append the temporary profile picture
+        }
+
+        axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/saveCharacter.php`, formDataToSend, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
             .then(response => {
                 alert('Character saved successfully!');
                 props.onCharacterSaved(response.data.character); // Notify parent component
@@ -76,6 +105,9 @@ const CharacterCreation = (props) => {
             <h1>Character Creation</h1>
             <p>Create your character here.</p>
             <form>
+                <label>
+                    
+                </label>
                 <label>
                     Name:
                     <input type="text" name="name" value={formData.name} onChange={handleChange} required />
@@ -143,6 +175,16 @@ const CharacterCreation = (props) => {
                         ))}
                     </select>
                 </label>
+                <label 
+                    htmlFor="character_pic_path" id="pic-label"
+                    style={{backgroundImage: `url(${tempProfilePic || `${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${formData.character_pic_path}`})`}}>
+                </label>
+                <input 
+                    type="file"
+                    name="character_pic_path"
+                    id="character_pic_path"
+                    onChange={handleFileChange}
+                />
                 <button type="button" onClick={handleSubmit}>Save Character</button>
             </form>
             <button className="close" onClick={props.closeForm}>&times;</button>

@@ -6,7 +6,7 @@ const CharacterTile = (props) => {
     return (
         <li className={(!props.verified ? "not-verified" : "")}>
             <div className="info">
-                <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${props.pic_path}`}/>
+                <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${props.pic_path}`}/>
                 <p>{props.name}</p>
             </div>
             <div className="modify">
