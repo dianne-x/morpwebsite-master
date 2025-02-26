@@ -28,6 +28,8 @@ yarn-error.log*
 !storage/images/serverPictures/server.png
 /storage/images/userPictures/*
 !storage/images/userPictures/user.png
+/storage/images/characterPictures/*
+!storage/images/characterPictures/character.png
 
 /api/vendor
 /api/.env
