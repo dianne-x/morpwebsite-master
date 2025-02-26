@@ -100,13 +100,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
           </div>
 
           <div className='chat-input-wrapper'>
-            <select value={selectedServer} onChange={handleServerChange}>
-              {servers.map((server) => (
-                <option key={server.id} value={server.id}>
-                  {server.name}
-                </option>
-              ))}
-            </select>
+
             
             <select value={selectedCharacter} onChange={handleCharacterChange}>
               {verifiedCharacters.map((character) => (
