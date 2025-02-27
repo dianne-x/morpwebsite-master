@@ -123,6 +123,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
                 setMessage(event.target.value);
               }}
               placeholder="Type your message..."
+              maxLength="500"
             />
             <button onClick={handleSendMessage}>
               <FontAwesomeIcon icon={faPaperPlane} />

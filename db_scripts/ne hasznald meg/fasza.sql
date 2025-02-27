@@ -297,7 +297,7 @@ CREATE TABLE `room_message` (
   `id` int NOT NULL AUTO_INCREMENT,
   `room_id` int(11) DEFAULT NULL,
   `character_id` int(11) DEFAULT NULL,
-  `message` varchar(255) DEFAULT NULL,
+  `message` text(500) DEFAULT NULL,
   `date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
