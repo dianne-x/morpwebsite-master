@@ -3,6 +3,7 @@ import '../../../style/App/Server/ChatWindow.scss';
 import io from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import ChatMessage from './ChatMessage';
 
 const socket = io.connect('http://localhost:3001'); 
 
@@ -90,13 +91,15 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
           </div>
 
           <div className='chat-messages-wrapper'>
-            {messages
-              .filter((msg) => msg.room_id == roomId) // Filter messages by selected room
-              .map((msg, index) => (
-                <div key={index}>
-                   <strong>{msg.character_name}</strong>: {msg.message}
-                </div>
-            ))}
+            <div className='chat-messages'>
+              {messages
+                .filter((msg) => msg.room_id == roomId) // Filter messages by selected room
+                .map((msg, index) => (
+                  <div key={index}>
+                     <ChatMessage key={index} name={msg.character_name} message={msg.message} />
+                  </div>
+              ))}
+            </div>
           </div>
 
           <div className='chat-input-wrapper'>

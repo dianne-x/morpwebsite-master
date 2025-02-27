@@ -1,0 +1,37 @@
+@import "../../colors";
+
+.app-container .server-main-content .chat-messages-wrapper .chat-messages {
+    .chat-message {
+        //border: 1px solid white;
+        display: flex;
+        align-items: start;
+        gap: 10px;
+        padding: 5px;
+
+        img {
+            width: 40px;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            border: 1px solid $text-color;
+        }
+
+        .chat-message-content {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            
+            h3 {
+                font-size: 1rem;
+                font-weight: bold;
+                color: $text-color;
+            }
+
+            p {
+                font-size: 1rem;
+                color: $text-color;
+                opacity: .7;
+            }
+        }
+    }
+
+}
