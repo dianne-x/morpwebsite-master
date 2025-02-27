@@ -25,18 +25,34 @@
             flex-direction: column;
             gap: 5px;
             
-            h3 {
-                font-size: 1rem;
-                font-weight: bold;
-                color: $text-color;
+            .chat-message-head {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+
+                h3 {
+                    font-size: 1rem;
+                    font-weight: bold;
+                    color: $text-color;
+                }
+
+                span {
+                    font-size: .75rem;
+                    color: $text-color;
+                    opacity: .3;
+                }
             }
 
             p {
                 font-size: 1rem;
                 color: $text-color;
                 opacity: .7;
+
+                .date {
+                    opacity: .5;
+                    font-size: .8rem;
+                }
             }
         }
     }
-
 }
