@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../../../style/App/Server/ChatWindow.scss';
 import io from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,6 +14,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
   const [verifiedCharacters, setVerifiedCharacters] = useState([]);
   const [selectedCharacter, setSelectedCharacter] = useState('');
   const [selectedCharactersId , setSelectedCharactersId] = useState('');
+  const prevCharacterRef = useRef('');
 
   const user = JSON.parse(localStorage.getItem('morp-login-user'));
 
@@ -45,6 +46,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
 
     socket.on("previous_messages", (messages) => {
       setMessages(messages);
+      
     });
 
     return () => {
@@ -94,11 +96,15 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
             <div className='chat-messages'>
               {messages
                 .filter((msg) => msg.room_id == roomId) // Filter messages by selected room
-                .map((msg, index) => (
-                  <div key={index}>
-                     <ChatMessage key={index} name={msg.character_name} message={msg.message} />
-                  </div>
-              ))}
+                .map((msg, index) => {
+                  const showIconAndName = index === 0 || prevCharacterRef.current !== msg.character_id;
+                  prevCharacterRef.current = msg.character_id; // Update prevCharacterRef to current msg.character_id
+                  return (
+                    <div key={index}>
+                      <ChatMessage key={index} name={msg.character_name} message={msg.message} showIconAndName={showIconAndName} />
+                    </div>
+                  );
+                })}
             </div>
           </div>
 
