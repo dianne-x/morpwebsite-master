@@ -101,93 +101,92 @@ const CharacterCreation = (props) => {
     };
 
     return (
-        <div className='user-panel'>
-            <h1>Character Creation</h1>
-            <p>Create your character here.</p>
-            <form>
-                <label>
-                    
-                </label>
-                <label>
-                    Name:
+        <div className='user-panel character-creation'>
+            <div></div>
+            <div>
+                <h1>Character Creation</h1>
+                <form>
+                    <label 
+                        htmlFor="character_pic_path" id="pic-label"
+                        style={{backgroundImage: `url(${tempProfilePic || `${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${formData.character_pic_path}`})`}}>
+                    </label>
+                    <input 
+                        type="file"
+                        name="character_pic_path"
+                        id="character_pic_path"
+                        onChange={handleFileChange}
+                    />
+                    <label for="name">
+                        Name:
+                    </label>
                     <input type="text" name="name" value={formData.name} onChange={handleChange} required />
-                </label>
-                <label>
-                    Gender:
+                    <label>
+                        Gender:
+                    </label>
                     <select name="gender" value={formData.gender} onChange={handleChange} required>
                         <option value="">Select Gender</option>
                         {genders.map((gender) => (
                             <option key={gender.id} value={gender.gender}>{gender.gender}</option>
                         ))}
                     </select>
-                </label>
-                <label>
-                    Species:
+                    <label>
+                        Species:
+                    </label>
                     <select name="species" value={formData.species} onChange={handleChange} required>
                         <option value="">Select Species</option>
                         {species.map((species) => (
                             <option key={species.id} value={species.species}>{species.species}</option>
                         ))}
                     </select>
-                </label>
-                <label>
-                    Status:
+                    <label>
+                        Status:
+                    </label>
                     <select name="status" value={formData.status} onChange={handleChange} required>
                         <option value="">Select Status</option>
                         {statuses.map((status) => (
                             <option key={status.id} value={status.status}>{status.status}</option>
                         ))}
                     </select>
-                </label>
-                <label>
-                    Affiliation:
+                    <label>
+                        Affiliation:
+                    </label>
                     <select name="affilation" value={formData.affilation} onChange={handleChange}> 
                         <option value="">Select Affiliation</option>
                         {affilations.map((affilation) => (
                             <option key={affilation.id} value={affilation.affilation}>{affilation.affilation}</option>
                         ))}
                     </select>
-                </label>
-                <label>
-                    Nationality:
-                    <select name="nationality" value={formData.nationality} onChange={handleChange}>
-                        <option value="">Select Nationality</option>
-                        {nationalities.map((nationality) => (
-                            <option key={nationality.id} value={nationality.nationality}>{nationality.nationality}</option>
-                        ))}
-                    </select>
-                </label>
-                <label>
-                    Occupation:
-                    <select name="occupation" value={formData.occupation} onChange={handleChange}>
-                        <option value="">Select Occupation</option>
-                        {occupations.map((occupation) => (
-                            <option key={occupation.id} value={occupation.occupation}>{occupation.occupation}</option>
-                        ))}
-                    </select>
-                </label>
-                <label>
-                    FC Type:
-                    <select name="fc_type" value={formData.fc_type} onChange={handleChange}> {/* Correct the field name to fc_type */}
-                        <option value="">Select FC Type</option>
-                        {fcTypes.map((fc) => (
-                            <option key={fc.id} value={fc.fc_type}>{fc.fc_type}</option>
-                        ))}
-                    </select>
-                </label>
-                <label 
-                    htmlFor="character_pic_path" id="pic-label"
-                    style={{backgroundImage: `url(${tempProfilePic || `${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${formData.character_pic_path}`})`}}>
-                </label>
-                <input 
-                    type="file"
-                    name="character_pic_path"
-                    id="character_pic_path"
-                    onChange={handleFileChange}
-                />
-                <button type="button" onClick={handleSubmit}>Save Character</button>
-            </form>
-            <button className="close" onClick={props.closeForm}>&times;</button>
+                    <label>
+                        Nationality:
+                    </label>
+                        <select name="nationality" value={formData.nationality} onChange={handleChange}>
+                            <option value="">Select Nationality</option>
+                            {nationalities.map((nationality) => (
+                                <option key={nationality.id} value={nationality.nationality}>{nationality.nationality}</option>
+                            ))}
+                        </select>
+                    <label>
+                        Occupation:
+                    </label>
+                        <select name="occupation" value={formData.occupation} onChange={handleChange}>
+                            <option value="">Select Occupation</option>
+                            {occupations.map((occupation) => (
+                                <option key={occupation.id} value={occupation.occupation}>{occupation.occupation}</option>
+                            ))}
+                        </select>
+                    <label>
+                        FC Type:
+                    </label>
+                        <select name="fc_type" value={formData.fc_type} onChange={handleChange}> {/* Correct the field name to fc_type */}
+                            <option value="">Select FC Type</option>
+                            {fcTypes.map((fc) => (
+                                <option key={fc.id} value={fc.fc_type}>{fc.fc_type}</option>
+                            ))}
+                        </select>
+                    <button type="button" onClick={handleSubmit}>Save Character</button>
+                </form>
+                <button className="close" onClick={props.closeForm}>&times;</button>
+            </div>
         </div>
     );
 };

@@ -25,6 +25,23 @@
     padding: 1.3rem;
   }
 
+  &.character-creation {
+    grid-template-columns: 1fr;
+    &>:nth-child(1) {
+      display: none;
+    }
+
+    &>:nth-child(2) {
+      width: 80%;
+      justify-self: center;
+    }
+
+    .close {
+      top: 1.3rem;
+      right: 1.3rem;
+    }
+  }
+
   .sidebar {
     display: flex;
     flex-direction: column;
