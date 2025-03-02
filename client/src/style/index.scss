@@ -1,3 +1,4 @@
+@import 'colors';
 * {
   margin: 0;
   padding: 0;
@@ -16,3 +17,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+// make scrollbar transparent with text color slider
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba($color: $text-color, $alpha: .3);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba($color: $text-color, $alpha: .6);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+

@@ -36,15 +36,15 @@ const RoomCreation = ({ sectionId, onRoomCreated }) => {
   return (
     <div className="room-creation">
       <form onSubmit={handleSubmit}>
-        <label htmlFor="roomName">Room name:</label>
         <input
           type="text"
           id="roomName"
           name="roomName"
           value={roomName}
+          placeholder="Enter room name"
           onChange={(e) => setRoomName(e.target.value)}
         />
-        <button type="submit">Create Room</button>
+        <button type="submit">✓</button>
       </form>
     </div>
   );

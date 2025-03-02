@@ -35,6 +35,8 @@
           width: fit-content;
           position: relative;
           z-index: 2;
+          border: 1px solid $third-color;
+          margin-top: 5px;
 
           span {
             color: $third-color;
@@ -70,20 +72,93 @@
         flex-direction: column;
         gap: 10px;
 
+        height: 100%;
+        overflow-y: auto;
+
         .section-item {
           display: flex;
           flex-direction: column;
           cursor: pointer;
+          background-color: rgba($color: $main-color, $alpha: .5);
+          padding: 5px;
           
+          summary {
+            //border-bottom: 1px solid $text-color;
+            padding: 5px;
+
+            position: relative;
+            anchor-name: --summary;
+
+            &::marker {
+              content: "";
+            }
+            
+            &::before,
+            &::after {
+              content: "";
+              border-block-start: 2px solid $text-color;
+              height: 0;
+              width: 10px;
+              
+              inset-block-start: 50%;
+              inset-inline-end: 0;
+              
+              position: absolute;
+              position-anchor: --summary;
+              position-area: top end;
+            }
+            
+            &::after {
+              transform: rotate(90deg);
+              transform-origin: 50%;
+            }
+          }
+
+          &[open] summary::after {
+            transform: rotate(0deg);
+          }
   
           ul {
             list-style-type: none;
             display: flex;
             flex-direction: column;
+            padding-block: 5px;
+            margin-block: 5px;
+            border-top: 1px solid rgba($color: $text-color, $alpha: .3);
             //gap: 5px;
   
             li {
               margin-left: 20px;
+            }
+
+            li.no-room {
+              opacity: .3;
+              padding-block: 10px;
+            }
+          }
+        }
+
+        .room-creation {
+          form {
+            display: flex;
+            width: 100%;
+            max-width: 100%;
+            margin-block: 10px;
+
+            input {
+              width: 80%;
+              background-color: transparent;
+              outline: none;
+              border: 1px solid $third-color;
+              color: $text-color;
+              padding-inline: 5px;
+            }
+            button {
+              width: 20%;
+              background-color: $third-color;
+              color: $main-color;
+              font-weight: bold;
+              text-align: center;
             }
           }
         }

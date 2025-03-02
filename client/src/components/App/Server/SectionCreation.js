@@ -35,15 +35,15 @@ const SectionCreation = ({ serverId, onSectionCreated }) => {
   return (
     <div className="room-creation">
       <form onSubmit={handleSubmit}>
-        <label htmlFor="sectionName">Section Name:</label>
         <input
           type="text"
           id="sectionName"
           name="sectionName"
+          placeholder="Enter section name"
           value={sectionName}
           onChange={(e) => setSectionName(e.target.value)}
         />
-        <button type="submit">Create Section</button>
+        <button type="submit">✓</button>
       </form>
     </div>
   );

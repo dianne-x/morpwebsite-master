@@ -13,7 +13,8 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId 
   }, [sections]);
 
   const handleOpenRoomCreation = (sectionId) => {
-    setOpenRoomCreationId(sectionId);
+    if (openRoomCreationId === sectionId) setOpenRoomCreationId(null);
+    else setOpenRoomCreationId(sectionId);
   };
 
   const handleSectionCreated = (newSection) => {
@@ -55,20 +56,22 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId 
                   </li>
                 ))
               ) : (
-                <li className="room-item">No rooms available</li>
+                <li className="room-item no-room">No rooms available</li>
               )}
               <li>
                 <button className='addnew' onClick={() => handleOpenRoomCreation(section.id)}>
-                  <span>+ Add new room</span>
+                  <span>{openRoomCreationId === section.id ? "- Discard creation" : "+ Add new room"}</span>
                 </button>
                 {openRoomCreationId === section.id && <RoomCreation sectionId={section.id} onRoomCreated={handleRoomCreated} />}
               </li>
             </ul>
           </details>
         ))}
-        <button className='addnew' onClick={() => setOpenSectionCreationId(true)}>
+        {
+          !openSectionCreationId &&
+          <button className='addnew' onClick={() => setOpenSectionCreationId(true)}>
           <span>+ Add new section</span>
-        </button>
+        </button>}
         {openSectionCreationId && <SectionCreation serverId={serverId} onSectionCreated={handleSectionCreated} />}
       </div>
     </div>
