@@ -8,6 +8,20 @@
         gap: 10px;
         padding: 5px;
 
+        span.date {
+            font-size: .75rem;
+            color: $text-color;
+            opacity: .25;
+
+            &.hidden {
+                visibility: hidden;
+            }
+        
+            &.visible {
+                visibility: visible;
+            }
+        }
+
         .chat-message-icon {
             width: 40px;
 
@@ -35,23 +49,12 @@
                     font-weight: bold;
                     color: $text-color;
                 }
-
-                span {
-                    font-size: .75rem;
-                    color: $text-color;
-                    opacity: .3;
-                }
             }
 
             p {
                 font-size: 1rem;
                 color: $text-color;
                 opacity: .7;
-
-                .date {
-                    opacity: .5;
-                    font-size: .8rem;
-                }
             }
         }
     }

@@ -13,8 +13,9 @@ const ChatMessage = ({ name, message, date, showIconAndName }) => {
     };
 
     const formatDate = (dateString) => {
-        const options = { year: 'numeric', month: '2-digit', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
         return new Intl.DateTimeFormat('en-GB', options).format(new Date(dateString));
+        // en-GB helyett akár: navigator.language || navigator.userLanguage
     };
 
     return (
@@ -30,7 +31,7 @@ const ChatMessage = ({ name, message, date, showIconAndName }) => {
                     <h3>{name}</h3><span className='date'>{formatDate(date)}</span>
                 </div>
                 }
-                <p>{message}</p>
+                <p>{message} {!showIconAndName && <span className={`date ${isHovered ? 'visible' : 'hidden'}`}>{formatDate(date)}</span>}</p>
             </div>
         </div>
     );
