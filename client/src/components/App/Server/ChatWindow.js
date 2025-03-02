@@ -15,6 +15,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
   const [selectedCharacter, setSelectedCharacter] = useState('');
   const [selectedCharactersId , setSelectedCharactersId] = useState('');
   const prevCharacterRef = useRef('');
+  const chatMessagesRef = useRef(null);
 
   const user = JSON.parse(localStorage.getItem('morp-login-user'));
 
@@ -84,6 +85,12 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
     }
   }, [selectedServer, user]);
 
+  useEffect(() => {
+    if (chatMessagesRef.current) {
+      chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   return (
     <div className="chat-window">
       {roomDetails ? (
@@ -93,7 +100,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
           </div>
 
           <div className='chat-messages-wrapper'>
-            <div className='chat-messages'>
+            <div className='chat-messages' ref={chatMessagesRef}>
               {messages
                 .filter((msg) => msg.room_id == roomId) // Filter messages by selected room
                 .map((msg, index) => {
