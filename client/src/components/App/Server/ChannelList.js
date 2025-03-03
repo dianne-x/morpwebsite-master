@@ -3,6 +3,9 @@ import '../../../style/App/Server/ChannelList.scss';
 import RoomCreation from './RoomCreation';
 import SectionCreation from './SectionCreation';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+
 const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId }) => {
   const [openRoomCreationId, setOpenRoomCreationId] = useState(null);
   const [openSectionCreationId, setOpenSectionCreationId] = useState(false);
@@ -42,7 +45,15 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId 
       <div className='list-wrapper'>
         {sectionList.map((section, sectionIndex) => (
           <details key={sectionIndex} className="section-item" open={true}>
-            <summary>{section.section_name}</summary>
+            <summary>
+              <p>{section.section_name}</p>
+              <button title='Edit section name' className='change-btn'>
+                <FontAwesomeIcon icon={faPenToSquare} />
+              </button>
+              <button title='Delete section' className='change-btn'>
+                <FontAwesomeIcon icon={faTrash} />
+              </button>
+            </summary>
             <ul>
               <div className='line'></div>
               {section.rooms && section.rooms.length > 0 ? (
@@ -51,7 +62,15 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId 
                     <button 
                       onClick={() => changeSelectedRoomId(room.id)}
                       className={room.id === selectedRoomId ? 'selected' : ''}>
-                        {room.room_name}
+                        <p>{room.room_name}</p>
+                        <div>
+                          <button title='Edit room name' className='change-btn'>
+                            <FontAwesomeIcon icon={faPenToSquare} />
+                          </button>
+                          <button title='Delete room' className='change-btn'>
+                            <FontAwesomeIcon icon={faTrash} />
+                          </button>
+                        </div>
                     </button>
                   </li>
                 ))

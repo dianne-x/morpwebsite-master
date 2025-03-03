@@ -82,9 +82,44 @@
           background-color: rgba($color: $main-color, $alpha: .5);
           padding: 5px;
           
+          summary, .room-item>button {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            gap: 10px;
+
+            button {
+              width: min-content;
+              padding: 0;
+              display: none;
+              opacity: .5;
+
+              &:hover {
+                background-color: transparent;
+                opacity: 1;
+              }
+            }
+            &:hover button {
+              display: block;
+            }
+          }
+          .room-item>button {
+            p {
+              width: 100%;
+            }
+
+            &>div {
+              display: flex;
+              gap: 10px;
+            }
+          }
+
           summary {
             //border-bottom: 1px solid $text-color;
             padding: 5px;
+            
+
+            
 
             position: relative;
             anchor-name: --summary;
