@@ -61,15 +61,16 @@
                 }
             }
 
-            input {
+            input, select {
                 background-color: rgba($color: $text-color, $alpha: .1);
                 border: none;
-                color: $text-color;
+                color: $secondary-color;
                 padding: 5px 10px;
 
-                &[type="file"] {
-                    display: none;
-                }
+            }
+            
+            input[type="file"] {
+                display: none;
             }
         }
         button.logout-btn {
@@ -79,7 +80,7 @@
             padding: 10px;
             cursor: pointer;
         }
-        button[type="submit"] {
+        button[type="submit"], .save-character-btn {
             background-color: $main-color;
             color: $text-color;
             border: 1px solid $text-color;

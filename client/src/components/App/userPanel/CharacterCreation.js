@@ -116,7 +116,7 @@ const CharacterCreation = (props) => {
                         id="character_pic_path"
                         onChange={handleFileChange}
                     />
-                    <label for="name">
+                    <label htmlFor="name">
                         Name:
                     </label>
                     <input type="text" name="name" value={formData.name} onChange={handleChange} required />
@@ -183,7 +183,7 @@ const CharacterCreation = (props) => {
                                 <option key={fc.id} value={fc.fc_type}>{fc.fc_type}</option>
                             ))}
                         </select>
-                    <button type="button" onClick={handleSubmit}>Save Character</button>
+                    <button type="button" className='save-character-btn' onClick={handleSubmit}>Save Character</button>
                 </form>
                 <button className="close" onClick={props.closeForm}>&times;</button>
             </div>
