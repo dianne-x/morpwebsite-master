@@ -98,9 +98,30 @@
                 background-color: transparent;
                 opacity: 1;
               }
+
             }
             &:hover button {
               display: block;
+            }
+            &>.edit-section-room {
+              display: flex;
+              gap: 0;
+              input {
+                width: 80%;
+                background-color: transparent;
+                outline: none;
+                border: 1px solid $third-color;
+                color: $text-color;
+                padding: 5px;
+              }
+              button.approve-btn {
+                display: grid;
+                place-items: center;
+                color: $main-color;
+                background-color: $third-color;
+                width: 20%;
+                opacity: 1;
+              }
             }
           }
           .room-item>button {

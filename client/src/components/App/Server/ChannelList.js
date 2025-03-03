@@ -10,6 +10,10 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId 
   const [openRoomCreationId, setOpenRoomCreationId] = useState(null);
   const [openSectionCreationId, setOpenSectionCreationId] = useState(false);
   const [sectionList, setSectionList] = useState(sections);
+  const [selectedEditSectionId, setSelectedEditSectionId] = useState(null);
+  const [selectedEditRoomId, setSelectedEditRoomId] = useState(null);
+  const [editSectionName, setEditSectionName] = useState("");
+  const [editRoomName, setEditRoomName] = useState("");
 
   useEffect(() => {
     setSectionList(sections);
@@ -39,6 +43,42 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId 
     setOpenRoomCreationId(null);
   };
 
+  const handleEditSection = (sectionId) => {
+
+    // írd ide a módosításos cuccot
+
+    setSelectedEditSectionId(null);
+  };
+
+  const handleEditRoom = (roomId) => {
+
+    // írd ide a módosításos cuccot
+
+    setSelectedEditRoomId(null);
+  };
+
+  const handleDeleteSection = (sectionId, sectionName) => {
+    // eslint-disable-next-line no-restricted-globals
+    if (confirm(`Are you sure you want to delete section '${sectionName}'?`)) {
+      // írd ide a törléses cuccot
+    }
+  }
+
+  const handleDeleteRoom = (roomId, roomName) => {
+    // eslint-disable-next-line no-restricted-globals
+    if (confirm(`Are you sure you want to delete room '${roomName}'?`)) {
+      // írd ide a törléses cuccot
+    }
+  }
+
+  const handleSectionNameChange = (event) => {
+    setEditSectionName(event.target.value);
+  };
+
+  const handleRoomNameChange = (event) => {
+    setEditRoomName(event.target.value);
+  };
+
   return (
     <div className="channel-list server-side">
       <h3>Sections and Rooms:</h3>
@@ -46,13 +86,31 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId 
         {sectionList.map((section, sectionIndex) => (
           <details key={sectionIndex} className="section-item" open={true}>
             <summary>
-              <p>{section.section_name}</p>
-              <button title='Edit section name' className='change-btn'>
-                <FontAwesomeIcon icon={faPenToSquare} />
-              </button>
-              <button title='Delete section' className='change-btn'>
-                <FontAwesomeIcon icon={faTrash} />
-              </button>
+              {
+                selectedEditSectionId === section.id ? 
+                (<div className='edit-section-room'>
+                  <input 
+                    type='text' 
+                    value={editSectionName} 
+                    onChange={handleSectionNameChange} 
+                  />
+                  <button title='Save section name' className='approve-btn' onClick={() => handleEditSection(section.id)}>
+                    <FontAwesomeIcon icon={faPenToSquare} />
+                  </button>
+                </div>) 
+                : 
+                (<>
+                  <p>{section.section_name}</p>
+                  <button title='Edit section name' className='change-btn' onClick={() => {
+                    setSelectedEditSectionId(section.id);
+                    setEditSectionName(section.section_name);
+                  }}>
+                    <FontAwesomeIcon icon={faPenToSquare} />
+                  </button>
+                  <button title='Delete section' className='change-btn' onClick={() => handleDeleteSection(section.id, section.section_name)}>
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                </>)}
             </summary>
             <ul>
               <div className='line'></div>
@@ -62,15 +120,33 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId 
                     <button 
                       onClick={() => changeSelectedRoomId(room.id)}
                       className={room.id === selectedRoomId ? 'selected' : ''}>
-                        <p>{room.room_name}</p>
-                        <div>
-                          <button title='Edit room name' className='change-btn'>
-                            <FontAwesomeIcon icon={faPenToSquare} />
-                          </button>
-                          <button title='Delete room' className='change-btn'>
-                            <FontAwesomeIcon icon={faTrash} />
-                          </button>
-                        </div>
+                        {
+                          selectedEditRoomId === room.id ? 
+                          (<div className='edit-section-room'>
+                            <input 
+                              type='text' 
+                              value={editRoomName} 
+                              onChange={handleRoomNameChange} 
+                            />
+                            <button title='Save room name' className='approve-btn' onClick={() => handleEditRoom(room.id)}>
+                              <FontAwesomeIcon icon={faPenToSquare} />
+                            </button>
+                          </div>) 
+                          : 
+                          (<>
+                            <p>{room.room_name}</p>
+                            <div>
+                              <button title='Edit room name' className='change-btn' onClick={() => {
+                                setSelectedEditRoomId(room.id);
+                                setEditRoomName(room.room_name);
+                              }}>
+                                <FontAwesomeIcon icon={faPenToSquare} />
+                              </button>
+                              <button title='Delete room' className='change-btn' onClick={() => handleDeleteRoom(room.id, room.room_name)}>
+                                <FontAwesomeIcon icon={faTrash} />
+                              </button>
+                            </div>
+                          </>)}
                     </button>
                   </li>
                 ))
