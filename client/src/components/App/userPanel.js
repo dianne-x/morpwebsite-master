@@ -8,6 +8,7 @@ import Characters from './userPanel/Characters';
 import Inventory from './userPanel/Inventory';
 import ManageServer from './userPanel/ManageServer';
 import AdminPanel from './userPanel/adminPanel';
+import FriendRequests from './userPanel/friendRequests';
 
 const UserPanel = ({ onClose, LogOut }) => {
   const [activeTab, setActiveTab] = useState('Profile');
@@ -38,6 +39,10 @@ const UserPanel = ({ onClose, LogOut }) => {
             <span>Characters</span>
           </button>
 
+          <button onClick={() => setActiveTab('FriendRequests')} className={activeTab == 'FriendRequests' ? 'active' : ''}>
+            <span>Friend Requests</span>
+          </button>
+
           <button onClick={() => setActiveTab('Inventory')} className={activeTab == 'Inventory' ? 'active' : ''}>
             <span>Inventory</span>
           </button>
@@ -63,6 +68,9 @@ const UserPanel = ({ onClose, LogOut }) => {
           )}
           {activeTab === 'Characters' && (
             <Characters />
+          )}
+          {activeTab === 'FriendRequests' && (
+            <FriendRequests />
           )}
           {activeTab === 'Inventory' && (
             <Inventory />

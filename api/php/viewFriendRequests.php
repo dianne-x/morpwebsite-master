@@ -8,6 +8,9 @@ header('Content-Type: application/json');
 
 $user_id = $_GET['user_id'];
 
+// Log the user_id to ensure it is received correctly
+error_log("Received user_id: " . $user_id);
+
 $sql = "SELECT fr.id, fr.sender_id, u.name AS sender_name, u.profile_pic_path AS sender_profile_pic
         FROM friend_requests fr
         JOIN users u ON fr.sender_id = u.uid
@@ -21,6 +24,9 @@ $friend_requests = [];
 while ($row = $result->fetch_assoc()) {
     $friend_requests[] = $row;
 }
+
+// Log the fetched friend requests
+error_log("Fetched friend requests: " . json_encode($friend_requests));
 
 echo json_encode($friend_requests);
 
