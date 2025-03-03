@@ -102,6 +102,7 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId 
                 (<>
                   <p>{section.section_name}</p>
                   <button title='Edit section name' className='change-btn' onClick={() => {
+                    setSelectedEditRoomId(null);
                     setSelectedEditSectionId(section.id);
                     setEditSectionName(section.section_name);
                   }}>
@@ -137,6 +138,7 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId 
                             <p>{room.room_name}</p>
                             <div>
                               <button title='Edit room name' className='change-btn' onClick={() => {
+                                setSelectedEditSectionId(null);
                                 setSelectedEditRoomId(room.id);
                                 setEditRoomName(room.room_name);
                               }}>
