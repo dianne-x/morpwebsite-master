@@ -472,7 +472,7 @@ INSERT INTO `nationality` (`id`, `nationality`) VALUES
 (225, 'Tonga'),
 (226, 'Trinidad & Tobago'),
 (227, 'Tunisia'),
-(228, 'Turkey'),
+(228, 'Türkiye'),
 (229, 'Turkmenistan'),
 (230, 'Turks & Caicos Islands'),
 (231, 'Tuvalu'),
