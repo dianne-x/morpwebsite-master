@@ -13,13 +13,35 @@
       gap: 20px;
 
       .room-details-wrapper {
-        height: 5%;
-        min-height: 5%;
+        height: 6%;
+        min-height: 6%;
+        background-image: linear-gradient(to left, transparent, rgba($color: $third-color, $alpha: .4));
+        display: grid;
+        place-items: center;
+        margin: 10px 0;
+        position: relative;
+        &::before {
+          content: '';
+          position: absolute;
+          top: 3px;
+          bottom: 3px;
+          left: 3px;
+          right: 3px;
+          background-color: $main-color;
+        }
+        h1 {
+          //text-align: center;
+          color: rgba($color: $third-color, $alpha: .4);
+          padding: 0 25px;
+          width: 100%;
+          z-index: 2;
+
+        }
       }
 
       .chat-messages-wrapper {
-        height: 85%;
-        min-height: 85%;
+        height: 84%;
+        min-height: 84%;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;

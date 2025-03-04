@@ -27,7 +27,7 @@ const FriendList = ({ onFriendClick }) => {
         friends.map((friend) => (
           <TopBarButton
             key={friend.uid}
-            icon={<img src={friend.profile_pic_path || 'default-profile-pic-url'} alt={friend.name} width="30" height="30" />}
+            picPath={`url(${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${friend.profile_pic_path})`}
             onClick={() => onFriendClick(friend)}
             title={friend.name}
           />
