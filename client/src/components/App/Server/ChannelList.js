@@ -6,7 +6,7 @@ import SectionCreation from './SectionCreation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId }) => {
+const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId, onReload }) => {
   const [openRoomCreationId, setOpenRoomCreationId] = useState(null);
   const [openSectionCreationId, setOpenSectionCreationId] = useState(false);
   const [sectionList, setSectionList] = useState(sections);
@@ -27,6 +27,7 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId 
   const handleSectionCreated = (newSection) => {
     setSectionList([...sectionList, newSection]);
     setOpenSectionCreationId(false);
+    onReload();
   };
 
   const handleRoomCreated = (newRoom) => {
@@ -41,6 +42,7 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId 
     });
     setSectionList([...updatedSections]);
     setOpenRoomCreationId(null);
+    onReload();
   };
 
   const handleEditSection = (sectionId) => {

@@ -6,7 +6,7 @@ import '../../../style/App/Server/Server.scss';
 import ServerSettings from './ServerSettings';
 import SectionCreation from './SectionCreation';
 
-const Server = ({ selectedServer, sections, users }) => {
+const Server = ({ selectedServer, sections, users, onReload }) => {
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [selectedRoomId, setSelectedRoomId] = useState(null);
 
@@ -50,7 +50,7 @@ const Server = ({ selectedServer, sections, users }) => {
     return (
         <>
             <div className="server-main-content">
-                <ChannelList sections={sections} changeSelectedRoomId={changeSelectedRoomId} selectedRoomId={selectedRoomId} serverId={selectedServer.id} />
+                <ChannelList sections={sections} changeSelectedRoomId={changeSelectedRoomId} selectedRoomId={selectedRoomId} serverId={selectedServer.id} onReload={onReload} />
                 <ChatWindow serverId={selectedServer.id} roomId={selectedRoomId} roomDetails={getRoomDetails()} />
                 <ServerInfo server={selectedServer} users={users} openServerSettings={openServerSettings} />
             </div>
