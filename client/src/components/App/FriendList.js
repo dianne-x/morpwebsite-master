@@ -1,34 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import TopBarButton from './TopBarButton';
 
-const initialFriends = [
-    { id: 1, icon: '👨', name: 'Josh' },
-    { id: 2, icon: '👩', name: 'Alice' },
-    { id: 3, icon: '👧', name: 'Lily' },
-    { id: 4, icon: '👦', name: 'Tom' },
-    { id: 5, icon: '👵', name: 'Granny' },
-    { id: 6, icon: '👴', name: 'Grandpa' },
-    { id: 7, icon: '👶', name: 'Baby' },
-    { id: 8, icon: '🧒', name: 'Kid' },
-    { id: 9, icon: '🧑', name: 'Adult' },
-    { id: 11, icon: '👨‍🦱', name: 'Curly' },
-    { id: 13, icon: '👨‍🦲', name: 'Bald' },
-    { id: 15, icon: '👨‍🦳', name: 'Gray' },
-    { id: 17, icon: '👱‍♂️', name: 'Blond' },
-    { id: 19, icon: '🧔', name: 'Beard' },
-    { id: 20, icon: '👨‍🦰', name: 'Redhead' },
-    { id: 22, icon: '👨‍🦱', name: 'Curly' }
-];
-
 const FriendList = ({ onFriendClick }) => {
-  const [friends, setFriends] = useState(initialFriends);
+  const [friends, setFriends] = useState([]);
+  const user = JSON.parse(localStorage.getItem('morp-login-user'));
+
+  useEffect(() => {
+    const fetchFriends = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/viewFriends.php?user_id=${user}`);
+        const data = await response.json();
+        console.log('Fetched friends:', data);
+        setFriends(data);
+      } catch (error) {
+        console.error('Error fetching friends:', error);
+      }
+    };
+
+    fetchFriends();
+  }, [user.uid]);
 
   return (
     <>
-      {friends.map((friend) => (
-        <TopBarButton key={friend.id} icon={friend.icon} onClick={() => onFriendClick(friend)} title={friend.name} />
-      ))}
+      {friends.length > 0 ? (
+        friends.map((friend) => (
+          <TopBarButton
+            key={friend.uid}
+            icon={<img src={friend.profile_pic_path || 'default-profile-pic-url'} alt={friend.name} width="30" height="30" />}
+            onClick={() => onFriendClick(friend)}
+            title={friend.name}
+          />
+        ))
+      ) : (
+        <p>You have yet to befriend anyone.</p>
+      )}
     </>
   );
 };

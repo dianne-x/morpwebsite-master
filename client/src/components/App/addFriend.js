@@ -41,7 +41,7 @@ const AddFriend = () => {
       if (data.success) {
         alert('Friend request sent successfully!');
       } else {
-        alert('Failed to send friend request.');
+        alert(`Failed to send friend request: ${data.error}`);
       }
     } catch (error) {
       console.error('Error sending friend request:', error);

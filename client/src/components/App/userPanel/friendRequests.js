@@ -46,7 +46,7 @@ const FriendRequests = () => {
   const handleRejectRequest = async (requestId) => {
     try {
       console.log(`Rejecting friend request with id: ${requestId}`);
-      const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/rejectFriendRequest.php`, {
+      const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/rejectFriendReqeust.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

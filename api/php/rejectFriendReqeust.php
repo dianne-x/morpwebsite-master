@@ -15,6 +15,15 @@ $stmt->bind_param("i", $request_id);
 
 $response = [];
 if ($stmt->execute()) {
+
+    // Delete the friend request from the friend_requests table
+    $sql = "DELETE FROM friend_requests WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $request_id);
+    $stmt->execute();
+
+
+
     $response['success'] = true;
 } else {
     $response['success'] = false;
