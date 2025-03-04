@@ -40,6 +40,12 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
     setMessage(''); // Clear the input after sending the message
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' && message.trim().length > 0) {
+      handleSendMessage();
+    }
+  };
+
   useEffect(() => {
     socket.on("receive_message", (data) => {
       setMessages((prevMessages) => [...prevMessages, data]);
@@ -129,9 +135,8 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
             <input
               type="text"
               value={message}
-              onChange={(event) => {
-                setMessage(event.target.value);
-              }}
+              onChange={handleMessageChange}
+              onKeyDown={handleKeyDown}
               placeholder="Type your message..."
               maxLength="500"
             />
