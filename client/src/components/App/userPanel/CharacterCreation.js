@@ -18,6 +18,7 @@ const CharacterCreation = (props) => {
         nationality: '',
         occupation: '',
         fc_type: '', // Correct the field name to fc_type
+        fc_name: '', // Add fc_name to form data
         user_id: JSON.parse(localStorage.getItem('morp-login-user')), // Add user ID to form data
         server_id: props.server_id, // Add server ID to form data
         character_pic_path: null // Add profile picture to form data
@@ -69,7 +70,7 @@ const CharacterCreation = (props) => {
     };
 
     const handleSubmit = () => {
-        if (!formData.name || !formData.gender || !formData.species || !formData.status || !formData.affilation || !formData.nationality || !formData.occupation || !formData.fc_type) {
+        if (!formData.name || !formData.gender || !formData.species || !formData.status || !formData.affilation || !formData.nationality || !formData.occupation || !formData.fc_type || !formData.fc_name) {
             alert('Please fill out all required fields.');
             return;
         }
@@ -177,12 +178,20 @@ const CharacterCreation = (props) => {
                     <label>
                         FC Type:
                     </label>
-                        <select name="fc_type" value={formData.fc_type} onChange={handleChange}> {/* Correct the field name to fc_type */}
+                        <select name="fc_type" value={formData.fc_type} onChange={handleChange} required> {/* Correct the field name to fc_type */}
                             <option value="">Select FC Type</option>
                             {fcTypes.map((fc) => (
                                 <option key={fc.id} value={fc.fc_type}>{fc.fc_type}</option>
                             ))}
                         </select>
+                    {formData.fc_type && (
+                        <>
+                            <label htmlFor="fc_name">
+                                FC Name:
+                            </label>
+                            <input type="text" name="fc_name" value={formData.fc_name} onChange={handleChange} required />
+                        </>
+                    )}
                     <button type="button" className='save-character-btn' onClick={handleSubmit}>Save Character</button>
                 </form>
                 <button className="close" onClick={props.closeForm}>&times;</button>

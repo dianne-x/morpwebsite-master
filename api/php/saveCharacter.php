@@ -26,6 +26,7 @@ $affilation = isset($data['affilation']) ? $data['affilation'] : null;
 $nationality = isset($data['nationality']) ? $data['nationality'] : null;
 $occupation = isset($data['occupation']) ? $data['occupation'] : null;
 $fctype = isset($data['fc_type']) ? $data['fc_type'] : null;
+$fcname = isset($data['fc_name']) ? $data['fc_name'] : null; // Ensure fc_name is assigned
 $server_id = isset($data['server_id']) ? $data['server_id'] : null;
 $character_pic_path = isset($_FILES['character_pic_path']) ? $_FILES['character_pic_path'] : null;
 
@@ -151,7 +152,7 @@ if ($statusResult && $statusResult->num_rows > 0) {
 }
 
 // Insert the character data
-$query = "INSERT INTO user_character (character_name, gender_id, species_id, status_id, affilation_id, nationality_id, occupation_id, fc_type_id, servermember_id, character_pic_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$query = "INSERT INTO user_character (character_name, gender_id, species_id, status_id, affilation_id, nationality_id, occupation_id, fc_type_id, fc_name, servermember_id, character_pic_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($query);
 if (!$stmt) {
     error_log("Failed to prepare statement: " . $conn->error);
@@ -159,7 +160,7 @@ if (!$stmt) {
     echo json_encode($response);
     exit();
 }
-$stmt->bind_param("siiiiiiiis", $name, $genderId, $speciesId, $statusId, $affilationId, $nationalityId, $occupationId, $fctypeId, $servermember_id, $character_pic_path);
+$stmt->bind_param("siiiiiiisis", $name, $genderId, $speciesId, $statusId, $affilationId, $nationalityId, $occupationId, $fctypeId, $fcname, $servermember_id, $character_pic_path);
 
 if ($stmt->execute()) {
     $response['success'] = "Character saved successfully!";
@@ -172,6 +173,7 @@ if ($stmt->execute()) {
         'nationality' => $nationality,
         'occupation' => $occupation,
         'fc_type' => $fctype,
+        'fc_name' => $fcname,
         'status' => $status,
         'character_pic_path' => $character_pic_path,
         'is_verified' => 0, // Not approved yet

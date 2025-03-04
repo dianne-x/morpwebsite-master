@@ -14,7 +14,7 @@ const ChatMessage = ({ name, message, date, showIconAndName }) => {
 
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
-        return new Intl.DateTimeFormat('en-GB', options).format(new Date(dateString));
+        return new Intl.DateTimeFormat(navigator.language || navigator.userLanguage, options).format(new Date(dateString));
         // en-GB helyett akár: navigator.language || navigator.userLanguage
     };
 
