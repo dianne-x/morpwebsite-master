@@ -46,6 +46,7 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
   };
 
   const handleEditSection = (sectionId) => {
+    if (editSectionName === "") return;
     fetch(`${process.env.REACT_APP_PHP_BASE_URL}/updateSectionName.php`, {
       method: 'POST',
       headers: {
@@ -74,6 +75,7 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
   };
 
   const handleEditRoom = (roomId) => {
+    if (editRoomName === "") return;
     fetch(`${process.env.REACT_APP_PHP_BASE_URL}/updateRoomName.php`, {
       method: 'POST',
       headers: {
