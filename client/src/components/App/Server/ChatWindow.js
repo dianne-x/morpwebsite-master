@@ -114,7 +114,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
                   prevCharacterRef.current = msg.character_id; // Update prevCharacterRef to current msg.character_id
                   return (
                     <div key={index}>
-                      <ChatMessage key={index} name={msg.character_name} message={msg.message} date={msg.date} showIconAndName={showIconAndName} />
+                      <ChatMessage key={index} name={msg.character_name} characterId={msg.character_id} message={msg.message} date={msg.date} showIconAndName={showIconAndName} />
                     </div>
                   );
                 })}

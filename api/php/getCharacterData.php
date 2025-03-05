@@ -13,24 +13,58 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Get the JSON data from the request
-$data = json_decode(file_get_contents('php://input'), true);
+// Extract character ID from query parameters
+$characterId = isset($_GET['characterId']) ? intval($_GET['characterId']) : 0;
 
-// Extract user ID
-$user_id = $data['userId'];
+if ($characterId === 0) {
+    echo json_encode(["message" => "Invalid character ID"]);
+    exit();
+}
 
 // Prepare and execute the query
-$stmt = $conn->prepare("SELECT character_name, character_class, character_level FROM characters WHERE user_id = ?");
-$stmt->bind_param("i", $user_id);
+$stmt = $conn->prepare("
+    SELECT 
+        user_character.character_name,
+        user_character.nickname,
+        gender.gender,
+        user_character.birthdate,
+        user_character.deathdate,
+        user_character.resurrected_date,
+        character_species.species,
+        occupation.occupation,
+        affilation.affilation,
+        nationality.nationality,
+        user_status.status_type,
+        character_story.stories_id,
+        user_character.bio,
+        user_character.powers,
+        user_character.weaknesses,
+        user_character.used_item,
+        user_character.family,
+        user_character.universe,
+        character_fc.fc_type,
+        user_character.fc_name
+    FROM user_character
+    LEFT JOIN gender ON user_character.gender_id = gender.id
+    LEFT JOIN character_species ON user_character.species_id = character_species.id
+    LEFT JOIN occupation ON user_character.occupation_id = occupation.id
+    LEFT JOIN affilation ON user_character.affilation_id = affilation.id
+    LEFT JOIN nationality ON user_character.nationality_id = nationality.id
+    LEFT JOIN user_status ON user_character.status_id = user_status.id
+    LEFT JOIN character_story ON user_character.story_id = character_story.stories_id
+    LEFT JOIN character_fc ON user_character.fc_type_id = character_fc.id
+    WHERE user_character.id = ?;
+");
+$stmt->bind_param("i", $characterId);
 $stmt->execute();
 $result = $stmt->get_result();
 
 // Fetch the data
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    echo json_encode($row);
+    echo json_encode(["success" => true, "character" => $row]);
 } else {
-    echo json_encode(["message" => "No character data found"]);
+    echo json_encode(["success" => false, "message" => "No character data found"]);
 }
 
 // Close the connection
