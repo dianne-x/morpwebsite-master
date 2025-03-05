@@ -62,14 +62,45 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
   const handleDeleteSection = (sectionId, sectionName) => {
     // eslint-disable-next-line no-restricted-globals
     if (confirm(`Are you sure you want to delete section '${sectionName}'?`)) {
-      // írd ide a törléses cuccot
+      fetch(`${process.env.REACT_APP_PHP_BASE_URL}/deleteSection.php?sectionId=${sectionId}`, {
+        method: 'DELETE',
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          const updatedSections = sectionList.filter(section => section.id !== sectionId);
+          setSectionList(updatedSections);
+          onReload();
+        } else {
+          console.error(data.error);
+        }
+      })
+      .catch(error => console.error('Error:', error));
     }
   }
 
   const handleDeleteRoom = (roomId, roomName) => {
     // eslint-disable-next-line no-restricted-globals
     if (confirm(`Are you sure you want to delete room '${roomName}'?`)) {
-      // írd ide a törléses cuccot
+      fetch(`${process.env.REACT_APP_PHP_BASE_URL}/deleteRoom.php?roomId=${roomId}`, {
+        method: 'DELETE',
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          const updatedSections = sectionList.map(section => {
+            return {
+              ...section,
+              rooms: section.rooms.filter(room => room.id !== roomId)
+            };
+          });
+          setSectionList(updatedSections);
+          onReload();
+        } else {
+          console.error(data.error);
+        }
+      })
+      .catch(error => console.error('Error:', error));
     }
   }
 
