@@ -46,15 +46,62 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
   };
 
   const handleEditSection = (sectionId) => {
-
-    // írd ide a módosításos cuccot
+    fetch(`${process.env.REACT_APP_PHP_BASE_URL}/updateSectionName.php`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ sectionId, sectionName: editSectionName }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        const updatedSections = sectionList.map(section => {
+          if (section.id === sectionId) {
+            return { ...section, section_name: editSectionName };
+          }
+          return section;
+        });
+        setSectionList(updatedSections);
+        onReload();
+      } else {
+        console.error(data.error);
+      }
+    })
+    .catch(error => console.error('Error:', error));
 
     setSelectedEditSectionId(null);
   };
 
   const handleEditRoom = (roomId) => {
-
-    // írd ide a módosításos cuccot
+    fetch(`${process.env.REACT_APP_PHP_BASE_URL}/updateRoomName.php`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ roomId, roomName: editRoomName }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        const updatedSections = sectionList.map(section => {
+          return {
+            ...section,
+            rooms: section.rooms.map(room => {
+              if (room.id === roomId) {
+                return { ...room, room_name: editRoomName };
+              }
+              return room;
+            })
+          };
+        });
+        setSectionList(updatedSections);
+        onReload();
+      } else {
+        console.error(data.error);
+      }
+    })
+    .catch(error => console.error('Error:', error));
 
     setSelectedEditRoomId(null);
   };
