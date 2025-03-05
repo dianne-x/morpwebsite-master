@@ -120,9 +120,9 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
               {section.rooms && section.rooms.length > 0 ? (
                 section.rooms.map((room, roomIndex) => (
                   <li key={roomIndex} className="room-item">
-                    <button 
+                    <div 
                       onClick={() => changeSelectedRoomId(room.id)}
-                      className={room.id === selectedRoomId ? 'selected' : ''}>
+                      className={`room-item-wrapper ${room.id === selectedRoomId ? 'selected' : ''}`}>
                         {
                           selectedEditRoomId === room.id ? 
                           (<div className='edit-section-room'>
@@ -151,7 +151,7 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
                               </button>
                             </div>
                           </>)}
-                    </button>
+                    </div>
                   </li>
                 ))
               ) : (

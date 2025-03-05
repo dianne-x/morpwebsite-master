@@ -29,13 +29,17 @@ const ServerList = ({ onServerClick, onCreateServerClick }) => {
 
   return (
     <>
-      {servers.map((server) => (
+      {servers.length > 0 ? (
+        servers.map((server) => (
         <TopBarButton 
           key={server.id} 
           picPath={`url(${process.env.REACT_APP_IMAGE_BASE_URL}/serverPictures/${server.icon})`} 
           onClick={() => onServerClick(server)} 
           title={server.name} />
-      ))}
+      ))
+      ) : (
+        <p>You have yet to join any servers.</p>
+      )}
     </>
   );
 };
