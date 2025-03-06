@@ -35,6 +35,13 @@
             object-fit: contain;
             background: $main_color;
         }
+
+        .loading {
+            width: 100%;
+            min-height: 100%;
+
+        }
+
         form {
             display: flex;
             flex-direction: column;
