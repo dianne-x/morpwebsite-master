@@ -21,7 +21,18 @@ const CharacterCreation = (props) => {
         fc_name: '', // Add fc_name to form data
         user_id: JSON.parse(localStorage.getItem('morp-login-user')), // Add user ID to form data
         server_id: props.server_id, // Add server ID to form data
-        character_pic_path: null // Add profile picture to form data
+        character_pic_path: null, // Add profile picture to form data
+        birthdate: '', // Add birthdate to form data
+        died: false, // Add died to form data
+        deathdate: '', // Add deathdate to form data
+        resurrected: false, // Add resurrected to form data
+        resurrected_date: '', // Add resurrected_date to form data
+        bio: '', // Add bio to form data
+        powers: '', // Add powers to form data
+        weaknesses: '', // Add weaknesses to form data
+        used_item: '', // Add used_item to form data
+        family: '', // Add family to form data
+        universe: '' // Add universe to form data
     });
     const [tempProfilePic, setTempProfilePic] = useState(''); // Temporary variable for profile picture
     const [profilePicFile, setProfilePicFile] = useState(null); // File object for profile picture
@@ -50,10 +61,10 @@ const CharacterCreation = (props) => {
     }, []);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type, checked } = e.target;
         setFormData({
             ...formData,
-            [name]: value
+            [name]: type === 'checkbox' ? checked : value
         });
     };
 
@@ -192,6 +203,58 @@ const CharacterCreation = (props) => {
                             <input type="text" name="fc_name" value={formData.fc_name} onChange={handleChange} required />
                         </>
                     )}
+                    <label>
+                        Birthdate:
+                    </label>
+                    <input type="date" name="birthdate" value={formData.birthdate} onChange={handleChange} />
+                    <label>
+                        Died:
+                    </label>
+                    <input type="checkbox" name="died" checked={formData.died} onChange={handleChange} />
+                    {formData.died && (
+                        <>
+                            <label>
+                                Deathdate:
+                            </label>
+                            <input type="date" name="deathdate" value={formData.deathdate} onChange={handleChange} />
+                            <label>
+                                Resurrected:
+                            </label>
+                            <input type="checkbox" name="resurrected" checked={formData.resurrected} onChange={handleChange} />
+                            {formData.resurrected && (
+                                <>
+                                    <label>
+                                        Resurrected Date:
+                                    </label>
+                                    <input type="date" name="resurrected_date" value={formData.resurrected_date} onChange={handleChange} />
+                                </>
+                            )}
+                        </>
+                    )}
+                    <label>
+                        Bio:
+                    </label>
+                    <textarea name="bio" value={formData.bio} onChange={handleChange}></textarea>
+                    <label>
+                        Powers:
+                    </label>
+                    <textarea name="powers" value={formData.powers} onChange={handleChange}></textarea>
+                    <label>
+                        Weaknesses:
+                    </label>
+                    <textarea name="weaknesses" value={formData.weaknesses} onChange={handleChange}></textarea>
+                    <label>
+                        Used Item:
+                    </label>
+                    <textarea name="used_item" value={formData.used_item} onChange={handleChange}></textarea>
+                    <label>
+                        Family:
+                    </label>
+                    <textarea name="family" value={formData.family} onChange={handleChange}></textarea>
+                    <label>
+                        Universe:
+                    </label>
+                    <textarea name="universe" value={formData.universe} onChange={handleChange}></textarea>
                     <button type="button" className='save-character-btn' onClick={handleSubmit}>Save Character</button>
                 </form>
                 <button className="close" onClick={props.closeForm}>&times;</button>
