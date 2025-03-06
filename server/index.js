@@ -172,7 +172,7 @@ io.on("connection", (socket) => {
       order: [['date', 'ASC']],
       include: [{
         model: UserCharacter,
-        attributes: ['character_name']
+        attributes: ['character_name', 'character_pic_path']
       }]
     })
     .then(messages => {
@@ -181,6 +181,7 @@ io.on("connection", (socket) => {
         room_id: msg.room_id,
         character_id: msg.character_id,
         character_name: msg.UserCharacter ? msg.UserCharacter.character_name : 'Unknown',
+        character_pic_path: msg.UserCharacter ? msg.UserCharacter.character_pic_path : '',
         message: msg.message,
         date: msg.date
       }));
@@ -200,7 +201,7 @@ io.on("connection", (socket) => {
           where: { id: newMessage.id },
           include: [{
             model: UserCharacter,
-            attributes: ['character_name']
+            attributes: ['character_name', 'character_pic_path']
           }]
         });
       })
@@ -210,6 +211,7 @@ io.on("connection", (socket) => {
           room_id: newMessageWithCharacterName.room_id,
           character_id: newMessageWithCharacterName.character_id,
           character_name: newMessageWithCharacterName.UserCharacter ? newMessageWithCharacterName.UserCharacter.character_name : 'Unknown',
+          character_pic_path: newMessageWithCharacterName.UserCharacter ? newMessageWithCharacterName.UserCharacter.character_pic_path : '',
           message: newMessageWithCharacterName.message,
           date: newMessageWithCharacterName.date
         };

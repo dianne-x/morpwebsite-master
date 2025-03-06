@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../../../style/App/Server/ChatMessage.scss';
 import CharacterInfo from '../Character/CharacterInfo'; // Import the CharacterInfo component
 
-const ChatMessage = ({ name, message, date, showIconAndName, characterId }) => {
+const ChatMessage = ({ name, message, date, showIconAndName, characterId, character_pic_path }) => {
     const [isHovered, setIsHovered] = useState(false);
     const [showCharacterInfo, setShowCharacterInfo] = useState(false); // State to track if CharacterInfo should be shown
   
@@ -23,7 +23,7 @@ const ChatMessage = ({ name, message, date, showIconAndName, characterId }) => {
         <>
             <div className="chat-message" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
                 <div className='chat-message-icon' onClick={() => setShowCharacterInfo(true)}> {/* Show CharacterInfo on click */}
-                    {showIconAndName && <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/character.png`} alt="Character Avatar" />}
+                    {showIconAndName && <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${character_pic_path}`} alt="Character Avatar" />}
                 </div>
                 <div className="chat-message-content">
                     {

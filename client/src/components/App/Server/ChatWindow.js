@@ -79,7 +79,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
         if (data.length > 0) {
           setSelectedCharacter(data[0].id);
           setSelectedCharactersId(data[0].id);
-          console.log(`Selected character: ${data[0].character_name}`);
+          console.log(data[0]);
         }
       } catch (error) {
         console.error('Error fetching verified characters:', error);
@@ -112,9 +112,10 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
                 .map((msg, index) => {
                   const showIconAndName = index === 0 || prevCharacterRef.current !== msg.character_id;
                   prevCharacterRef.current = msg.character_id; // Update prevCharacterRef to current msg.character_id
+                  console.log(msg);
                   return (
                     <div key={index}>
-                      <ChatMessage key={index} name={msg.character_name} characterId={msg.character_id} message={msg.message} date={msg.date} showIconAndName={showIconAndName} />
+                      <ChatMessage key={index} name={msg.character_name} characterId={msg.character_id} message={msg.message} date={msg.date} character_pic_path={msg.character_pic_path} showIconAndName={showIconAndName} />
                     </div>
                   );
                 })}
