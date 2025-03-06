@@ -21,6 +21,34 @@ const CharacterControlPanel = ({ serverId }) => {
             .catch(error => console.error('Error fetching characters:', error));
     }, [serverId]);
 
+    const handleAccept = (characterId) => {
+        axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/CharacterAccept.php`, {
+            characterId: characterId // Ensure characterId is correctly sent
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            console.log('Character accepted:', response.data);
+            setCharacters(characters.map(character => 
+                character.id === characterId ? { ...character, is_verified: 1 } : character
+            ));
+        })
+        .catch(error => console.error('Error accepting character:', error));
+    };
+
+    const handleReject = (characterId) => {
+        axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/deleteServerCharacter.php`, {
+            characterId
+        })
+        .then(response => {
+            console.log('Character rejected:', response.data);
+            setCharacters(characters.filter(character => character.id !== characterId));
+        })
+        .catch(error => console.error('Error rejecting character:', error));
+    };
+
     const filteredCharacters = characters.filter(character => {
         if (filter === 'all') return true;
         if (filter === 'verified') return character.is_verified === 1;
@@ -42,7 +70,13 @@ const CharacterControlPanel = ({ serverId }) => {
             </select>
             <ul>
                 {filteredCharacters.map(character => (
-                    <li key={character.id}>{character.character_name}</li>
+                    <li key={character.id}>
+                        {character.character_name}
+                        {character.is_verified === 0 && (
+                            <button onClick={() => handleAccept(character.id)}>Accept</button>
+                        )}
+                        <button onClick={() => handleReject(character.id)}>Reject</button>
+                    </li>
                 ))}
             </ul>
         </div>

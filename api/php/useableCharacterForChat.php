@@ -17,7 +17,7 @@ $serverId = $_GET['serverId'];
 $user_id = $_GET['userId'];
 
 $sql = "
-    SELECT uc.id, uc.character_name, uc.is_verified, uc.character_pic_path
+    SELECT uc.id, uc.character_name, uc.is_verified
     FROM user_character uc
     JOIN server_member sm ON uc.servermember_id = sm.id
     WHERE sm.server_id = ? AND sm.user_id = ? AND uc.is_verified = 1
