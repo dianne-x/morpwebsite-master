@@ -15,7 +15,7 @@ if ($conn->connect_error) {
 $serverId = $_GET['serverId'];
 
 $sql = "
-    SELECT uc.id, uc.character_name, uc.is_verified 
+    SELECT uc.id, uc.character_name, uc.is_verified, uc.character_pic_path 
     FROM user_character uc
     JOIN server_member sm ON uc.servermember_id = sm.id
     WHERE sm.server_id = ?

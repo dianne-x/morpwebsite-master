@@ -7,10 +7,20 @@
         justify-content: space-between;
         overflow-y: hidden;
 
+        .character-container {
+            height: 100%;
+        }
+
+        .form-wrapper {
+            max-height: 100%;
+        }
+        
         form {
+            overflow-y: auto;
             display: grid;
             grid-template-columns: min-content minmax(100px, 100%);
             gap: .6rem 1rem;
+            
 
             label:not(#pic-label) {
                 
@@ -61,7 +71,11 @@
                 }
             }
 
-            input, select {
+            textarea {
+                resize: vertical;
+            }
+
+            input, select, textarea {
                 background-color: rgba($color: $text-color, $alpha: .1);
                 border: none;
                 color: $secondary-color;

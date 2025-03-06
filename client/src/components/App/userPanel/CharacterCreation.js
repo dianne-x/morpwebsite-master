@@ -115,148 +115,150 @@ const CharacterCreation = (props) => {
     return (
         <div className='user-panel character-creation'>
             <div></div>
-            <div>
+            <div className='character-container'>
                 <h1>Character Creation</h1>
-                <form>
-                    <label 
-                        htmlFor="character_pic_path" id="pic-label"
-                        style={{backgroundImage: `url(${tempProfilePic || `${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${formData.character_pic_path}`})`}}>
-                    </label>
-                    <input 
-                        type="file"
-                        name="character_pic_path"
-                        id="character_pic_path"
-                        onChange={handleFileChange}
-                    />
-                    <label htmlFor="name">
-                        Name:
-                    </label>
-                    <input type="text" name="name" value={formData.name} onChange={handleChange} required />
-                    <label>
-                        Gender:
-                    </label>
-                    <select name="gender" value={formData.gender} onChange={handleChange} required>
-                        <option value="">Select Gender</option>
-                        {genders.map((gender) => (
-                            <option key={gender.id} value={gender.gender}>{gender.gender}</option>
-                        ))}
-                    </select>
-                    <label>
-                        Species:
-                    </label>
-                    <select name="species" value={formData.species} onChange={handleChange} required>
-                        <option value="">Select Species</option>
-                        {species.map((species) => (
-                            <option key={species.id} value={species.species}>{species.species}</option>
-                        ))}
-                    </select>
-                    <label>
-                        Status:
-                    </label>
-                    <select name="status" value={formData.status} onChange={handleChange} required>
-                        <option value="">Select Status</option>
-                        {statuses.map((status) => (
-                            <option key={status.id} value={status.status}>{status.status}</option>
-                        ))}
-                    </select>
-                    <label>
-                        Affiliation:
-                    </label>
-                    <select name="affilation" value={formData.affilation} onChange={handleChange}> 
-                        <option value="">Select Affiliation</option>
-                        {affilations.map((affilation) => (
-                            <option key={affilation.id} value={affilation.affilation}>{affilation.affilation}</option>
-                        ))}
-                    </select>
-                    <label>
-                        Nationality:
-                    </label>
-                        <select name="nationality" value={formData.nationality} onChange={handleChange}>
-                            <option value="">Select Nationality</option>
-                            {nationalities.map((nationality) => (
-                                <option key={nationality.id} value={nationality.nationality}>{nationality.nationality}</option>
+                <div className='form-wrapper'>
+                    <form>
+                        <label 
+                            htmlFor="character_pic_path" id="pic-label"
+                            style={{backgroundImage: `url(${tempProfilePic || `${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${formData.character_pic_path}`})`}}>
+                        </label>
+                        <input 
+                            type="file"
+                            name="character_pic_path"
+                            id="character_pic_path"
+                            onChange={handleFileChange}
+                        />
+                        <label htmlFor="name">
+                            Name:
+                        </label>
+                        <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+                        <label>
+                            Gender:
+                        </label>
+                        <select name="gender" value={formData.gender} onChange={handleChange} required>
+                            <option value="">Select Gender</option>
+                            {genders.map((gender) => (
+                                <option key={gender.id} value={gender.gender}>{gender.gender}</option>
                             ))}
                         </select>
-                    <label>
-                        Occupation:
-                    </label>
-                        <select name="occupation" value={formData.occupation} onChange={handleChange}>
-                            <option value="">Select Occupation</option>
-                            {occupations.map((occupation) => (
-                                <option key={occupation.id} value={occupation.occupation}>{occupation.occupation}</option>
+                        <label>
+                            Species:
+                        </label>
+                        <select name="species" value={formData.species} onChange={handleChange} required>
+                            <option value="">Select Species</option>
+                            {species.map((species) => (
+                                <option key={species.id} value={species.species}>{species.species}</option>
                             ))}
                         </select>
-                    <label>
-                        FC Type:
-                    </label>
-                        <select name="fc_type" value={formData.fc_type} onChange={handleChange} required> {/* Correct the field name to fc_type */}
-                            <option value="">Select FC Type</option>
-                            {fcTypes.map((fc) => (
-                                <option key={fc.id} value={fc.fc_type}>{fc.fc_type}</option>
+                        <label>
+                            Status:
+                        </label>
+                        <select name="status" value={formData.status} onChange={handleChange} required>
+                            <option value="">Select Status</option>
+                            {statuses.map((status) => (
+                                <option key={status.id} value={status.status}>{status.status}</option>
                             ))}
                         </select>
-                    {formData.fc_type && (
-                        <>
-                            <label htmlFor="fc_name">
-                                FC Name:
-                            </label>
-                            <input type="text" name="fc_name" value={formData.fc_name} onChange={handleChange} required />
-                        </>
-                    )}
-                    <label>
-                        Birthdate:
-                    </label>
-                    <input type="date" name="birthdate" value={formData.birthdate} onChange={handleChange} />
-                    <label>
-                        Died:
-                    </label>
-                    <input type="checkbox" name="died" checked={formData.died} onChange={handleChange} />
-                    {formData.died && (
-                        <>
-                            <label>
-                                Deathdate:
-                            </label>
-                            <input type="date" name="deathdate" value={formData.deathdate} onChange={handleChange} />
-                            <label>
-                                Resurrected:
-                            </label>
-                            <input type="checkbox" name="resurrected" checked={formData.resurrected} onChange={handleChange} />
-                            {formData.resurrected && (
-                                <>
-                                    <label>
-                                        Resurrected Date:
-                                    </label>
-                                    <input type="date" name="resurrected_date" value={formData.resurrected_date} onChange={handleChange} />
-                                </>
-                            )}
-                        </>
-                    )}
-                    <label>
-                        Bio:
-                    </label>
-                    <textarea name="bio" value={formData.bio} onChange={handleChange}></textarea>
-                    <label>
-                        Powers:
-                    </label>
-                    <textarea name="powers" value={formData.powers} onChange={handleChange}></textarea>
-                    <label>
-                        Weaknesses:
-                    </label>
-                    <textarea name="weaknesses" value={formData.weaknesses} onChange={handleChange}></textarea>
-                    <label>
-                        Used Item:
-                    </label>
-                    <textarea name="used_item" value={formData.used_item} onChange={handleChange}></textarea>
-                    <label>
-                        Family:
-                    </label>
-                    <textarea name="family" value={formData.family} onChange={handleChange}></textarea>
-                    <label>
-                        Universe:
-                    </label>
-                    <textarea name="universe" value={formData.universe} onChange={handleChange}></textarea>
-                    <button type="button" className='save-character-btn' onClick={handleSubmit}>Save Character</button>
-                </form>
+                        <label>
+                            Affiliation:
+                        </label>
+                        <select name="affilation" value={formData.affilation} onChange={handleChange}> 
+                            <option value="">Select Affiliation</option>
+                            {affilations.map((affilation) => (
+                                <option key={affilation.id} value={affilation.affilation}>{affilation.affilation}</option>
+                            ))}
+                        </select>
+                        <label>
+                            Nationality:
+                        </label>
+                            <select name="nationality" value={formData.nationality} onChange={handleChange}>
+                                <option value="">Select Nationality</option>
+                                {nationalities.map((nationality) => (
+                                    <option key={nationality.id} value={nationality.nationality}>{nationality.nationality}</option>
+                                ))}
+                            </select>
+                        <label>
+                            Occupation:
+                        </label>
+                            <select name="occupation" value={formData.occupation} onChange={handleChange}>
+                                <option value="">Select Occupation</option>
+                                {occupations.map((occupation) => (
+                                    <option key={occupation.id} value={occupation.occupation}>{occupation.occupation}</option>
+                                ))}
+                            </select>
+                        <label>
+                            FC Type:
+                        </label>
+                            <select name="fc_type" value={formData.fc_type} onChange={handleChange} required> {/* Correct the field name to fc_type */}
+                                <option value="">Select FC Type</option>
+                                {fcTypes.map((fc) => (
+                                    <option key={fc.id} value={fc.fc_type}>{fc.fc_type}</option>
+                                ))}
+                            </select>
+                        {formData.fc_type && (
+                            <>
+                                <label htmlFor="fc_name">
+                                    FC Name:
+                                </label>
+                                <input type="text" name="fc_name" value={formData.fc_name} onChange={handleChange} required />
+                            </>
+                        )}
+                        <label>
+                            Birthdate:
+                        </label>
+                        <input type="date" name="birthdate" value={formData.birthdate} onChange={handleChange} />
+                        <label>
+                            Died:
+                        </label>
+                        <input type="checkbox" name="died" checked={formData.died} onChange={handleChange} />
+                        {formData.died && (
+                            <>
+                                <label>
+                                    Deathdate:
+                                </label>
+                                <input type="date" name="deathdate" value={formData.deathdate} onChange={handleChange} />
+                                <label>
+                                    Resurrected:
+                                </label>
+                                <input type="checkbox" name="resurrected" checked={formData.resurrected} onChange={handleChange} />
+                                {formData.resurrected && (
+                                    <>
+                                        <label>
+                                            Resurrected Date:
+                                        </label>
+                                        <input type="date" name="resurrected_date" value={formData.resurrected_date} onChange={handleChange} />
+                                    </>
+                                )}
+                            </>
+                        )}
+                        <label>
+                            Bio:
+                        </label>
+                        <textarea name="bio" value={formData.bio} onChange={handleChange}></textarea>
+                        <label>
+                            Powers:
+                        </label>
+                        <textarea name="powers" value={formData.powers} onChange={handleChange}></textarea>
+                        <label>
+                            Weaknesses:
+                        </label>
+                        <textarea name="weaknesses" value={formData.weaknesses} onChange={handleChange}></textarea>
+                        <label>
+                            Used Item:
+                        </label>
+                        <textarea name="used_item" value={formData.used_item} onChange={handleChange}></textarea>
+                        <label>
+                            Family:
+                        </label>
+                        <textarea name="family" value={formData.family} onChange={handleChange}></textarea>
+                        <label>
+                            Universe:
+                        </label>
+                        <textarea name="universe" value={formData.universe} onChange={handleChange}></textarea>
+                        <button type="button" className='save-character-btn' onClick={handleSubmit}>Save Character</button>
+                    </form>
+                </div>
                 <button className="close" onClick={props.closeForm}>&times;</button>
             </div>
         </div>

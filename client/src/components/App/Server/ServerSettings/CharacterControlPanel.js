@@ -71,6 +71,7 @@ const CharacterControlPanel = ({ serverId }) => {
             <ul>
                 {filteredCharacters.map(character => (
                     <li key={character.id}>
+                        <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${character.character_pic_path}`} />
                         {character.character_name}
                         {character.is_verified === 0 && (
                             <button onClick={() => handleAccept(character.id)}>Accept</button>
