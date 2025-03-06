@@ -23,14 +23,16 @@ const ChatMessage = ({ name, message, date, showIconAndName, characterId, charac
         <>
             <div className="chat-message" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
                 <div className='chat-message-icon'> {/* Show CharacterInfo on click */}
-                    {showIconAndName && <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${character_pic_path}`} alt="Character Avatar" onClick={() => setShowCharacterInfo(true)}/>}
+                    {showIconAndName && <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${characterId != null ? character_pic_path : "deleted.png"}`} alt="Character Avatar" onClick={() => setShowCharacterInfo(true)}/>}
                 </div>
                 <div className="chat-message-content">
                     {
                     showIconAndName 
                     && 
                     <div className='chat-message-head'>
-                        <h3 onClick={() => setShowCharacterInfo(true)}>{characterId != null ? name : "[Deleted Character]"}</h3>
+                        <h3 onClick={() => setShowCharacterInfo(true)} style={{color: characterId == null ? 'rgb(206, 32, 41)' : ''}}>
+                            {characterId != null ? name : "[Deleted Character]"}
+                        </h3>
                         <span className='date'>{formatDate(date)}</span>
                     </div>
                     }

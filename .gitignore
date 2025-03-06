@@ -30,6 +30,7 @@ yarn-error.log*
 !storage/images/userPictures/user.png
 /storage/images/characterPictures/*
 !storage/images/characterPictures/character.png
+!storage/images/characterPictures/deleted.png
 
 /api/vendor
 /api/.env
