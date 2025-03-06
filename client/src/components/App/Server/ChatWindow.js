@@ -115,7 +115,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
                   console.log(msg);
                   return (
                     <div key={index}>
-                      <ChatMessage key={index} name={msg.character_name} characterId={msg.character_id} message={msg.message} date={msg.date} character_pic_path={msg.character_pic_path} showIconAndName={showIconAndName} />
+                      <ChatMessage key={index} name={msg.character_name} characterId={msg.character_id} message={msg.message} date={msg.date} character_pic_path={msg.character_pic_path || "character.png"} showIconAndName={showIconAndName} />
                     </div>
                   );
                 })}

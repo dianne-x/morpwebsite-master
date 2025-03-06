@@ -22,24 +22,25 @@ const ChatMessage = ({ name, message, date, showIconAndName, characterId, charac
     return (
         <>
             <div className="chat-message" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
-                <div className='chat-message-icon' onClick={() => setShowCharacterInfo(true)}> {/* Show CharacterInfo on click */}
-                    {showIconAndName && <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${character_pic_path}`} alt="Character Avatar" />}
+                <div className='chat-message-icon'> {/* Show CharacterInfo on click */}
+                    {showIconAndName && <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${character_pic_path}`} alt="Character Avatar" onClick={() => setShowCharacterInfo(true)}/>}
                 </div>
                 <div className="chat-message-content">
                     {
                     showIconAndName 
                     && 
                     <div className='chat-message-head'>
-                        <h3>{name}</h3><span className='date'>{formatDate(date)}</span>
+                        <h3 onClick={() => setShowCharacterInfo(true)}>{characterId != null ? name : "[Deleted Character]"}</h3>
+                        <span className='date'>{formatDate(date)}</span>
                     </div>
                     }
                     <p>{message} {!showIconAndName && <span className={`date ${isHovered ? 'visible' : 'hidden'}`}>{formatDate(date)}</span>}</p>
                 </div>
             </div>
-            {showCharacterInfo && (
+            {showCharacterInfo && characterId != null && (
                 <div className="modal-overlay" onClick={() => setShowCharacterInfo(false)}>
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <CharacterInfo characterId={characterId} onClose={() => setShowCharacterInfo(false)} />
+                        <CharacterInfo characterId={characterId} onClose={() => setShowCharacterInfo(false)} name={name} picture={character_pic_path} />
                     </div>
                 </div>
             )} {/* Show CharacterInfo modal */}

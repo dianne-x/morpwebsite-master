@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         // Update related records in room_message table to indicate the character was deleted
-        $stmt = $conn->prepare("UPDATE room_message SET character_id = NULL) WHERE character_id = ?");
+        $stmt = $conn->prepare("UPDATE room_message SET character_id = NULL WHERE character_id = ?");
         if ($stmt === false) {
             throw new Exception('Failed to prepare the query: ' . $conn->error);
         }
