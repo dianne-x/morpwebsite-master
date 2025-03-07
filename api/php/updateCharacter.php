@@ -17,6 +17,7 @@ if ($conn->connect_error) {
 $data = $_POST;
 
 // Validate and assign data
+$characterId = isset($data['id']) ? intval($data['id']) : null;
 $name = isset($data['name']) ? $data['name'] : null;
 $gender = isset($data['gender']) ? $data['gender'] : null;
 $species = isset($data['species']) ? $data['species'] : null;
@@ -26,8 +27,8 @@ $affilation = isset($data['affilation']) ? $data['affilation'] : null;
 $nationality = isset($data['nationality']) ? $data['nationality'] : null;
 $occupation = isset($data['occupation']) ? $data['occupation'] : null;
 $fctype = isset($data['fc_type']) ? $data['fc_type'] : null;
-$fcname = isset($data['fc_name']) ? $data['fc_name'] : null; // Ensure fc_name is assigned
-$server_id = isset($data['server_id']) ? $data['server_id'] : null;
+$fcname = isset($data['fc_name']) ? $data['fc_name'] : null;
+$server_id = isset($data['server_id']) ? $data['server_id'] : null; // Ensure server_id is set
 $character_pic_path = isset($_FILES['character_pic_path']) ? $_FILES['character_pic_path'] : null;
 
 // Initialize character_pic_path
@@ -66,23 +67,36 @@ if (isset($_FILES['character_pic_path']) && $_FILES['character_pic_path']['error
     }
 }
 
+// Log user_id and server_id for debugging
+error_log("user_id: $user_id, server_id: $server_id");
+
 // Get the server member ID
 $serverMemberQuery = "SELECT id FROM server_member WHERE user_id = ? AND server_id = ?";
 $stmt = $conn->prepare($serverMemberQuery);
-$stmt->bind_param("si", $user_id, $server_id);
+if (!$stmt) {
+    error_log("Failed to prepare server member query: " . $conn->error);
+    $response['error'] = "Failed to prepare server member query.";
+    echo json_encode($response);
+    exit();
+}
+$stmt->bind_param("si", $user_id, $server_id); // Ensure server_id is used in the query
 $stmt->execute();
 $serverMemberResult = $stmt->get_result();
 if ($serverMemberResult->num_rows > 0) {
     $servermember_id = $serverMemberResult->fetch_assoc()['id'];
 } else {
+    error_log("Server member not found for user_id: $user_id and server_id: $server_id");
     $response['error'] = "Server member not found.";
     echo json_encode($response);
     exit();
 }
 
 // Get the IDs for gender, species, and status
-$genderQuery = "SELECT id FROM gender WHERE gender = '$gender'";
-$genderResult = $conn->query($genderQuery);
+$genderQuery = "SELECT id FROM gender WHERE gender = ?";
+$stmt = $conn->prepare($genderQuery);
+$stmt->bind_param("s", $gender);
+$stmt->execute();
+$genderResult = $stmt->get_result();
 if ($genderResult && $genderResult->num_rows > 0) {
     $genderId = $genderResult->fetch_assoc()['id'];
 } else {
@@ -91,8 +105,11 @@ if ($genderResult && $genderResult->num_rows > 0) {
     exit();
 }
 
-$speciesQuery = "SELECT id FROM character_species WHERE species = '$species'";
-$speciesResult = $conn->query($speciesQuery);
+$speciesQuery = "SELECT id FROM character_species WHERE species = ?";
+$stmt = $conn->prepare($speciesQuery);
+$stmt->bind_param("s", $species);
+$stmt->execute();
+$speciesResult = $stmt->get_result();
 if ($speciesResult && $speciesResult->num_rows > 0) {
     $speciesId = $speciesResult->fetch_assoc()['id'];
 } else {
@@ -101,8 +118,11 @@ if ($speciesResult && $speciesResult->num_rows > 0) {
     exit();
 }
 
-$affilationQuery = "SELECT id FROM affilation WHERE affilation = '$affilation'";
-$affilationResult = $conn->query($affilationQuery);
+$affilationQuery = "SELECT id FROM affilation WHERE affilation = ?";
+$stmt = $conn->prepare($affilationQuery);
+$stmt->bind_param("s", $affilation);
+$stmt->execute();
+$affilationResult = $stmt->get_result();
 if ($affilationResult && $affilationResult->num_rows > 0) {
     $affilationId = $affilationResult->fetch_assoc()['id'];
 } else {
@@ -111,8 +131,11 @@ if ($affilationResult && $affilationResult->num_rows > 0) {
     exit();
 }
 
-$nationalityQuery = "SELECT id FROM nationality WHERE nationality = '$nationality'";
-$nationalityResult = $conn->query($nationalityQuery);
+$nationalityQuery = "SELECT id FROM nationality WHERE nationality = ?";
+$stmt = $conn->prepare($nationalityQuery);
+$stmt->bind_param("s", $nationality);
+$stmt->execute();
+$nationalityResult = $stmt->get_result();
 if ($nationalityResult && $nationalityResult->num_rows > 0) {
     $nationalityId = $nationalityResult->fetch_assoc()['id'];
 } else {
@@ -121,8 +144,11 @@ if ($nationalityResult && $nationalityResult->num_rows > 0) {
     exit();
 }
 
-$occupationQuery = "SELECT id FROM occupation WHERE occupation = '$occupation'";
-$occupationResult = $conn->query($occupationQuery);
+$occupationQuery = "SELECT id FROM occupation WHERE occupation = ?";
+$stmt = $conn->prepare($occupationQuery);
+$stmt->bind_param("s", $occupation);
+$stmt->execute();
+$occupationResult = $stmt->get_result();
 if ($occupationResult && $occupationResult->num_rows > 0) {
     $occupationId = $occupationResult->fetch_assoc()['id'];
 } else {
@@ -131,8 +157,11 @@ if ($occupationResult && $occupationResult->num_rows > 0) {
     exit();
 }
 
-$fctypeQuery = "SELECT id FROM character_fc WHERE fc_type = '$fctype'";
-$fctypeResult = $conn->query($fctypeQuery);
+$fctypeQuery = "SELECT id FROM character_fc WHERE fc_type = ?";
+$stmt = $conn->prepare($fctypeQuery);
+$stmt->bind_param("s", $fctype);
+$stmt->execute();
+$fctypeResult = $stmt->get_result();
 if ($fctypeResult && $fctypeResult->num_rows > 0) {
     $fctypeId = $fctypeResult->fetch_assoc()['id'];
 } else {
@@ -141,8 +170,11 @@ if ($fctypeResult && $fctypeResult->num_rows > 0) {
     exit();
 }
 
-$statusQuery = "SELECT id FROM character_status WHERE status = '$status'";
-$statusResult = $conn->query($statusQuery);
+$statusQuery = "SELECT id FROM character_status WHERE status = ?";
+$stmt = $conn->prepare($statusQuery);
+$stmt->bind_param("s", $status);
+$stmt->execute();
+$statusResult = $stmt->get_result();
 if ($statusResult && $statusResult->num_rows > 0) {
     $statusId = $statusResult->fetch_assoc()['id'];
 } else {
@@ -152,9 +184,9 @@ if ($statusResult && $statusResult->num_rows > 0) {
 }
 
 $birthdate = isset($data['birthdate']) ? date('Y-m-d', strtotime($data['birthdate'])) : null;
-$died = isset($data['died']) ? filter_var($data['died'], FILTER_VALIDATE_BOOLEAN) : false;
+$died = isset($data['died']) ? (filter_var($data['died'], FILTER_VALIDATE_BOOLEAN) ? 1 : 0) : 0;
 $deathdate = isset($data['deathdate']) ? date('Y-m-d', strtotime($data['deathdate'])) : null;
-$resurrected = isset($data['resurrected']) ? filter_var($data['resurrected'], FILTER_VALIDATE_BOOLEAN) : false;
+$resurrected = isset($data['resurrected']) ? (filter_var($data['resurrected'], FILTER_VALIDATE_BOOLEAN) ? 1 : 0) : 0;
 $resurrected_date = isset($data['resurrected_date']) ? date('Y-m-d', strtotime($data['resurrected_date'])) : null;
 $bio = isset($data['bio']) ? $data['bio'] : null;
 $powers = isset($data['powers']) ? $data['powers'] : null;
@@ -163,8 +195,8 @@ $used_item = isset($data['used_item']) ? $data['used_item'] : null;
 $family = isset($data['family']) ? $data['family'] : null;
 $universe = isset($data['universe']) ? $data['universe'] : null;
 
-// Insert the character data
-$query = "INSERT INTO user_character (character_name, gender_id, species_id, status_id, affilation_id, nationality_id, occupation_id, fc_type_id, fc_name, servermember_id, character_pic_path, birthdate, died, deathdate, resurrected, resurrected_date, bio, powers, weaknesses, used_item, family, universe) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+// Update the character data
+$query = "UPDATE user_character SET character_name = ?, gender_id = ?, species_id = ?, status_id = ?, affilation_id = ?, nationality_id = ?, occupation_id = ?, fc_type_id = ?, fc_name = ?, servermember_id = ?, character_pic_path = ?, birthdate = ?, died = ?, deathdate = ?, resurrected = ?, resurrected_date = ?, bio = ?, powers = ?, weaknesses = ?, used_item = ?, family = ?, universe = ?, is_verified = 0 WHERE id = ?";
 $stmt = $conn->prepare($query);
 if (!$stmt) {
     error_log("Failed to prepare statement: " . $conn->error);
@@ -172,12 +204,12 @@ if (!$stmt) {
     echo json_encode($response);
     exit();
 }
-$stmt->bind_param("siiiiiiisisissssssssss", $name, $genderId, $speciesId, $statusId, $affilationId, $nationalityId, $occupationId, $fctypeId, $fcname, $servermember_id, $character_pic_path, $birthdate, $died, $deathdate, $resurrected, $resurrected_date, $bio, $powers, $weaknesses, $used_item, $family, $universe);
+$stmt->bind_param("siiiiiiisisissssssssssi", $name, $genderId, $speciesId, $statusId, $affilationId, $nationalityId, $occupationId, $fctypeId, $fcname, $servermember_id, $character_pic_path, $birthdate, $died, $deathdate, $resurrected, $resurrected_date, $bio, $powers, $weaknesses, $used_item, $family, $universe, $characterId);
 
 if ($stmt->execute()) {
-    $response['success'] = "Character saved successfully!";
+    $response['success'] = true;
     $response['character'] = [
-        'id' => $stmt->insert_id,
+        'id' => $characterId,
         'name' => $name,
         'gender' => $gender,
         'species' => $species,
@@ -203,7 +235,8 @@ if ($stmt->execute()) {
         'servermember_id' => $servermember_id
     ];
 } else {
-    error_log("Error inserting character: " . $stmt->error);
+    error_log("Error updating character: " . $stmt->error);
+    $response['success'] = false;
     $response['error'] = "Error: " . $stmt->error;
 }
 

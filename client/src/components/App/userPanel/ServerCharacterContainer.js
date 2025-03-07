@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import CharacterTile from "./CharacterTile";
 import CharacterCreation from './CharacterCreation';
+import CharacterEdit from './CharacterEdit';
 
 const ServerCharacterContainer = (props) => {
     const [characters, setCharacters] = useState([]);
     const userId = JSON.parse(localStorage.getItem('morp-login-user')); // Parse the user ID from localStorage
     const [characterCreationOpen, setCharacterCreationOpen] = useState(false);
     const [refreshCharacters, setRefreshCharacters] = useState(false); // State variable to trigger refresh
+    const [characterEditOpen, setCharacterEditOpen] = useState(false);
+    const [characterToEdit, setCharacterToEdit] = useState(null);
 
     const fetchCharacters = () => {
         console.log(`Fetching server members and characters for userId: ${userId} and serverId: ${props.id}`);
@@ -19,8 +22,6 @@ const ServerCharacterContainer = (props) => {
         
         const fetchUrl = `${process.env.REACT_APP_PHP_BASE_URL}/getServerMember.php?userId=${userId}&serverId=${props.id}`;
         console.log(`Fetch URL: ${fetchUrl}`);
-        
-        
         
         // Fetch server members and characters for the logged-in user
         fetch(fetchUrl)
@@ -65,10 +66,25 @@ const ServerCharacterContainer = (props) => {
             .catch(error => console.error('Error deleting character:', error));
     };
 
+    const handleEdit = (characterId) => {
+        setCharacterToEdit(characterId);
+        setCharacterEditOpen(true);
+    };
+
     const handleCharacterSaved = (newCharacter) => {
         setCharacters([...characters, newCharacter]);
         setCharacterCreationOpen(false);
         setRefreshCharacters(!refreshCharacters); // Toggle the state to trigger refresh
+    };
+
+    const handleCharacterUpdated = (updatedCharacter) => {
+        if (updatedCharacter && updatedCharacter.id) {
+            setCharacters(characters.map(character => character.id === updatedCharacter.id ? updatedCharacter : character));
+            setCharacterEditOpen(false);
+            setRefreshCharacters(!refreshCharacters);
+        } else {
+            console.error('Updated character data is invalid:', updatedCharacter);
+        }
     };
 
     return (
@@ -87,6 +103,7 @@ const ServerCharacterContainer = (props) => {
                                         pic_path={character.character_pic_path || 'character.png'}
                                         verified={character.is_verified}
                                         handleDelete={handleDelete}
+                                        handleEdit={handleEdit} // Add handleEdit
                                     />
                                 ) : null
                             ))
@@ -104,6 +121,14 @@ const ServerCharacterContainer = (props) => {
                     server_id={props.id} 
                     closeForm={() => setCharacterCreationOpen(false)} 
                     onCharacterSaved={handleCharacterSaved} // Pass the handler
+                />
+            )}
+            {characterEditOpen && (
+                <CharacterEdit 
+                    characterId={characterToEdit}
+                    server_id={props.id} 
+                    closeForm={() => setCharacterEditOpen(false)} 
+                    onCharacterUpdated={handleCharacterUpdated}
                 />
             )}
         </>
