@@ -13,85 +13,112 @@ if ($conn->connect_error) {
     exit();
 }
 
-$response = array();
+$response = [];
 
 // Fetch genders
-$query = "SELECT id, gender FROM gender";
-$result = $conn->query($query);
-if ($result->num_rows > 0) {
-    $genders = array();
-    while($row = $result->fetch_assoc()) {
+$genderQuery = "SELECT id, gender FROM gender";
+$genderResult = $conn->query($genderQuery);
+if ($genderResult) {
+    $genders = [];
+    while ($row = $genderResult->fetch_assoc()) {
         $genders[] = $row;
     }
     $response['genders'] = $genders;
+} else {
+    $response['error'] = "Error fetching genders: " . $conn->error;
+    echo json_encode($response);
+    exit();
 }
 
 // Fetch species
-$query = "SELECT id, species FROM character_species"; // Use 'species' as per the database column name
-$result = $conn->query($query);
-if ($result->num_rows > 0) {
-    $species = array();
-    while($row = $result->fetch_assoc()) {
+$speciesQuery = "SELECT id, species FROM character_species";
+$speciesResult = $conn->query($speciesQuery);
+if ($speciesResult) {
+    $species = [];
+    while ($row = $speciesResult->fetch_assoc()) {
         $species[] = $row;
     }
     $response['species'] = $species;
+} else {
+    $response['error'] = "Error fetching species: " . $conn->error;
+    echo json_encode($response);
+    exit();
 }
 
 // Fetch statuses
-$query = "SELECT id, status FROM character_status";
-$result = $conn->query($query);
-if ($result->num_rows > 0) {
-    $statuses = array();
-    while($row = $result->fetch_assoc()) {
+$statusQuery = "SELECT id, status FROM character_status";
+$statusResult = $conn->query($statusQuery);
+if ($statusResult) {
+    $statuses = [];
+    while ($row = $statusResult->fetch_assoc()) {
         $statuses[] = $row;
     }
     $response['statuses'] = $statuses;
+} else {
+    $response['error'] = "Error fetching statuses: " . $conn->error;
+    echo json_encode($response);
+    exit();
 }
 
-$query = "SELECT id, affilation FROM affilation";
-$result = $conn->query($query);
-if ($result->num_rows > 0) {
-    $affilations = array();
-    while($row = $result->fetch_assoc()) {
+// Fetch affiliations
+$affilationQuery = "SELECT id, affilation FROM affilation";
+$affilationResult = $conn->query($affilationQuery);
+if ($affilationResult) {
+    $affilations = [];
+    while ($row = $affilationResult->fetch_assoc()) {
         $affilations[] = $row;
     }
     $response['affilations'] = $affilations;
+} else {
+    $response['error'] = "Error fetching affiliations: " . $conn->error;
+    echo json_encode($response);
+    exit();
 }
-error_log(print_r($affilations, true));
 
-$query = "SELECT id, nationality FROM nationality";
-$result = $conn->query($query);
-if ($result->num_rows > 0) {
-    $nationalities = array();
-    while($row = $result->fetch_assoc()) {
+// Fetch nationalities
+$nationalityQuery = "SELECT id, nationality FROM nationality";
+$nationalityResult = $conn->query($nationalityQuery);
+if ($nationalityResult) {
+    $nationalities = [];
+    while ($row = $nationalityResult->fetch_assoc()) {
         $nationalities[] = $row;
     }
     $response['nationalities'] = $nationalities;
+} else {
+    $response['error'] = "Error fetching nationalities: " . $conn->error;
+    echo json_encode($response);
+    exit();
 }
 
-$query = "SELECT id, occupation FROM occupation";
-$result = $conn->query($query);
-if ($result->num_rows > 0) {
-    $occupations = array();
-    while($row = $result->fetch_assoc()) {
+// Fetch occupations
+$occupationQuery = "SELECT id, occupation FROM occupation";
+$occupationResult = $conn->query($occupationQuery);
+if ($occupationResult) {
+    $occupations = [];
+    while ($row = $occupationResult->fetch_assoc()) {
         $occupations[] = $row;
     }
     $response['occupations'] = $occupations;
+} else {
+    $response['error'] = "Error fetching occupations: " . $conn->error;
+    echo json_encode($response);
+    exit();
 }
 
-
-$query = "SELECT id, fc_type FROM character_fc";
-$result = $conn->query($query);
-if ($result->num_rows > 0) {
-    $fc_types = array();
-    while($row = $result->fetch_assoc()) {
+// Fetch FC types
+$fcTypeQuery = "SELECT id, fc_type FROM character_fc";
+$fcTypeResult = $conn->query($fcTypeQuery);
+if ($fcTypeResult) {
+    $fc_types = [];
+    while ($row = $fcTypeResult->fetch_assoc()) {
         $fc_types[] = $row;
     }
     $response['fc_types'] = $fc_types;
+} else {
+    $response['error'] = "Error fetching FC types: " . $conn->error;
+    echo json_encode($response);
+    exit();
 }
-
-error_log("From the getCharacterCreation.php file");
-error_log(print_r($fc_types, true));
 
 echo json_encode($response);
 

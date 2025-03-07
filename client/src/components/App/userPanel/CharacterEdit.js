@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const CharacterCreation = (props) => {
+const CharacterEdit = (props) => {
     const [genders, setGenders] = useState([]);
     const [species, setSpecies] = useState([]);
     const [statuses, setStatuses] = useState([]);
     const [affilations, setAffilations] = useState([]);
     const [nationalities, setNationalities] = useState([]);
     const [occupations, setOccupations] = useState([]);
-    const [fcTypes, setFcTypes] = useState([]); // Correct the state name to fcTypes
+    const [fcTypes, setFcTypes] = useState([]);
     const [formData, setFormData] = useState({
         name: '',
         gender: '',
@@ -17,48 +17,73 @@ const CharacterCreation = (props) => {
         affilation: '',
         nationality: '',
         occupation: '',
-        fc_type: '', // Correct the field name to fc_type
-        fc_name: '', // Add fc_name to form data
-        user_id: JSON.parse(localStorage.getItem('morp-login-user')), // Add user ID to form data
-        server_id: props.server_id, // Add server ID to form data
-        character_pic_path: null, // Add profile picture to form data
-        birthdate: '', // Add birthdate to form data
-        died: false, // Add died to form data
-        deathdate: '', // Add deathdate to form data
-        resurrected: false, // Add resurrected to form data
-        resurrected_date: '', // Add resurrected_date to form data
-        bio: '', // Add bio to form data
-        powers: '', // Add powers to form data
-        weaknesses: '', // Add weaknesses to form data
-        used_item: '', // Add used_item to form data
-        family: '', // Add family to form data
-        universe: '' // Add universe to form data
+        fc_type: '',
+        fc_name: '',
+        user_id: JSON.parse(localStorage.getItem('morp-login-user')),
+        character_pic_path: '',
+        birthdate: '',
+        died: false,
+        deathdate: '',
+        resurrected: false,
+        resurrected_date: '',
+        bio: '',
+        powers: '',
+        weaknesses: '',
+        used_item: '',
+        family: '',
+        universe: ''
     });
-    const [tempProfilePic, setTempProfilePic] = useState(''); // Temporary variable for profile picture
-    const [profilePicFile, setProfilePicFile] = useState(null); // File object for profile picture
+    const [tempProfilePic, setTempProfilePic] = useState('');
+    const [profilePicFile, setProfilePicFile] = useState(null);
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/getCharacterCreation.php`)
             .then(response => {
-                console.log('API response:', response.data); // Debugging line
                 setGenders(response.data.genders || []);
                 setSpecies(response.data.species || []);
                 setStatuses(response.data.statuses || []);
                 setAffilations(response.data.affilations || []);
                 setNationalities(response.data.nationalities || []);
                 setOccupations(response.data.occupations || []);
-                setFcTypes(response.data.fc_types || []); // Correct the state name to fc_types
-                console.log('Genders:', response.data.genders); // Debugging line
-                console.log('Species:', response.data.species); // Debugging line
-                console.log('Affilations:', response.data.affilations); // Debugging line
-                console.log('Nationalities:', response.data.nationalities); // Debugging line
-                console.log('Occupations:', response.data.occupations); // Debugging line
-                console.log('FcTypes:', response.data.fc_types); // Debugging line
+                setFcTypes(response.data.fc_types || []);
             })
             .catch(error => {
                 console.error('There was an error fetching the character data!', error);
             });
-    }, []);
+
+        axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/getCharacter.php?characterId=${props.characterId}`)
+            .then(response => {
+                const character = response.data.character;
+                setFormData({
+                    name: character.character_name,
+                    gender: character.gender_id,
+                    species: character.species_id,
+                    status: character.status_id,
+                    affilation: character.affilation_id,
+                    nationality: character.nationality_id,
+                    occupation: character.occupation_id,
+                    fc_type: character.fc_type_id,
+                    fc_name: character.fc_name,
+                    user_id: JSON.parse(localStorage.getItem('morp-login-user')),
+                    character_pic_path: character.character_pic_path || '',
+                    birthdate: character.birthdate,
+                    died: character.died ? true : false,
+                    deathdate: character.deathdate,
+                    resurrected: character.resurrected ? true : false,
+                    resurrected_date: character.resurrected_date,
+                    bio: character.bio,
+                    powers: character.powers,
+                    weaknesses: character.weaknesses,
+                    used_item: character.used_item,
+                    family: character.family,
+                    universe: character.universe
+                });
+                setTempProfilePic(`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${character.character_pic_path}`);
+            })
+            .catch(error => {
+                console.error('There was an error fetching the character details!', error);
+            });
+    }, [props.characterId]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -71,10 +96,10 @@ const CharacterCreation = (props) => {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setProfilePicFile(file); // Set the file object
+            setProfilePicFile(file);
             const reader = new FileReader();
             reader.onloadend = () => {
-                setTempProfilePic(reader.result); // Set the temporary profile picture
+                setTempProfilePic(reader.result);
             };
             reader.readAsDataURL(file);
         }
@@ -86,37 +111,42 @@ const CharacterCreation = (props) => {
             return;
         }
 
-        console.log('Form data:', formData); // Debugging line
-
         const formDataToSend = new FormData();
         for (const key in formData) {
             formDataToSend.append(key, formData[key]);
         }
         if (profilePicFile) {
-            formDataToSend.append('character_pic_path', profilePicFile); // Append the file object
+            formDataToSend.append('character_pic_path', profilePicFile);
         } else {
-            formDataToSend.append('character_pic_path', tempProfilePic); // Append the temporary profile picture
+            formDataToSend.append('character_pic_path', tempProfilePic);
         }
 
-        axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/saveCharacter.php`, formDataToSend, {
+        // Set is_verified to 0
+        formDataToSend.append('is_verified', 0);
+
+        axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/updateCharacter.php`, formDataToSend, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         })
             .then(response => {
-                alert('Character saved successfully!');
-                props.onCharacterSaved(response.data.character); // Notify parent component
+                if (response.data.success) {
+                    alert('Character updated successfully!');
+                    props.onCharacterUpdated(response.data.character);
+                } else {
+                    console.error('Error updating character:', response.data.error);
+                }
             })
             .catch(error => {
-                console.error('There was an error saving the character!', error);
+                console.error('There was an error updating the character!', error);
             });
     };
 
     return (
-        <div className='user-panel character-creation'>
+        <div className='user-panel character-edit'>
             <div></div>
             <div className='character-container'>
-                <h1>Character Creation</h1>
+                <h1>Edit Character</h1>
                 <div className='form-wrapper'>
                     <form>
                         <label 
@@ -132,66 +162,66 @@ const CharacterCreation = (props) => {
                         <label htmlFor="name">
                             Name:
                         </label>
-                        <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+                        <input type="text" name="name" value={formData.name || ''} onChange={handleChange} required />
                         <label>
                             Gender:
                         </label>
-                        <select name="gender" value={formData.gender} onChange={handleChange} required>
+                        <select name="gender" value={formData.gender || ''} onChange={handleChange} required>
                             <option value="">Select Gender</option>
                             {genders.map((gender) => (
-                                <option key={gender.id} value={gender.gender}>{gender.gender}</option>
+                                <option key={gender.id} value={gender.id}>{gender.gender}</option>
                             ))}
                         </select>
                         <label>
                             Species:
                         </label>
-                        <select name="species" value={formData.species} onChange={handleChange} required>
+                        <select name="species" value={formData.species || ''} onChange={handleChange} required>
                             <option value="">Select Species</option>
                             {species.map((species) => (
-                                <option key={species.id} value={species.species}>{species.species}</option>
+                                <option key={species.id} value={species.id}>{species.species}</option>
                             ))}
                         </select>
                         <label>
                             Status:
                         </label>
-                        <select name="status" value={formData.status} onChange={handleChange} required>
+                        <select name="status" value={formData.status || ''} onChange={handleChange} required>
                             <option value="">Select Status</option>
                             {statuses.map((status) => (
-                                <option key={status.id} value={status.status}>{status.status}</option>
+                                <option key={status.id} value={status.id}>{status.status}</option>
                             ))}
                         </select>
                         <label>
                             Affiliation:
                         </label>
-                        <select name="affilation" value={formData.affilation} onChange={handleChange}> 
+                        <select name="affilation" value={formData.affilation || ''} onChange={handleChange}> 
                             <option value="">Select Affiliation</option>
                             {affilations.map((affilation) => (
-                                <option key={affilation.id} value={affilation.affilation}>{affilation.affilation}</option>
+                                <option key={affilation.id} value={affilation.id}>{affilation.affilation}</option>
                             ))}
                         </select>
                         <label>
                             Nationality:
                         </label>
-                            <select name="nationality" value={formData.nationality} onChange={handleChange}>
+                            <select name="nationality" value={formData.nationality || ''} onChange={handleChange}>
                                 <option value="">Select Nationality</option>
                                 {nationalities.map((nationality) => (
-                                    <option key={nationality.id} value={nationality.nationality}>{nationality.nationality}</option>
+                                    <option key={nationality.id} value={nationality.id}>{nationality.nationality}</option>
                                 ))}
                             </select>
                         <label>
                             Occupation:
                         </label>
-                            <select name="occupation" value={formData.occupation} onChange={handleChange}>
+                            <select name="occupation" value={formData.occupation || ''} onChange={handleChange}>
                                 <option value="">Select Occupation</option>
                                 {occupations.map((occupation) => (
-                                    <option key={occupation.id} value={occupation.occupation}>{occupation.occupation}</option>
+                                    <option key={occupation.id} value={occupation.id}>{occupation.occupation}</option>
                                 ))}
                             </select>
                         
                         <label>
                             Birthdate:
                         </label>
-                        <input type="date" name="birthdate" value={formData.birthdate} onChange={handleChange} />
+                        <input type="date" name="birthdate" value={formData.birthdate || ''} onChange={handleChange} />
                         <label>
                             Died:
                         </label>
@@ -201,7 +231,7 @@ const CharacterCreation = (props) => {
                                 <label>
                                     Deathdate:
                                 </label>
-                                <input type="date" name="deathdate" value={formData.deathdate} onChange={handleChange} />
+                                <input type="date" name="deathdate" value={formData.deathdate || ''} onChange={handleChange} />
                                 <label>
                                     Resurrected:
                                 </label>
@@ -211,7 +241,7 @@ const CharacterCreation = (props) => {
                                         <label>
                                             Resurrected Date:
                                         </label>
-                                        <input type="date" name="resurrected_date" value={formData.resurrected_date} onChange={handleChange} />
+                                        <input type="date" name="resurrected_date" value={formData.resurrected_date || ''} onChange={handleChange} />
                                     </>
                                 )}
                             </>
@@ -219,34 +249,34 @@ const CharacterCreation = (props) => {
                         <label>
                             Bio:
                         </label>
-                        <textarea name="bio" value={formData.bio} onChange={handleChange}></textarea>
+                        <textarea name="bio" value={formData.bio || ''} onChange={handleChange}></textarea>
                         <label>
                             Powers:
                         </label>
-                        <textarea name="powers" value={formData.powers} onChange={handleChange}></textarea>
+                        <textarea name="powers" value={formData.powers || ''} onChange={handleChange}></textarea>
                         <label>
                             Weaknesses:
                         </label>
-                        <textarea name="weaknesses" value={formData.weaknesses} onChange={handleChange}></textarea>
+                        <textarea name="weaknesses" value={formData.weaknesses || ''} onChange={handleChange}></textarea>
                         <label>
                             Used Item:
                         </label>
-                        <textarea name="used_item" value={formData.used_item} onChange={handleChange}></textarea>
+                        <textarea name="used_item" value={formData.used_item || ''} onChange={handleChange}></textarea>
                         <label>
                             Family:
                         </label>
-                        <textarea name="family" value={formData.family} onChange={handleChange}></textarea>
+                        <textarea name="family" value={formData.family || ''} onChange={handleChange}></textarea>
                         <label>
                             Universe:
                         </label>
-                        <input type="text" name="universe" value={formData.universe} onChange={handleChange}></input>
+                        <input type="text" name="universe" value={formData.universe || ''} onChange={handleChange}></input>
                         <label>
                             FC Type:
                         </label>
-                            <select name="fc_type" value={formData.fc_type} onChange={handleChange} required> {/* Correct the field name to fc_type */}
+                            <select name="fc_type" value={formData.fc_type || ''} onChange={handleChange} required>
                                 <option value="">Select FC Type</option>
                                 {fcTypes.map((fc) => (
-                                    <option key={fc.id} value={fc.fc_type}>{fc.fc_type}</option>
+                                    <option key={fc.id} value={fc.id}>{fc.fc_type}</option>
                                 ))}
                             </select>
                         {formData.fc_type && (
@@ -254,7 +284,7 @@ const CharacterCreation = (props) => {
                                 <label htmlFor="fc_name">
                                     FC Name:
                                 </label>
-                                <input type="text" name="fc_name" value={formData.fc_name} onChange={handleChange} required />
+                                <input type="text" name="fc_name" value={formData.fc_name || ''} onChange={handleChange} required />
                             </>
                         )}
                         <button type="button" className='save-character-btn' onClick={handleSubmit}>Save Character</button>
@@ -266,4 +296,4 @@ const CharacterCreation = (props) => {
     );
 };
 
-export default CharacterCreation;
+export default CharacterEdit;
