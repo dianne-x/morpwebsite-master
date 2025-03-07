@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import axios from 'axios';
 
-const ResendPassword = (changeLoading) => {
+const ResendPassword = ({changeLoading}) => {
 
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
