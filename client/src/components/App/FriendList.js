@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import TopBarButton from './TopBarButton';
+import PrivateChat from './privateChat';
 
 const FriendList = ({ onFriendClick }) => {
   const [friends, setFriends] = useState([]);
+  const [selectedFriend, setSelectedFriend] = useState(null);
   const user = JSON.parse(localStorage.getItem('morp-login-user'));
 
   useEffect(() => {
@@ -21,6 +23,11 @@ const FriendList = ({ onFriendClick }) => {
     fetchFriends();
   }, [user.uid]);
 
+  const handleFriendClick = (friend) => {
+    setSelectedFriend(friend);
+    onFriendClick(friend);
+  };
+
   return (
     <>
       {friends.length > 0 ? (
@@ -28,13 +35,14 @@ const FriendList = ({ onFriendClick }) => {
           <TopBarButton
             key={friend.uid}
             picPath={`url(${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${friend.profile_pic_path})`}
-            onClick={() => onFriendClick(friend)}
+            onClick={() => handleFriendClick(friend)}
             title={friend.name}
           />
         ))
       ) : (
-        <p>You have yet to befriend anyone.</p>
+        <p>You have no friends gang</p>
       )}
+      {selectedFriend && <PrivateChat user1={user} user2={selectedFriend} />}
     </>
   );
 };
