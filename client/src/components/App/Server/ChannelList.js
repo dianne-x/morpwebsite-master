@@ -161,6 +161,12 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
     setEditRoomName(event.target.value);
   };
 
+  const handleKeyPress = (event, callback) => {
+    if (event.key === 'Enter' && event.target.value.trim() !== "") {
+      callback();
+    }
+  };
+
   return (
     <div className="channel-list server-side">
       <h3>Sections and Rooms:</h3>
@@ -175,6 +181,7 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
                     type='text' 
                     value={editSectionName} 
                     onChange={handleSectionNameChange} 
+                    onKeyPress={(event) => handleKeyPress(event, () => handleEditSection(section.id))}
                   />
                   <button title='Save section name' className='approve-btn' onClick={() => handleEditSection(section.id)}>
                     <FontAwesomeIcon icon={faPenToSquare} />
@@ -210,6 +217,7 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
                               type='text' 
                               value={editRoomName} 
                               onChange={handleRoomNameChange} 
+                              onKeyPress={(event) => handleKeyPress(event, () => handleEditRoom(room.id))}
                             />
                             <button title='Save room name' className='approve-btn' onClick={() => handleEditRoom(room.id)}>
                               <FontAwesomeIcon icon={faPenToSquare} />
