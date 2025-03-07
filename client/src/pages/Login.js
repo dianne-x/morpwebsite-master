@@ -9,27 +9,29 @@ import Register from '../components/loginPage/Register';
 import ResendPassword from '../components/loginPage/ResendPassword';
 
 import logo from '../img/morp_light_horizontal.png';
+import LoadingGIF from '../img/MORP_Loading.gif';
 
 
 const Login = () => {
 
+    const [loading, setLoading] = useState(false);
     const [pages, setPages] = useState([
         { 
             id: 1,
             name: 'Login', 
-            component: <UserLogin />,
+            component: <UserLogin changeLoading={changeLoading} />,
             active: true
         },
         {
             id: 2, 
             name: 'Register', 
-            component: <Register />,
+            component: <Register changeLoading={changeLoading} />,
             active: false
         },
         {
             id: 3, 
             name: 'Resend Password', 
-            component: <ResendPassword />,
+            component: <ResendPassword changeLoading={changeLoading} />,
             active: false 
         }
     ]);
@@ -50,6 +52,10 @@ const Login = () => {
         setPages(newPages);
     }
 
+    function changeLoading(value) {
+        setLoading(value);
+    }
+
 
     return (
         <HelmetProvider>
@@ -60,11 +66,17 @@ const Login = () => {
             <div className="login-container">
                 
                 <main>
-                    <img src={logo} alt="logo" />
+                    <img src={logo} alt="logo" className="logo" />
                     {pages.find(page => page.active === true).component}
                     <div className="links">
                         {inactivePageLinks}
                     </div>
+                    {
+                    loading && 
+                    <div className="loading" >
+                        <img src={LoadingGIF} alt="loading"/>
+                    </div>
+                    }
                 </main>
             </div>
         </HelmetProvider>

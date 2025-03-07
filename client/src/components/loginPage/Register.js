@@ -5,7 +5,7 @@ import { faEye, faEyeSlash, faCircleInfo } from '@fortawesome/free-solid-svg-ico
 import axios from 'axios';
 import PasswordSpecs from './PasswordSpecs';
 
-const Register = () => {
+const Register = ({changeLoading}) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -27,6 +27,7 @@ const Register = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        changeLoading(true);
         const url = `${process.env.REACT_APP_PHP_BASE_URL}/register.php`;
         const fdata = new FormData();
         fdata.append('name', name);
@@ -46,14 +47,16 @@ const Register = () => {
                     setEmail('');
                     setPassword('');
                     setPasswordAgain('');
-
+                    changeLoading(false);
                     setIsVerification(true);
                 } else {
+                    changeLoading(false);
                     setErrors(data.errors || {});
                     setMessage(data.message || '');
                 }
             })
             .catch((error) => {
+                changeLoading(false);
                 console.log('Error:', error);
                 setMessage('An error occurred while processing your request.');
             });

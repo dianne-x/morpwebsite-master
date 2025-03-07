@@ -4,7 +4,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const UserLogin = () => {
+const UserLogin = (changeLoading) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -24,7 +24,7 @@ const UserLogin = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+        changeLoading(true);
         const url = `${process.env.REACT_APP_PHP_BASE_URL}/login.php`;
         const fdata = new FormData();
         fdata.append('email', email);
@@ -39,10 +39,12 @@ const UserLogin = () => {
                     localStorage.setItem('morp-login-user', JSON.stringify(data.uid));
                     setLoggedIn(true);
                 } else {
+                    changeLoading(false);
                     setErrorMessage(data.message || 'An error occurred while processing your request.');
                 }
             })
             .catch((error) => {
+                changeLoading(false);
                 console.log('Error:', error);
                 setErrorMessage('An error occurred while processing your request.');
             });

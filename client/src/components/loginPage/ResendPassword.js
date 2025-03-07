@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import axios from 'axios';
 
-const ResendPassword = () => {
+const ResendPassword = (changeLoading) => {
 
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
@@ -10,7 +10,7 @@ const ResendPassword = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        changeLoading(true);
         const url = `${process.env.REACT_APP_PHP_BASE_URL}/newPasswordRequest.php`;
         const fdata = new FormData();
         fdata.append('email', email);
@@ -18,11 +18,12 @@ const ResendPassword = () => {
         axios.post(url, fdata)
             .then((response) => {
                 const { data } = response;
-                
+                changeLoading(false);
                 setMessage(data.message);
                 setEmailSent(data.success);
             })
             .catch((error) => {
+                changeLoading(false);
                 console.log('Error:', error);
                 setMessage('An error occurred while processing your request.');
             });
