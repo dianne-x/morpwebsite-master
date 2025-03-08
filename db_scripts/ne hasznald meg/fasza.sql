@@ -32,20 +32,20 @@ USE morpdatabase2;
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `affilation`
+-- Tábla szerkezet ehhez a táblához `affiliation`
 --
 
-CREATE TABLE `affilation` (
+CREATE TABLE `affiliation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `affilation` varchar(250) DEFAULT NULL,
+  `affiliation` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- A tábla adatainak kiíratása `affilation`
+-- A tábla adatainak kiíratása `affiliation`
 --
 
-INSERT INTO `affilation` (`id`, `affilation`) VALUES
+INSERT INTO `affiliation` (`id`, `affiliation`) VALUES
 (1, 'Group1');
 
 -- --------------------------------------------------------
@@ -790,7 +790,7 @@ CREATE TABLE `user_character` (
   `resurrected_date` datetime DEFAULT NULL,
   `species_id` int(11) DEFAULT 0,
   `occupation_id` int(11) DEFAULT 0,
-  `affilation_id` int(11) DEFAULT 0,
+  `affiliation_id` int(11) DEFAULT 0,
   `nationality_id` int(11) DEFAULT 0,
   `status_id` int(11) DEFAULT 0,
   `story_id` int(11) DEFAULT 0,
@@ -825,7 +825,7 @@ CREATE TABLE `user_character_need` (
   `resurrected_date_need` tinyint(1) DEFAULT NULL,
   `species_need` tinyint(1) DEFAULT NULL,
   `occupation_need` tinyint(1) DEFAULT NULL,
-  `affilation_need` tinyint(1) DEFAULT NULL,
+  `affiliation_need` tinyint(1) DEFAULT NULL,
   `nationality_need` tinyint(1) DEFAULT NULL,
   `powers_need` tinyint(1) DEFAULT NULL,
   `weaknesses_need` tinyint(1) DEFAULT NULL,
@@ -977,7 +977,7 @@ ALTER TABLE `user_character`
   ADD KEY `status_id` (`status_id`),
   ADD KEY `species_id` (`species_id`),
   ADD KEY `gender_id` (`gender_id`),
-  ADD KEY `affilation_id` (`affilation_id`),
+  ADD KEY `affiliation_id` (`affiliation_id`),
   ADD KEY `occupation_id` (`occupation_id`),
   ADD KEY `nationality_id` (`nationality_id`),
   ADD KEY `user_character_ibfk_3` (`fc_type_id`);
@@ -1081,7 +1081,7 @@ ALTER TABLE `user_character`
   ADD CONSTRAINT `user_character_ibfk_3` FOREIGN KEY (`fc_type_id`) REFERENCES `character_fc` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `user_character_ibfk_4` FOREIGN KEY (`species_id`) REFERENCES `character_species` (`id`),
   ADD CONSTRAINT `user_character_ibfk_5` FOREIGN KEY (`gender_id`) REFERENCES `gender` (`id`),
-  ADD CONSTRAINT `user_character_ibfk_6` FOREIGN KEY (`affilation_id`) REFERENCES `affilation` (`id`),
+  ADD CONSTRAINT `user_character_ibfk_6` FOREIGN KEY (`affiliation_id`) REFERENCES `affiliation` (`id`),
   ADD CONSTRAINT `user_character_ibfk_7` FOREIGN KEY (`occupation_id`) REFERENCES `occupation` (`id`),
   ADD CONSTRAINT `user_character_ibfk_8` FOREIGN KEY (`nationality_id`) REFERENCES `nationality` (`id`);
 
