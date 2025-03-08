@@ -780,7 +780,6 @@ CREATE TABLE `user_character` (
   `is_own_character` tinyint(1) DEFAULT 0,
   `character_name` varchar(250) DEFAULT NULL,
   `nickname` varchar(250) DEFAULT NULL,
-  `alias` varchar(250) DEFAULT NULL,
   `gender_id` int(11) DEFAULT 0,
   `character_pic_path` varchar(255) DEFAULT NULL,
   `birthdate` datetime DEFAULT NULL,
