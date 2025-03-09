@@ -35,7 +35,7 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
             <p>Gender: {characterInfo.gender}</p>
             <p>Species: {characterInfo.species}</p>
             <p>Status: {characterInfo.status_type}</p>
-            <p>Affiliation: {characterInfo.affilation}</p>
+            <p>Affiliation: {characterInfo.affiliation}</p>
             <p>Nationality: {characterInfo.nationality}</p>
             <p>Occupation: {characterInfo.occupation}</p>
             <p>FC Type: {characterInfo.fc_type}</p>

@@ -5,7 +5,7 @@ const CharacterEdit = (props) => {
     const [genders, setGenders] = useState([]);
     const [species, setSpecies] = useState([]);
     const [statuses, setStatuses] = useState([]);
-    const [affilations, setAffilations] = useState([]);
+    const [affiliations, setAffiliations] = useState([]);
     const [nationalities, setNationalities] = useState([]);
     const [occupations, setOccupations] = useState([]);
     const [fcTypes, setFcTypes] = useState([]);
@@ -14,7 +14,7 @@ const CharacterEdit = (props) => {
         gender: '',
         species: '',
         status: '',
-        affilation: '',
+        affiliation: '',
         nationality: '',
         occupation: '',
         fc_type: '',
@@ -42,7 +42,7 @@ const CharacterEdit = (props) => {
                 setGenders(response.data.genders || []);
                 setSpecies(response.data.species || []);
                 setStatuses(response.data.statuses || []);
-                setAffilations(response.data.affilations || []);
+                setAffiliations(response.data.affiliations || []);
                 setNationalities(response.data.nationalities || []);
                 setOccupations(response.data.occupations || []);
                 setFcTypes(response.data.fc_types || []);
@@ -59,7 +59,7 @@ const CharacterEdit = (props) => {
                     gender: character.gender_id,
                     species: character.species_id,
                     status: character.status_id,
-                    affilation: character.affilation_id,
+                    affiliation: character.affiliation_id,
                     nationality: character.nationality_id,
                     occupation: character.occupation_id,
                     fc_type: character.fc_type_id,
@@ -106,7 +106,7 @@ const CharacterEdit = (props) => {
     };
 
     const handleSubmit = () => {
-        if (!formData.name || !formData.gender || !formData.species || !formData.status || !formData.affilation || !formData.nationality || !formData.occupation || !formData.fc_type) {
+        if (!formData.name || !formData.gender || !formData.species || !formData.status || !formData.affiliation || !formData.nationality || !formData.occupation || !formData.fc_type) {
             alert('Please fill out all required fields.');
             return;
         }
@@ -193,10 +193,10 @@ const CharacterEdit = (props) => {
                         <label>
                             Affiliation:
                         </label>
-                        <select name="affilation" value={formData.affilation || ''} onChange={handleChange}> 
+                        <select name="affiliation" value={formData.affiliation || ''} onChange={handleChange}> 
                             <option value="">Select Affiliation</option>
-                            {affilations.map((affilation) => (
-                                <option key={affilation.id} value={affilation.id}>{affilation.affilation}</option>
+                            {affiliations.map((affiliation) => (
+                                <option key={affiliation.id} value={affiliation.id}>{affiliation.affiliation}</option>
                             ))}
                         </select>
                         <label>

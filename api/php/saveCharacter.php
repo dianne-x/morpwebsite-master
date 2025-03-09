@@ -22,7 +22,7 @@ $gender = isset($data['gender']) ? $data['gender'] : null;
 $species = isset($data['species']) ? $data['species'] : null;
 $status = isset($data['status']) ? $data['status'] : null;
 $user_id = isset($data['user_id']) ? $data['user_id'] : null;
-$affilation = isset($data['affilation']) ? $data['affilation'] : null;
+$affiliation = isset($data['affiliation']) ? $data['affiliation'] : null;
 $nationality = isset($data['nationality']) ? $data['nationality'] : null;
 $occupation = isset($data['occupation']) ? $data['occupation'] : null;
 $fctype = isset($data['fc_type']) ? $data['fc_type'] : null;
@@ -101,10 +101,10 @@ if ($speciesResult && $speciesResult->num_rows > 0) {
     exit();
 }
 
-$affilationQuery = "SELECT id FROM affilation WHERE affilation = '$affilation'";
-$affilationResult = $conn->query($affilationQuery);
-if ($affilationResult && $affilationResult->num_rows > 0) {
-    $affilationId = $affilationResult->fetch_assoc()['id'];
+$affiliationQuery = "SELECT id FROM affiliation WHERE affiliation = '$affiliation'";
+$affiliationResult = $conn->query($affiliationQuery);
+if ($affiliationResult && $affiliationResult->num_rows > 0) {
+    $affiliationId = $affiliationResult->fetch_assoc()['id'];
 } else {
     $response['error'] = "Affiliation not found.";
     echo json_encode($response);
@@ -164,7 +164,7 @@ $family = isset($data['family']) ? $data['family'] : null;
 $universe = isset($data['universe']) ? $data['universe'] : null;
 
 // Insert the character data
-$query = "INSERT INTO user_character (character_name, gender_id, species_id, status_id, affilation_id, nationality_id, occupation_id, fc_type_id, fc_name, servermember_id, character_pic_path, birthdate, died, deathdate, resurrected, resurrected_date, bio, powers, weaknesses, used_item, family, universe) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$query = "INSERT INTO user_character (character_name, gender_id, species_id, status_id, affiliation_id, nationality_id, occupation_id, fc_type_id, fc_name, servermember_id, character_pic_path, birthdate, died, deathdate, resurrected, resurrected_date, bio, powers, weaknesses, used_item, family, universe) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($query);
 if (!$stmt) {
     error_log("Failed to prepare statement: " . $conn->error);
@@ -172,7 +172,7 @@ if (!$stmt) {
     echo json_encode($response);
     exit();
 }
-$stmt->bind_param("siiiiiiisisissssssssss", $name, $genderId, $speciesId, $statusId, $affilationId, $nationalityId, $occupationId, $fctypeId, $fcname, $servermember_id, $character_pic_path, $birthdate, $died, $deathdate, $resurrected, $resurrected_date, $bio, $powers, $weaknesses, $used_item, $family, $universe);
+$stmt->bind_param("siiiiiiisisissssssssss", $name, $genderId, $speciesId, $statusId, $affiliationId, $nationalityId, $occupationId, $fctypeId, $fcname, $servermember_id, $character_pic_path, $birthdate, $died, $deathdate, $resurrected, $resurrected_date, $bio, $powers, $weaknesses, $used_item, $family, $universe);
 
 if ($stmt->execute()) {
     $response['success'] = "Character saved successfully!";
@@ -181,7 +181,7 @@ if ($stmt->execute()) {
         'name' => $name,
         'gender' => $gender,
         'species' => $species,
-        'affilation' => $affilation,
+        'affiliation' => $affiliation,
         'nationality' => $nationality,
         'occupation' => $occupation,
         'fc_type' => $fctype,

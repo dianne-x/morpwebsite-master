@@ -75,7 +75,7 @@ if ($serverMemberResult->num_rows > 0) {
         $resurrected_date = $newCharacter['resurrected_date'] ?? null;
         $species_id = $newCharacter['species_id'] ?? 0;
         $occupation_id = $newCharacter['occupation_id'] ?? 0;
-        $affilation_id = $newCharacter['affilation_id'] ?? 0;
+        $affiliation_id = $newCharacter['affiliation_id'] ?? 0;
         $nationality_id = $newCharacter['nationality_id'] ?? 0;
         $status_id = $newCharacter['status_id'] ?? 0;
         $story_id = $newCharacter['story_id'] ?? 0;
@@ -88,9 +88,9 @@ if ($serverMemberResult->num_rows > 0) {
         $fc_type_id = $newCharacter['fc_type_id'] ?? 0;
         $fc_name = $newCharacter['fc_name'] ?? '';
 
-        $insertCharacterQuery = "INSERT INTO user_character (servermember_id, is_verified, is_own_character, character_name, nickname, gender_id, character_pic_path, birthdate, died, deathdate, resurrected, resurrected_date, species_id, occupation_id, affilation_id, nationality_id, status_id, story_id, bio, powers, weaknesses, used_item, family, universe, fc_type_id, fc_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $insertCharacterQuery = "INSERT INTO user_character (servermember_id, is_verified, is_own_character, character_name, nickname, gender_id, character_pic_path, birthdate, died, deathdate, resurrected, resurrected_date, species_id, occupation_id, affiliation_id, nationality_id, status_id, story_id, bio, powers, weaknesses, used_item, family, universe, fc_type_id, fc_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($insertCharacterQuery);
-        $stmt->bind_param("iisssisssissiiiiiiissssssi", $serverMemberId, $is_verified, $is_own_character, $character_name, $nickname, $gender_id, $character_pic_path, $birthdate, $died, $deathdate, $resurrected, $resurrected_date, $species_id, $occupation_id, $affilation_id, $nationality_id, $status_id, $story_id, $bio, $powers, $weaknesses, $used_item, $family, $universe, $fc_type_id, $fc_name);
+        $stmt->bind_param("iisssisssissiiiiiiissssssi", $serverMemberId, $is_verified, $is_own_character, $character_name, $nickname, $gender_id, $character_pic_path, $birthdate, $died, $deathdate, $resurrected, $resurrected_date, $species_id, $occupation_id, $affiliation_id, $nationality_id, $status_id, $story_id, $bio, $powers, $weaknesses, $used_item, $family, $universe, $fc_type_id, $fc_name);
         if ($stmt->execute()) {
             $response['message'] = "New character saved successfully.";
         } else {
