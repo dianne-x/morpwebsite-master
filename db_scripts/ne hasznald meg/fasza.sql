@@ -85,7 +85,9 @@ CREATE TABLE `character_fc` (
 --
 
 INSERT INTO `character_fc` (`id`, `fc_type`) VALUES
-(1, 'Femboy face');
+(1, 'Fan Cast/ Face Claim'),
+(2, 'Voice Claim'),
+(3, 'Canon Cast');
 
 -- --------------------------------------------------------
 
@@ -104,7 +106,33 @@ CREATE TABLE `character_species` (
 --
 
 INSERT INTO `character_species` (`id`, `species`) VALUES
-(1, 'Human');
+(1, 'Alien'),  
+(2, 'Amazonian'),  
+(3, 'Android'),  
+(4, 'Angel'),  
+(5, 'Asgardian'),  
+(6, 'Atlantean'),  
+(7, 'Cyborg'),  
+(8, 'Demon'),  
+(9, 'Deviant'),  
+(10, 'Dragon'),  
+(11, 'Dwarf'),  
+(12, 'Elf'),  
+(13, 'Ent'),  
+(14, 'Eternal'),  
+(15, 'Goblin'),  
+(16, 'God'),  
+(17, 'Human'),  
+(18, 'Inhuman'),  
+(19, 'Kryptonian'),  
+(20, 'Meta-Human'),  
+(21, 'Mutant'),  
+(22, 'Orc'),  
+(23, 'Shapeshifter'),  
+(24, 'Symbiote'),  
+(25, 'Troll'),  
+(26, 'Vampire'),  
+(27, 'Werewolf');
 
 -- --------------------------------------------------------
 
@@ -123,7 +151,12 @@ CREATE TABLE `character_status` (
 --
 
 INSERT INTO `character_status` (`id`, `status`) VALUES
-(1, 'Active');
+(1, 'Alive'),
+(2, 'Alive (Resurrected)'),
+(3, 'Active'),
+(4, 'Deceased'),
+(5, 'In Custody'),
+(6, 'Unknown');
 
 -- --------------------------------------------------------
 
@@ -226,7 +259,8 @@ CREATE TABLE `languages` (
 --
 
 INSERT INTO `languages` (`id`, `language`) VALUES
-(1, 'English');
+(1, 'English'),
+(2, 'Hungarian');
 
 -- --------------------------------------------------------
 
@@ -513,7 +547,42 @@ CREATE TABLE `occupation` (
 --
 
 INSERT INTO `occupation` (`id`, `occupation`) VALUES
-(1, 'Warrior');
+(1, 'Adventurer'),  
+(2, 'Alchemist'),  
+(3, 'Assassin'),  
+(4, 'Bounty Hunter'),  
+(5, 'Chef'),  
+(6, 'Doctor'),  
+(7, 'Engineer'),  
+(8, 'Firefighter'),  
+(9, 'Guardian'),  
+(10, 'Healer'),  
+(11, 'Journalist'),  
+(12, 'Knight'),  
+(13, 'Lawyer'),  
+(14, 'Mage'),  
+(15, 'Mechanic'),  
+(16, 'Mercenary'),  
+(17, 'Monk'),  
+(18, 'Musician'),  
+(19, 'Necromancer'),  
+(20, 'Nurse'),  
+(21, 'Paladin'),  
+(22, 'Pirate'),  
+(23, 'Pilot'),  
+(24, 'Police Officer'),  
+(25, 'Ranger'),  
+(26, 'Rebel'),  
+(27, 'Rogue'),  
+(28, 'Scientist'),  
+(29, 'Sorcerer'),  
+(30, 'Soldier'),  
+(31, 'Squire'),  
+(32, 'Teacher'),  
+(33, 'Thief'),  
+(34, 'Warrior'),  
+(35, 'Wizard'),  
+(36, 'Writer');
 
 -- --------------------------------------------------------
 
@@ -576,7 +645,25 @@ CREATE TABLE `rp_category` (
 --
 
 INSERT INTO `rp_category` (`id`, `rp_category`) VALUES
-(1, 'Fantasy');
+(1, 'Action'),  
+(2, 'Adventure'),  
+(3, 'Comedy'),  
+(4, 'Crime'),  
+(5, 'Drama'),  
+(6, 'Fantasy'),  
+(7, 'Historical'),  
+(8, 'Horror'),  
+(9, 'Mystery'),  
+(10, 'Romance'),  
+(11, 'Science Fiction'),  
+(12, 'Thriller'),  
+(13, 'Western'),  
+(14, 'Superhero'),  
+(15, 'Noir'),  
+(16, 'Anime');
+
+
+
 
 -- --------------------------------------------------------
 
@@ -854,7 +941,6 @@ CREATE TABLE `user_status` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
-
 -- Table to store friend requests
 CREATE TABLE `friend_requests` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -887,7 +973,10 @@ CREATE TABLE `friendships` (
 --
 
 INSERT INTO `user_status` (`id`, `status_type`) VALUES
-(1, 'Active');
+(1, 'Active'),
+(2, 'Offline'),
+(3, 'Away'),
+(4, 'Do not disturb');
 
 --
 -- Indexek a kiírt táblákhoz
