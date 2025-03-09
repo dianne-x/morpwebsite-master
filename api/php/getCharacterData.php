@@ -32,7 +32,7 @@ $stmt = $conn->prepare("
         user_character.resurrected_date,
         character_species.species,
         occupation.occupation,
-        affilation.affilation,
+        affiliation.affiliation,
         nationality.nationality,
         user_status.status_type,
         character_story.stories_id,
@@ -48,7 +48,7 @@ $stmt = $conn->prepare("
     LEFT JOIN gender ON user_character.gender_id = gender.id
     LEFT JOIN character_species ON user_character.species_id = character_species.id
     LEFT JOIN occupation ON user_character.occupation_id = occupation.id
-    LEFT JOIN affilation ON user_character.affilation_id = affilation.id
+    LEFT JOIN affiliation ON user_character.affiliation_id = affiliation.id
     LEFT JOIN nationality ON user_character.nationality_id = nationality.id
     LEFT JOIN user_status ON user_character.status_id = user_status.id
     LEFT JOIN character_story ON user_character.story_id = character_story.stories_id

@@ -61,14 +61,14 @@ if ($statusResult) {
 }
 
 // Fetch affiliations
-$affilationQuery = "SELECT id, affilation FROM affilation";
-$affilationResult = $conn->query($affilationQuery);
-if ($affilationResult) {
-    $affilations = [];
-    while ($row = $affilationResult->fetch_assoc()) {
-        $affilations[] = $row;
+$affiliationQuery = "SELECT id, affiliation FROM affiliation";
+$affiliationResult = $conn->query($affiliationQuery);
+if ($affiliationResult) {
+    $affiliations = [];
+    while ($row = $affiliationResult->fetch_assoc()) {
+        $affiliations[] = $row;
     }
-    $response['affilations'] = $affilations;
+    $response['affiliations'] = $affiliations;
 } else {
     $response['error'] = "Error fetching affiliations: " . $conn->error;
     echo json_encode($response);

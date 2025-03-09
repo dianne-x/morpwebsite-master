@@ -5,7 +5,7 @@ const CharacterCreation = (props) => {
     const [genders, setGenders] = useState([]);
     const [species, setSpecies] = useState([]);
     const [statuses, setStatuses] = useState([]);
-    const [affilations, setAffilations] = useState([]);
+    const [affiliations, setAffiliations] = useState([]);
     const [nationalities, setNationalities] = useState([]);
     const [occupations, setOccupations] = useState([]);
     const [fcTypes, setFcTypes] = useState([]); // Correct the state name to fcTypes
@@ -14,7 +14,7 @@ const CharacterCreation = (props) => {
         gender: '',
         species: '',
         status: '',
-        affilation: '',
+        affiliation: '',
         nationality: '',
         occupation: '',
         fc_type: '', // Correct the field name to fc_type
@@ -44,13 +44,13 @@ const CharacterCreation = (props) => {
                 setGenders(response.data.genders || []);
                 setSpecies(response.data.species || []);
                 setStatuses(response.data.statuses || []);
-                setAffilations(response.data.affilations || []);
+                setAffiliations(response.data.affiliations || []);
                 setNationalities(response.data.nationalities || []);
                 setOccupations(response.data.occupations || []);
                 setFcTypes(response.data.fc_types || []); // Correct the state name to fc_types
                 console.log('Genders:', response.data.genders); // Debugging line
                 console.log('Species:', response.data.species); // Debugging line
-                console.log('Affilations:', response.data.affilations); // Debugging line
+                console.log('Affiliations:', response.data.affiliations); // Debugging line
                 console.log('Nationalities:', response.data.nationalities); // Debugging line
                 console.log('Occupations:', response.data.occupations); // Debugging line
                 console.log('FcTypes:', response.data.fc_types); // Debugging line
@@ -81,7 +81,7 @@ const CharacterCreation = (props) => {
     };
 
     const handleSubmit = () => {
-        if (!formData.name || !formData.gender || !formData.species || !formData.status || !formData.affilation || !formData.nationality || !formData.occupation || !formData.fc_type) {
+        if (!formData.name || !formData.gender || !formData.species || !formData.status || !formData.affiliation || !formData.nationality || !formData.occupation || !formData.fc_type) {
             alert('Please fill out all required fields.');
             return;
         }
@@ -163,10 +163,10 @@ const CharacterCreation = (props) => {
                         <label>
                             Affiliation:
                         </label>
-                        <select name="affilation" value={formData.affilation} onChange={handleChange}> 
+                        <select name="affiliation" value={formData.affiliation} onChange={handleChange}> 
                             <option value="">Select Affiliation</option>
-                            {affilations.map((affilation) => (
-                                <option key={affilation.id} value={affilation.affilation}>{affilation.affilation}</option>
+                            {affiliations.map((affiliation) => (
+                                <option key={affiliation.id} value={affiliation.affiliation}>{affiliation.affiliation}</option>
                             ))}
                         </select>
                         <label>
