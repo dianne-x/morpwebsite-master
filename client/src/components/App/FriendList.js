@@ -6,6 +6,7 @@ import PrivateChat from './privateChat';
 const FriendList = ({ onFriendClick }) => {
   const [friends, setFriends] = useState([]);
   const [selectedFriend, setSelectedFriend] = useState(null);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const user = JSON.parse(localStorage.getItem('morp-login-user'));
 
   useEffect(() => {
@@ -25,7 +26,13 @@ const FriendList = ({ onFriendClick }) => {
 
   const handleFriendClick = (friend) => {
     setSelectedFriend(friend);
+    setIsChatOpen(true);
     onFriendClick(friend);
+  };
+
+  const closeChat = () => {
+    setIsChatOpen(false);
+    setSelectedFriend(null);
   };
 
   return (
@@ -42,7 +49,9 @@ const FriendList = ({ onFriendClick }) => {
       ) : (
         <p>You have no friends gang</p>
       )}
-      {selectedFriend && <PrivateChat user1={user} user2={selectedFriend} />}
+      {isChatOpen && selectedFriend && (
+        <PrivateChat user2={selectedFriend} onClose={closeChat} />
+      )}
     </>
   );
 };

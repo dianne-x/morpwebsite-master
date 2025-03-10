@@ -7,17 +7,24 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization');
 header('Content-Type: application/json');
 
 $data = json_decode(file_get_contents("php://input"), true);
-$sender_id = $data['sender_id'];
-$receiver_id = $data['receiver_id'];
-$message = $data['message'];
+$user1_id = $data['user1_id'];
+$user2_id = $data['user2_id'];
 
-$sql = "INSERT INTO direct_message (sender_id, receiver_id, message, date) VALUES (?, ?, ?, NOW())";
+$sql = "SELECT id FROM direct_message_room WHERE (user1_id = ? AND user2_id = ?) OR (user1_id = ? AND user2_id = ?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("sss", $sender_id, $receiver_id, $message);
+$stmt->bind_param("ssss", $user1_id, $user2_id, $user2_id, $user1_id);
 
 $response = [];
 if ($stmt->execute()) {
-    $response['success'] = true;
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $response['success'] = true;
+        $response['roomId'] = $row['id'];
+    } else {
+        $response['success'] = false;
+        $response['error'] = 'Room not found';
+    }
 } else {
     $response['success'] = false;
     $response['error'] = $stmt->error;
