@@ -11,6 +11,7 @@ const CharacterCreation = (props) => {
     const [fcTypes, setFcTypes] = useState([]); // Correct the state name to fcTypes
     const [formData, setFormData] = useState({
         name: '',
+        nickname: '', // Add nickname to form data
         gender: '',
         species: '',
         status: '',
@@ -32,10 +33,12 @@ const CharacterCreation = (props) => {
         weaknesses: '', // Add weaknesses to form data
         used_item: '', // Add used_item to form data
         family: '', // Add family to form data
-        universe: '' // Add universe to form data
+        universe: '', // Add universe to form data
+        is_own_character: false, // Add own character to form data
     });
     const [tempProfilePic, setTempProfilePic] = useState(''); // Temporary variable for profile picture
     const [profilePicFile, setProfilePicFile] = useState(null); // File object for profile picture
+    const [aliases, setAliases] = useState([{ name: '', pic: null, tempPic: '' }]);
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/getCharacterCreation.php`)
@@ -66,6 +69,59 @@ const CharacterCreation = (props) => {
             ...formData,
             [name]: type === 'checkbox' ? checked : value
         });
+
+        if (name === 'status') {
+            if (value === 'Alive (Resurrected)') {
+                setFormData({
+                    ...formData,
+                    status: value,
+                    died: true,
+                    resurrected: true
+                });
+            } else if (value === 'Deceased') {
+                setFormData({
+                    ...formData,
+                    status: value,
+                    died: true,
+                    resurrected: false
+                });
+            } else {
+                setFormData({
+                    ...formData,
+                    status: value,
+                    died: false,
+                    resurrected: false
+                });
+            }
+        } else if (name === 'died') {
+            if (checked) {
+                setFormData({
+                    ...formData,
+                    died: true,
+                    status: 'Deceased'
+                });
+            } else {
+                setFormData({
+                    ...formData,
+                    died: false,
+                    status: ''
+                });
+            }
+        } else if (name === 'resurrected') {
+            if (checked) {
+                setFormData({
+                    ...formData,
+                    resurrected: true,
+                    status: 'Alive (Resurrected)'
+                });
+            } else {
+                setFormData({
+                    ...formData,
+                    resurrected: false,
+                    status: ''
+                });
+            }
+        }
     };
 
     const handleFileChange = (e) => {
@@ -78,6 +134,30 @@ const CharacterCreation = (props) => {
             };
             reader.readAsDataURL(file);
         }
+    };
+
+    const handleAliasChange = (index, e) => {
+        const { name, value, files } = e.target;
+        const newAliases = [...aliases];
+        if (name === 'alias_pic') {
+            const file = files[0];
+            if (file) {
+                newAliases[index].pic = file;
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    newAliases[index].tempPic = reader.result;
+                    setAliases(newAliases);
+                };
+                reader.readAsDataURL(file);
+            }
+        } else {
+            newAliases[index].name = value;
+            setAliases(newAliases);
+        }
+    };
+
+    const addAlias = () => {
+        setAliases([...aliases, { name: '', pic: null, tempPic: '' }]);
     };
 
     const handleSubmit = () => {
@@ -97,6 +177,13 @@ const CharacterCreation = (props) => {
         } else {
             formDataToSend.append('character_pic_path', tempProfilePic); // Append the temporary profile picture
         }
+
+        formDataToSend.append('aliases', JSON.stringify(aliases.map(alias => ({ name: alias.name }))));
+        aliases.forEach((alias, index) => {
+            if (alias.pic) {
+                formDataToSend.append(`alias_pics[${index}]`, alias.pic);
+            }
+        });
 
         axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/saveCharacter.php`, formDataToSend, {
             headers: {
@@ -129,10 +216,52 @@ const CharacterCreation = (props) => {
                             id="character_pic_path"
                             onChange={handleFileChange}
                         />
+                        <label>
+                            Own Character:
+                        </label>
+                        <input type="checkbox" name="is_own_character" checked={formData.is_own_character} onChange={handleChange} />
                         <label htmlFor="name">
                             Name:
                         </label>
                         <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+                        <label>
+                            Aliases:
+                        </label>
+                        {aliases.map((alias, index) => (
+                            <div key={index} className="alias-container">
+                                <label 
+                                    htmlFor={`alias_pic_${index}`} id="alias-pic-label"
+                                    style={{
+                                        backgroundImage: `url(${alias.tempPic || `${process.env.REACT_APP_IMAGE_BASE_URL}/aliasPictures/${alias.pic}`})`,
+                                        width: '50px',
+                                        height: '50px',
+                                        borderRadius: '50%',
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center',
+                                        marginRight: '10px'
+                                    }}>
+                                </label>
+                                <input
+                                    type="file"
+                                    name="alias_pic"
+                                    id={`alias_pic_${index}`}
+                                    onChange={(e) => handleAliasChange(index, e)}
+                                    style={{ display: 'none' }}
+                                />
+                                <input
+                                    type="text"
+                                    name="alias_name"
+                                    value={alias.name}
+                                    onChange={(e) => handleAliasChange(index, e)}
+                                    placeholder="Alias Name"
+                                />
+                            </div>
+                        ))}
+                        <button type="button" onClick={addAlias}>Add Alias</button>
+                        <label htmlFor="nickname">
+                            Nickname:
+                        </label>
+                        <input type="text" name="nickname" value={formData.nickname} onChange={handleChange} />
                         <label>
                             Gender:
                         </label>
@@ -195,7 +324,7 @@ const CharacterCreation = (props) => {
                         <label>
                             Died:
                         </label>
-                        <input type="checkbox" name="died" checked={formData.died} onChange={handleChange} />
+                        <input type="checkbox" name="died" checked={formData.died} onChange={handleChange} disabled={formData.status === 'Alive (Resurrected)' || formData.status === 'Deceased'} />
                         {formData.died && (
                             <>
                                 <label>
@@ -205,7 +334,7 @@ const CharacterCreation = (props) => {
                                 <label>
                                     Resurrected:
                                 </label>
-                                <input type="checkbox" name="resurrected" checked={formData.resurrected} onChange={handleChange} />
+                                <input type="checkbox" name="resurrected" checked={formData.resurrected} onChange={handleChange} disabled={formData.status === 'Alive (Resurrected)'} />
                                 {formData.resurrected && (
                                     <>
                                         <label>
@@ -245,9 +374,11 @@ const CharacterCreation = (props) => {
                         </label>
                             <select name="fc_type" value={formData.fc_type} onChange={handleChange} required> {/* Correct the field name to fc_type */}
                                 <option value="">Select FC Type</option>
-                                {fcTypes.map((fc) => (
-                                    <option key={fc.id} value={fc.fc_type}>{fc.fc_type}</option>
-                                ))}
+                                {fcTypes
+                                    .filter(fc => formData.is_own_character || fc.fc_type === 'Canon Cast')
+                                    .map((fc) => (
+                                        <option key={fc.id} value={fc.fc_type}>{fc.fc_type}</option>
+                                    ))}
                             </select>
                         {formData.fc_type && (
                             <>
@@ -257,6 +388,7 @@ const CharacterCreation = (props) => {
                                 <input type="text" name="fc_name" value={formData.fc_name} onChange={handleChange} required />
                             </>
                         )}
+                        
                         <button type="button" className='save-character-btn' onClick={handleSubmit}>Save Character</button>
                     </form>
                 </div>
