@@ -21,15 +21,17 @@ const ChatMessage = ({ name, message, date, showIconAndName, characterId, charac
     };
 
     const formatMessage = (message) => {
+        if (!message) return message; // Only format if there is some text
         let formattedMessage = message;
-        formattedMessage = formattedMessage.replace(/\*\*\*(.*?)\*\*\*/g, '<span style="font-style: italic; font-weight: bold;">$1</span>');
-        formattedMessage = formattedMessage.replace(/\*\*(.*?)\*\*/g, '<span style="font-weight: bold;">$1</span>');
-        formattedMessage = formattedMessage.replace(/\*(.*?)\*/g, '<span style="font-style: italic;">$1</span>');
-        formattedMessage = formattedMessage.replace(/!spl\((.*?)\)/g, '<span class="spoiler-span" onclick="if (!this.classList.contains(\'shown\')) this.classList.add(\'shown\')">$1</span>');
-        return formattedMessage;
+        formattedMessage = formattedMessage.replace(/\*\*\*(.*?)\*\*\*/g, (match, p1) => p1.trim() != "" ? `<span style="font-style: italic; font-weight: bold;">${p1}</span>` : match);
+        formattedMessage = formattedMessage.replace(/\*\*(.*?)\*\*/g, (match, p1) => p1.trim() != "" ? `<span style="font-weight: bold;">${p1}</span>` : match);
+        formattedMessage = formattedMessage.replace(/\*(.*?)\*/g, (match, p1) => p1.trim() != "" ? `<span style="font-style: italic;">${p1}</span>` : match);
+        formattedMessage = formattedMessage.replace(/!spl\((.*?)\)/g, (match, p1) => p1.trim() != "" ? `<span class="spoiler-span" onclick="if (!this.classList.contains('shown')) this.classList.add('shown')">${p1}</span>` : match);
+        return formattedMessage.trim();
     };
 
     return (
+        formatMessage(message) === "" ? <></> : // If message is empty, return null
         <>
             <div className="chat-message" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
                 <div className='chat-message-icon'> {/* Show CharacterInfo on click */}
