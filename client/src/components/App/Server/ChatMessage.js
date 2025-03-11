@@ -6,6 +6,7 @@ const ChatMessage = ({ name, message, date, showIconAndName, characterId, charac
     const [isHovered, setIsHovered] = useState(false);
     const [showCharacterInfo, setShowCharacterInfo] = useState(false); // State to track if CharacterInfo should be shown
   
+    
     const handleMouseOver = () => {
         setIsHovered(true);
     };
@@ -17,6 +18,15 @@ const ChatMessage = ({ name, message, date, showIconAndName, characterId, charac
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
         return new Intl.DateTimeFormat(navigator.language || navigator.userLanguage, options).format(new Date(dateString));
+    };
+
+    const formatMessage = (message) => {
+        let formattedMessage = message;
+        formattedMessage = formattedMessage.replace(/\*\*\*(.*?)\*\*\*/g, '<span style="font-style: italic; font-weight: bold;">$1</span>');
+        formattedMessage = formattedMessage.replace(/\*\*(.*?)\*\*/g, '<span style="font-weight: bold;">$1</span>');
+        formattedMessage = formattedMessage.replace(/\*(.*?)\*/g, '<span style="font-style: italic;">$1</span>');
+        formattedMessage = formattedMessage.replace(/!spl\((.*?)\)/g, '<span class="spoiler-span" onclick="if (!this.classList.contains(\'shown\')) this.classList.add(\'shown\')">$1</span>');
+        return formattedMessage;
     };
 
     return (
@@ -36,7 +46,15 @@ const ChatMessage = ({ name, message, date, showIconAndName, characterId, charac
                         <span className='date'>{formatDate(date)}</span>
                     </div>
                     }
-                    <p>{message} {!showIconAndName && <span className={`date ${isHovered ? 'visible' : 'hidden'}`}>{formatDate(date)}</span>}</p>
+                    <p>
+                        <span dangerouslySetInnerHTML={{ __html: formatMessage(message) }} /> 
+                        {
+                        !showIconAndName && 
+                        <span className={`date ${isHovered ? 'visible' : 'hidden'}`}>
+                            {formatDate(date)}
+                        </span>
+                        }
+                    </p>
                 </div>
             </div>
             {showCharacterInfo && characterId != null && (
