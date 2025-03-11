@@ -18,23 +18,29 @@ const ServerInfo = ({ server, users = [], openServerSettings }) => {
             <div className='server-info server-side'>
                 <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/serverPictures/${server.icon}`} className="server-image" alt="Server Icon"/>
                 <h2>{server.name}</h2>
-                <h3>Users:</h3>
-                <ul>
-                    {users.length > 0 ? (
-                        users.map((user, userIndex) => (
-                            <li key={userIndex} className="user-item" onClick={() => {setSelectedUserId(user.uid); console.log(user);}
-                            }>
-                                {user.name}
-                            </li>
-                        ))
-                    ) : (
-                        <li>No users available</li>
-                    )}
-                </ul>
-                <button className='server-settings' onClick={openServerSettings} >
-                    <FontAwesomeIcon icon={faCog} />
-                    <span>Settings</span>
-                </button>
+                <div className='server-users'>
+                    <h3>Users:</h3>
+                    <ul>
+                        {users.length > 0 ? (
+                            users.map((user, userIndex) => (
+                                <li key={userIndex} className="user-item" onClick={() => {setSelectedUserId(user.uid); console.log(user);}
+                                }>
+                                    {user.name}
+                                </li>
+                            ))
+                        ) : (
+                            <li>No users available</li>
+                        )}
+                    </ul>
+                </div>
+                <div className='settings-content'>
+                    <button className='server-settings' onClick={openServerSettings} >
+                        <span>
+                            <FontAwesomeIcon icon={faCog} />
+                        </span>
+                        <span>Settings</span>
+                    </button>
+                </div>
             </div>
             {selectedUserId && (
                 <div className="modal-overlay" onClick={() => setSelectedUserId(null)}>
