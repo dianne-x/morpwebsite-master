@@ -62,6 +62,26 @@ $result = $stmt->get_result();
 // Fetch the data
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
+
+    // Fetch aliases
+    $aliasStmt = $conn->prepare("
+        SELECT 
+            alias_character.name,
+            alias_character.character_pic_path
+        FROM alias_character
+        WHERE alias_character.character_id = ?
+    ");
+    $aliasStmt->bind_param("i", $characterId);
+    $aliasStmt->execute();
+    $aliasResult = $aliasStmt->get_result();
+
+    $aliases = [];
+    while ($aliasRow = $aliasResult->fetch_assoc()) {
+        $aliases[] = $aliasRow;
+    }
+
+    $row['aliases'] = $aliases;
+
     echo json_encode(["success" => true, "character" => $row]);
 } else {
     echo json_encode(["success" => false, "message" => "No character data found"]);

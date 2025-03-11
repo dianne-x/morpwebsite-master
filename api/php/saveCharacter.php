@@ -30,6 +30,7 @@ $fctype = isset($data['fc_type']) ? $data['fc_type'] : null;
 $fcname = isset($data['fc_name']) ? $data['fc_name'] : null; // Ensure fc_name is assigned
 $server_id = isset($data['server_id']) ? $data['server_id'] : null;
 $character_pic_path = isset($_FILES['character_pic_path']) ? $_FILES['character_pic_path'] : null;
+$is_own_character = isset($data['is_own_character']) ? (filter_var($data['is_own_character'], FILTER_VALIDATE_BOOLEAN) ? 1 : 0) : 0;
 
 // Initialize character_pic_path
 $character_pic_path = null;
@@ -169,7 +170,7 @@ $aliases = isset($data['aliases']) ? json_decode($data['aliases'], true) : [];
 $alias_pics = isset($_FILES['alias_pics']) ? $_FILES['alias_pics'] : [];
 
 // Insert the character data
-$query = "INSERT INTO user_character (character_name, nickname, gender_id, species_id, status_id, affiliation_id, nationality_id, occupation_id, fc_type_id, fc_name, servermember_id, character_pic_path, birthdate, died, deathdate, resurrected, resurrected_date, bio, powers, weaknesses, used_item, family, universe) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$query = "INSERT INTO user_character (character_name, nickname, gender_id, species_id, status_id, affiliation_id, nationality_id, occupation_id, fc_type_id, fc_name, servermember_id, character_pic_path, birthdate, died, deathdate, resurrected, resurrected_date, bio, powers, weaknesses, used_item, family, universe, is_own_character) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($query);
 if (!$stmt) {
     error_log("Failed to prepare statement: " . $conn->error);
@@ -177,7 +178,7 @@ if (!$stmt) {
     echo json_encode($response);
     exit();
 }
-$stmt->bind_param("ssiiiiiiisisissssssssss", $name, $nickname, $genderId, $speciesId, $statusId, $affiliationId, $nationalityId, $occupationId, $fctypeId, $fcname, $servermember_id, $character_pic_path, $birthdate, $died, $deathdate, $resurrected, $resurrected_date, $bio, $powers, $weaknesses, $used_item, $family, $universe);
+$stmt->bind_param("ssiiiiiiisisisssssssssi", $name, $nickname, $genderId, $speciesId, $statusId, $affiliationId, $nationalityId, $occupationId, $fctypeId, $fcname, $servermember_id, $character_pic_path, $birthdate, $died, $deathdate, $resurrected, $resurrected_date, $bio, $powers, $weaknesses, $used_item, $family, $universe, $is_own_character);
 
 if (!$stmt->execute()) {
     error_log("Error executing statement: " . $stmt->error);
@@ -214,7 +215,8 @@ $response['character'] = [
     'family' => $family,
     'universe' => $universe,
     'is_verified' => 0, // Not approved yet
-    'servermember_id' => $servermember_id
+    'servermember_id' => $servermember_id,
+    'is_own_character' => $is_own_character
 ];
 
 // Save aliases
