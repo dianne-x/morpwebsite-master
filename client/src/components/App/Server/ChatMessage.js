@@ -6,6 +6,7 @@ const ChatMessage = ({ name, message, date, showIconAndName, characterId, charac
     const [isHovered, setIsHovered] = useState(false);
     const [showCharacterInfo, setShowCharacterInfo] = useState(false); // State to track if CharacterInfo should be shown
   
+    
     const handleMouseOver = () => {
         setIsHovered(true);
     };
@@ -19,7 +20,18 @@ const ChatMessage = ({ name, message, date, showIconAndName, characterId, charac
         return new Intl.DateTimeFormat(navigator.language || navigator.userLanguage, options).format(new Date(dateString));
     };
 
+    const formatMessage = (message) => {
+        if (!message) return message; // Only format if there is some text
+        let formattedMessage = message;
+        formattedMessage = formattedMessage.replace(/\*\*\*(.*?)\*\*\*/g, (match, p1) => p1.trim() != "" ? `<span style="font-style: italic; font-weight: bold;">${p1}</span>` : match);
+        formattedMessage = formattedMessage.replace(/\*\*(.*?)\*\*/g, (match, p1) => p1.trim() != "" ? `<span style="font-weight: bold;">${p1}</span>` : match);
+        formattedMessage = formattedMessage.replace(/\*(.*?)\*/g, (match, p1) => p1.trim() != "" ? `<span style="font-style: italic;">${p1}</span>` : match);
+        formattedMessage = formattedMessage.replace(/!spl\((.*?)\)/g, (match, p1) => p1.trim() != "" ? `<span class="spoiler-span" onclick="if (!this.classList.contains('shown')) this.classList.add('shown')">${p1}</span>` : match);
+        return formattedMessage.trim();
+    };
+
     return (
+        formatMessage(message) === "" ? <></> : // If message is empty, return null
         <>
             <div className="chat-message" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
                 <div className='chat-message-icon'> {/* Show CharacterInfo on click */}
@@ -36,7 +48,15 @@ const ChatMessage = ({ name, message, date, showIconAndName, characterId, charac
                         <span className='date'>{formatDate(date)}</span>
                     </div>
                     }
-                    <p>{message} {!showIconAndName && <span className={`date ${isHovered ? 'visible' : 'hidden'}`}>{formatDate(date)}</span>}</p>
+                    <p>
+                        <span dangerouslySetInnerHTML={{ __html: formatMessage(message) }} /> 
+                        {
+                        !showIconAndName && 
+                        <span className={`date ${isHovered ? 'visible' : 'hidden'}`}>
+                            {formatDate(date)}
+                        </span>
+                        }
+                    </p>
                 </div>
             </div>
             {showCharacterInfo && characterId != null && (

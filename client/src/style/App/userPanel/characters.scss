@@ -32,52 +32,6 @@
                 gap: .5rem;
                 margin-block: 1rem;
 
-                ul {
-                    list-style: none;
-                    display: flex;
-                    flex-direction: column;
-                    gap: .4rem;
-    
-                    li {
-                        background: rgba($color: $text-color, $alpha: .1);
-                        display: flex;
-                        justify-content: space-between;
-                        padding: .5rem .7rem;
-
-                        &.not-verified {
-                            border: 1px solid #d0ff00;
-                            background: rgba($color: #d0ff00, $alpha: .1);
-                        }
-                        
-                        &>div {
-                            display: flex;
-                            gap: .5rem;
-                            align-items: center;
-                        }
-                        .info {
-                            img {
-                                width: 35px;
-                                aspect-ratio: 1;
-                                border-radius: 50%;
-                            }
-                        }
-                        .modify {
-                            button {
-                                background: none;
-                                border: none;
-                                color: $text-color;
-                                font-size: 1rem;
-
-                                &:hover{
-                                    &.info { color: #fcef89 }
-                                    &.edit { color: #2dfe54 }
-                                    &.delete { color: #d62929 }
-                                }
-                            }
-                        }
-                    }
-                }
-
                 button.addnew-char {
                     background: $main-color;
                     color: $text-color;
@@ -100,4 +54,62 @@
         }
     } 
 }
+}
+
+ul.server-character-list-view {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+
+    li {
+        background: rgba($color: $text-color, $alpha: .1);
+        display: flex;
+        justify-content: space-between;
+        padding: .5rem .7rem;
+
+        &.not-verified {
+            border: 1px solid #d0ff00;
+            background: rgba($color: #d0ff00, $alpha: .1);
+        }
+        
+        &>div {
+            display: flex;
+            gap: .5rem;
+            align-items: center;
+        }
+        .info {
+            img {
+                width: 35px;
+                aspect-ratio: 1;
+                border-radius: 50%;
+            }
+        }
+        .modify {
+            button {
+                background: none;
+                border: none;
+                color: $text-color;
+                font-size: 1rem;
+
+                &:hover{
+                    &.info { color: #fcef89 }
+                    &.edit { color: #2dfe54 }
+                    &.delete { color: #d62929 }
+
+                    &.reject { background: #d62929 }
+                    &.accept { background: #2dfe54; color: $main-color }
+                }
+
+                &.accept, &.reject {
+                    color: $text-color;
+                    background: $main-color;
+                    padding: .3rem .5rem;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    transition: 200ms;
+                }
+            }
+        }
+    }
 }
