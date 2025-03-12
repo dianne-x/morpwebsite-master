@@ -22,7 +22,7 @@ const CharacterCreation = (props) => {
         fc_name: '', // Add fc_name to form data
         user_id: JSON.parse(localStorage.getItem('morp-login-user')), // Add user ID to form data
         server_id: props.server_id, // Add server ID to form data
-        character_pic_path: null, // Add profile picture to form data
+        character_pic_path: 'character.png', // Add profile picture to form data
         birthdate: '', // Add birthdate to form data
         died: false, // Add died to form data
         deathdate: '', // Add deathdate to form data
