@@ -23,6 +23,7 @@
           width: 100%;
           padding: 15px;
           background-color: $main-color;
+          overflow-y: auto;
 
           h3 {
             text-align: center;
@@ -31,6 +32,9 @@
           ul {
             list-style-type: none;
             margin-block: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
 
 
             li {
