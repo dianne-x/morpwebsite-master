@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import emailjs from 'emailjs-com'; // Import EmailJS
 import '../../style/App/HomePage.scss';
-import logo from '../../img/logodark.jpg'; // Replace with your logo path
+import logo from '../../img/morp_light.png';
 
 const HomePage = () => {
     const [selectedFriend, setSelectedFriend] = useState(null);
@@ -97,10 +97,10 @@ const HomePage = () => {
             {/* Centered content */}
             <div className="centered-content">
                 <div className="logo">
-                    {/* You can uncomment the logo image if needed */}
-                    {/* <img src={logo} alt="Logo" /> */}
+                    <img src={logo} alt="MORP Logo" />
                 </div>
-                <div className="welcome-text">Welcome to MORP</div>
+                <p className="welcome-text">Welcome back, adventurer!</p>
+                <p className='welcome-desc'>Start roleplaying in a connected server, or start chatting with your friends. Forge epic tales, explore fantastical worlds, and connect with fellow adventurers. <br/><br/>Your story begins now.</p>
             </div>
 
             {/* Chat window for selected friend */}
