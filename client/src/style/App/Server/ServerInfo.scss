@@ -36,6 +36,11 @@
             flex-direction: column;
             gap: 5px;
 
+            &>span {
+              text-align: center;
+              font-style: italic;
+              color: rgba($color: $text-color, $alpha: .3);
+            }
 
             li {
               padding-block: 10px;

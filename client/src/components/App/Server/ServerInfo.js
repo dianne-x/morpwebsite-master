@@ -32,7 +32,7 @@ const ServerInfo = ({ server, users = [], openServerSettings }) => {
                                 </li>
                             ))
                         ) : (
-                            <li>No owners available</li>
+                            <span>No owners available</span>
                         )}
                     </ul>
                     <h3>Moderators:</h3>
@@ -44,7 +44,7 @@ const ServerInfo = ({ server, users = [], openServerSettings }) => {
                                 </li>
                             ))
                         ) : (
-                            <li>No moderators available</li>
+                            <span>No moderators available</span>
                         )}
                     </ul>
                     <h3>Users:</h3>
@@ -56,7 +56,7 @@ const ServerInfo = ({ server, users = [], openServerSettings }) => {
                                 </li>
                             ))
                         ) : (
-                            <li>No users available</li>
+                            <span>No users available</span>
                         )}
                     </ul>
                 </div>
