@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import emailjs from 'emailjs-com'; // Import EmailJS
 import '../../style/App/HomePage.scss';
 import logo from '../../img/morp_light.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBug } from '@fortawesome/free-solid-svg-icons';
 
 const HomePage = () => {
     const [selectedFriend, setSelectedFriend] = useState(null);
@@ -10,6 +12,7 @@ const HomePage = () => {
     const [feedbackMessage, setFeedbackMessage] = useState('');
     const [isCooldown, setIsCooldown] = useState(false);
     const [cooldownTime, setCooldownTime] = useState(0);
+    const [showBugReport, setShowBugReport] = useState(false); // State to manage bug report visibility
 
     const friends = [
       { id: 1, name: 'Alice', online: true },
@@ -116,35 +119,42 @@ const HomePage = () => {
                 </div>
             )}
 
-            {/* Bug Report Section */}
-            <div className="bug-report">
-                <h2>Report a Bug</h2>
-                <p>If you encounter any issues, please let us know!</p>
-                {/*<p>Contact us at: <a href="mailto:kornel@bobak.ws">kornel@bobak.ws</a></p>*/}
-                
-                <form onSubmit={handleReportSubmit}>
-                    <input
-                        type="text"
-                        placeholder="Your Name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                    />
-                    <textarea
-                        placeholder="Describe the problem..."
-                        value={problemDescription}
-                        onChange={(e) => setProblemDescription(e.target.value)}
-                        required
-                    />
-                    <button type="submit" disabled={isCooldown}>Send Report</button>
-                </form>
+            {/* Button to show bug report section */}
+            <button className='bug-report-btn' onClick={() => setShowBugReport(!showBugReport)}>
+                <FontAwesomeIcon icon={faBug} />
+            </button>
 
-                {feedbackMessage && (
-                    <p className={`feedback-message ${isCooldown ? 'cooldown-message' : ''}`}>
-                        {feedbackMessage}
-                    </p>
-                )}
-            </div>
+            {/* Bug Report Section */}
+            {showBugReport && (
+                <div className="bug-report">
+                    <h2>Report a Bug</h2>
+                    <p>If you encounter any issues, please let us know!</p>
+                    {/*<p>Contact us at: <a href="mailto:kornel@bobak.ws">kornel@bobak.ws</a></p>*/}
+                    
+                    <form onSubmit={handleReportSubmit}>
+                        <input
+                            type="text"
+                            placeholder="Your Name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                        />
+                        <textarea
+                            placeholder="Describe the problem..."
+                            value={problemDescription}
+                            onChange={(e) => setProblemDescription(e.target.value)}
+                            required
+                        />
+                        <button type="submit" disabled={isCooldown}>Send Report</button>
+                    </form>
+
+                    {feedbackMessage && (
+                        <p className={`feedback-message ${isCooldown ? 'cooldown-message' : ''}`}>
+                            {feedbackMessage}
+                        </p>
+                    )}
+                </div>
+            )}
         </div>
     );
 };

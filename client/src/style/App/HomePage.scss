@@ -80,6 +80,20 @@
     }
   }
 
+  .bug-report-btn {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    background: #26282e;
+    color: $text-color;
+    outline: none;
+    border: 1px solid rgba($color: $text-color, $alpha: .2);
+    padding: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1;
+  }
+
   /* Bug Report Section */
   .bug-report {
     background: #26282e;
