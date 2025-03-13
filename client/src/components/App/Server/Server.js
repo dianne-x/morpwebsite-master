@@ -9,6 +9,7 @@ import SectionCreation from './SectionCreation';
 const Server = ({ selectedServer, sections, users, onReload }) => {
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [selectedRoomId, setSelectedRoomId] = useState(null);
+    const [isModerator, setIsModerator] = useState(false);
 
     useEffect(() => {
         console.log(selectedServer);
@@ -23,6 +24,18 @@ const Server = ({ selectedServer, sections, users, onReload }) => {
             setSelectedRoomId(null);
         }
     }, [sections]);
+
+    useEffect(() => {
+        if (users && users.length > 0) {
+            for (const user of users) {
+                if (user.uid === JSON.parse(localStorage.getItem('morp-login-user'))) {
+                    setIsModerator(user.is_moderator);
+                    break;
+                }
+            }
+        }
+    }, [users]);
+
 
     useEffect(() => {
         console.log("Selected room id:", selectedRoomId);
@@ -50,9 +63,9 @@ const Server = ({ selectedServer, sections, users, onReload }) => {
     return (
         <>
             <div className="server-main-content">
-                <ChannelList sections={sections} changeSelectedRoomId={changeSelectedRoomId} selectedRoomId={selectedRoomId} serverId={selectedServer.id} onReload={onReload} />
+                <ChannelList sections={sections} changeSelectedRoomId={changeSelectedRoomId} selectedRoomId={selectedRoomId} serverId={selectedServer.id} onReload={onReload} isModerator={isModerator} />
                 <ChatWindow serverId={selectedServer.id} roomId={selectedRoomId} roomDetails={getRoomDetails()} />
-                <ServerInfo server={selectedServer} users={users} openServerSettings={openServerSettings} />
+                <ServerInfo server={selectedServer} users={users} openServerSettings={openServerSettings} isModerator={isModerator} />
             </div>
             { isSettingsOpen && <ServerSettings server={selectedServer} onCloseForm={() => setIsSettingsOpen(false)} /> }
         </>

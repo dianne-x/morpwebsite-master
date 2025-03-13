@@ -6,7 +6,7 @@ import UserInfo from '../User/UserInfo'; // Import the UserInfo component
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
 
-const ServerInfo = ({ server, users = [], openServerSettings }) => {
+const ServerInfo = ({ server, users = [], openServerSettings, isModerator }) => {
     const [selectedUserId, setSelectedUserId] = useState(null); // State to track selected user ID
 
     if (!server) {
@@ -60,14 +60,17 @@ const ServerInfo = ({ server, users = [], openServerSettings }) => {
                         )}
                     </ul>
                 </div>
-                <div className='settings-content'>
-                    <button className='server-settings' onClick={openServerSettings} >
-                        <span>
-                            <FontAwesomeIcon icon={faCog} />
-                        </span>
-                        <span>Settings</span>
-                    </button>
-                </div>
+                {
+                    isModerator &&
+                    <div className='settings-content'>
+                        <button className='server-settings' onClick={openServerSettings} >
+                            <span>
+                                <FontAwesomeIcon icon={faCog} />
+                            </span>
+                            <span>Settings</span>
+                        </button>
+                    </div>
+                }
             </div>
             {selectedUserId && (
                 <div className="modal-overlay" onClick={() => setSelectedUserId(null)}>
