@@ -4,7 +4,7 @@ import ServerSettings from './ServerSettings';
 import UserInfo from '../User/UserInfo'; // Import the UserInfo component
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faCopy } from '@fortawesome/free-solid-svg-icons';
 
 const ServerInfo = ({ server, users = [], openServerSettings, isModerator }) => {
     const [selectedUserId, setSelectedUserId] = useState(null); // State to track selected user ID
@@ -16,6 +16,14 @@ const ServerInfo = ({ server, users = [], openServerSettings, isModerator }) => 
     const owners = users.filter(user => user.is_owner == 1);
     const moderators = users.filter(user => user.is_moderator == 1 && user.is_owner != 1);  
     const regularUsers = users.filter(user => user.is_owner != 1 && user.is_moderator != 1);
+
+    const getInviteLink = () => {
+        const link = server.invite_link;
+        console.log(link);
+        
+        navigator.clipboard.writeText(link);
+        alert('Invite link copied to clipboard!');
+    }
 
     return (
         <>
@@ -68,6 +76,10 @@ const ServerInfo = ({ server, users = [], openServerSettings, isModerator }) => 
                                 <FontAwesomeIcon icon={faCog} />
                             </span>
                             <span>Settings</span>
+                        </button>
+
+                        <button className='server-invite-link' onClick={getInviteLink} title='Copy Invite Link'>
+                            <FontAwesomeIcon icon={faCopy} />
                         </button>
                     </div>
                 }
