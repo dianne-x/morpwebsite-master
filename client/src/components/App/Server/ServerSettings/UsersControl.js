@@ -65,7 +65,7 @@ const UsersControl = ({ allUsers, onRoleReload }) => {
                                 onClick={() => changeRole(user, true)}>
                                 Promote
                             </button>
-                            {user.is_moderator && 
+                            {user.is_moderator == 1 && 
                                 <button 
                                     className='reject'
                                     onClick={() => changeRole(user, false)}>
