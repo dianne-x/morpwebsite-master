@@ -13,6 +13,7 @@ const AppLayout = () => {
   const [sections, setSections] = useState([]);
   const [users, setUsers] = useState([]);
   const [reloadTrigger, setReloadTrigger] = useState(false);
+  const [reloadRolesTrigger, setReloadRolesTrigger] = useState(false);
 
   useEffect(() => {
     if (!loggedIn) {
@@ -26,6 +27,12 @@ const AppLayout = () => {
       fetchJoinedUserForServer(selectedServer.id);
     }
   }, [selectedServer, reloadTrigger]);
+
+  useEffect(() => {
+    if (selectedServer) {
+      fetchJoinedUserForServer(selectedServer.id);
+    }
+  }, [reloadRolesTrigger]);
 
   function checkLogin() {
     return localStorage.getItem('morp-login-user') !== null && localStorage.getItem('morp-login-admin') !== 'undefined';
@@ -77,7 +84,7 @@ const AppLayout = () => {
         <Topbar onServerClick={handleServerClick} LogOut={LogOut} />
         
         {selectedServer ? (
-          <Server selectedServer={selectedServer} sections={sections} users={users} onReload={() => setReloadTrigger(!reloadTrigger)} />
+          <Server selectedServer={selectedServer} sections={sections} users={users} onReload={() => setReloadTrigger(!reloadTrigger)} onRoleReload={() => setReloadRolesTrigger(!reloadRolesTrigger)} />
         ) : (
           <HomePage />
         )}

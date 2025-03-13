@@ -6,7 +6,7 @@ import '../../../style/App/Server/Server.scss';
 import ServerSettings from './ServerSettings';
 import SectionCreation from './SectionCreation';
 
-const Server = ({ selectedServer, sections, users, onReload }) => {
+const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => {
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [selectedRoomId, setSelectedRoomId] = useState(null);
     const [isModerator, setIsModerator] = useState(false);
@@ -33,8 +33,12 @@ const Server = ({ selectedServer, sections, users, onReload }) => {
         if (users && users.length > 0) {
             for (const user of users) {
                 if (user.uid === JSON.parse(localStorage.getItem('morp-login-user'))) {
-                    setIsModerator(user.is_moderator);
-                    setIsOwner(user.is_owner);
+                    setIsModerator(user.is_moderator == 1);
+                    setIsOwner(user.is_owner == 1);
+
+                    if (isModerator) console.log('User is a moderator');
+                    if (isOwner) console.log('User is an owner');
+                    
                     break;
                 }
             }
@@ -90,7 +94,18 @@ const Server = ({ selectedServer, sections, users, onReload }) => {
                     isModerator={isModerator} 
                 />
             </div>
-            { isSettingsOpen && <ServerSettings server={selectedServer} onCloseForm={() => setIsSettingsOpen(false)} isOwner={isOwner} /> }
+            { isSettingsOpen && 
+                <ServerSettings 
+                    server={selectedServer} 
+                    onCloseForm={() => setIsSettingsOpen(false)} 
+                    isOwner={isOwner}
+                    allUsers={{
+                        owners: owners,
+                        moderators: moderators,
+                        regularUsers: regularUsers
+                    }}
+                    onRoleReload={onRoleReload} /> 
+            }
         </>
     );
 };

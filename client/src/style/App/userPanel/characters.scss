@@ -72,6 +72,11 @@ ul.server-character-list-view {
             border: 1px solid #d0ff00;
             background: rgba($color: #d0ff00, $alpha: .1);
         }
+
+        &.moderator {
+            border: 1px solid $third-color;
+            background: rgba($color: $third-color, $alpha: .1);
+        }
         
         &>div {
             display: flex;
