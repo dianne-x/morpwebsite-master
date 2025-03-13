@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import CharacterControlPanel from './ServerSettings/CharacterControlPanel';
 import WantedElements from './ServerSettings/WantedElements';
+import UsersControl from './ServerSettings/UsersControl';
 
 const ServerSettings = (props) => {
     const [activeTab, setActiveTab] = useState('CharactersControl');
@@ -20,6 +21,13 @@ const ServerSettings = (props) => {
                         <span>Character Form Options</span>
                     </button>
 
+                    {
+                        props.isOwner &&
+                        <button onClick={() => setActiveTab('UsersControl')} className={activeTab == 'UsersControl' ? 'active' : ''}>
+                            <span>Users Control</span>
+                        </button>
+                    }
+
                 </div>
                 <div className="content">
                     {activeTab === 'CharactersControl' && (
@@ -28,6 +36,9 @@ const ServerSettings = (props) => {
                     )}
                     {activeTab === 'CharacterWantedElements' && (
                         <WantedElements />
+                    )}
+                    {activeTab === 'UsersControl' && (
+                        <UsersControl />
                     )}
                 </div>
                 <button className="close" onClick={props.onCloseForm}>&times;</button>

@@ -6,16 +6,12 @@ import UserInfo from '../User/UserInfo'; // Import the UserInfo component
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog, faCopy } from '@fortawesome/free-solid-svg-icons';
 
-const ServerInfo = ({ server, users = [], openServerSettings, isModerator }) => {
+const ServerInfo = ({ server, owners = [], moderators = [], regularUsers = [], openServerSettings, isModerator }) => {
     const [selectedUserId, setSelectedUserId] = useState(null); // State to track selected user ID
 
     if (!server) {
         return <div className='server-info server-side'>No server information available.</div>;
     }
-
-    const owners = users.filter(user => user.is_owner == 1);
-    const moderators = users.filter(user => user.is_moderator == 1 && user.is_owner != 1);  
-    const regularUsers = users.filter(user => user.is_owner != 1 && user.is_moderator != 1);
 
     const getInviteLink = () => {
         const link = server.invite_link;
