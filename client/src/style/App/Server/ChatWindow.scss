@@ -63,6 +63,15 @@
           height: auto;
           overflow-y: auto;
           padding-top: 20px;
+
+
+          .chat-message {
+            word-wrap: break-word;
+            word-break: break-word;
+            white-space: pre-wrap;
+          } 
+
+
         }
       }
 
