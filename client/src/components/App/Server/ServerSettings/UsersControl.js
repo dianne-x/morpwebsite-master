@@ -44,6 +44,28 @@ const UsersControl = ({ allUsers, onRoleReload }) => {
         }
     }
 
+    const kickUser = async (user) => {
+        // eslint-disable-next-line no-restricted-globals
+        if (!confirm(`Are you sure you want to kick ${user.name}?`)) return;
+
+        try {
+            const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/kickUserFromServer.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: user.uid
+                })
+            });
+            const data = await response.json();
+            console.log(data);
+            onRoleReload();
+        } catch (error) {
+            console.error('Error kicking user:', error);
+        }
+    }
+
     return (
         <div>
             <h1>Users Control</h1>
@@ -71,7 +93,11 @@ const UsersControl = ({ allUsers, onRoleReload }) => {
                                     onClick={() => changeRole(user, false)}>
                                     Demote
                                 </button>}
-                            <button className='reject'>Kick</button>
+                            <button 
+                                className='reject'
+                                onClick={() => kickUser(user)}>
+                                Kick
+                            </button>
                         </div>
                     </li>
                 ))}
