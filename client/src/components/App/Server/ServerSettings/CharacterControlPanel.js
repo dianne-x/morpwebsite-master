@@ -21,32 +21,42 @@ const CharacterControlPanel = ({ serverId }) => {
             .catch(error => console.error('Error fetching characters:', error));
     }, [serverId]);
 
-    const handleAccept = (characterId) => {
-        axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/CharacterAccept.php`, {
-            characterId: characterId // Ensure characterId is correctly sent
-        }, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            console.log('Character accepted:', response.data);
-            setCharacters(characters.map(character => 
-                character.id === characterId ? { ...character, is_verified: 1 } : character
-            ));
-        })
-        .catch(error => console.error('Error accepting character:', error));
+    const handleAccept = (characterId, characterName) => {
+        // eslint-disable-next-line no-restricted-globals
+        if (confirm(`Are you sure you want to accept ${characterName}?`)) {
+
+            axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/CharacterAccept.php`, {
+                characterId: characterId // Ensure characterId is correctly sent
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                console.log('Character accepted:', response.data);
+                setCharacters(characters.map(character => 
+                    character.id === characterId ? { ...character, is_verified: 1 } : character
+                ));
+            })
+            .catch(error => console.error('Error accepting character:', error));
+        }
+
     };
 
-    const handleReject = (characterId) => {
-        axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/deleteServerCharacter.php`, {
-            characterId
-        })
-        .then(response => {
-            console.log('Character rejected:', response.data);
-            setCharacters(characters.filter(character => character.id !== characterId));
-        })
-        .catch(error => console.error('Error rejecting character:', error));
+    const handleReject = (characterId, characterName) => {
+        // eslint-disable-next-line no-restricted-globals
+        if (confirm(`Are you sure you want to reject/delete ${characterName}?`)) {
+
+            axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/deleteServerCharacter.php`, {
+                characterId
+            })
+            .then(response => {
+                console.log('Character rejected:', response.data);
+                setCharacters(characters.filter(character => character.id !== characterId));
+            })
+            .catch(error => console.error('Error rejecting character:', error));
+        }
+
     };
 
     const filteredCharacters = characters.filter(character => {
@@ -63,20 +73,32 @@ const CharacterControlPanel = ({ serverId }) => {
         <div>
             <h1>Character Control Panel</h1>
             <p>Manage your character settings here.</p>
-            <select onChange={(e) => setFilter(e.target.value)} value={filter}>
+            <select onChange={(e) => setFilter(e.target.value)} value={filter} className='server-character-list-view-select'>
                 <option value="all">All</option>
                 <option value="verified">Verified</option>
                 <option value="not_verified">Not Verified</option>
             </select>
-            <ul>
+            <ul className='server-character-list-view'>
                 {filteredCharacters.map(character => (
-                    <li key={character.id}>
-                        <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${character.character_pic_path}`} />
-                        {character.character_name}
-                        {character.is_verified === 0 && (
-                            <button onClick={() => handleAccept(character.id)}>Accept</button>
-                        )}
-                        <button onClick={() => handleReject(character.id)}>Reject</button>
+                    <li key={character.id} className={character.is_verified === 0 ? 'not-verified' : ''}>
+                        <div className='info'>
+                            <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${character.character_pic_path || 'character.png'}`} />
+                            {character.character_name}
+                        </div>
+                        <div className='modify'>
+                            {character.is_verified === 0 && (
+                                <button 
+                                    onClick={() => handleAccept(character.id, character.character_name)} 
+                                    className='accept'>
+                                        Accept
+                                </button>
+                            )}
+                            <button 
+                                onClick={() => handleReject(character.id, character.character_name)}
+                                className='reject'>
+                                {character.is_verified === 0 ? 'Reject' : 'Delete'}
+                            </button>
+                        </div>
                     </li>
                 ))}
             </ul>

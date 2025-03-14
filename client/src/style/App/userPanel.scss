@@ -25,7 +25,7 @@
     padding: 1.3rem;
   }
 
-  &.character-creation {
+  &.character-creation, &.character-edit {
     grid-template-columns: 1fr;
     &>:nth-child(1) {
       display: none;

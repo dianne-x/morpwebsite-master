@@ -126,7 +126,7 @@ const UserCharacter = sequelize.define('UserCharacter', {
   resurrected_date: DataTypes.DATE,
   species_id: DataTypes.INTEGER,
   occupation_id: DataTypes.INTEGER,
-  affilation_id: DataTypes.INTEGER,
+  affiliation_id: DataTypes.INTEGER,
   nationality_id: DataTypes.INTEGER,
   status_id: DataTypes.INTEGER,
   story_id: DataTypes.INTEGER,

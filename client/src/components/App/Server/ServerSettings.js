@@ -1,11 +1,15 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import CharacterControlPanel from './ServerSettings/CharacterControlPanel';
 import WantedElements from './ServerSettings/WantedElements';
+import UsersControl from './ServerSettings/UsersControl';
 
 const ServerSettings = (props) => {
     const [activeTab, setActiveTab] = useState('CharactersControl');
+    
+    if (props.isOwner != 1 && activeTab === 'UsersControl') {
+        setActiveTab('CharactersControl');
+    }
 
-    console.log('servd', props.server)
     return (
         <>
             <div className="overlay"></div>
@@ -20,6 +24,13 @@ const ServerSettings = (props) => {
                         <span>Character Form Options</span>
                     </button>
 
+                    {
+                        props.isOwner &&
+                        <button onClick={() => setActiveTab('UsersControl')} className={activeTab == 'UsersControl' ? 'active' : ''}>
+                            <span>Users Control</span>
+                        </button>
+                    }
+
                 </div>
                 <div className="content">
                     {activeTab === 'CharactersControl' && (
@@ -28,6 +39,9 @@ const ServerSettings = (props) => {
                     )}
                     {activeTab === 'CharacterWantedElements' && (
                         <WantedElements />
+                    )}
+                    {activeTab === 'UsersControl' && (
+                        <UsersControl allUsers={props.allUsers} onRoleReload={props.onRoleReload} />
                     )}
                 </div>
                 <button className="close" onClick={props.onCloseForm}>&times;</button>

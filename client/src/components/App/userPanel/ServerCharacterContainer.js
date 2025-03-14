@@ -92,7 +92,7 @@ const ServerCharacterContainer = (props) => {
             <details open={(characters.length > 0 ? true : false)}>
                 <summary>{props.name}</summary>
                 <div className="detail">
-                    <ul>
+                    <ul className='server-character-list-view'>
                         {characters.length > 0 ? (
                             characters.map(character => (
                                 character && character.id ? (

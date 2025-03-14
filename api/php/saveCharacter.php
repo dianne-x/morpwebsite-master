@@ -18,17 +18,19 @@ $data = $_POST;
 
 // Validate and assign data
 $name = isset($data['name']) ? $data['name'] : null;
+$nickname = isset($data['nickname']) ? $data['nickname'] : null; // Add nickname to data
 $gender = isset($data['gender']) ? $data['gender'] : null;
 $species = isset($data['species']) ? $data['species'] : null;
 $status = isset($data['status']) ? $data['status'] : null;
 $user_id = isset($data['user_id']) ? $data['user_id'] : null;
-$affilation = isset($data['affilation']) ? $data['affilation'] : null;
+$affiliation = isset($data['affiliation']) ? $data['affiliation'] : null;
 $nationality = isset($data['nationality']) ? $data['nationality'] : null;
 $occupation = isset($data['occupation']) ? $data['occupation'] : null;
 $fctype = isset($data['fc_type']) ? $data['fc_type'] : null;
 $fcname = isset($data['fc_name']) ? $data['fc_name'] : null; // Ensure fc_name is assigned
 $server_id = isset($data['server_id']) ? $data['server_id'] : null;
 $character_pic_path = isset($_FILES['character_pic_path']) ? $_FILES['character_pic_path'] : null;
+$is_own_character = isset($data['is_own_character']) ? (filter_var($data['is_own_character'], FILTER_VALIDATE_BOOLEAN) ? 1 : 0) : 0;
 
 // Initialize character_pic_path
 $character_pic_path = null;
@@ -101,10 +103,10 @@ if ($speciesResult && $speciesResult->num_rows > 0) {
     exit();
 }
 
-$affilationQuery = "SELECT id FROM affilation WHERE affilation = '$affilation'";
-$affilationResult = $conn->query($affilationQuery);
-if ($affilationResult && $affilationResult->num_rows > 0) {
-    $affilationId = $affilationResult->fetch_assoc()['id'];
+$affiliationQuery = "SELECT id FROM affiliation WHERE affiliation = '$affiliation'";
+$affiliationResult = $conn->query($affiliationQuery);
+if ($affiliationResult && $affiliationResult->num_rows > 0) {
+    $affiliationId = $affiliationResult->fetch_assoc()['id'];
 } else {
     $response['error'] = "Affiliation not found.";
     echo json_encode($response);
@@ -163,8 +165,12 @@ $used_item = isset($data['used_item']) ? $data['used_item'] : null;
 $family = isset($data['family']) ? $data['family'] : null;
 $universe = isset($data['universe']) ? $data['universe'] : null;
 
+// Handle aliases
+$aliases = isset($data['aliases']) ? json_decode($data['aliases'], true) : [];
+$alias_pics = isset($_FILES['alias_pics']) ? $_FILES['alias_pics'] : [];
+
 // Insert the character data
-$query = "INSERT INTO user_character (character_name, gender_id, species_id, status_id, affilation_id, nationality_id, occupation_id, fc_type_id, fc_name, servermember_id, character_pic_path, birthdate, died, deathdate, resurrected, resurrected_date, bio, powers, weaknesses, used_item, family, universe) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$query = "INSERT INTO user_character (character_name, nickname, gender_id, species_id, status_id, affiliation_id, nationality_id, occupation_id, fc_type_id, fc_name, servermember_id, character_pic_path, birthdate, died, deathdate, resurrected, resurrected_date, bio, powers, weaknesses, used_item, family, universe, is_own_character) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($query);
 if (!$stmt) {
     error_log("Failed to prepare statement: " . $conn->error);
@@ -172,39 +178,70 @@ if (!$stmt) {
     echo json_encode($response);
     exit();
 }
-$stmt->bind_param("siiiiiiisisissssssssss", $name, $genderId, $speciesId, $statusId, $affilationId, $nationalityId, $occupationId, $fctypeId, $fcname, $servermember_id, $character_pic_path, $birthdate, $died, $deathdate, $resurrected, $resurrected_date, $bio, $powers, $weaknesses, $used_item, $family, $universe);
+$stmt->bind_param("ssiiiiiiisisisissssssssi", $name, $nickname, $genderId, $speciesId, $statusId, $affiliationId, $nationalityId, $occupationId, $fctypeId, $fcname, $servermember_id, $character_pic_path, $birthdate, $died, $deathdate, $resurrected, $resurrected_date, $bio, $powers, $weaknesses, $used_item, $family, $universe, $is_own_character);
 
-if ($stmt->execute()) {
-    $response['success'] = "Character saved successfully!";
-    $response['character'] = [
-        'id' => $stmt->insert_id,
-        'name' => $name,
-        'gender' => $gender,
-        'species' => $species,
-        'affilation' => $affilation,
-        'nationality' => $nationality,
-        'occupation' => $occupation,
-        'fc_type' => $fctype,
-        'fc_name' => $fcname,
-        'status' => $status,
-        'character_pic_path' => $character_pic_path,
-        'birthdate' => $birthdate,
-        'died' => $died,
-        'deathdate' => $deathdate,
-        'resurrected' => $resurrected,
-        'resurrected_date' => $resurrected_date,
-        'bio' => $bio,
-        'powers' => $powers,
-        'weaknesses' => $weaknesses,
-        'used_item' => $used_item,
-        'family' => $family,
-        'universe' => $universe,
-        'is_verified' => 0, // Not approved yet
-        'servermember_id' => $servermember_id
-    ];
-} else {
-    error_log("Error inserting character: " . $stmt->error);
-    $response['error'] = "Error: " . $stmt->error;
+if (!$stmt->execute()) {
+    error_log("Error executing statement: " . $stmt->error);
+    $response['error'] = "Error executing statement.";
+    echo json_encode($response);
+    exit();
+}
+
+$character_id = $stmt->insert_id;
+
+$response['success'] = "Character saved successfully!";
+$response['character'] = [
+    'id' => $character_id,
+    'name' => $name,
+    'nickname' => $nickname, // Add nickname to response
+    'gender' => $gender,
+    'species' => $species,
+    'affiliation' => $affiliation,
+    'nationality' => $nationality,
+    'occupation' => $occupation,
+    'fc_type' => $fctype,
+    'fc_name' => $fcname,
+    'status' => $status,
+    'character_pic_path' => $character_pic_path,
+    'birthdate' => $birthdate,
+    'died' => $died,
+    'deathdate' => $deathdate,
+    'resurrected' => $resurrected,
+    'resurrected_date' => $resurrected_date,
+    'bio' => $bio,
+    'powers' => $powers,
+    'weaknesses' => $weaknesses,
+    'used_item' => $used_item,
+    'family' => $family,
+    'universe' => $universe,
+    'is_verified' => 0, // Not approved yet
+    'servermember_id' => $servermember_id,
+    'is_own_character' => $is_own_character
+];
+
+// Save aliases
+foreach ($aliases as $index => $alias) {
+    $alias_name = $alias['name'];
+    $alias_pic_path = null;
+
+    if (isset($alias_pics['name'][$index]) && $alias_pics['error'][$index] === UPLOAD_ERR_OK) {
+        $fileTmpPath = $alias_pics['tmp_name'][$index];
+        $fileName = $alias_pics['name'][$index];
+        $fileNameCmps = explode(".", $fileName);
+        $fileExtension = strtolower(end($fileNameCmps));
+        $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
+        $uploadFileDir = '../../storage/images/aliasPictures/';
+        $dest_path = $uploadFileDir . $newFileName;
+
+        if (move_uploaded_file($fileTmpPath, $dest_path)) {
+            $alias_pic_path = $newFileName;
+        }
+    }
+
+    $aliasQuery = "INSERT INTO alias_character (character_id, name, character_pic_path) VALUES (?, ?, ?)";
+    $aliasStmt = $conn->prepare($aliasQuery);
+    $aliasStmt->bind_param("iss", $character_id, $alias_name, $alias_pic_path);
+    $aliasStmt->execute();
 }
 
 echo json_encode($response);

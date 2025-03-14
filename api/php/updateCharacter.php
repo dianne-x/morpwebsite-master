@@ -17,18 +17,19 @@ if ($conn->connect_error) {
 $data = $_POST;
 
 // Validate and assign data
-$characterId = isset($data['id']) ? intval($data['id']) : null;
+$character_id = isset($data['id']) ? intval($data['id']) : null;
 $name = isset($data['name']) ? $data['name'] : null;
+$nickname = isset($data['nickname']) ? $data['nickname'] : null;
 $gender = isset($data['gender']) ? $data['gender'] : null;
 $species = isset($data['species']) ? $data['species'] : null;
 $status = isset($data['status']) ? $data['status'] : null;
 $user_id = isset($data['user_id']) ? $data['user_id'] : null;
-$affilation = isset($data['affilation']) ? $data['affilation'] : null;
+$affiliation = isset($data['affiliation']) ? $data['affiliation'] : null;
 $nationality = isset($data['nationality']) ? $data['nationality'] : null;
 $occupation = isset($data['occupation']) ? $data['occupation'] : null;
 $fctype = isset($data['fc_type']) ? $data['fc_type'] : null;
 $fcname = isset($data['fc_name']) ? $data['fc_name'] : null;
-$server_id = isset($data['server_id']) ? $data['server_id'] : null; // Ensure server_id is set
+$server_id = isset($data['server_id']) ? $data['server_id'] : null;
 $character_pic_path = isset($_FILES['character_pic_path']) ? $_FILES['character_pic_path'] : null;
 
 // Initialize character_pic_path
@@ -67,36 +68,23 @@ if (isset($_FILES['character_pic_path']) && $_FILES['character_pic_path']['error
     }
 }
 
-// Log user_id and server_id for debugging
-error_log("user_id: $user_id, server_id: $server_id");
-
 // Get the server member ID
 $serverMemberQuery = "SELECT id FROM server_member WHERE user_id = ? AND server_id = ?";
 $stmt = $conn->prepare($serverMemberQuery);
-if (!$stmt) {
-    error_log("Failed to prepare server member query: " . $conn->error);
-    $response['error'] = "Failed to prepare server member query.";
-    echo json_encode($response);
-    exit();
-}
-$stmt->bind_param("si", $user_id, $server_id); // Ensure server_id is used in the query
+$stmt->bind_param("si", $user_id, $server_id);
 $stmt->execute();
 $serverMemberResult = $stmt->get_result();
 if ($serverMemberResult->num_rows > 0) {
     $servermember_id = $serverMemberResult->fetch_assoc()['id'];
 } else {
-    error_log("Server member not found for user_id: $user_id and server_id: $server_id");
     $response['error'] = "Server member not found.";
     echo json_encode($response);
     exit();
 }
 
 // Get the IDs for gender, species, and status
-$genderQuery = "SELECT id FROM gender WHERE gender = ?";
-$stmt = $conn->prepare($genderQuery);
-$stmt->bind_param("s", $gender);
-$stmt->execute();
-$genderResult = $stmt->get_result();
+$genderQuery = "SELECT id FROM gender WHERE gender = '$gender'";
+$genderResult = $conn->query($genderQuery);
 if ($genderResult && $genderResult->num_rows > 0) {
     $genderId = $genderResult->fetch_assoc()['id'];
 } else {
@@ -105,11 +93,8 @@ if ($genderResult && $genderResult->num_rows > 0) {
     exit();
 }
 
-$speciesQuery = "SELECT id FROM character_species WHERE species = ?";
-$stmt = $conn->prepare($speciesQuery);
-$stmt->bind_param("s", $species);
-$stmt->execute();
-$speciesResult = $stmt->get_result();
+$speciesQuery = "SELECT id FROM character_species WHERE species = '$species'";
+$speciesResult = $conn->query($speciesQuery);
 if ($speciesResult && $speciesResult->num_rows > 0) {
     $speciesId = $speciesResult->fetch_assoc()['id'];
 } else {
@@ -118,24 +103,18 @@ if ($speciesResult && $speciesResult->num_rows > 0) {
     exit();
 }
 
-$affilationQuery = "SELECT id FROM affilation WHERE affilation = ?";
-$stmt = $conn->prepare($affilationQuery);
-$stmt->bind_param("s", $affilation);
-$stmt->execute();
-$affilationResult = $stmt->get_result();
-if ($affilationResult && $affilationResult->num_rows > 0) {
-    $affilationId = $affilationResult->fetch_assoc()['id'];
+$affiliationQuery = "SELECT id FROM affiliation WHERE affiliation = '$affiliation'";
+$affiliationResult = $conn->query($affiliationQuery);
+if ($affiliationResult && $affiliationResult->num_rows > 0) {
+    $affiliationId = $affiliationResult->fetch_assoc()['id'];
 } else {
     $response['error'] = "Affiliation not found.";
     echo json_encode($response);
     exit();
 }
 
-$nationalityQuery = "SELECT id FROM nationality WHERE nationality = ?";
-$stmt = $conn->prepare($nationalityQuery);
-$stmt->bind_param("s", $nationality);
-$stmt->execute();
-$nationalityResult = $stmt->get_result();
+$nationalityQuery = "SELECT id FROM nationality WHERE nationality = '$nationality'";
+$nationalityResult = $conn->query($nationalityQuery);
 if ($nationalityResult && $nationalityResult->num_rows > 0) {
     $nationalityId = $nationalityResult->fetch_assoc()['id'];
 } else {
@@ -144,11 +123,8 @@ if ($nationalityResult && $nationalityResult->num_rows > 0) {
     exit();
 }
 
-$occupationQuery = "SELECT id FROM occupation WHERE occupation = ?";
-$stmt = $conn->prepare($occupationQuery);
-$stmt->bind_param("s", $occupation);
-$stmt->execute();
-$occupationResult = $stmt->get_result();
+$occupationQuery = "SELECT id FROM occupation WHERE occupation = '$occupation'";
+$occupationResult = $conn->query($occupationQuery);
 if ($occupationResult && $occupationResult->num_rows > 0) {
     $occupationId = $occupationResult->fetch_assoc()['id'];
 } else {
@@ -157,11 +133,8 @@ if ($occupationResult && $occupationResult->num_rows > 0) {
     exit();
 }
 
-$fctypeQuery = "SELECT id FROM character_fc WHERE fc_type = ?";
-$stmt = $conn->prepare($fctypeQuery);
-$stmt->bind_param("s", $fctype);
-$stmt->execute();
-$fctypeResult = $stmt->get_result();
+$fctypeQuery = "SELECT id FROM character_fc WHERE fc_type = '$fctype'";
+$fctypeResult = $conn->query($fctypeQuery);
 if ($fctypeResult && $fctypeResult->num_rows > 0) {
     $fctypeId = $fctypeResult->fetch_assoc()['id'];
 } else {
@@ -170,11 +143,8 @@ if ($fctypeResult && $fctypeResult->num_rows > 0) {
     exit();
 }
 
-$statusQuery = "SELECT id FROM character_status WHERE status = ?";
-$stmt = $conn->prepare($statusQuery);
-$stmt->bind_param("s", $status);
-$stmt->execute();
-$statusResult = $stmt->get_result();
+$statusQuery = "SELECT id FROM character_status WHERE status = '$status'";
+$statusResult = $conn->query($statusQuery);
 if ($statusResult && $statusResult->num_rows > 0) {
     $statusId = $statusResult->fetch_assoc()['id'];
 } else {
@@ -184,9 +154,9 @@ if ($statusResult && $statusResult->num_rows > 0) {
 }
 
 $birthdate = isset($data['birthdate']) ? date('Y-m-d', strtotime($data['birthdate'])) : null;
-$died = isset($data['died']) ? (filter_var($data['died'], FILTER_VALIDATE_BOOLEAN) ? 1 : 0) : 0;
+$died = isset($data['died']) ? filter_var($data['died'], FILTER_VALIDATE_BOOLEAN) : false;
 $deathdate = isset($data['deathdate']) ? date('Y-m-d', strtotime($data['deathdate'])) : null;
-$resurrected = isset($data['resurrected']) ? (filter_var($data['resurrected'], FILTER_VALIDATE_BOOLEAN) ? 1 : 0) : 0;
+$resurrected = isset($data['resurrected']) ? filter_var($data['resurrected'], FILTER_VALIDATE_BOOLEAN) : false;
 $resurrected_date = isset($data['resurrected_date']) ? date('Y-m-d', strtotime($data['resurrected_date'])) : null;
 $bio = isset($data['bio']) ? $data['bio'] : null;
 $powers = isset($data['powers']) ? $data['powers'] : null;
@@ -195,8 +165,12 @@ $used_item = isset($data['used_item']) ? $data['used_item'] : null;
 $family = isset($data['family']) ? $data['family'] : null;
 $universe = isset($data['universe']) ? $data['universe'] : null;
 
+// Handle aliases
+$aliases = isset($data['aliases']) ? json_decode($data['aliases'], true) : [];
+$alias_pics = isset($_FILES['alias_pics']) ? $_FILES['alias_pics'] : [];
+
 // Update the character data
-$query = "UPDATE user_character SET character_name = ?, gender_id = ?, species_id = ?, status_id = ?, affilation_id = ?, nationality_id = ?, occupation_id = ?, fc_type_id = ?, fc_name = ?, servermember_id = ?, character_pic_path = ?, birthdate = ?, died = ?, deathdate = ?, resurrected = ?, resurrected_date = ?, bio = ?, powers = ?, weaknesses = ?, used_item = ?, family = ?, universe = ?, is_verified = 0 WHERE id = ?";
+$query = "UPDATE user_character SET character_name = ?, nickname = ?, gender_id = ?, species_id = ?, status_id = ?, affiliation_id = ?, nationality_id = ?, occupation_id = ?, fc_type_id = ?, fc_name = ?, servermember_id = ?, character_pic_path = ?, birthdate = ?, died = ?, deathdate = ?, resurrected = ?, resurrected_date = ?, bio = ?, powers = ?, weaknesses = ?, used_item = ?, family = ?, universe = ? WHERE id = ?";
 $stmt = $conn->prepare($query);
 if (!$stmt) {
     error_log("Failed to prepare statement: " . $conn->error);
@@ -204,40 +178,67 @@ if (!$stmt) {
     echo json_encode($response);
     exit();
 }
-$stmt->bind_param("siiiiiiisisissssssssssi", $name, $genderId, $speciesId, $statusId, $affilationId, $nationalityId, $occupationId, $fctypeId, $fcname, $servermember_id, $character_pic_path, $birthdate, $died, $deathdate, $resurrected, $resurrected_date, $bio, $powers, $weaknesses, $used_item, $family, $universe, $characterId);
+$stmt->bind_param("ssiiiiiiisisisssssssssi", $name, $nickname, $genderId, $speciesId, $statusId, $affiliationId, $nationalityId, $occupationId, $fctypeId, $fcname, $servermember_id, $character_pic_path, $birthdate, $died, $deathdate, $resurrected, $resurrected_date, $bio, $powers, $weaknesses, $used_item, $family, $universe, $character_id);
 
-if ($stmt->execute()) {
-    $response['success'] = true;
-    $response['character'] = [
-        'id' => $characterId,
-        'name' => $name,
-        'gender' => $gender,
-        'species' => $species,
-        'affilation' => $affilation,
-        'nationality' => $nationality,
-        'occupation' => $occupation,
-        'fc_type' => $fctype,
-        'fc_name' => $fcname,
-        'status' => $status,
-        'character_pic_path' => $character_pic_path,
-        'birthdate' => $birthdate,
-        'died' => $died,
-        'deathdate' => $deathdate,
-        'resurrected' => $resurrected,
-        'resurrected_date' => $resurrected_date,
-        'bio' => $bio,
-        'powers' => $powers,
-        'weaknesses' => $weaknesses,
-        'used_item' => $used_item,
-        'family' => $family,
-        'universe' => $universe,
-        'is_verified' => 0, // Not approved yet
-        'servermember_id' => $servermember_id
-    ];
-} else {
-    error_log("Error updating character: " . $stmt->error);
-    $response['success'] = false;
-    $response['error'] = "Error: " . $stmt->error;
+if (!$stmt->execute()) {
+    error_log("Error executing statement: " . $stmt->error);
+    $response['error'] = "Error executing statement.";
+    echo json_encode($response);
+    exit();
+}
+
+$response['success'] = "Character updated successfully!";
+$response['character'] = [
+    'id' => $character_id,
+    'name' => $name,
+    'nickname' => $nickname,
+    'gender' => $gender,
+    'species' => $species,
+    'affiliation' => $affiliation,
+    'nationality' => $nationality,
+    'occupation' => $occupation,
+    'fc_type' => $fctype,
+    'fc_name' => $fcname,
+    'status' => $status,
+    'character_pic_path' => $character_pic_path,
+    'birthdate' => $birthdate,
+    'died' => $died,
+    'deathdate' => $deathdate,
+    'resurrected' => $resurrected,
+    'resurrected_date' => $resurrected_date,
+    'bio' => $bio,
+    'powers' => $powers,
+    'weaknesses' => $weaknesses,
+    'used_item' => $used_item,
+    'family' => $family,
+    'universe' => $universe,
+    'is_verified' => 0, // Not approved yet
+    'servermember_id' => $servermember_id
+];
+
+// Save aliases
+foreach ($aliases as $index => $alias) {
+    $alias_name = $alias['name'];
+    $alias_pic_path = null;
+
+    if (isset($alias_pics['name'][$index]) && $alias_pics['error'][$index] === UPLOAD_ERR_OK) {
+        $fileTmpPath = $alias_pics['tmp_name'][$index];
+        $fileName = $alias_pics['name'][$index];
+        $fileNameCmps = explode(".", $fileName);
+        $fileExtension = strtolower(end($fileNameCmps));
+        $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
+        $uploadFileDir = '../../storage/images/aliasPictures/';
+        $dest_path = $uploadFileDir . $newFileName;
+
+        if (move_uploaded_file($fileTmpPath, $dest_path)) {
+            $alias_pic_path = $newFileName;
+        }
+    }
+
+    $aliasQuery = "INSERT INTO alias_character (character_id, name, character_pic_path) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE name = VALUES(name), character_pic_path = VALUES(character_pic_path)";
+    $aliasStmt = $conn->prepare($aliasQuery);
+    $aliasStmt->bind_param("iss", $character_id, $alias_name, $alias_pic_path);
+    $aliasStmt->execute();
 }
 
 echo json_encode($response);

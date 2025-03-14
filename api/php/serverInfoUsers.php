@@ -18,7 +18,7 @@ $server_id = intval($_GET['server_id']);
 error_log("serverInfoUser server_id: $server_id");
 
 // Fetch users for the selected server
-$users_sql = "SELECT u.name, u.uid FROM users u JOIN server_member sm ON u.uid = sm.user_id WHERE sm.server_id = $server_id";
+$users_sql = "SELECT u.name, u.uid, sm.is_owner, sm.is_moderator, u.profile_pic_path FROM users u JOIN server_member sm ON u.uid = sm.user_id WHERE sm.server_id = $server_id";
 $users_result = $conn->query($users_sql);
 
 if (!$users_result) {

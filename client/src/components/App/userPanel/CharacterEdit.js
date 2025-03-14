@@ -5,16 +5,17 @@ const CharacterEdit = (props) => {
     const [genders, setGenders] = useState([]);
     const [species, setSpecies] = useState([]);
     const [statuses, setStatuses] = useState([]);
-    const [affilations, setAffilations] = useState([]);
+    const [affiliations, setAffiliations] = useState([]);
     const [nationalities, setNationalities] = useState([]);
     const [occupations, setOccupations] = useState([]);
     const [fcTypes, setFcTypes] = useState([]);
     const [formData, setFormData] = useState({
         name: '',
+        nickname: '',
         gender: '',
         species: '',
         status: '',
-        affilation: '',
+        affiliation: '',
         nationality: '',
         occupation: '',
         fc_type: '',
@@ -31,10 +32,12 @@ const CharacterEdit = (props) => {
         weaknesses: '',
         used_item: '',
         family: '',
-        universe: ''
+        universe: '',
+        is_own_character: false,
     });
     const [tempProfilePic, setTempProfilePic] = useState('');
     const [profilePicFile, setProfilePicFile] = useState(null);
+    const [aliases, setAliases] = useState([{ name: '', pic: null, tempPic: '' }]);
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/getCharacterCreation.php`)
@@ -42,7 +45,7 @@ const CharacterEdit = (props) => {
                 setGenders(response.data.genders || []);
                 setSpecies(response.data.species || []);
                 setStatuses(response.data.statuses || []);
-                setAffilations(response.data.affilations || []);
+                setAffiliations(response.data.affiliations || []);
                 setNationalities(response.data.nationalities || []);
                 setOccupations(response.data.occupations || []);
                 setFcTypes(response.data.fc_types || []);
@@ -51,18 +54,19 @@ const CharacterEdit = (props) => {
                 console.error('There was an error fetching the character data!', error);
             });
 
-        axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/getCharacter.php?characterId=${props.characterId}`)
+        axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/getCharacterData.php?characterId=${props.characterId}`)
             .then(response => {
                 const character = response.data.character;
                 setFormData({
                     name: character.character_name,
-                    gender: character.gender_id,
-                    species: character.species_id,
-                    status: character.status_id,
-                    affilation: character.affilation_id,
-                    nationality: character.nationality_id,
-                    occupation: character.occupation_id,
-                    fc_type: character.fc_type_id,
+                    nickname: character.nickname,
+                    gender: character.gender,
+                    species: character.species,
+                    status: character.status_type,
+                    affiliation: character.affiliation,
+                    nationality: character.nationality,
+                    occupation: character.occupation,
+                    fc_type: character.fc_type,
                     fc_name: character.fc_name,
                     user_id: JSON.parse(localStorage.getItem('morp-login-user')),
                     character_pic_path: character.character_pic_path || '',
@@ -79,6 +83,7 @@ const CharacterEdit = (props) => {
                     universe: character.universe
                 });
                 setTempProfilePic(`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${character.character_pic_path}`);
+                setAliases(character.aliases || [{ name: '', pic: null, tempPic: '' }]);
             })
             .catch(error => {
                 console.error('There was an error fetching the character details!', error);
@@ -91,6 +96,59 @@ const CharacterEdit = (props) => {
             ...formData,
             [name]: type === 'checkbox' ? checked : value
         });
+
+        if (name === 'status') {
+            if (value === 'Alive (Resurrected)') {
+                setFormData({
+                    ...formData,
+                    status: value,
+                    died: true,
+                    resurrected: true
+                });
+            } else if (value === 'Deceased') {
+                setFormData({
+                    ...formData,
+                    status: value,
+                    died: true,
+                    resurrected: false
+                });
+            } else {
+                setFormData({
+                    ...formData,
+                    status: value,
+                    died: false,
+                    resurrected: false
+                });
+            }
+        } else if (name === 'died') {
+            if (checked) {
+                setFormData({
+                    ...formData,
+                    died: true,
+                    status: 'Deceased'
+                });
+            } else {
+                setFormData({
+                    ...formData,
+                    died: false,
+                    status: ''
+                });
+            }
+        } else if (name === 'resurrected') {
+            if (checked) {
+                setFormData({
+                    ...formData,
+                    resurrected: true,
+                    status: 'Alive (Resurrected)'
+                });
+            } else {
+                setFormData({
+                    ...formData,
+                    resurrected: false,
+                    status: ''
+                });
+            }
+        }
     };
 
     const handleFileChange = (e) => {
@@ -105,8 +163,32 @@ const CharacterEdit = (props) => {
         }
     };
 
+    const handleAliasChange = (index, e) => {
+        const { name, value, files } = e.target;
+        const newAliases = [...aliases];
+        if (name === 'alias_pic') {
+            const file = files[0];
+            if (file) {
+                newAliases[index].pic = file;
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    newAliases[index].tempPic = reader.result;
+                    setAliases(newAliases);
+                };
+                reader.readAsDataURL(file);
+            }
+        } else {
+            newAliases[index].name = value;
+            setAliases(newAliases);
+        }
+    };
+
+    const addAlias = () => {
+        setAliases([...aliases, { name: '', pic: null, tempPic: '' }]);
+    };
+
     const handleSubmit = () => {
-        if (!formData.name || !formData.gender || !formData.species || !formData.status || !formData.affilation || !formData.nationality || !formData.occupation || !formData.fc_type) {
+        if (!formData.name || !formData.gender || !formData.species || !formData.status || !formData.affiliation || !formData.nationality || !formData.occupation || !formData.fc_type) {
             alert('Please fill out all required fields.');
             return;
         }
@@ -121,8 +203,12 @@ const CharacterEdit = (props) => {
             formDataToSend.append('character_pic_path', tempProfilePic);
         }
 
-        // Set is_verified to 0
-        formDataToSend.append('is_verified', 0);
+        formDataToSend.append('aliases', JSON.stringify(aliases.map(alias => ({ name: alias.name }))));
+        aliases.forEach((alias, index) => {
+            if (alias.pic) {
+                formDataToSend.append(`alias_pics[${index}]`, alias.pic);
+            }
+        });
 
         axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/updateCharacter.php`, formDataToSend, {
             headers: {
@@ -162,86 +248,124 @@ const CharacterEdit = (props) => {
                         <label htmlFor="name">
                             Name:
                         </label>
-                        <input type="text" name="name" value={formData.name || ''} onChange={handleChange} required />
+                        <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+                        <label>
+                            Aliases:
+                        </label>
+                        {aliases.map((alias, index) => (
+                            <div key={index} className="alias-container">
+                                <label 
+                                    htmlFor={`alias_pic_${index}`} id="alias-pic-label"
+                                    style={{
+                                        backgroundImage: `url(${alias.tempPic || `${process.env.REACT_APP_IMAGE_BASE_URL}/aliasPictures/${alias.pic}`})`,
+                                        width: '50px',
+                                        height: '50px',
+                                        borderRadius: '50%',
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center',
+                                        marginRight: '10px'
+                                    }}>
+                                </label>
+                                <input
+                                    type="file"
+                                    name="alias_pic"
+                                    id={`alias_pic_${index}`}
+                                    onChange={(e) => handleAliasChange(index, e)}
+                                    style={{ display: 'none' }}
+                                />
+                                <input
+                                    type="text"
+                                    name="alias_name"
+                                    value={alias.name}
+                                    onChange={(e) => handleAliasChange(index, e)}
+                                    placeholder="Alias Name"
+                                />
+                            </div>
+                        ))}
+                        <button type="button" onClick={addAlias}>Add Alias</button>
+                        <label htmlFor="nickname">
+                            Nickname:
+                        </label>
+                        <input type="text" name="nickname" value={formData.nickname} onChange={handleChange} />
                         <label>
                             Gender:
                         </label>
-                        <select name="gender" value={formData.gender || ''} onChange={handleChange} required>
+                        <select name="gender" value={formData.gender} onChange={handleChange} required>
                             <option value="">Select Gender</option>
                             {genders.map((gender) => (
-                                <option key={gender.id} value={gender.id}>{gender.gender}</option>
+                                <option key={gender.id} value={gender.gender}>{gender.gender}</option>
                             ))}
                         </select>
                         <label>
                             Species:
                         </label>
-                        <select name="species" value={formData.species || ''} onChange={handleChange} required>
+                        <select name="species" value={formData.species} onChange={handleChange} required>
                             <option value="">Select Species</option>
                             {species.map((species) => (
-                                <option key={species.id} value={species.id}>{species.species}</option>
+                                <option key={species.id} value={species.species}>{species.species}</option>
                             ))}
                         </select>
                         <label>
                             Status:
                         </label>
-                        <select name="status" value={formData.status || ''} onChange={handleChange} required>
+                        <select name="status" value={formData.status} onChange={handleChange} required>
                             <option value="">Select Status</option>
                             {statuses.map((status) => (
-                                <option key={status.id} value={status.id}>{status.status}</option>
+                                <option key={status.id} value={status.status}>{status.status}</option>
                             ))}
                         </select>
                         <label>
                             Affiliation:
                         </label>
-                        <select name="affilation" value={formData.affilation || ''} onChange={handleChange}> 
+                        <select name="affiliation" value={formData.affiliation} onChange={handleChange}> 
                             <option value="">Select Affiliation</option>
-                            {affilations.map((affilation) => (
-                                <option key={affilation.id} value={affilation.id}>{affilation.affilation}</option>
+                            {affiliations.map((affiliation) => (
+                                <option key={affiliation.id} value={affiliation.affiliation}>{affiliation.affiliation}</option>
                             ))}
                         </select>
                         <label>
                             Nationality:
                         </label>
-                            <select name="nationality" value={formData.nationality || ''} onChange={handleChange}>
+                            <select name="nationality" value={formData.nationality} onChange={handleChange}>
                                 <option value="">Select Nationality</option>
                                 {nationalities.map((nationality) => (
-                                    <option key={nationality.id} value={nationality.id}>{nationality.nationality}</option>
+                                    <option key={nationality.id} value={nationality.nationality}>{nationality.nationality}</option>
                                 ))}
                             </select>
                         <label>
                             Occupation:
                         </label>
-                            <select name="occupation" value={formData.occupation || ''} onChange={handleChange}>
+                            <select name="occupation" value={formData.occupation} onChange={handleChange}>
                                 <option value="">Select Occupation</option>
                                 {occupations.map((occupation) => (
-                                    <option key={occupation.id} value={occupation.id}>{occupation.occupation}</option>
+                                    <option key={occupation.id} value={occupation.occupation}>{occupation.occupation}</option>
                                 ))}
                             </select>
                         
                         <label>
                             Birthdate:
                         </label>
-                        <input type="date" name="birthdate" value={formData.birthdate || ''} onChange={handleChange} />
+                        <input type="date" name="birthdate" value={formData.birthdate} onChange={handleChange} />
                         <label>
                             Died:
                         </label>
-                        <input type="checkbox" name="died" checked={formData.died} onChange={handleChange} />
+                        <input type="checkbox" name="died" checked={formData.died} onChange={handleChange} disabled={formData.status === 'Alive (Resurrected)' || formData.status === 'Deceased'} />
                         {formData.died && (
                             <>
                                 <label>
                                     Deathdate:
                                 </label>
-                                <input type="date" name="deathdate" value={formData.deathdate || ''} onChange={handleChange} />
+                                <input type="date" name="deathdate" value={formData.deathdate} onChange={handleChange} />
                                 <label>
                                     Resurrected:
                                 </label>
-                                <input type="checkbox" name="resurrected" checked={formData.resurrected} onChange={handleChange} />
+                                <input type="checkbox" name="resurrected" checked={formData.resurrected} onChange={handleChange} disabled={formData.status === 'Alive (Resurrected)'} />
                                 {formData.resurrected && (
                                     <>
                                         <label>
                                             Resurrected Date:
                                         </label>
-                                        <input type="date" name="resurrected_date" value={formData.resurrected_date || ''} onChange={handleChange} />
+                                        <input type="date" name="resurrected_date" value={formData.resurrected_date} onChange={handleChange} />
                                     </>
                                 )}
                             </>
@@ -249,44 +373,47 @@ const CharacterEdit = (props) => {
                         <label>
                             Bio:
                         </label>
-                        <textarea name="bio" value={formData.bio || ''} onChange={handleChange}></textarea>
+                        <textarea name="bio" value={formData.bio} onChange={handleChange}></textarea>
                         <label>
                             Powers:
                         </label>
-                        <textarea name="powers" value={formData.powers || ''} onChange={handleChange}></textarea>
+                        <textarea name="powers" value={formData.powers} onChange={handleChange}></textarea>
                         <label>
                             Weaknesses:
                         </label>
-                        <textarea name="weaknesses" value={formData.weaknesses || ''} onChange={handleChange}></textarea>
+                        <textarea name="weaknesses" value={formData.weaknesses} onChange={handleChange}></textarea>
                         <label>
                             Used Item:
                         </label>
-                        <textarea name="used_item" value={formData.used_item || ''} onChange={handleChange}></textarea>
+                        <textarea name="used_item" value={formData.used_item} onChange={handleChange}></textarea>
                         <label>
                             Family:
                         </label>
-                        <textarea name="family" value={formData.family || ''} onChange={handleChange}></textarea>
+                        <textarea name="family" value={formData.family} onChange={handleChange}></textarea>
                         <label>
                             Universe:
                         </label>
-                        <input type="text" name="universe" value={formData.universe || ''} onChange={handleChange}></input>
+                        <input type="text" name="universe" value={formData.universe} onChange={handleChange}></input>
                         <label>
                             FC Type:
                         </label>
-                            <select name="fc_type" value={formData.fc_type || ''} onChange={handleChange} required>
+                            <select name="fc_type" value={formData.fc_type} onChange={handleChange} required> {/* Correct the field name to fc_type */}
                                 <option value="">Select FC Type</option>
-                                {fcTypes.map((fc) => (
-                                    <option key={fc.id} value={fc.id}>{fc.fc_type}</option>
-                                ))}
+                                {fcTypes
+                                    .filter(fc => formData.is_own_character || fc.fc_type === 'Canon Cast')
+                                    .map((fc) => (
+                                        <option key={fc.id} value={fc.fc_type}>{fc.fc_type}</option>
+                                    ))}
                             </select>
                         {formData.fc_type && (
                             <>
                                 <label htmlFor="fc_name">
                                     FC Name:
                                 </label>
-                                <input type="text" name="fc_name" value={formData.fc_name || ''} onChange={handleChange} required />
+                                <input type="text" name="fc_name" value={formData.fc_name} onChange={handleChange} required />
                             </>
                         )}
+                        
                         <button type="button" className='save-character-btn' onClick={handleSubmit}>Save Character</button>
                     </form>
                 </div>

@@ -1,3 +1,5 @@
+@import '../colors';
+
 .homepage {
   display: flex;
   align-items: flex-start; /* Align items to the top */
@@ -9,16 +11,41 @@
   color: #fff;
   text-align: center;
   padding: 20px;
-
+  position: relative; /* Enable positioning for child elements */
 
   /* Centered content styling */
   .centered-content {
+    position: absolute;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center align items */
-    justify-content: center; /* Center justify content */
-    flex-grow: 1; /* Allow this to take remaining space */
-    text-align: center; /* Center text */
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 100%;
+    height: 80%;
+
+    .logo {
+      img {
+        width: 150px;
+        height: auto;
+      }
+    }
+
+    p.welcome-text {
+      color: rgba($color: $text-color, $alpha: .8);
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-left: -3px;
+      margin-top: 50px;
+    }
+
+    p.welcome-desc {
+      font-size: .9rem;
+      color: rgba($color: $text-color, $alpha: .6);
+      max-width: 500px;
+    }
   }
 
   /* Chat window styling */
@@ -53,15 +80,34 @@
     }
   }
 
+  .bug-report-btn {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    background: #26282e;
+    color: $text-color;
+    outline: none;
+    border: 1px solid rgba($color: $text-color, $alpha: .2);
+    padding: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1;
+  }
+
   /* Bug Report Section */
   .bug-report {
-    background: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+    background: #26282e;
+    border: 1px solid rgba($color: $text-color, $alpha: .2);
     border-radius: 10px;
     padding: 20px;
-    width: 250px; /* Fixed width for the bug report section */
-    max-height: 90vh; /* Max height for scrolling */
-    overflow-y: auto; /* Enable scrolling if content exceeds height */
-    margin-left: 20px; /* Space between the friend list and bug report */
+    width: 250px;
+    max-height: 90vh; 
+    overflow-y: auto;
+    z-index: 1;
+
+    position: absolute;
+    right: 20px;
+    top: 50px;
 
     h2 {
       margin-bottom: 10px;
@@ -73,23 +119,31 @@
 
       input,
       textarea {
-        margin: 5px 0; /* Space between input fields */
+        margin: 5px 0;
         padding: 8px;
-        border: 1px solid #ccc;
+        border: 1px solid rgba($color: $text-color, $alpha: .3);
+        color: $text-color;
+        background-color: transparent;
+        outline: none;
         border-radius: 4px;
-        width: 100%; /* Full width */
+        width: 100%; 
+      }
+
+      textarea {
+        resize: vertical;
       }
 
       button {
         padding: 10px 15px;
-        background-color: #007bff; /* Change color as needed */
-        color: white;
+        background-color: rgba($color: $third-color, $alpha: .9);
+        transition: 100ms ease-in-out;
+        color: $text-color;
         border: none;
         border-radius: 4px;
         cursor: pointer;
 
         &:hover {
-          background-color: #0056b3; /* Darker color on hover */
+          background-color: rgba($color: $third-color, $alpha: 1);
         }
       }
     }
@@ -98,18 +152,6 @@
       color: green;
       margin-top: 10px;
     }
-  }
-
-  .logo {
-    margin-bottom: 20px; /* Spacing below the logo */
-    img {
-      width: 150px;
-      height: auto;
-    }
-  }
-
-  .welcome-text {
-    font-size: 2rem;
   }
 
   .feedback-message {

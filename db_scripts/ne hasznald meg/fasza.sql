@@ -32,20 +32,20 @@ USE morpdatabase2;
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `affilation`
+-- Tábla szerkezet ehhez a táblához `affiliation`
 --
 
-CREATE TABLE `affilation` (
+CREATE TABLE `affiliation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `affilation` varchar(250) DEFAULT NULL,
+  `affiliation` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- A tábla adatainak kiíratása `affilation`
+-- A tábla adatainak kiíratása `affiliation`
 --
 
-INSERT INTO `affilation` (`id`, `affilation`) VALUES
+INSERT INTO `affiliation` (`id`, `affiliation`) VALUES
 (1, 'Group1');
 
 -- --------------------------------------------------------
@@ -85,7 +85,9 @@ CREATE TABLE `character_fc` (
 --
 
 INSERT INTO `character_fc` (`id`, `fc_type`) VALUES
-(1, 'Femboy face');
+(1, 'Fan Cast/ Face Claim'),
+(2, 'Voice Claim'),
+(3, 'Canon Cast');
 
 -- --------------------------------------------------------
 
@@ -104,7 +106,33 @@ CREATE TABLE `character_species` (
 --
 
 INSERT INTO `character_species` (`id`, `species`) VALUES
-(1, 'Human');
+(1, 'Alien'),  
+(2, 'Amazonian'),  
+(3, 'Android'),  
+(4, 'Angel'),  
+(5, 'Asgardian'),  
+(6, 'Atlantean'),  
+(7, 'Cyborg'),  
+(8, 'Demon'),  
+(9, 'Deviant'),  
+(10, 'Dragon'),  
+(11, 'Dwarf'),  
+(12, 'Elf'),  
+(13, 'Ent'),  
+(14, 'Eternal'),  
+(15, 'Goblin'),  
+(16, 'God'),  
+(17, 'Human'),  
+(18, 'Inhuman'),  
+(19, 'Kryptonian'),  
+(20, 'Meta-Human'),  
+(21, 'Mutant'),  
+(22, 'Orc'),  
+(23, 'Shapeshifter'),  
+(24, 'Symbiote'),  
+(25, 'Troll'),  
+(26, 'Vampire'),  
+(27, 'Werewolf');
 
 -- --------------------------------------------------------
 
@@ -123,7 +151,12 @@ CREATE TABLE `character_status` (
 --
 
 INSERT INTO `character_status` (`id`, `status`) VALUES
-(1, 'Active');
+(1, 'Alive'),
+(2, 'Alive (Resurrected)'),
+(3, 'Active'),
+(4, 'Deceased'),
+(5, 'In Custody'),
+(6, 'Unknown');
 
 -- --------------------------------------------------------
 
@@ -226,7 +259,8 @@ CREATE TABLE `languages` (
 --
 
 INSERT INTO `languages` (`id`, `language`) VALUES
-(1, 'English');
+(1, 'English'),
+(2, 'Hungarian');
 
 -- --------------------------------------------------------
 
@@ -513,7 +547,42 @@ CREATE TABLE `occupation` (
 --
 
 INSERT INTO `occupation` (`id`, `occupation`) VALUES
-(1, 'Warrior');
+(1, 'Adventurer'),  
+(2, 'Alchemist'),  
+(3, 'Assassin'),  
+(4, 'Bounty Hunter'),  
+(5, 'Chef'),  
+(6, 'Doctor'),  
+(7, 'Engineer'),  
+(8, 'Firefighter'),  
+(9, 'Guardian'),  
+(10, 'Healer'),  
+(11, 'Journalist'),  
+(12, 'Knight'),  
+(13, 'Lawyer'),  
+(14, 'Mage'),  
+(15, 'Mechanic'),  
+(16, 'Mercenary'),  
+(17, 'Monk'),  
+(18, 'Musician'),  
+(19, 'Necromancer'),  
+(20, 'Nurse'),  
+(21, 'Paladin'),  
+(22, 'Pirate'),  
+(23, 'Pilot'),  
+(24, 'Police Officer'),  
+(25, 'Ranger'),  
+(26, 'Rebel'),  
+(27, 'Rogue'),  
+(28, 'Scientist'),  
+(29, 'Sorcerer'),  
+(30, 'Soldier'),  
+(31, 'Squire'),  
+(32, 'Teacher'),  
+(33, 'Thief'),  
+(34, 'Warrior'),  
+(35, 'Wizard'),  
+(36, 'Writer');
 
 -- --------------------------------------------------------
 
@@ -576,7 +645,25 @@ CREATE TABLE `rp_category` (
 --
 
 INSERT INTO `rp_category` (`id`, `rp_category`) VALUES
-(1, 'Fantasy');
+(1, 'Action'),  
+(2, 'Adventure'),  
+(3, 'Comedy'),  
+(4, 'Crime'),  
+(5, 'Drama'),  
+(6, 'Fantasy'),  
+(7, 'Historical'),  
+(8, 'Horror'),  
+(9, 'Mystery'),  
+(10, 'Romance'),  
+(11, 'Science Fiction'),  
+(12, 'Thriller'),  
+(13, 'Western'),  
+(14, 'Superhero'),  
+(15, 'Noir'),  
+(16, 'Anime');
+
+
+
 
 -- --------------------------------------------------------
 
@@ -789,7 +876,7 @@ CREATE TABLE `user_character` (
   `resurrected_date` datetime DEFAULT NULL,
   `species_id` int(11) DEFAULT 0,
   `occupation_id` int(11) DEFAULT 0,
-  `affilation_id` int(11) DEFAULT 0,
+  `affiliation_id` int(11) DEFAULT 0,
   `nationality_id` int(11) DEFAULT 0,
   `status_id` int(11) DEFAULT 0,
   `story_id` int(11) DEFAULT 0,
@@ -824,7 +911,7 @@ CREATE TABLE `user_character_need` (
   `resurrected_date_need` tinyint(1) DEFAULT NULL,
   `species_need` tinyint(1) DEFAULT NULL,
   `occupation_need` tinyint(1) DEFAULT NULL,
-  `affilation_need` tinyint(1) DEFAULT NULL,
+  `affiliation_need` tinyint(1) DEFAULT NULL,
   `nationality_need` tinyint(1) DEFAULT NULL,
   `powers_need` tinyint(1) DEFAULT NULL,
   `weaknesses_need` tinyint(1) DEFAULT NULL,
@@ -852,7 +939,6 @@ CREATE TABLE `user_status` (
   `status_type` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
 
 -- Table to store friend requests
 CREATE TABLE `friend_requests` (
@@ -886,7 +972,10 @@ CREATE TABLE `friendships` (
 --
 
 INSERT INTO `user_status` (`id`, `status_type`) VALUES
-(1, 'Active');
+(1, 'Active'),
+(2, 'Offline'),
+(3, 'Away'),
+(4, 'Do not disturb');
 
 --
 -- Indexek a kiírt táblákhoz
@@ -976,7 +1065,7 @@ ALTER TABLE `user_character`
   ADD KEY `status_id` (`status_id`),
   ADD KEY `species_id` (`species_id`),
   ADD KEY `gender_id` (`gender_id`),
-  ADD KEY `affilation_id` (`affilation_id`),
+  ADD KEY `affiliation_id` (`affiliation_id`),
   ADD KEY `occupation_id` (`occupation_id`),
   ADD KEY `nationality_id` (`nationality_id`),
   ADD KEY `user_character_ibfk_3` (`fc_type_id`);
@@ -1080,7 +1169,7 @@ ALTER TABLE `user_character`
   ADD CONSTRAINT `user_character_ibfk_3` FOREIGN KEY (`fc_type_id`) REFERENCES `character_fc` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `user_character_ibfk_4` FOREIGN KEY (`species_id`) REFERENCES `character_species` (`id`),
   ADD CONSTRAINT `user_character_ibfk_5` FOREIGN KEY (`gender_id`) REFERENCES `gender` (`id`),
-  ADD CONSTRAINT `user_character_ibfk_6` FOREIGN KEY (`affilation_id`) REFERENCES `affilation` (`id`),
+  ADD CONSTRAINT `user_character_ibfk_6` FOREIGN KEY (`affiliation_id`) REFERENCES `affiliation` (`id`),
   ADD CONSTRAINT `user_character_ibfk_7` FOREIGN KEY (`occupation_id`) REFERENCES `occupation` (`id`),
   ADD CONSTRAINT `user_character_ibfk_8` FOREIGN KEY (`nationality_id`) REFERENCES `nationality` (`id`);
 

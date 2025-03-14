@@ -59,6 +59,22 @@
                 color: $text-color;
                 opacity: .7;
                 line-height: 1.32;
+
+                span.date {
+                    padding-left: 15px;
+                }
+
+                .spoiler-span {
+                    position: relative;
+                    cursor: pointer;
+                    background-color: $text-color;
+                    transition: 500ms background-color;
+
+                    &.shown {
+                        background-color: transparent;
+                        cursor: text;
+                    }
+                }
             }
         }
     }

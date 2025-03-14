@@ -32,7 +32,7 @@ $stmt = $conn->prepare("
         user_character.resurrected_date,
         character_species.species,
         occupation.occupation,
-        affilation.affilation,
+        affiliation.affiliation,
         nationality.nationality,
         user_status.status_type,
         character_story.stories_id,
@@ -48,7 +48,7 @@ $stmt = $conn->prepare("
     LEFT JOIN gender ON user_character.gender_id = gender.id
     LEFT JOIN character_species ON user_character.species_id = character_species.id
     LEFT JOIN occupation ON user_character.occupation_id = occupation.id
-    LEFT JOIN affilation ON user_character.affilation_id = affilation.id
+    LEFT JOIN affiliation ON user_character.affiliation_id = affiliation.id
     LEFT JOIN nationality ON user_character.nationality_id = nationality.id
     LEFT JOIN user_status ON user_character.status_id = user_status.id
     LEFT JOIN character_story ON user_character.story_id = character_story.stories_id
@@ -62,6 +62,26 @@ $result = $stmt->get_result();
 // Fetch the data
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
+
+    // Fetch aliases
+    $aliasStmt = $conn->prepare("
+        SELECT 
+            alias_character.name,
+            alias_character.character_pic_path
+        FROM alias_character
+        WHERE alias_character.character_id = ?
+    ");
+    $aliasStmt->bind_param("i", $characterId);
+    $aliasStmt->execute();
+    $aliasResult = $aliasStmt->get_result();
+
+    $aliases = [];
+    while ($aliasRow = $aliasResult->fetch_assoc()) {
+        $aliases[] = $aliasRow;
+    }
+
+    $row['aliases'] = $aliases;
+
     echo json_encode(["success" => true, "character" => $row]);
 } else {
     echo json_encode(["success" => false, "message" => "No character data found"]);
