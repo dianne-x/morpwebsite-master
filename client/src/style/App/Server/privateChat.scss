@@ -58,24 +58,31 @@
         word-break: break-word;
         white-space: pre-wrap;
         line-height: 1.5;
-        padding: 5px;
-        border-radius: 5px;
-        background-color: rgba($color: $text-color, $alpha: 0.1);
+        padding: 10px;
+        border-radius: 10px;
+        max-width: 70%;
+        display: inline-block;
 
         &.sent {
           align-self: flex-end;
-          background-color: rgba($color: $third-color, $alpha: 0.5);
+          background-color: #d4edda;
+          color: #155724;
+          text-align: right;
         }
 
         &.received {
           align-self: flex-start;
-          background-color: rgba($color: $main-color, $alpha: 0.5);
+          background-color: #f8d7da;
+          color: #721c24;
+          text-align: left;
         }
 
         .chat-date {
           font-size: 0.8em;
           color: $text-color;
           text-align: right;
+          display: block;
+          margin-top: 5px;
         }
       }
     }

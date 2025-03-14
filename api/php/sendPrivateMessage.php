@@ -7,24 +7,31 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization');
 header('Content-Type: application/json');
 
 $data = json_decode(file_get_contents("php://input"), true);
-$sender_id = $data['sender_id'];
-$receiver_id = $data['receiver_id'];
+$room_id = $data['roomId'];
+$sent_from = $data['sentFrom'];
 $message = $data['message'];
 
-$sql = "INSERT INTO direct_message (sender_id, receiver_id, message, date) VALUES (?, ?, ?, NOW())";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("sss", $sender_id, $receiver_id, $message);
-
 $response = [];
-if ($stmt->execute()) {
-    $response['success'] = true;
+
+if (isset($room_id) && isset($sent_from) && isset($message)) {
+    $sql = "INSERT INTO direct_message (room_id, sent_from, message, sent) VALUES (?, ?, ?, NOW())";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("iss", $room_id, $sent_from, $message);
+
+    if ($stmt->execute()) {
+        $response['success'] = true;
+    } else {
+        $response['success'] = false;
+        $response['error'] = $stmt->error;
+    }
+
+    $stmt->close();
 } else {
     $response['success'] = false;
-    $response['error'] = $stmt->error;
+    $response['error'] = 'Invalid input';
 }
 
 echo json_encode($response);
 
-$stmt->close();
 $conn->close();
 ?>

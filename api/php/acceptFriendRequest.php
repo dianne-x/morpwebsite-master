@@ -31,6 +31,11 @@ if ($stmt->execute()) {
     $stmt->bind_param("ss", $sender_id, $receiver_id);
     $stmt->execute();
 
+    // Create a direct message room between the two users
+    $sql = "INSERT INTO direct_message_room (user1_id, user2_id) VALUES (?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $sender_id, $receiver_id);
+    $stmt->execute();
 
     // Delete the friend request from the friend_requests table
     $sql = "DELETE FROM friend_requests WHERE id = ?";

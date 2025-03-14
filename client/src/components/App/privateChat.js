@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faTimes } from '@fortawesome/free-solid-svg-icons';
 import io from 'socket.io-client';
+import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 import '../../style/App/Server/privateChat.scss'; // Import the new stylesheet
 
 const socket = io.connect('http://localhost:3001');
@@ -48,12 +49,32 @@ const PrivateChat = ({ user2, onClose }) => {
 
       socket.on('previous_direct_messages', (messages) => {
         console.log('Previous direct messages:', messages);
-        setMessages(messages);
+        const updatedMessages = messages.map((msg) => ({
+          ...msg,
+          sentFrom: msg.sent_from, // Ensure the field name matches
+        }));
+        setMessages(updatedMessages);
       });
 
       socket.on('receive_direct_message', (messageData) => {
         console.log('Received direct message:', messageData);
-        setMessages((prevMessages) => [...prevMessages, messageData]);
+        messageData.sentFrom = messageData.sent_from; // Ensure the field name matches
+        console.log('Current user ID:', user1.uid);
+        console.log('Message sentFrom:', messageData.sentFrom);
+        if (messageData.sentFrom !== user1.uid) {
+          console.log('Message is from another user:', messageData);
+          setMessages((prevMessages) => {
+            // Check if the message is already present in the state
+            if (!prevMessages.some(msg => msg.id === messageData.id)) {
+              console.log('Adding message to state:', messageData);
+              return [...prevMessages, messageData];
+            }
+            console.log('Message already in state:', messageData);
+            return prevMessages;
+          });
+        } else {
+          console.log('Message is from the current user, not adding to state:', messageData);
+        }
       });
 
       return () => {
@@ -73,33 +94,23 @@ const PrivateChat = ({ user2, onClose }) => {
     if (message.trim() === '' || !roomId) return;
 
     const messageData = {
-      roomId,
+      id: uuidv4(), // Add a unique identifier to the message
+      roomId: roomId,
       sentFrom: user1.uid,
       sentTo: user2.uid,
-      message
+      message: message,
+      sent: new Date().toISOString(),
+      isSentByCurrentUser: true // Add this flag to indicate the message is sent by the current user
     };
 
     console.log('Sending direct message:', messageData);
+
+    // Emit the message to the socket
     socket.emit('send_direct_message', messageData);
 
-    try {
-      const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/sendPrivateMessage.php`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(messageData),
-      });
-      const data = await response.json();
-      console.log('Response from sendPrivateMessage.php:', data);
-      if (data.success) {
-        setMessage('');
-      } else {
-        alert('Failed to send message.');
-      }
-    } catch (error) {
-      console.error('Error sending message:', error);
-    }
+    // Clear the input field and update the messages state
+    setMessage('');
+    setMessages((prevMessages) => [...prevMessages, messageData]);
   };
 
   const handleKeyDown = (event) => {
@@ -120,7 +131,7 @@ const PrivateChat = ({ user2, onClose }) => {
       <div className='chat-messages-wrapper'>
         <div className='chat-messages' ref={chatMessagesRef}>
           {messages.map((msg, index) => (
-            <div key={index} className={`chat-message ${msg.sent_from === user1.uid ? 'sent' : 'received'}`}>
+            <div key={index} className={`chat-message ${msg.sentFrom === user1.uid ? 'sent' : 'received'}`}>
               <span>{msg.message}</span>
               <span className="chat-date">{new Date(msg.sent).toLocaleString()}</span>
             </div>

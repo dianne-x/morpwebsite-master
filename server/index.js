@@ -259,13 +259,15 @@ io.on("connection", (socket) => {
     console.log('Received direct message data:', data);
 
     try {
-      // Check if the DirectMessageRoom exists
-      let room = await DirectMessageRoom.findOne({
-        where: {
-          user1_id: sentFrom,
-          user2_id: sentTo
-        }
-      });
+     // Check if the DirectMessageRoom exists
+     let room = await DirectMessageRoom.findOne({
+      where: {
+        [Sequelize.Op.or]: [
+          { user1_id: sentFrom, user2_id: sentTo },
+          { user1_id: sentTo, user2_id: sentFrom }
+        ]
+      }
+    });
 
       if (!room) {
         room = await DirectMessageRoom.create({

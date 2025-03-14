@@ -10,28 +10,27 @@ $data = json_decode(file_get_contents("php://input"), true);
 $user1_id = $data['user1_id'];
 $user2_id = $data['user2_id'];
 
+$response = [];
+
+// Check if a room already exists between the two users
 $sql = "SELECT id FROM direct_message_room WHERE (user1_id = ? AND user2_id = ?) OR (user1_id = ? AND user2_id = ?)";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ssss", $user1_id, $user2_id, $user2_id, $user1_id);
+$stmt->execute();
+$stmt->store_result();
+$stmt->bind_result($room_id);
 
-$response = [];
-if ($stmt->execute()) {
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $response['success'] = true;
-        $response['roomId'] = $row['id'];
-    } else {
-        $response['success'] = false;
-        $response['error'] = 'Room not found';
-    }
+if ($stmt->num_rows > 0) {
+    // Room exists, fetch the room ID
+    $stmt->fetch();
+    $response['success'] = true;
+    $response['roomId'] = $room_id;
 } else {
     $response['success'] = false;
-    $response['error'] = $stmt->error;
+    $response['error'] = 'No room found';
 }
 
-echo json_encode($response);
-
 $stmt->close();
+echo json_encode($response);
 $conn->close();
 ?>
