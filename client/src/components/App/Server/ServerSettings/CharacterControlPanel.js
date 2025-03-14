@@ -73,7 +73,7 @@ const CharacterControlPanel = ({ serverId }) => {
         <div>
             <h1>Character Control Panel</h1>
             <p>Manage your character settings here.</p>
-            <select onChange={(e) => setFilter(e.target.value)} value={filter}>
+            <select onChange={(e) => setFilter(e.target.value)} value={filter} className='server-character-list-view-select'>
                 <option value="all">All</option>
                 <option value="verified">Verified</option>
                 <option value="not_verified">Not Verified</option>

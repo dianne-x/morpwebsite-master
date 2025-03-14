@@ -55,6 +55,14 @@
     } 
 }
 }
+select.server-character-list-view-select {
+    background-color: rgba($color: $text-color, $alpha: .5);
+    color: $main-color;
+    font-weight: bold;
+    border: none;
+    padding: 5px;
+    margin-block: 15px;
+}
 
 ul.server-character-list-view {
     list-style: none;

@@ -47,7 +47,7 @@ const UsersControl = ({ allUsers, onRoleReload }) => {
     return (
         <div>
             <h1>Users Control</h1>
-            <select onChange={(e) => setFilter(e.target.value)} value={filter}>
+            <select onChange={(e) => setFilter(e.target.value)} value={filter} className='server-character-list-view-select'>
                 <option value="all">All</option>
                 <option value="moderators">Moderators</option>
                 <option value="users">Users</option>

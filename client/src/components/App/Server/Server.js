@@ -16,6 +16,8 @@ const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => 
     const [regularUsers, setRegularUsers] = useState([]);
 
     useEffect(() => {
+        console.log("selected server next line:");
+        
         console.log(selectedServer);
         console.log(sections);
     }, [selectedServer, sections]);
