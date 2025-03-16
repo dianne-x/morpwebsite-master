@@ -61,9 +61,7 @@ const ChatMessage = ({ name, message, date, showIconAndName, characterId, charac
             </div>
             {showCharacterInfo && characterId != null && (
                 <div className="modal-overlay" onClick={() => setShowCharacterInfo(false)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                         <CharacterInfo characterId={characterId} onClose={() => setShowCharacterInfo(false)} name={name} picture={character_pic_path} />
-                    </div>
                 </div>
             )} {/* Show CharacterInfo modal */}
         </>

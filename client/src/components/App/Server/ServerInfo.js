@@ -12,7 +12,8 @@ const ServerInfo = ({ server, owners = [], moderators = [], regularUsers = [], o
     if (!server) {
         return <div className='server-info server-side'>No server information available.</div>;
     }
-
+    
+    
     const getInviteLink = () => {
         const link = server.invite_link;
         console.log(link);
@@ -82,9 +83,10 @@ const ServerInfo = ({ server, owners = [], moderators = [], regularUsers = [], o
             </div>
             {selectedUserId && (
                 <div className="modal-overlay" onClick={() => setSelectedUserId(null)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <UserInfo userId={selectedUserId} onClose={() => setSelectedUserId(null)} />
-                    </div>
+                        <UserInfo 
+                            userId={selectedUserId} 
+                            serverId={server.id}
+                            onClose={() => setSelectedUserId(null)} />
                 </div>
             )} {/* Show UserInfo modal */}
         </>

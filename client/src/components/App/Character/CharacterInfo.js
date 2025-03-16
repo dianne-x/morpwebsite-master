@@ -28,9 +28,9 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
     }
 
     return (
-        <div className="character-info-modal">
+        <div className="character-info-modal" onClick={(e) => e.stopPropagation()}>
             <button className="close" onClick={onClose}>&times;</button>
-            <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${picture}`} alt="Character Icon" />
+            <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${picture}`} alt="Character Icon" style={{width: '100px', height: '100px'}} />
             <h2>{name}</h2>
             <p>Gender: {characterInfo.gender}</p>
             <p>Species: {characterInfo.species}</p>
