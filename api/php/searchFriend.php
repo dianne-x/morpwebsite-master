@@ -15,7 +15,7 @@ if ($conn->connect_error) {
 
 $name = $_GET['name'];
 
-$sql = "SELECT uid, name FROM users WHERE name LIKE ?";
+$sql = "SELECT uid, name, profile_pic_path FROM users WHERE name LIKE ?";
 $stmt = $conn->prepare($sql);
 $searchTerm = "%" . $name . "%";
 $stmt->bind_param("s", $searchTerm);

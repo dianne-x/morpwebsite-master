@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+
 const AddFriend = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -49,28 +52,41 @@ const AddFriend = () => {
   };
 
   return (
-    <div>
+    <>
       <h1>Add Friend</h1>
-      <input
-        type="text"
-        value={searchQuery}
-        onChange={handleInputChange}
-        placeholder="Search for a friend..."
-      />
-      <button onClick={handleSearch}>Search</button>
-      <ul>
+      <div className='search-field-box'>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={handleInputChange}
+          placeholder="Search for a friend..."
+        />
+        <button onClick={handleSearch}>
+          <FontAwesomeIcon icon={faSearch} />
+        </button>
+      </div>
+      <ul className='server-character-list-view'>
         {searchResults.length > 0 ? (
           searchResults.map((result) => (
-            <li key={result.uid}>
-              <span>{result.name}</span>
-              <button onClick={() => handleSendFriendRequest(result.uid)}>Send Friend Request</button>
-            </li>
+            <>
+              <li key={result.uid}>
+                <div className='info'>
+                <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${result.profile_pic_path || 'user.png'}`} />
+                  <span>{result.name}</span>
+                </div>
+                <div className='modify'>
+                  <button className='accept' onClick={() => handleSendFriendRequest(result.uid)}>
+                    Add Friend
+                  </button>
+                </div>
+              </li>
+            </>
           ))
         ) : (
-          <li>User not found</li>
+          <span>User not found</span>
         )}
       </ul>
-    </div>
+    </>
   );
 };
 

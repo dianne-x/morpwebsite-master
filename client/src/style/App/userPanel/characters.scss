@@ -69,6 +69,8 @@ ul.server-character-list-view {
     display: flex;
     flex-direction: column;
     gap: .4rem;
+    height: 100%;
+    overflow-y: auto;
 
     li {
         background: rgba($color: $text-color, $alpha: .1);
@@ -124,5 +126,29 @@ ul.server-character-list-view {
                 }
             }
         }
+    }
+}
+
+.search-field-box {
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    gap: .5rem;
+    margin: 15px;
+
+    input, input::selection {
+        background: rgba($color: $text-color, $alpha: .1);
+        color: $text-color;
+        border: none;
+        outline: none;
+        padding: 10px 15px;
+        width: 100%;
+    }
+
+    button {
+        height: 100%;
+        aspect-ratio: 1/1;
+        border: none;
+        background-color: $third-color;
     }
 }
