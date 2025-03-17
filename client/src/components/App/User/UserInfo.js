@@ -74,22 +74,20 @@ const UserInfo = ({ userId, onClose, serverId }) => {
                     characters.length > 0 ?
                     <ul className='server-character-list-view' style={{cursor: 'pointer'}}>
                         {characters.map(character => (
-                            <>
-                                <li 
-                                    key={character.id}
-                                    onClick={() => {
-                                        setSelectedCharacterData({
-                                            id: character.id,
-                                            name: character.character_name,
-                                            picture: character.character_pic_path
-                                        });
-                                    }}>
-                                    <div className='info'>
-                                        <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${character.character_pic_path || 'character.png'}`}/>
-                                        {character.character_name}
-                                    </div>
-                                </li>
-                            </>
+                            <li 
+                                key={character.id}
+                                onClick={() => {
+                                    setSelectedCharacterData({
+                                        id: character.id,
+                                        name: character.character_name,
+                                        picture: character.character_pic_path
+                                    });
+                                }}>
+                                <div className='info'>
+                                    <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${character.character_pic_path || 'character.png'}`}/>
+                                    {character.character_name}
+                                </div>
+                            </li>
                         ))}
                     </ul>
                     :
