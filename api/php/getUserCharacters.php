@@ -30,7 +30,7 @@ try {
     $serverMemberId = $serverMember['id'];
 
     // Fetch user characters
-    $stmt = $conn->prepare('SELECT * FROM user_character WHERE servermember_id = ?');
+    $stmt = $conn->prepare('SELECT * FROM user_character WHERE servermember_id = ? AND is_verified = 1');
     $stmt->bind_param('i', $serverMemberId);
     $stmt->execute();
     $result = $stmt->get_result();

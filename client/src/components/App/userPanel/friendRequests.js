@@ -65,18 +65,25 @@ const FriendRequests = () => {
       console.error('Error rejecting friend request:', error);
     }
   };
-
   return (
     <div>
       <h1>Friend Requests</h1>
-      <ul>
+      <ul className='server-character-list-view'>
         {friendRequests.length > 0 ? (
           friendRequests.map((request) => (
             <li key={request.id}>
-              <img src={request.sender_profile_pic || 'default-profile-pic-url'} alt={request.sender_name} width="50" height="50" />
-              <span>{request.sender_name}</span>
-              <button onClick={() => handleAcceptRequest(request.id)}>Accept</button>
-              <button onClick={() => handleRejectRequest(request.id)}>Reject</button>
+              <div className='info'>
+                <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${request.sender_profile_pic || 'user.png'}`} alt={request.sender_name} />
+                <span>{request.sender_name}</span>
+              </div>
+              <div className='modify'>
+                <button className='accept' onClick={() => handleAcceptRequest(request.id)}>
+                  Accept
+                </button>
+                <button className='reject' onClick={() => handleRejectRequest(request.id)}>
+                  Reject
+                </button>
+              </div>
             </li>
           ))
         ) : (

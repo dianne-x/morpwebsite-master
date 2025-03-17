@@ -50,36 +50,52 @@ const UserInfo = ({ userId, onClose, serverId }) => {
             !selectedCharacterData ?
             <div className="user-info-modal" onClick={e => e.stopPropagation()}>
                 <button className="close" onClick={onClose}>&times;</button>
-                <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${userInfo.profile_pic_path}`} alt="User Icon" style={{ width: '100px', height: '100px'}} />
+                <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${userInfo.profile_pic_path}`} alt="User Icon" className='user-img'/>
                 <h2>{userInfo.name}</h2>
-                <p>Email: {userInfo.email}</p>
-                <p>Nickname: {userInfo.nickname}</p>
-                <p>About Me: {userInfo.about_me}</p>
+                <table>
+                    <tr>
+                        <td>Email:</td>
+                        <td>{userInfo.email}</td>
+                    </tr>
+                    <tr>
+                        <td>Nickname:</td>
+                        <td>{userInfo.nickname || <span>No nickname</span>}</td>
+                    </tr>
+                    <tr>
+                        <td>About Me:</td>
+                        <td>{userInfo.about_me || <span>No about me</span>}</td>
+                    </tr>
+                </table>
                 {
                 serverId &&
-                <>
-                    <h3>Characters:</h3>
+                <div className='characters-wrapper'>
+                    <h3>Characters on the server:</h3>
                     {
                     characters.length > 0 ?
-                    <ul>
+                    <ul className='server-character-list-view' style={{cursor: 'pointer'}}>
                         {characters.map(character => (
-                            <li 
-                                key={character.id}
-                                onClick={() => {
-                                    setSelectedCharacterData({
-                                        id: character.id,
-                                        name: character.character_name,
-                                        picture: character.character_pic_path
-                                    });
-                                }}>
-                                {character.character_name}
-                            </li>
+                            <>
+                                <li 
+                                    key={character.id}
+                                    onClick={() => {
+                                        setSelectedCharacterData({
+                                            id: character.id,
+                                            name: character.character_name,
+                                            picture: character.character_pic_path
+                                        });
+                                    }}>
+                                    <div className='info'>
+                                        <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${character.character_pic_path || 'character.png'}`}/>
+                                        {character.character_name}
+                                    </div>
+                                </li>
+                            </>
                         ))}
                     </ul>
                     :
                     <span>User has no available characters</span>
                     }
-                </>
+                </div>
                 }
             </div>
             :
