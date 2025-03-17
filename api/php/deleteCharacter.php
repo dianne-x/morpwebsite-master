@@ -7,52 +7,75 @@ header('Access-Control-Allow-Methods: POST, DELETE, OPTIONS'); // Allow specific
 header('Access-Control-Allow-Headers: Content-Type, Authorization'); // Allow specific headers
 header('Content-Type: application/json'); // Ensure the response is JSON
 
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    // Handle preflight requests
+    exit(0);
+}
+
 $response = array(); // Initialize response array
 
-// Check connection
-if ($conn->connect_error) {
-    $response['error'] = "Connection failed: " . $conn->connect_error;
-    echo json_encode($response);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' || $_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    $data = json_decode(file_get_contents("php://input"), true);
+    $characterId = isset($data['characterId']) ? $data['characterId'] : null;
+
+    if ($characterId === null) {
+        echo json_encode(['success' => false, 'message' => 'Character ID is missing.']);
+        exit();
+    }
+
+    // Start a transaction
+    $conn->begin_transaction();
+
+    try {
+        // Update related records in alias_character table to set character_id to NULL
+        $stmt = $conn->prepare("UPDATE alias_character SET character_id = NULL WHERE character_id = ?");
+        if ($stmt === false) {
+            throw new Exception('Failed to prepare the query: ' . $conn->error);
+        }
+        $stmt->bind_param('i', $characterId);
+        if (!$stmt->execute()) {
+            throw new Exception('Failed to update related alias characters: ' . $stmt->error);
+        }
+        $stmt->close();
+
+        // Update related records in room_message table to set character_id to NULL
+        $stmt = $conn->prepare("UPDATE room_message SET character_id = NULL WHERE character_id = ?");
+        if ($stmt === false) {
+            throw new Exception('Failed to prepare the query: ' . $conn->error);
+        }
+        $stmt->bind_param('i', $characterId);
+        if (!$stmt->execute()) {
+            throw new Exception('Failed to update related room messages: ' . $stmt->error);
+        }
+        $stmt->close();
+
+        // Delete the character
+        $stmt = $conn->prepare("DELETE FROM user_character WHERE id = ?");
+        if ($stmt === false) {
+            throw new Exception('Failed to prepare the query: ' . $conn->error);
+        }
+        $stmt->bind_param('i', $characterId);
+        if (!$stmt->execute()) {
+            throw new Exception('Failed to delete character: ' . $stmt->error);
+        }
+        $stmt->close();
+
+        // Commit the transaction
+        $conn->commit();
+
+        echo json_encode(['success' => true, 'message' => 'Character deleted successfully.']);
+    } catch (Exception $e) {
+        // Rollback the transaction
+        $conn->rollback();
+
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+
+    $conn->close();
     exit();
 }
 
-// Check if characterId is set
-if (!isset($_GET['characterId'])) {
-    $response['error'] = "Missing characterId";
-    echo json_encode($response);
-    exit();
-}
-
-$characterId = $_GET['characterId'];
-
-// Debugging information
-error_log("Deleting character with characterId: " . $characterId);
-
-// Delete character based on character_id
-$sql = "DELETE FROM User_Character WHERE id = ?";
-$stmt = $conn->prepare($sql);
-if ($stmt === false) {
-    error_log("Prepare failed: " . $conn->error);
-    $response['error'] = "Prepare failed: " . $conn->error;
-    echo json_encode($response);
-    exit();
-}
-$stmt->bind_param("i", $characterId);
-error_log("SQL Query: " . $sql);
-error_log("Character ID: " . $characterId);
-if (!$stmt->execute()) {
-    error_log("Execute failed: " . $stmt->error);
-    $response['error'] = "Execute failed: " . $stmt->error;
-    echo json_encode($response);
-    exit();
-}
-
-// Debugging information
-error_log("Character deleted successfully");
-
-$stmt->close();
-$conn->close();
-
-$response['success'] = "Character deleted successfully";
-echo json_encode($response);
+// Return error for unsupported request methods
+echo json_encode(['success' => false, 'message' => 'Unsupported request method.']);
+exit();
 ?>

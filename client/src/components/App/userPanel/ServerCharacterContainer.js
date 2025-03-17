@@ -48,10 +48,16 @@ const ServerCharacterContainer = (props) => {
     }, [props.id, userId, refreshCharacters]); // Add refreshCharacters to the dependency array
 
     const handleDelete = (characterId) => {
-        const deleteUrl = `${process.env.REACT_APP_PHP_BASE_URL}/deleteCharacter.php?characterId=${characterId}`;
+        const deleteUrl = `${process.env.REACT_APP_PHP_BASE_URL}/deleteCharacter.php`;
         console.log(`Delete URL: ${deleteUrl}`);
         
-        fetch(deleteUrl, { method: 'DELETE' })
+        fetch(deleteUrl, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ characterId })
+        })
             .then(response => response.json())
             .then(responseData => {
                 if (responseData.error) {

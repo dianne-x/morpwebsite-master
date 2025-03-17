@@ -47,7 +47,7 @@ const CharacterControlPanel = ({ serverId }) => {
         // eslint-disable-next-line no-restricted-globals
         if (confirm(`Are you sure you want to reject/delete ${characterName}?`)) {
 
-            axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/deleteServerCharacter.php`, {
+            axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/deleteCharacter.php`, {
                 characterId
             })
             .then(response => {
