@@ -1,6 +1,6 @@
 @import '../../colors';
 
-.user-info-modal {
+.user-info-modal, .character-info-modal {
     background-color: $main-color;
     color: $text-color;
     z-index: 1001; // Ensure it is above the overlay
@@ -33,7 +33,7 @@
         }
     }
 
-    img.user-img {
+    img {
         width: 120px;
         max-width: 70%;
         aspect-ratio: 1/1;
@@ -58,6 +58,11 @@
         max-width: 70%;
         border-collapse: collapse;
         text-wrap: wrap;
+        margin-bottom: 10px;
+
+        tr:last-child td {
+            border-bottom: none;
+        }
 
         td {
             padding: 7px 10px;

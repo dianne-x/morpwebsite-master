@@ -10,8 +10,8 @@ const CharacterTile = (props) => {
                 <p>{props.name}</p>
             </div>
             <div className="modify">
-                <button title="info" className="info"><FontAwesomeIcon icon={faInfoCircle} /></button>
-                <button title="edit" className="edit"onClick={() => (props.handleEdit(props.uid))}><FontAwesomeIcon icon={faEdit} /></button>
+                <button title="info" className="info" onClick={() => props.handleInfo(props.uid, props.name, props.pic_path)}><FontAwesomeIcon icon={faInfoCircle} /></button>
+                <button title="edit" className="edit" onClick={() => (props.handleEdit(props.uid))}><FontAwesomeIcon icon={faEdit} /></button>
                 <button title="delete" className="delete" onClick={() => (props.handleDelete(props.uid))}><FontAwesomeIcon icon={faTrash} /></button>
             </div>
         </li>

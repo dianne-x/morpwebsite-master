@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-//import '../../../style/App/Character/CharacterInfo.scss'; // Import the CSS for CharacterInfo
+import '../../../style/App/Character/CharacterInfo.scss'; // Import the CSS for CharacterInfo
 
 const CharacterInfo = ({ characterId, onClose, name, picture }) => {
     const [characterInfo, setCharacterInfo] = useState(null);
@@ -30,16 +30,56 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
     return (
         <div className="character-info-modal" onClick={(e) => e.stopPropagation()}>
             <button className="close" onClick={onClose}>&times;</button>
-            <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${picture || 'character.png'}`} alt="Character Icon" style={{width: '100px', height: '100px'}} />
-            <h2>{name}</h2>
-            <p>Gender: {characterInfo.gender}</p>
-            <p>Species: {characterInfo.species}</p>
-            <p>Status: {characterInfo.status_type}</p>
-            <p>Affiliation: {characterInfo.affiliation}</p>
-            <p>Nationality: {characterInfo.nationality}</p>
-            <p>Occupation: {characterInfo.occupation}</p>
-            <p>FC Type: {characterInfo.fc_type}</p>
-            <p>FC Name: {characterInfo.fc_name != '' ? characterInfo.fc_name : 'unknown'}</p>
+            <div className='character-data'>
+                <div className='character-pic-name'>
+                    <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${picture || 'character.png'}`} alt="Character Icon" style={{width: '100px', height: '100px'}} />
+                    <h2>{name}</h2>
+                </div>
+                <table>
+                    <tr>
+                        <td>Gender</td>
+                        <td>{characterInfo.gender}</td>
+                    </tr>
+                    <tr>
+                        <td>Species</td>
+                        <td>{characterInfo.species}</td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td>{characterInfo.status}</td>
+                    </tr>
+                    <tr>
+                        <td>Affiliation</td>
+                        <td>{characterInfo.affiliation}</td>
+                    </tr>
+                    <tr>
+                        <td>Nationality</td>
+                        <td>{characterInfo.nationality}</td>
+                    </tr>
+                    <tr>
+                        <td>Occupation</td>
+                        <td>{characterInfo.occupation}</td>
+                    </tr>
+                    <tr>
+                        <td>FC Type</td>
+                        <td>{characterInfo.fc_type}</td>
+                    </tr>
+                    <tr>
+                        <td>FC Name</td>
+                        <td>{characterInfo.fc_name != '' ? characterInfo.fc_name : 'unknown'}</td>
+                    </tr>
+                </table>
+            </div>
+            <div className='character-details'>
+                <h3>Biography</h3>
+                <p>{characterInfo.bio}</p>
+    
+                <h3>Powers</h3>
+                <p>{characterInfo.powers}</p>
+    
+                <h3>Weaknesses</h3>
+                <p>{characterInfo.weaknesses}</p>
+            </div>
         </div>
     );
 };

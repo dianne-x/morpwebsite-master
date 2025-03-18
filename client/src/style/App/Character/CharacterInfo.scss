@@ -1,0 +1,41 @@
+@import '../../colors';
+
+.character-info-modal {
+    padding: 40px !important;
+    position: fixed !important;
+
+    .character-data {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 50px;
+        width: 500px;
+        max-width: 90%;
+
+        .character-pic-name {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            img {
+                border: 1px solid $third-color;
+                border-radius: 0;
+            }
+        }
+
+        
+    }
+    .character-details {
+        width: 500px;
+        max-width: 90%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        h3 {
+            margin-top: 10px;
+        }
+    }
+    p {
+        text-wrap: wrap;
+    }
+}

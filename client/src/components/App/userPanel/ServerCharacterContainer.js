@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CharacterTile from "./CharacterTile";
 import CharacterCreation from './CharacterCreation';
 import CharacterEdit from './CharacterEdit';
+import CharacterInfo from '../Character/CharacterInfo';
 
 const ServerCharacterContainer = (props) => {
     const [characters, setCharacters] = useState([]);
@@ -10,6 +11,7 @@ const ServerCharacterContainer = (props) => {
     const [refreshCharacters, setRefreshCharacters] = useState(false); // State variable to trigger refresh
     const [characterEditOpen, setCharacterEditOpen] = useState(false);
     const [characterToEdit, setCharacterToEdit] = useState(null);
+    const [characterInfoData, setCharacterInfoData] = useState(null);
 
     const fetchCharacters = () => {
         console.log(`Fetching server members and characters for userId: ${userId} and serverId: ${props.id}`);
@@ -72,6 +74,14 @@ const ServerCharacterContainer = (props) => {
             .catch(error => console.error('Error deleting character:', error));
     };
 
+    const handleInfo = (characterId, name, picture) => {
+        setCharacterInfoData({
+            id: characterId,
+            name: name,
+            picture: picture
+        });
+    };
+
     const handleEdit = (characterId) => {
         setCharacterToEdit(characterId);
         setCharacterEditOpen(true);
@@ -110,6 +120,7 @@ const ServerCharacterContainer = (props) => {
                                         verified={character.is_verified}
                                         handleDelete={handleDelete}
                                         handleEdit={handleEdit} // Add handleEdit
+                                        handleInfo={handleInfo} // Add handleInfo
                                     />
                                 ) : null
                             ))
@@ -136,6 +147,16 @@ const ServerCharacterContainer = (props) => {
                     closeForm={() => setCharacterEditOpen(false)} 
                     onCharacterUpdated={handleCharacterUpdated}
                 />
+            )}
+            {characterInfoData && (
+                <div style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1000}}>
+                    <CharacterInfo 
+                        characterId={characterInfoData.id}
+                        name={characterInfoData.name}
+                        picture={characterInfoData.picture}
+                        onClose={() => setCharacterInfoData(null)}
+                    />
+                </div>
             )}
         </>
     );

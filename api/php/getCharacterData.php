@@ -34,7 +34,7 @@ $stmt = $conn->prepare("
         occupation.occupation,
         affiliation.affiliation,
         nationality.nationality,
-        user_status.status_type,
+        character_status.status,
         character_story.stories_id,
         user_character.bio,
         user_character.powers,
@@ -50,7 +50,7 @@ $stmt = $conn->prepare("
     LEFT JOIN occupation ON user_character.occupation_id = occupation.id
     LEFT JOIN affiliation ON user_character.affiliation_id = affiliation.id
     LEFT JOIN nationality ON user_character.nationality_id = nationality.id
-    LEFT JOIN user_status ON user_character.status_id = user_status.id
+    LEFT JOIN character_status ON user_character.status_id = character_status.id
     LEFT JOIN character_story ON user_character.story_id = character_story.stories_id
     LEFT JOIN character_fc ON user_character.fc_type_id = character_fc.id
     WHERE user_character.id = ?;
