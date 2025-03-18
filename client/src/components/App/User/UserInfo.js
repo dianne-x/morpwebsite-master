@@ -53,18 +53,20 @@ const UserInfo = ({ userId, onClose, serverId }) => {
                 <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${userInfo.profile_pic_path}`} alt="User Icon" className='user-img'/>
                 <h2>{userInfo.name}</h2>
                 <table>
-                    <tr>
-                        <td>Email:</td>
-                        <td>{userInfo.email}</td>
-                    </tr>
-                    <tr>
-                        <td>Nickname:</td>
-                        <td>{userInfo.nickname || <span>No nickname</span>}</td>
-                    </tr>
-                    <tr>
-                        <td>About Me:</td>
-                        <td>{userInfo.about_me || <span>No about me</span>}</td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <td>Email:</td>
+                            <td>{userInfo.email}</td>
+                        </tr>
+                        <tr>
+                            <td>Nickname:</td>
+                            <td>{userInfo.nickname || <span>No nickname</span>}</td>
+                        </tr>
+                        <tr>
+                            <td>About Me:</td>
+                            <td>{userInfo.about_me || <span>No about me</span>}</td>
+                        </tr>
+                    </tbody>
                 </table>
                 {
                 serverId &&

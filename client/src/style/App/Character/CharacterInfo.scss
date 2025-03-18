@@ -39,3 +39,22 @@
         text-wrap: wrap;
     }
 }
+
+@media screen and (max-width: 769px) {
+    .character-info-modal {
+        .character-data {
+            flex-direction: column;
+        }
+    }
+    
+}
+
+@media screen and (max-width: 481px) {
+    .character-info-modal {
+        padding-top: 100px !important;
+        height: 100% !important;
+        .close {
+            padding-top: 70px;
+        }
+    }
+}

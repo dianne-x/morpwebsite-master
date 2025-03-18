@@ -55,7 +55,7 @@
 
     table {
         width: 500px;
-        max-width: 70%;
+        max-width: 100%;
         border-collapse: collapse;
         text-wrap: wrap;
         margin-bottom: 10px;
@@ -66,7 +66,7 @@
 
         td {
             padding: 7px 10px;
-            border-bottom: 1px solid $third-color;
+            border-bottom: 1px solid rgba($color: $third-color, $alpha: .3);
 
             &:first-child {
                 text-align: right;
@@ -109,5 +109,9 @@
     .user-info-modal {
         padding-top: 100px;
         height: 100%;
+
+        .close {
+            padding-top: 70px;
+        }
     }
 }

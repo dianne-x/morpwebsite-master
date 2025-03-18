@@ -36,38 +36,40 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
                     <h2>{name}</h2>
                 </div>
                 <table>
-                    <tr>
-                        <td>Gender</td>
-                        <td>{characterInfo.gender}</td>
-                    </tr>
-                    <tr>
-                        <td>Species</td>
-                        <td>{characterInfo.species}</td>
-                    </tr>
-                    <tr>
-                        <td>Status</td>
-                        <td>{characterInfo.status}</td>
-                    </tr>
-                    <tr>
-                        <td>Affiliation</td>
-                        <td>{characterInfo.affiliation}</td>
-                    </tr>
-                    <tr>
-                        <td>Nationality</td>
-                        <td>{characterInfo.nationality}</td>
-                    </tr>
-                    <tr>
-                        <td>Occupation</td>
-                        <td>{characterInfo.occupation}</td>
-                    </tr>
-                    <tr>
-                        <td>FC Type</td>
-                        <td>{characterInfo.fc_type}</td>
-                    </tr>
-                    <tr>
-                        <td>FC Name</td>
-                        <td>{characterInfo.fc_name != '' ? characterInfo.fc_name : 'unknown'}</td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <td>Gender</td>
+                            <td>{characterInfo.gender}</td>
+                        </tr>
+                        <tr>
+                            <td>Species</td>
+                            <td>{characterInfo.species}</td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>{characterInfo.status}</td>
+                        </tr>
+                        <tr>
+                            <td>Affiliation</td>
+                            <td>{characterInfo.affiliation}</td>
+                        </tr>
+                        <tr>
+                            <td>Nationality</td>
+                            <td>{characterInfo.nationality}</td>
+                        </tr>
+                        <tr>
+                            <td>Occupation</td>
+                            <td>{characterInfo.occupation}</td>
+                        </tr>
+                        <tr>
+                            <td>FC Type</td>
+                            <td>{characterInfo.fc_type}</td>
+                        </tr>
+                        <tr>
+                            <td>FC Name</td>
+                            <td>{characterInfo.fc_name != '' ? characterInfo.fc_name : 'unknown'}</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
             <div className='character-details'>
