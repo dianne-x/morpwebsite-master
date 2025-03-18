@@ -143,7 +143,7 @@ const Profile = (props) => {
                 <label>
                     About me
                 </label>
-                <input
+                <textarea
                     type="text"
                     name="about_me"
                     value={userData.about_me || ''} // Ensure value is not null

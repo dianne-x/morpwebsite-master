@@ -9,7 +9,7 @@
     height: 600px;
     max-width: 100%;
     max-height: 100%;
-    padding: 30px;
+    padding: 30px 15px;
     overflow-y: auto;
 
     display: flex;
@@ -38,10 +38,15 @@
         max-width: 70%;
         aspect-ratio: 1/1;
         border-radius: 50%;
+        object-fit: cover;
     }
 
     h2, .characters-wrapper {
         margin-top: 15px;
+    }
+
+    span {
+        opacity: .4;
     }
 
     h2, h3, td:first-child {
@@ -52,14 +57,12 @@
         width: 500px;
         max-width: 70%;
         border-collapse: collapse;
+        text-wrap: wrap;
 
         td {
             padding: 7px 10px;
             border-bottom: 1px solid $third-color;
 
-            span {
-                opacity: .4;
-            }
             &:first-child {
                 text-align: right;
                 font-weight: bold;
@@ -85,7 +88,7 @@
 
 
 .modal-overlay {
-    position: fixed;
+    position: relative;
     top: 0;
     left: 0;
     width: 100%;
@@ -97,3 +100,9 @@
     align-items: center;
 }
 
+@media screen and (max-width: 481px) {
+    .user-info-modal {
+        padding-top: 100px;
+        height: 100%;
+    }
+}
