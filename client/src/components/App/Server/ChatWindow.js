@@ -141,7 +141,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
               placeholder="Type your message..."
               maxLength="500"
             />
-            <button onClick={handleSendMessage}>
+            <button onClick={handleSendMessage} style={{ cursor: 'pointer' }}>
               <FontAwesomeIcon icon={faPaperPlane} />
             </button>
           </div>

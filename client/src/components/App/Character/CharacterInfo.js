@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../../../style/App/Character/CharacterInfo.scss'; // Import the CSS for CharacterInfo
+import '../../../style/App/Character/CharacterInfo.scss';
+import formatTextWithLineBreaks from '../../FormatTextWithLineBreaks';
 
 const CharacterInfo = ({ characterId, onClose, name, picture }) => {
     const [characterInfo, setCharacterInfo] = useState(null);
@@ -74,13 +75,22 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
             </div>
             <div className='character-details'>
                 <h3>Biography</h3>
-                <p>{characterInfo.bio}</p>
-    
+                {formatTextWithLineBreaks(characterInfo.bio)}
+
                 <h3>Powers</h3>
-                <p>{characterInfo.powers}</p>
-    
+                {formatTextWithLineBreaks(characterInfo.powers)}
+
                 <h3>Weaknesses</h3>
-                <p>{characterInfo.weaknesses}</p>
+                {formatTextWithLineBreaks(characterInfo.weaknesses)}
+
+                <h3>Used Items</h3>
+                {formatTextWithLineBreaks(characterInfo.used_item)}
+
+                <h3>Family</h3>
+                {formatTextWithLineBreaks(characterInfo.family)}
+
+                <h3>Universe</h3>
+                {formatTextWithLineBreaks(characterInfo.universe)}
             </div>
         </div>
     );
