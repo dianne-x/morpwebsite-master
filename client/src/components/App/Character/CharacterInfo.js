@@ -33,7 +33,7 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
             <button className="close" onClick={onClose}>&times;</button>
             <div className='character-data'>
                 <div className='character-pic-name'>
-                    <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${picture || 'character.png'}`} alt="Character Icon" style={{width: '100px', height: '100px'}} />
+                    <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${picture || 'character.png'}`} alt="Character Icon" />
                     <h2>{name}</h2>
                 </div>
                 <table>
