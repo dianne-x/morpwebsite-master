@@ -17,6 +17,11 @@ const PrivateChat = ({ user2, onClose }) => {
   // Retrieve user1 from localStorage
   const user1 = { uid: JSON.parse(localStorage.getItem('morp-login-user')) };
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+    return new Intl.DateTimeFormat(navigator.language || navigator.userLanguage, options).format(new Date(dateString));
+  };
+
   useEffect(() => {
     const fetchRoomId = async () => {
       try {
@@ -85,8 +90,9 @@ const PrivateChat = ({ user2, onClose }) => {
   }, [roomId]);
 
   useEffect(() => {
+    console.log('Messages updated:', messages);
     if (chatMessagesRef.current) {
-      chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+        chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
     }
   }, [messages]);
 
@@ -128,12 +134,12 @@ const PrivateChat = ({ user2, onClose }) => {
         <h1>Private Chat with {user2.name}</h1>
       </div>
 
-      <div className='chat-messages-wrapper'>
-        <div className='chat-messages' ref={chatMessagesRef}>
+      <div className='chat-messages-wrapper' ref={chatMessagesRef}>
+        <div className='chat-messages' >
           {messages.map((msg, index) => (
             <div key={index} className={`chat-message ${msg.sentFrom === user1.uid ? 'sent' : 'received'}`}>
               <span>{msg.message}</span>
-              <span className="chat-date">{new Date(msg.sent).toLocaleString()}</span>
+              <span className="chat-date">{formatDate(msg.sent)}</span>
             </div>
           ))}
         </div>
