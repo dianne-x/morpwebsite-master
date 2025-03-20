@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../../style/App/userPanel/characterForm.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const CharacterCreation = (props) => {
     const [genders, setGenders] = useState([]);
@@ -250,9 +252,15 @@ const CharacterCreation = (props) => {
                                     onChange={(e) => handleAliasChange(index, e)}
                                     placeholder="Alias Name"
                                 />
+                                <button type="button" onClick={() => setAliases(aliases.filter((_, i) => i !== index))} className='remove-alias-btn'>
+                                    <FontAwesomeIcon icon={faXmark} />
+                                </button>
                             </div>
                         ))}
-                        <button type="button" className='save-character-btn' onClick={addAlias}>Add Alias</button>
+                        {
+                            aliases.length < 4 && 
+                            <button type="button" className='save-character-btn' onClick={addAlias}>Add Alias</button>
+                        }
                         <label htmlFor="nickname">
                             Nickname:
                         </label>

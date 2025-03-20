@@ -37,7 +37,7 @@ const CharacterEdit = (props) => {
     });
     const [tempProfilePic, setTempProfilePic] = useState('');
     const [profilePicFile, setProfilePicFile] = useState(null);
-    const [aliases, setAliases] = useState([{ name: '', pic: null, tempPic: '' }]);
+    const [aliases, setAliases] = useState([]);
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/getCharacterCreation.php`)
@@ -82,8 +82,8 @@ const CharacterEdit = (props) => {
                     family: character.family,
                     universe: character.universe
                 });
-                setTempProfilePic(`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${character.character_pic_path}`);
-                setAliases(character.aliases || [{ name: '', pic: null, tempPic: '' }]);
+                setTempProfilePic(`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${character.character_pic_path || 'character.png'}`);
+                setAliases(character.aliases || []);
             })
             .catch(error => {
                 console.error('There was an error fetching the character details!', error);
@@ -184,7 +184,7 @@ const CharacterEdit = (props) => {
     };
 
     const addAlias = () => {
-        setAliases([...aliases, { name: '', pic: null, tempPic: '' }]);
+        setAliases([...aliases, ]);
     };
 
     const handleSubmit = () => {
@@ -237,7 +237,7 @@ const CharacterEdit = (props) => {
                     <form>
                         <label 
                             htmlFor="character_pic_path" id="pic-label"
-                            style={{backgroundImage: `url(${tempProfilePic || `${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${formData.character_pic_path}`})`}}>
+                            style={{backgroundImage: `url(${tempProfilePic || `${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${formData.character_pic_path || 'character.png'}`})`}}>
                         </label>
                         <input 
                             type="file"

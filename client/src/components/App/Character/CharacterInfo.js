@@ -28,6 +28,26 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
         return <div>Loading...</div>;
     }
 
+    const characterDataTable = [
+        { title: 'Gender', content: characterInfo.gender },
+        { title: 'Species', content: characterInfo.species },
+        { title: 'Status', content: characterInfo.status },
+        { title: 'Affiliation', content: characterInfo.affiliation },
+        { title: 'Nationality', content: characterInfo.nationality },
+        { title: 'Occupation', content: characterInfo.occupation },
+        { title: 'FC Type', content: characterInfo.fc_type },
+        { title: 'FC Name', content: characterInfo.fc_name != '' ? characterInfo.fc_name : 'unknown' }
+    ]
+
+    const characterDetails = [
+        { title: 'Biography', content: characterInfo.bio },
+        { title: 'Powers', content: characterInfo.powers },
+        { title: 'Weaknesses', content: characterInfo.weaknesses },
+        { title: 'Used Items', content: characterInfo.used_item },
+        { title: 'Family', content: characterInfo.family },
+        { title: 'Universe', content: characterInfo.universe }
+    ];
+
     return (
         <div className="character-info-modal" onClick={(e) => e.stopPropagation()}>
             <button className="close" onClick={onClose}>&times;</button>
@@ -38,59 +58,26 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
                 </div>
                 <table>
                     <tbody>
-                        <tr>
-                            <td>Gender</td>
-                            <td>{characterInfo.gender}</td>
-                        </tr>
-                        <tr>
-                            <td>Species</td>
-                            <td>{characterInfo.species}</td>
-                        </tr>
-                        <tr>
-                            <td>Status</td>
-                            <td>{characterInfo.status}</td>
-                        </tr>
-                        <tr>
-                            <td>Affiliation</td>
-                            <td>{characterInfo.affiliation}</td>
-                        </tr>
-                        <tr>
-                            <td>Nationality</td>
-                            <td>{characterInfo.nationality}</td>
-                        </tr>
-                        <tr>
-                            <td>Occupation</td>
-                            <td>{characterInfo.occupation}</td>
-                        </tr>
-                        <tr>
-                            <td>FC Type</td>
-                            <td>{characterInfo.fc_type}</td>
-                        </tr>
-                        <tr>
-                            <td>FC Name</td>
-                            <td>{characterInfo.fc_name != '' ? characterInfo.fc_name : 'unknown'}</td>
-                        </tr>
+                        {characterDataTable.map((data, index) => (
+                            data.content && (
+                                <tr key={index}>
+                                    <td>{data.title}</td>
+                                    <td>{data.content}</td>
+                                </tr>
+                            )
+                        ))}
                     </tbody>
                 </table>
             </div>
             <div className='character-details'>
-                <h3>Biography</h3>
-                {formatTextWithLineBreaks(characterInfo.bio)}
-
-                <h3>Powers</h3>
-                {formatTextWithLineBreaks(characterInfo.powers)}
-
-                <h3>Weaknesses</h3>
-                {formatTextWithLineBreaks(characterInfo.weaknesses)}
-
-                <h3>Used Items</h3>
-                {formatTextWithLineBreaks(characterInfo.used_item)}
-
-                <h3>Family</h3>
-                {formatTextWithLineBreaks(characterInfo.family)}
-
-                <h3>Universe</h3>
-                {formatTextWithLineBreaks(characterInfo.universe)}
+                {characterDetails.map((detail, index) => (
+                    detail.content && (
+                        <div key={index}>
+                            <h3>{detail.title}</h3>
+                            {formatTextWithLineBreaks(detail.content)}
+                        </div>
+                    )
+                ))}
             </div>
         </div>
     );

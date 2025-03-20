@@ -16,10 +16,20 @@
             border-radius: 50%;
             background-size: cover;
             background-position: center;
+            cursor: pointer;
         }
 
         input {
             height: 30px;
+            width: 100%;
+        }
+
+        .remove-alias-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: $third-color;
+            font-size: 1.2rem;
         }
     }
 }

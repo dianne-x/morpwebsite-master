@@ -43,7 +43,8 @@ $stmt = $conn->prepare("
         user_character.family,
         user_character.universe,
         character_fc.fc_type,
-        user_character.fc_name
+        user_character.fc_name,
+        user_character.character_pic_path
     FROM user_character
     LEFT JOIN gender ON user_character.gender_id = gender.id
     LEFT JOIN character_species ON user_character.species_id = character_species.id
