@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import '../../../style/App/userPanel/characterForm.scss'
 
 const CharacterCreation = (props) => {
     const [genders, setGenders] = useState([]);
@@ -38,7 +39,7 @@ const CharacterCreation = (props) => {
     });
     const [tempProfilePic, setTempProfilePic] = useState(''); // Temporary variable for profile picture
     const [profilePicFile, setProfilePicFile] = useState(null); // File object for profile picture
-    const [aliases, setAliases] = useState([{ name: '', pic: null, tempPic: '' }]);
+    const [aliases, setAliases] = useState([]);
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/getCharacterCreation.php`)
@@ -232,13 +233,7 @@ const CharacterCreation = (props) => {
                                 <label 
                                     htmlFor={`alias_pic_${index}`} id="alias-pic-label"
                                     style={{
-                                        backgroundImage: `url(${alias.tempPic || `${process.env.REACT_APP_IMAGE_BASE_URL}/aliasPictures/${alias.pic}`})`,
-                                        width: '50px',
-                                        height: '50px',
-                                        borderRadius: '50%',
-                                        backgroundSize: 'cover',
-                                        backgroundPosition: 'center',
-                                        marginRight: '10px'
+                                        backgroundImage: `url(${alias.tempPic || `${process.env.REACT_APP_IMAGE_BASE_URL}/aliasPictures/alias.png`})`,
                                     }}>
                                 </label>
                                 <input
@@ -257,7 +252,7 @@ const CharacterCreation = (props) => {
                                 />
                             </div>
                         ))}
-                        <button type="button" onClick={addAlias}>Add Alias</button>
+                        <button type="button" className='save-character-btn' onClick={addAlias}>Add Alias</button>
                         <label htmlFor="nickname">
                             Nickname:
                         </label>

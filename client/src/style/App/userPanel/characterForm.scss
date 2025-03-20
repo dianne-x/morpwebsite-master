@@ -1,0 +1,25 @@
+@import '../../colors';
+
+.user-panel.character-creation,
+.user-panel.character-edit {
+    .alias-container {
+        grid-column: 2;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        label {
+            display: block;
+            border: 1px solid $third-color;
+            width: 50px !important;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        input {
+            height: 30px;
+        }
+    }
+}

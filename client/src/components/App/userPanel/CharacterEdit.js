@@ -205,8 +205,8 @@ const CharacterEdit = (props) => {
 
         formDataToSend.append('aliases', JSON.stringify(aliases.map(alias => ({ name: alias.name }))));
         aliases.forEach((alias, index) => {
-            if (alias.pic) {
-                formDataToSend.append(`alias_pics[${index}]`, alias.pic);
+            if (alias.character_pic_path) {
+                formDataToSend.append(`alias_pics[${index}]`, alias.character_pic_path);
             }
         });
 
@@ -252,12 +252,14 @@ const CharacterEdit = (props) => {
                         <label>
                             Aliases:
                         </label>
+                        {console.log(aliases)
+                        }
                         {aliases.map((alias, index) => (
                             <div key={index} className="alias-container">
                                 <label 
                                     htmlFor={`alias_pic_${index}`} id="alias-pic-label"
                                     style={{
-                                        backgroundImage: `url(${alias.tempPic || `${process.env.REACT_APP_IMAGE_BASE_URL}/aliasPictures/${alias.pic}`})`,
+                                        backgroundImage: `url(${alias.tempPic || `${process.env.REACT_APP_IMAGE_BASE_URL}/aliasPictures/${alias.character_pic_path}`})`,
                                         width: '50px',
                                         height: '50px',
                                         borderRadius: '50%',
