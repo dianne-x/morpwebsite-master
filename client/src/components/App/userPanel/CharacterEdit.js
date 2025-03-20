@@ -259,13 +259,7 @@ const CharacterEdit = (props) => {
                                 <label 
                                     htmlFor={`alias_pic_${index}`} id="alias-pic-label"
                                     style={{
-                                        backgroundImage: `url(${alias.tempPic || `${process.env.REACT_APP_IMAGE_BASE_URL}/aliasPictures/${alias.character_pic_path}`})`,
-                                        width: '50px',
-                                        height: '50px',
-                                        borderRadius: '50%',
-                                        backgroundSize: 'cover',
-                                        backgroundPosition: 'center',
-                                        marginRight: '10px'
+                                        backgroundImage: `url(${alias.tempPic || `${process.env.REACT_APP_IMAGE_BASE_URL}/aliasPictures/${alias.character_pic_path || 'alias.png'}`})`
                                     }}>
                                 </label>
                                 <input
