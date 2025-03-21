@@ -153,11 +153,11 @@ if ($statusResult && $statusResult->num_rows > 0) {
     exit();
 }
 
-$birthdate = isset($data['birthdate']) ? date('Y-m-d', strtotime($data['birthdate'])) : null;
+$birthdate = isset($data['birthdate']) && !empty($data['birthdate']) ? date('Y-m-d', strtotime($data['birthdate'])) : null;
 $died = isset($data['died']) ? filter_var($data['died'], FILTER_VALIDATE_BOOLEAN) : false;
-$deathdate = isset($data['deathdate']) ? date('Y-m-d', strtotime($data['deathdate'])) : null;
+$deathdate = isset($data['deathdate']) && !empty($data['deathdate']) ? date('Y-m-d', strtotime($data['deathdate'])) : null;
 $resurrected = isset($data['resurrected']) ? filter_var($data['resurrected'], FILTER_VALIDATE_BOOLEAN) : false;
-$resurrected_date = isset($data['resurrected_date']) ? date('Y-m-d', strtotime($data['resurrected_date'])) : null;
+$resurrected_date = isset($data['resurrected_date']) && !empty($data['resurrected_date']) ? date('Y-m-d', strtotime($data['resurrected_date'])) : null;
 $bio = isset($data['bio']) ? $data['bio'] : null;
 $powers = isset($data['powers']) ? $data['powers'] : null;
 $weaknesses = isset($data['weaknesses']) ? $data['weaknesses'] : null;
@@ -178,7 +178,7 @@ if (!$stmt) {
     echo json_encode($response);
     exit();
 }
-$stmt->bind_param("ssiiiiiiisisisissssssssi", $name, $nickname, $genderId, $speciesId, $statusId, $affiliationId, $nationalityId, $occupationId, $fctypeId, $fcname, $servermember_id, $character_pic_path, $birthdate, $died, $deathdate, $resurrected, $resurrected_date, $bio, $powers, $weaknesses, $used_item, $family, $universe, $is_own_character);
+$stmt->bind_param("ssiiiiiiisissssssssssssi", $name, $nickname, $genderId, $speciesId, $statusId, $affiliationId, $nationalityId, $occupationId, $fctypeId, $fcname, $servermember_id, $character_pic_path, $birthdate, $died, $deathdate, $resurrected, $resurrected_date, $bio, $powers, $weaknesses, $used_item, $family, $universe, $is_own_character);
 
 if (!$stmt->execute()) {
     error_log("Error executing statement: " . $stmt->error);

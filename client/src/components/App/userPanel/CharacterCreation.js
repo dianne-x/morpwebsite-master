@@ -164,6 +164,7 @@ const CharacterCreation = (props) => {
     };
 
     const handleSubmit = () => {
+        console.log('Form data before submission:', formData);
         if (!formData.name || !formData.gender || !formData.species || !formData.status || !formData.affiliation || !formData.nationality || !formData.occupation || !formData.fc_type) {
             alert('Please fill out all required fields.');
             return;

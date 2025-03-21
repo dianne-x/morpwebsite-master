@@ -29,6 +29,7 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
     }
 
     const characterDataTable = [
+        { title: 'Nickname', content: characterInfo.nickname },
         { title: 'Gender', content: characterInfo.gender },
         { title: 'Species', content: characterInfo.species },
         { title: 'Status', content: characterInfo.status },
@@ -36,7 +37,8 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
         { title: 'Nationality', content: characterInfo.nationality },
         { title: 'Occupation', content: characterInfo.occupation },
         { title: 'FC Type', content: characterInfo.fc_type },
-        { title: 'FC Name', content: characterInfo.fc_name != '' ? characterInfo.fc_name : 'unknown' }
+        { title: 'FC Name', content: characterInfo.fc_name != '' ? characterInfo.fc_name : 'unknown' },
+        { title: 'Birthdate', content: characterInfo.birthdate || 'unknown date' }
     ]
 
     const characterDetails = [
@@ -66,6 +68,18 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
                                 </tr>
                             )
                         ))}
+                        {characterInfo.died != 0 &&
+                            <tr>
+                                <td>Died</td>
+                                <td>{characterInfo.deathdate || 'unknown date'}</td>
+                            </tr>
+                        }
+                        {characterInfo.resurrected != 0 &&
+                            <tr>
+                                <td>Resurrected</td>
+                                <td>{characterInfo.resurrected_date || 'unknown date'}</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
