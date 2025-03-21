@@ -18,7 +18,7 @@ const Navbar = () => {
         </li>
         <li>
           <NavLink to="/morp">
-            <button>what's morp</button>
+            <button>what's MORP?</button>
             </NavLink>
         </li>
         <li>
