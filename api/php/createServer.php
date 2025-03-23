@@ -82,6 +82,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     // Close the statement
                     $stmt->close();
 
+                    // Prepare a SQL statement to insert a row into the user_character_need table
+                    $stmt = $conn->prepare("INSERT INTO user_character_need (server_id) VALUES (?)");
+                    
+                    if ($stmt === false) {
+                        throw new Exception('Failed to prepare the query for user_character_need: ' . $conn->error);
+                    }
+
+                    // Bind the parameters to the SQL query
+                    $stmt->bind_param('i', $serverId);
+                    
+                    // Execute the query
+                    if (!$stmt->execute()) {
+                        throw new Exception('Failed to insert into user_character_need: ' . $stmt->error);
+                    }
+
+                    // Close the statement
+                    $stmt->close();
+
                     // Prepare a SQL statement to insert the user as a server member, owner, and moderator
                     $stmt = $conn->prepare("INSERT INTO Server_Member (user_id, server_id, is_owner, is_moderator) VALUES (?, ?, ?, ?)");
                     

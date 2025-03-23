@@ -38,7 +38,7 @@ const ServerSettings = (props) => {
                         
                     )}
                     {activeTab === 'CharacterWantedElements' && (
-                        <WantedElements />
+                        <WantedElements serverId={props.server.id} />
                     )}
                     {activeTab === 'UsersControl' && (
                         <UsersControl allUsers={props.allUsers} onRoleReload={props.onRoleReload} />
