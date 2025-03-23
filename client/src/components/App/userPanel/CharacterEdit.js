@@ -41,6 +41,7 @@ const CharacterEdit = (props) => {
     const [profilePicFile, setProfilePicFile] = useState(null);
     const [aliases, setAliases] = useState([]);
     const [deleteExistingAliasIds, setDeleteExistingAliasIds] = useState([]);
+    const [characterNeeds, setCharacterNeeds] = useState([]); // State to store character needs
 
     const removeALias = (index, id) => {
         if (id == null) {
@@ -67,6 +68,22 @@ const CharacterEdit = (props) => {
             })
             .catch(error => {
                 console.error('There was an error fetching the character data!', error);
+            });
+
+        axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/characterWantedElements.php?serverId=${props.server_id}`)
+            .then(response => {
+                if (response.data.success) {
+                    const needs = Object.entries(response.data.data)
+                        .filter(([_, value]) => value === 1) // Filter fields where the column value is 1
+                        .map(([key]) => key);
+                    setCharacterNeeds(needs);
+                    console.log('Character needs:', needs); // Log the character needs for debugging
+                } else {
+                    console.warn('Unexpected response format or missing success flag:', response.data);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching character needs:', error);
             });
 
         axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/getCharacterData.php?characterId=${props.characterId}`)
@@ -103,7 +120,7 @@ const CharacterEdit = (props) => {
             .catch(error => {
                 console.error('There was an error fetching the character details!', error);
             });
-    }, [props.characterId]);
+    }, [props.characterId, props.server_id]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -336,12 +353,10 @@ const CharacterEdit = (props) => {
                                 </select>
                             </>
                         )}
-                        {formData.species && (
+                        {characterNeeds.includes('species_need') && (
                             <>
-                                <label>
-                                    Species:
-                                </label>
-                                <select name="species" value={formData.species} onChange={handleChange} required>
+                                <label>Species:</label>
+                                <select name="species" value={formData.species || ''} onChange={handleChange} required>
                                     <option value="">Select Species</option>
                                     {species.map((species) => (
                                         <option key={species.id} value={species.species}>{species.species}</option>
@@ -362,12 +377,10 @@ const CharacterEdit = (props) => {
                                 </select>
                             </>
                         )}
-                        {formData.affiliation && (
+                        {characterNeeds.includes('affiliation_need') && (
                             <>
-                                <label>
-                                    Affiliation:
-                                </label>
-                                <select name="affiliation" value={formData.affiliation} onChange={handleChange} required>
+                                <label>Affiliation:</label>
+                                <select name="affiliation" value={formData.affiliation || ''} onChange={handleChange}>
                                     <option value="">Select Affiliation</option>
                                     {affiliations.map((affiliation) => (
                                         <option key={affiliation.id} value={affiliation.affiliation}>{affiliation.affiliation}</option>
@@ -375,12 +388,10 @@ const CharacterEdit = (props) => {
                                 </select>
                             </>
                         )}
-                        {formData.nationality && (
+                        {characterNeeds.includes('nationality_need') && (
                             <>
-                                <label>
-                                    Nationality:
-                                </label>
-                                <select name="nationality" value={formData.nationality} onChange={handleChange} required>
+                                <label>Nationality:</label>
+                                <select name="nationality" value={formData.nationality || ''} onChange={handleChange} required>
                                     <option value="">Select Nationality</option>
                                     {nationalities.map((nationality) => (
                                         <option key={nationality.id} value={nationality.nationality}>{nationality.nationality}</option>
@@ -388,12 +399,10 @@ const CharacterEdit = (props) => {
                                 </select>
                             </>
                         )}
-                        {formData.occupation && (
+                        {characterNeeds.includes('occupation_need') && (
                             <>
-                                <label>
-                                    Occupation:
-                                </label>
-                                <select name="occupation" value={formData.occupation} onChange={handleChange} required>
+                                <label>Occupation:</label>
+                                <select name="occupation" value={formData.occupation || ''} onChange={handleChange} required>
                                     <option value="">Select Occupation</option>
                                     {occupations.map((occupation) => (
                                         <option key={occupation.id} value={occupation.occupation}>{occupation.occupation}</option>
@@ -401,34 +410,32 @@ const CharacterEdit = (props) => {
                                 </select>
                             </>
                         )}
-                        {formData.birthdate && (
+                        {characterNeeds.includes('birthdate_need') && (
                             <>
-                                <label>
-                                    Birthdate:
-                                </label>
-                                <input type="date" name="birthdate" value={formData.birthdate} onChange={handleChange} required/>
+                                <label>Birthdate:</label>
+                                <input type="date" name="birthdate" value={formData.birthdate} onChange={handleChange} required />
                             </>
                         )}
-                        <label>
-                            Died:
-                        </label>
-                        <input type="checkbox" name="died" checked={formData.died} onChange={handleChange} disabled={formData.status === 'Alive (Resurrected)' || formData.status === 'Deceased'} />
-                        {formData.died && (
+                        {characterNeeds.includes('deathdate_need') && (
                             <>
-                                <label>
-                                    Deathdate:
-                                </label>
-                                <input type="date" name="deathdate" value={formData.deathdate} onChange={handleChange} />
-                                <label>
-                                    Resurrected:
-                                </label>
+                                <label>Died:</label>
+                                <input type="checkbox" name="died" checked={formData.died} onChange={handleChange} disabled={formData.status === 'Alive (Resurrected)' || formData.status === 'Deceased'} />
+                                {formData.died && (
+                                    <>
+                                        <label>Deathdate:</label>
+                                        <input type="date" name="deathdate" value={formData.deathdate} onChange={handleChange} required />
+                                    </>
+                                )}
+                            </>
+                        )}
+                        {characterNeeds.includes('resurrected_date_need') && formData.died && (
+                            <>
+                                <label>Resurrected:</label>
                                 <input type="checkbox" name="resurrected" checked={formData.resurrected} onChange={handleChange} disabled={formData.status === 'Alive (Resurrected)'} />
                                 {formData.resurrected && (
                                     <>
-                                        <label>
-                                            Resurrected Date:
-                                        </label>
-                                        <input type="date" name="resurrected_date" value={formData.resurrected_date} onChange={handleChange} />
+                                        <label>Resurrected Date:</label>
+                                        <input type="date" name="resurrected_date" value={formData.resurrected_date} onChange={handleChange} required />
                                     </>
                                 )}
                             </>
@@ -441,66 +448,56 @@ const CharacterEdit = (props) => {
                                 <textarea name="bio" value={formData.bio} onChange={handleChange} required></textarea>
                             </>
                         )}
-                        {formData.powers && (
+                        {characterNeeds.includes('powers_need') && (
                             <>
-                                <label>
-                                    Powers:
-                                </label>
+                                <label>Powers:</label>
                                 <textarea name="powers" value={formData.powers} onChange={handleChange} required></textarea>
                             </>
                         )}
-                        {formData.weaknesses && (
+                        {characterNeeds.includes('weaknesses_need') && (
                             <>
-                                <label>
-                                    Weaknesses:
-                                </label>
+                                <label>Weaknesses:</label>
                                 <textarea name="weaknesses" value={formData.weaknesses} onChange={handleChange} required></textarea>
                             </>
                         )}
-                        {formData.used_item && (
+                        {characterNeeds.includes('used_item_need') && (
                             <>
-                                <label>
-                                    Used Item:
-                                </label>
+                                <label>Used Item:</label>
                                 <textarea name="used_item" value={formData.used_item} onChange={handleChange} required></textarea>
                             </>
                         )}
-                        {formData.family && (
+                        {characterNeeds.includes('family_need') && (
                             <>
-                                <label>
-                                    Family:
-                                </label>
+                                <label>Family:</label>
                                 <textarea name="family" value={formData.family} onChange={handleChange} required></textarea>
                             </>
                         )}
-                        {formData.universe && (
+                        {characterNeeds.includes('universe_need') && (
                             <>
-                                <label>
-                                    Universe:
-                                </label>
+                                <label>Universe:</label>
                                 <input type="text" name="universe" value={formData.universe} onChange={handleChange} required></input>
                             </>
                         )}
-                        {formData.fc_type && (
-                        <>
-                            <label>
-                                FC Type:
-                            </label>
-                            <select name="fc_type" value={formData.fc_type} onChange={handleChange} required> {/* Correct the field name to fc_type */}
-                                <option value="">Select FC Type</option>
-                                {fcTypes
-                                    .filter(fc => formData.is_own_character || fc.fc_type === 'Canon Cast')
-                                    .map((fc) => (
-                                        <option key={fc.id} value={fc.fc_type}>{fc.fc_type}</option>
-                                    ))}
-                            </select>
-                        
-                        
-                            <label htmlFor="fc_name">
-                                FC Name:
-                            </label>
-                            <input type="text" name="fc_name" value={formData.fc_name} onChange={handleChange} required />
-                        </>
+                        {characterNeeds.includes('fc_need') && (
+                            <>
+                                <label>FC Type:</label>
+                                <select name="fc_type" value={formData.fc_type || ''} onChange={handleChange} required>
+                                    <option value="">Select FC Type</option>
+                                    {fcTypes
+                                        .filter(fc => formData.is_own_character || fc.fc_type === 'Canon Cast')
+                                        .map((fc) => (
+                                            <option key={fc.id} value={fc.fc_type}>{fc.fc_type}</option>
+                                        ))}
+                                </select>
+                                {formData.fc_type && (
+                                    <>
+                                        <label htmlFor="fc_name">
+                                            FC Name:
+                                        </label>
+                                        <input type="text" name="fc_name" value={formData.fc_name} onChange={handleChange} required />
+                                    </>
+                                )}
+                            </>
                         )}
                         
                         <button type="submit" className='save-character-btn'>Save Character</button>
