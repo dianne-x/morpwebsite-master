@@ -5,7 +5,7 @@ import formatTextWithLineBreaks from '../../FormatTextWithLineBreaks';
 
 const CharacterInfo = ({ characterId, onClose, name, picture }) => {
     const [characterInfo, setCharacterInfo] = useState(null);
-    const [selectedPicMap, setSelectedPicMap] = useState(characterId);
+    const [selectedPicMap, setSelectedPicMap] = useState('character');
 
     useEffect(() => {
         // Fetch character information
@@ -30,7 +30,7 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
     }
 
     const characterPictureMap = {
-        [characterId]: `${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${picture || 'character.png'}`,
+        'character': `${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${picture || 'character.png'}`,
         ...characterInfo.aliases.reduce((acc, alias) => {
             acc[alias.id] = `${process.env.REACT_APP_IMAGE_BASE_URL}/aliasPictures/${alias.character_pic_path || 'alias.png'}`;
             return acc;
@@ -69,10 +69,12 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
                 <div className='character-pic-name'>
                     <img src={characterPictureMap[selectedPicMap]} alt="Character Icon" />
                     <h2
-                        onClick={() => setSelectedPicMap(characterId)} 
-                        className={selectedPicMap === characterId && "selected"}>
+                        style={{ textWrap: 'wrap' }}
+                        onClick={() => setSelectedPicMap("character")} 
+                        className={selectedPicMap === "character" && "selected"}>
                         {name}
                     </h2>
+                    {characterInfo && characterInfo.aliases.length > 0 &&
                     <ul>
                         <li>aliases:</li>
                         {
@@ -84,7 +86,7 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
                                     </li>
                                 ))
                         }
-                    </ul>
+                    </ul>}
                 </div>
                 <table>
                     <tbody>
