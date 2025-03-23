@@ -312,7 +312,9 @@ const CharacterEdit = (props) => {
                                 </button>
                             </div>
                         ))}
-                        <button type="button" onClick={addAlias}>Add Alias</button>
+                        {aliases.length < 4 &&
+                            <button type="button" className='save-character-btn' onClick={addAlias}>Add Alias</button>
+                        }
                         {formData.nickname && (
                             <>
                                 <label htmlFor="nickname">

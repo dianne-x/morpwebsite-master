@@ -76,11 +76,13 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
                     <ul>
                         <li>aliases:</li>
                         {
-                            characterInfo.aliases.map((alias, index) => (
-                                <li key={index} onClick={() => setSelectedPicMap(alias.id)}>
-                                    <p className={selectedPicMap === alias.id && "selected"}>{alias.name}</p>
-                                </li>
-                            ))
+                            characterInfo.aliases
+                                .sort((a, b) => b.name.length - a.name.length) // Sort aliases by name length in descending order
+                                .map((alias, index) => (
+                                    <li key={index} onClick={() => setSelectedPicMap(alias.id)}>
+                                        <p className={selectedPicMap === alias.id && "selected"}>{alias.name}</p>
+                                    </li>
+                                ))
                         }
                     </ul>
                 </div>
