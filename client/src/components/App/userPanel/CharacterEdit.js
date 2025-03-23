@@ -205,9 +205,19 @@ const CharacterEdit = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        console.log('Form Data:', formData);
+        const payload = {
+            ...formData,
+            aliases: aliases.map(alias => ({
+                id: alias.id,
+                name: alias.name,
+                character_pic_path: alias.character_pic_path
+            })),
+            deleteExistingAliasIds
+        };
 
-        axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/updateCharacter.php?character_id=${props.characterId}`, formData, {
+        console.log('Payload:', payload);
+
+        axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/updateCharacter.php?character_id=${props.characterId}`, payload, {
             headers: {
                 'Content-Type': 'application/json'
             }

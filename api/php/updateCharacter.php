@@ -100,6 +100,51 @@ if (!$stmt) {
 $stmt->bind_param("ssiiiiiiissisisssssssii", $name, $nickname, $genderId, $speciesId, $statusId, $affiliationId, $nationalityId, $occupationId, $fctypeId, $fcname, $birthdate, $died, $deathdate, $resurrected, $resurrected_date, $bio, $powers, $weaknesses, $used_item, $family, $universe, $is_own_character, $character_id);
 
 if ($stmt->execute()) {
+    // Handle aliases
+    if (isset($data['aliases']) && is_array($data['aliases'])) {
+        foreach ($data['aliases'] as $alias) {
+            $aliasId = $alias['id'] ?? null;
+            $aliasName = $alias['name'] ?? null;
+            $aliasPicPath = $alias['character_pic_path'] ?? null;
+
+            if ($aliasId === null) {
+                // Insert new alias
+                $insertAliasQuery = "INSERT INTO alias_character (character_id, name, character_pic_path) VALUES (?, ?, ?)";
+                $insertAliasStmt = $conn->prepare($insertAliasQuery);
+                if ($insertAliasStmt) {
+                    $insertAliasStmt->bind_param("iss", $character_id, $aliasName, $aliasPicPath);
+                    $insertAliasStmt->execute();
+                } else {
+                    error_log("Failed to prepare insert alias statement: " . $conn->error);
+                }
+            } else {
+                // Update existing alias
+                $updateAliasQuery = "UPDATE alias_character SET name = ?, character_pic_path = ? WHERE id = ?";
+                $updateAliasStmt = $conn->prepare($updateAliasQuery);
+                if ($updateAliasStmt) {
+                    $updateAliasStmt->bind_param("ssi", $aliasName, $aliasPicPath, $aliasId);
+                    $updateAliasStmt->execute();
+                } else {
+                    error_log("Failed to prepare update alias statement: " . $conn->error);
+                }
+            }
+        }
+    }
+
+    // Handle deleted aliases
+    if (isset($data['deleteExistingAliasIds']) && is_array($data['deleteExistingAliasIds'])) {
+        foreach ($data['deleteExistingAliasIds'] as $aliasId) {
+            $deleteAliasQuery = "DELETE FROM alias_character WHERE id = ?";
+            $deleteAliasStmt = $conn->prepare($deleteAliasQuery);
+            if ($deleteAliasStmt) {
+                $deleteAliasStmt->bind_param("i", $aliasId);
+                $deleteAliasStmt->execute();
+            } else {
+                error_log("Failed to prepare delete alias statement: " . $conn->error);
+            }
+        }
+    }
+
     // Fetch the updated character data
     $fetchQuery = "SELECT uc.id, uc.character_name AS name, uc.nickname, g.gender, cs.species, s.status, a.affiliation, n.nationality, o.occupation, fc.fc_type, uc.fc_name, uc.character_pic_path, uc.birthdate, uc.died, uc.deathdate, uc.resurrected, uc.resurrected_date, uc.bio, uc.powers, uc.weaknesses, uc.used_item, uc.family, uc.universe, uc.is_own_character, uc.is_verified
                    FROM user_character uc
