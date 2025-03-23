@@ -126,7 +126,7 @@ $fctypeId = fetchId($conn, 'character_fc', 'fc_type', $fctype);
 
 // Update the character data
 $query = "UPDATE user_character 
-          SET character_name = ?, nickname = ?, gender_id = ?, species_id = ?, status_id = ?, affiliation_id = ?, nationality_id = ?, occupation_id = ?, fc_type_id = ?, fc_name = ?, birthdate = ?, died = ?, deathdate = ?, resurrected = ?, resurrected_date = ?, bio = ?, powers = ?, weaknesses = ?, used_item = ?, family = ?, universe = ?, is_own_character = ?, is_verified = 0
+          SET character_name = ?, nickname = ?, gender_id = ?, species_id = ?, status_id = ?, affiliation_id = ?, nationality_id = ?, occupation_id = ?, fc_type_id = ?, fc_name = ?, birthdate = ?, died = ?, deathdate = ?, resurrected = ?, resurrected_date = ?, bio = ?, powers = ?, weaknesses = ?, used_item = ?, family = ?, universe = ?, is_own_character = ?, character_pic_path = ?, is_verified = 0
           WHERE id = ?";
 $stmt = $conn->prepare($query);
 if (!$stmt) {
@@ -134,7 +134,7 @@ if (!$stmt) {
     echo json_encode(['success' => false, 'error' => 'Failed to prepare update statement.']);
     exit();
 }
-$stmt->bind_param("ssiiiiiiissisisssssssii", $name, $nickname, $genderId, $speciesId, $statusId, $affiliationId, $nationalityId, $occupationId, $fctypeId, $fcname, $birthdate, $died, $deathdate, $resurrected, $resurrected_date, $bio, $powers, $weaknesses, $used_item, $family, $universe, $is_own_character, $character_id);
+$stmt->bind_param("ssiiiiiiissisisssssssisi", $name, $nickname, $genderId, $speciesId, $statusId, $affiliationId, $nationalityId, $occupationId, $fctypeId, $fcname, $birthdate, $died, $deathdate, $resurrected, $resurrected_date, $bio, $powers, $weaknesses, $used_item, $family, $universe, $is_own_character, $data['character_pic_path'], $character_id);
 
 if ($stmt->execute()) {
     // Handle aliases

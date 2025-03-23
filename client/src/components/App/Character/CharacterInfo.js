@@ -5,6 +5,7 @@ import formatTextWithLineBreaks from '../../FormatTextWithLineBreaks';
 
 const CharacterInfo = ({ characterId, onClose, name, picture }) => {
     const [characterInfo, setCharacterInfo] = useState(null);
+    const [selectedPicMap, setSelectedPicMap] = useState(characterId);
 
     useEffect(() => {
         // Fetch character information
@@ -27,6 +28,17 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
     if (!characterInfo) {
         return <div>Loading...</div>;
     }
+
+    const characterPictureMap = {
+        [characterId]: `${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${picture || 'character.png'}`,
+        ...characterInfo.aliases.reduce((acc, alias) => {
+            acc[alias.id] = `${process.env.REACT_APP_IMAGE_BASE_URL}/aliasPictures/${alias.character_pic_path || 'alias.png'}`;
+            return acc;
+        }, {})
+    };
+
+    // Log the object for debugging
+    console.log('Character Picture Map:', characterPictureMap);
 
     const characterDataTable = [
         { title: 'Nickname', content: characterInfo.nickname },
@@ -55,8 +67,22 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
             <button className="close" onClick={onClose}>&times;</button>
             <div className='character-data'>
                 <div className='character-pic-name'>
-                    <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${picture || 'character.png'}`} alt="Character Icon" />
-                    <h2>{name}</h2>
+                    <img src={characterPictureMap[selectedPicMap]} alt="Character Icon" />
+                    <h2
+                        onClick={() => setSelectedPicMap(characterId)} 
+                        className={selectedPicMap === characterId && "selected"}>
+                        {name}
+                    </h2>
+                    <ul>
+                        <li>aliases:</li>
+                        {
+                            characterInfo.aliases.map((alias, index) => (
+                                <li key={index} onClick={() => setSelectedPicMap(alias.id)}>
+                                    <p className={selectedPicMap === alias.id && "selected"}>{alias.name}</p>
+                                </li>
+                            ))
+                        }
+                    </ul>
                 </div>
                 <table>
                     <tbody>
