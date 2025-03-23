@@ -17,18 +17,18 @@ if ($conn->connect_error) {
 $data = $_POST;
 
 // Validate and assign data
-$name = isset($data['name']) ? $data['name'] : null;
-$nickname = isset($data['nickname']) ? $data['nickname'] : null; // Add nickname to data
-$gender = isset($data['gender']) ? $data['gender'] : null;
-$species = isset($data['species']) ? $data['species'] : null;
-$status = isset($data['status']) ? $data['status'] : null;
-$user_id = isset($data['user_id']) ? $data['user_id'] : null;
-$affiliation = isset($data['affiliation']) ? $data['affiliation'] : null;
-$nationality = isset($data['nationality']) ? $data['nationality'] : null;
-$occupation = isset($data['occupation']) ? $data['occupation'] : null;
-$fctype = isset($data['fc_type']) ? $data['fc_type'] : null;
-$fcname = isset($data['fc_name']) ? $data['fc_name'] : null; // Ensure fc_name is assigned
-$server_id = isset($data['server_id']) ? $data['server_id'] : null;
+$name = isset($data['name']) && $data['name'] !== "" ? $data['name'] : null;
+$nickname = isset($data['nickname']) && $data['nickname'] !== "" ? $data['nickname'] : null; // Add nickname to data
+$gender = isset($data['gender']) && $data['gender'] !== "" ? $data['gender'] : null;
+$species = isset($data['species']) && $data['species'] !== "" ? $data['species'] : null;
+$status = isset($data['status']) && $data['status'] !== "" ? $data['status'] : null;
+$user_id = isset($data['user_id']) && $data['user_id'] !== "" ? $data['user_id'] : null;
+$affiliation = isset($data['affiliation']) && $data['affiliation'] !== "" ? $data['affiliation'] : null;
+$nationality = isset($data['nationality']) && $data['nationality'] !== "" ? $data['nationality'] : null;
+$occupation = isset($data['occupation']) && $data['occupation'] !== "" ? $data['occupation'] : null;
+$fctype = isset($data['fc_type']) && $data['fc_type'] !== "" ? $data['fc_type'] : null;
+$fcname = isset($data['fc_name']) && $data['fc_name'] !== "" ? $data['fc_name'] : null; // Ensure fc_name is assigned
+$server_id = isset($data['server_id']) && $data['server_id'] !== "" ? $data['server_id'] : null;
 $character_pic_path = isset($_FILES['character_pic_path']) ? $_FILES['character_pic_path'] : null;
 $is_own_character = isset($data['is_own_character']) ? (filter_var($data['is_own_character'], FILTER_VALIDATE_BOOLEAN) ? 1 : 0) : 0;
 
@@ -83,74 +83,117 @@ if ($serverMemberResult->num_rows > 0) {
 }
 
 // Get the IDs for gender, species, and status
-$genderQuery = "SELECT id FROM gender WHERE gender = '$gender'";
-$genderResult = $conn->query($genderQuery);
-if ($genderResult && $genderResult->num_rows > 0) {
-    $genderId = $genderResult->fetch_assoc()['id'];
-} else {
-    $response['error'] = "Gender not found.";
-    echo json_encode($response);
-    exit();
+$genderId = null;
+if ($gender !== null) {
+    $genderQuery = "SELECT id FROM gender WHERE gender = ?";
+    $stmt = $conn->prepare($genderQuery);
+    $stmt->bind_param("s", $gender);
+    $stmt->execute();
+    $genderResult = $stmt->get_result();
+    if ($genderResult && $genderResult->num_rows > 0) {
+        $genderId = $genderResult->fetch_assoc()['id'];
+    } else {
+        $response['error'] = "Gender not found.";
+        echo json_encode($response);
+        exit();
+    }
 }
 
-$speciesQuery = "SELECT id FROM character_species WHERE species = '$species'";
-$speciesResult = $conn->query($speciesQuery);
-if ($speciesResult && $speciesResult->num_rows > 0) {
-    $speciesId = $speciesResult->fetch_assoc()['id'];
-} else {
-    $response['error'] = "Species not found.";
-    echo json_encode($response);
-    exit();
+$speciesId = null;
+if ($species !== null) {
+    $speciesQuery = "SELECT id FROM character_species WHERE species = ?";
+    $stmt = $conn->prepare($speciesQuery);
+    $stmt->bind_param("s", $species);
+    $stmt->execute();
+    $speciesResult = $stmt->get_result();
+    if ($speciesResult && $speciesResult->num_rows > 0) {
+        $speciesId = $speciesResult->fetch_assoc()['id'];
+    } else {
+        $response['error'] = "Species not found.";
+        echo json_encode($response);
+        exit();
+    }
 }
 
-$affiliationQuery = "SELECT id FROM affiliation WHERE affiliation = '$affiliation'";
-$affiliationResult = $conn->query($affiliationQuery);
-if ($affiliationResult && $affiliationResult->num_rows > 0) {
-    $affiliationId = $affiliationResult->fetch_assoc()['id'];
-} else {
-    $response['error'] = "Affiliation not found.";
-    echo json_encode($response);
-    exit();
+// Repeat similar logic for affiliation, nationality, occupation, fc_type, and status
+$affiliationId = null;
+if ($affiliation !== null) {
+    $affiliationQuery = "SELECT id FROM affiliation WHERE affiliation = ?";
+    $stmt = $conn->prepare($affiliationQuery);
+    $stmt->bind_param("s", $affiliation);
+    $stmt->execute();
+    $affiliationResult = $stmt->get_result();
+    if ($affiliationResult && $affiliationResult->num_rows > 0) {
+        $affiliationId = $affiliationResult->fetch_assoc()['id'];
+    } else {
+        $response['error'] = "Affiliation not found.";
+        echo json_encode($response);
+        exit();
+    }
 }
 
-$nationalityQuery = "SELECT id FROM nationality WHERE nationality = '$nationality'";
-$nationalityResult = $conn->query($nationalityQuery);
-if ($nationalityResult && $nationalityResult->num_rows > 0) {
-    $nationalityId = $nationalityResult->fetch_assoc()['id'];
-} else {
-    $response['error'] = "Nationality not found.";
-    echo json_encode($response);
-    exit();
+$nationalityId = null;
+if ($nationality !== null) {
+    $nationalityQuery = "SELECT id FROM nationality WHERE nationality = ?";
+    $stmt = $conn->prepare($nationalityQuery);
+    $stmt->bind_param("s", $nationality);
+    $stmt->execute();
+    $nationalityResult = $stmt->get_result();
+    if ($nationalityResult && $nationalityResult->num_rows > 0) {
+        $nationalityId = $nationalityResult->fetch_assoc()['id'];
+    } else {
+        $response['error'] = "Nationality not found.";
+        echo json_encode($response);
+        exit();
+    }
 }
 
-$occupationQuery = "SELECT id FROM occupation WHERE occupation = '$occupation'";
-$occupationResult = $conn->query($occupationQuery);
-if ($occupationResult && $occupationResult->num_rows > 0) {
-    $occupationId = $occupationResult->fetch_assoc()['id'];
-} else {
-    $response['error'] = "Occupation not found.";
-    echo json_encode($response);
-    exit();
+$occupationId = null;
+if ($occupation !== null) {
+    $occupationQuery = "SELECT id FROM occupation WHERE occupation = ?";
+    $stmt = $conn->prepare($occupationQuery);
+    $stmt->bind_param("s", $occupation);
+    $stmt->execute();
+    $occupationResult = $stmt->get_result();
+    if ($occupationResult && $occupationResult->num_rows > 0) {
+        $occupationId = $occupationResult->fetch_assoc()['id'];
+    } else {
+        $response['error'] = "Occupation not found.";
+        echo json_encode($response);
+        exit();
+    }
 }
 
-$fctypeQuery = "SELECT id FROM character_fc WHERE fc_type = '$fctype'";
-$fctypeResult = $conn->query($fctypeQuery);
-if ($fctypeResult && $fctypeResult->num_rows > 0) {
-    $fctypeId = $fctypeResult->fetch_assoc()['id'];
-} else {
-    $response['error'] = "FC Type not found.";
-    echo json_encode($response);
-    exit();
+$fctypeId = null;
+if ($fctype !== null) {
+    $fctypeQuery = "SELECT id FROM character_fc WHERE fc_type = ?";
+    $stmt = $conn->prepare($fctypeQuery);
+    $stmt->bind_param("s", $fctype);
+    $stmt->execute();
+    $fctypeResult = $stmt->get_result();
+    if ($fctypeResult && $fctypeResult->num_rows > 0) {
+        $fctypeId = $fctypeResult->fetch_assoc()['id'];
+    } else {
+        $response['error'] = "FC Type not found.";
+        echo json_encode($response);
+        exit();
+    }
 }
 
-$statusQuery = "SELECT id FROM character_status WHERE status = '$status'";
-$statusResult = $conn->query($statusQuery);
-if ($statusResult && $statusResult->num_rows > 0) {
-    $statusId = $statusResult->fetch_assoc()['id'];
-} else {
-    $response['error'] = "Status not found.";
-    echo json_encode($response);
-    exit();
+$statusId = null;
+if ($status !== null) {
+    $statusQuery = "SELECT id FROM character_status WHERE status = ?";
+    $stmt = $conn->prepare($statusQuery);
+    $stmt->bind_param("s", $status);
+    $stmt->execute();
+    $statusResult = $stmt->get_result();
+    if ($statusResult && $statusResult->num_rows > 0) {
+        $statusId = $statusResult->fetch_assoc()['id'];
+    } else {
+        $response['error'] = "Status not found.";
+        echo json_encode($response);
+        exit();
+    }
 }
 
 $birthdate = isset($data['birthdate']) && !empty($data['birthdate']) ? date('Y-m-d', strtotime($data['birthdate'])) : null;
