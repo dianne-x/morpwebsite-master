@@ -94,13 +94,18 @@ const ServerCharacterContainer = (props) => {
     };
 
     const handleCharacterUpdated = (updatedCharacter) => {
-        if (updatedCharacter && updatedCharacter.id) {
-            setCharacters(characters.map(character => character.id === updatedCharacter.id ? updatedCharacter : character));
-            setCharacterEditOpen(false);
-            setRefreshCharacters(!refreshCharacters);
-        } else {
+        if (!updatedCharacter) {
             console.error('Updated character data is invalid:', updatedCharacter);
+            return;
         }
+
+        setCharacters(prevCharacters => 
+            prevCharacters.map(character =>
+                character.id === updatedCharacter.id ? updatedCharacter : character
+            )
+        );
+        setCharacterEditOpen(false);
+        setRefreshCharacters(!refreshCharacters);
     };
 
     return (

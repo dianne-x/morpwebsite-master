@@ -62,7 +62,7 @@ const CharacterEdit = (props) => {
                     nickname: character.nickname,
                     gender: character.gender,
                     species: character.species,
-                    status: character.status_type,
+                    status: character.status,
                     affiliation: character.affiliation,
                     nationality: character.nationality,
                     occupation: character.occupation,
@@ -187,44 +187,34 @@ const CharacterEdit = (props) => {
         setAliases([...aliases, ]);
     };
 
-    const handleSubmit = () => {
-        if (!formData.name || !formData.gender || !formData.species || !formData.status || !formData.affiliation || !formData.nationality || !formData.occupation || !formData.fc_type) {
-            alert('Please fill out all required fields.');
-            return;
-        }
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
-        const formDataToSend = new FormData();
-        for (const key in formData) {
-            formDataToSend.append(key, formData[key]);
-        }
-        if (profilePicFile) {
-            formDataToSend.append('character_pic_path', profilePicFile);
-        } else {
-            formDataToSend.append('character_pic_path', tempProfilePic);
-        }
+        console.log('Form Data:', formData);
 
-        formDataToSend.append('aliases', JSON.stringify(aliases.map(alias => ({ name: alias.name }))));
-        aliases.forEach((alias, index) => {
-            if (alias.character_pic_path) {
-                formDataToSend.append(`alias_pics[${index}]`, alias.character_pic_path);
-            }
-        });
-
-        axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/updateCharacter.php`, formDataToSend, {
+        axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/updateCharacter.php?character_id=${props.characterId}`, formData, {
             headers: {
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': 'application/json'
             }
         })
             .then(response => {
+                console.log('Response:', response.data); // Log the full response for debugging
                 if (response.data.success) {
-                    alert('Character updated successfully!');
-                    props.onCharacterUpdated(response.data.character);
+                    alert(response.data.message || 'Character updated successfully!');
+                    if (response.data.character) {
+                        props.onCharacterUpdated(response.data.character); // Pass the updated character data to the parent component
+                    } else {
+                        console.error('Updated character data is missing.');
+                        alert('Updated character data is missing.');
+                    }
                 } else {
                     console.error('Error updating character:', response.data.error);
+                    alert(`Error: ${response.data.error || 'Unknown error occurred.'}`);
                 }
             })
             .catch(error => {
                 console.error('There was an error updating the character!', error);
+                alert(`Unexpected error: ${error.message}`);
             });
     };
 
@@ -234,7 +224,7 @@ const CharacterEdit = (props) => {
             <div className='character-container'>
                 <h1>Edit Character</h1>
                 <div className='form-wrapper'>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <label 
                             htmlFor="character_pic_path" id="pic-label"
                             style={{backgroundImage: `url(${tempProfilePic || `${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${formData.character_pic_path || 'character.png'}`})`}}>
@@ -245,10 +235,14 @@ const CharacterEdit = (props) => {
                             id="character_pic_path"
                             onChange={handleFileChange}
                         />
-                        <label htmlFor="name">
-                            Name:
-                        </label>
-                        <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+                        {formData.name && (
+                            <>
+                                <label htmlFor="name">
+                                    Name:
+                                </label>
+                                <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+                            </>
+                        )}
                         <label>
                             Aliases:
                         </label>
@@ -275,73 +269,105 @@ const CharacterEdit = (props) => {
                                     value={alias.name}
                                     onChange={(e) => handleAliasChange(index, e)}
                                     placeholder="Alias Name"
+                                    required
                                 />
                             </div>
                         ))}
                         <button type="button" onClick={addAlias}>Add Alias</button>
-                        <label htmlFor="nickname">
-                            Nickname:
-                        </label>
-                        <input type="text" name="nickname" value={formData.nickname} onChange={handleChange} />
-                        <label>
-                            Gender:
-                        </label>
-                        <select name="gender" value={formData.gender} onChange={handleChange} required>
-                            <option value="">Select Gender</option>
-                            {genders.map((gender) => (
-                                <option key={gender.id} value={gender.gender}>{gender.gender}</option>
-                            ))}
-                        </select>
-                        <label>
-                            Species:
-                        </label>
-                        <select name="species" value={formData.species} onChange={handleChange} required>
-                            <option value="">Select Species</option>
-                            {species.map((species) => (
-                                <option key={species.id} value={species.species}>{species.species}</option>
-                            ))}
-                        </select>
-                        <label>
-                            Status:
-                        </label>
-                        <select name="status" value={formData.status} onChange={handleChange} required>
-                            <option value="">Select Status</option>
-                            {statuses.map((status) => (
-                                <option key={status.id} value={status.status}>{status.status}</option>
-                            ))}
-                        </select>
-                        <label>
-                            Affiliation:
-                        </label>
-                        <select name="affiliation" value={formData.affiliation} onChange={handleChange}> 
-                            <option value="">Select Affiliation</option>
-                            {affiliations.map((affiliation) => (
-                                <option key={affiliation.id} value={affiliation.affiliation}>{affiliation.affiliation}</option>
-                            ))}
-                        </select>
-                        <label>
-                            Nationality:
-                        </label>
-                            <select name="nationality" value={formData.nationality} onChange={handleChange}>
-                                <option value="">Select Nationality</option>
-                                {nationalities.map((nationality) => (
-                                    <option key={nationality.id} value={nationality.nationality}>{nationality.nationality}</option>
-                                ))}
-                            </select>
-                        <label>
-                            Occupation:
-                        </label>
-                            <select name="occupation" value={formData.occupation} onChange={handleChange}>
-                                <option value="">Select Occupation</option>
-                                {occupations.map((occupation) => (
-                                    <option key={occupation.id} value={occupation.occupation}>{occupation.occupation}</option>
-                                ))}
-                            </select>
-                        
-                        <label>
-                            Birthdate:
-                        </label>
-                        <input type="date" name="birthdate" value={formData.birthdate} onChange={handleChange} />
+                        {formData.nickname && (
+                            <>
+                                <label htmlFor="nickname">
+                                    Nickname:
+                                </label>
+                                <input type="text" name="nickname" value={formData.nickname} onChange={handleChange} required/> 
+                            </>
+                        )}
+                        {formData.gender && (
+                            <>
+                                <label>
+                                    Gender:
+                                </label>
+                                <select name="gender" value={formData.gender} onChange={handleChange} required>
+                                    <option value="">Select Gender</option>
+                                    {genders.map((gender) => (
+                                        <option key={gender.id} value={gender.gender}>{gender.gender}</option>
+                                    ))}
+                                </select>
+                            </>
+                        )}
+                        {formData.species && (
+                            <>
+                                <label>
+                                    Species:
+                                </label>
+                                <select name="species" value={formData.species} onChange={handleChange} required>
+                                    <option value="">Select Species</option>
+                                    {species.map((species) => (
+                                        <option key={species.id} value={species.species}>{species.species}</option>
+                                    ))}
+                                </select>
+                            </>
+                        )}
+                        {formData.status && (
+                            <>
+                                <label>
+                                    Status:
+                                </label>
+                                <select name="status" value={formData.status} onChange={handleChange} required>
+                                    <option value="">Select Status</option>
+                                    {statuses.map((status) => (
+                                        <option key={status.id} value={status.status}>{status.status}</option>
+                                    ))}
+                                </select>
+                            </>
+                        )}
+                        {formData.affiliation && (
+                            <>
+                                <label>
+                                    Affiliation:
+                                </label>
+                                <select name="affiliation" value={formData.affiliation} onChange={handleChange} required>
+                                    <option value="">Select Affiliation</option>
+                                    {affiliations.map((affiliation) => (
+                                        <option key={affiliation.id} value={affiliation.affiliation}>{affiliation.affiliation}</option>
+                                    ))}
+                                </select>
+                            </>
+                        )}
+                        {formData.nationality && (
+                            <>
+                                <label>
+                                    Nationality:
+                                </label>
+                                <select name="nationality" value={formData.nationality} onChange={handleChange} required>
+                                    <option value="">Select Nationality</option>
+                                    {nationalities.map((nationality) => (
+                                        <option key={nationality.id} value={nationality.nationality}>{nationality.nationality}</option>
+                                    ))}
+                                </select>
+                            </>
+                        )}
+                        {formData.occupation && (
+                            <>
+                                <label>
+                                    Occupation:
+                                </label>
+                                <select name="occupation" value={formData.occupation} onChange={handleChange} required>
+                                    <option value="">Select Occupation</option>
+                                    {occupations.map((occupation) => (
+                                        <option key={occupation.id} value={occupation.occupation}>{occupation.occupation}</option>
+                                    ))}
+                                </select>
+                            </>
+                        )}
+                        {formData.birthdate && (
+                            <>
+                                <label>
+                                    Birthdate:
+                                </label>
+                                <input type="date" name="birthdate" value={formData.birthdate} onChange={handleChange} required/>
+                            </>
+                        )}
                         <label>
                             Died:
                         </label>
@@ -366,33 +392,59 @@ const CharacterEdit = (props) => {
                                 )}
                             </>
                         )}
-                        <label>
-                            Bio:
-                        </label>
-                        <textarea name="bio" value={formData.bio} onChange={handleChange}></textarea>
-                        <label>
-                            Powers:
-                        </label>
-                        <textarea name="powers" value={formData.powers} onChange={handleChange}></textarea>
-                        <label>
-                            Weaknesses:
-                        </label>
-                        <textarea name="weaknesses" value={formData.weaknesses} onChange={handleChange}></textarea>
-                        <label>
-                            Used Item:
-                        </label>
-                        <textarea name="used_item" value={formData.used_item} onChange={handleChange}></textarea>
-                        <label>
-                            Family:
-                        </label>
-                        <textarea name="family" value={formData.family} onChange={handleChange}></textarea>
-                        <label>
-                            Universe:
-                        </label>
-                        <input type="text" name="universe" value={formData.universe} onChange={handleChange}></input>
-                        <label>
-                            FC Type:
-                        </label>
+                        {formData.bio && (
+                            <>
+                                <label>
+                                    Bio:
+                                </label>
+                                <textarea name="bio" value={formData.bio} onChange={handleChange} required></textarea>
+                            </>
+                        )}
+                        {formData.powers && (
+                            <>
+                                <label>
+                                    Powers:
+                                </label>
+                                <textarea name="powers" value={formData.powers} onChange={handleChange} required></textarea>
+                            </>
+                        )}
+                        {formData.weaknesses && (
+                            <>
+                                <label>
+                                    Weaknesses:
+                                </label>
+                                <textarea name="weaknesses" value={formData.weaknesses} onChange={handleChange} required></textarea>
+                            </>
+                        )}
+                        {formData.used_item && (
+                            <>
+                                <label>
+                                    Used Item:
+                                </label>
+                                <textarea name="used_item" value={formData.used_item} onChange={handleChange} required></textarea>
+                            </>
+                        )}
+                        {formData.family && (
+                            <>
+                                <label>
+                                    Family:
+                                </label>
+                                <textarea name="family" value={formData.family} onChange={handleChange} required></textarea>
+                            </>
+                        )}
+                        {formData.universe && (
+                            <>
+                                <label>
+                                    Universe:
+                                </label>
+                                <input type="text" name="universe" value={formData.universe} onChange={handleChange} required></input>
+                            </>
+                        )}
+                        {formData.fc_type && (
+                        <>
+                            <label>
+                                FC Type:
+                            </label>
                             <select name="fc_type" value={formData.fc_type} onChange={handleChange} required> {/* Correct the field name to fc_type */}
                                 <option value="">Select FC Type</option>
                                 {fcTypes
@@ -401,16 +453,16 @@ const CharacterEdit = (props) => {
                                         <option key={fc.id} value={fc.fc_type}>{fc.fc_type}</option>
                                     ))}
                             </select>
-                        {formData.fc_type && (
-                            <>
-                                <label htmlFor="fc_name">
-                                    FC Name:
-                                </label>
-                                <input type="text" name="fc_name" value={formData.fc_name} onChange={handleChange} required />
-                            </>
+                        
+                        
+                            <label htmlFor="fc_name">
+                                FC Name:
+                            </label>
+                            <input type="text" name="fc_name" value={formData.fc_name} onChange={handleChange} required />
+                        </>
                         )}
                         
-                        <button type="button" className='save-character-btn' onClick={handleSubmit}>Save Character</button>
+                        <button type="submit" className='save-character-btn'>Save Character</button>
                     </form>
                 </div>
                 <button className="close" onClick={props.closeForm}>&times;</button>
