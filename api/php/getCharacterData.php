@@ -68,7 +68,8 @@ if ($result->num_rows > 0) {
 
     // Fetch aliases
     $aliasStmt = $conn->prepare("
-        SELECT 
+        SELECT
+            alias_character.id,
             alias_character.name,
             alias_character.character_pic_path
         FROM alias_character

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const CharacterEdit = (props) => {
     const [genders, setGenders] = useState([]);
@@ -38,6 +40,19 @@ const CharacterEdit = (props) => {
     const [tempProfilePic, setTempProfilePic] = useState('');
     const [profilePicFile, setProfilePicFile] = useState(null);
     const [aliases, setAliases] = useState([]);
+    const [deleteExistingAliasIds, setDeleteExistingAliasIds] = useState([]);
+
+    const removeALias = (index, id) => {
+        if (id == null) {
+            setAliases(aliases.filter((_, i) => i !== index));
+            return
+        }
+        // eslint-disable-next-line no-restricted-globals
+        if (confirm('Are you sure you want to delete an existing alias?')) {
+            setDeleteExistingAliasIds([...deleteExistingAliasIds, id]);
+            setAliases(aliases.filter((_, i) => i !== index));
+        }
+    }
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/getCharacterCreation.php`)
@@ -184,7 +199,7 @@ const CharacterEdit = (props) => {
     };
 
     const addAlias = () => {
-        setAliases([...aliases, ]);
+        setAliases([...aliases, { id: null, name: '', character_pic_path: '' }]);
     };
 
     const handleSubmit = (e) => {
@@ -271,6 +286,9 @@ const CharacterEdit = (props) => {
                                     placeholder="Alias Name"
                                     required
                                 />
+                                <button type="button" onClick={() => removeALias(index, alias.id)} className='remove-alias-btn'>
+                                    <FontAwesomeIcon icon={faXmark} />
+                                </button>
                             </div>
                         ))}
                         <button type="button" onClick={addAlias}>Add Alias</button>
