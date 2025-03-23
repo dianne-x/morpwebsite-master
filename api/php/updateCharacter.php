@@ -28,11 +28,48 @@ if (!$character_id) {
     exit();
 }
 
-// Parse JSON data
-$data = json_decode(file_get_contents('php://input'), true);
-if (!$data) {
-    echo json_encode(['success' => false, 'error' => 'Invalid JSON data.']);
-    exit();
+// Parse form data from $_POST and $_FILES
+$data = $_POST;
+
+// Decode JSON fields
+$data['aliases'] = isset($data['aliases']) ? json_decode($data['aliases'], true) : [];
+$data['deleteExistingAliasIds'] = isset($data['deleteExistingAliasIds']) ? json_decode($data['deleteExistingAliasIds'], true) : [];
+
+// Handle character picture upload
+if (isset($_FILES['character_pic_path']) && $_FILES['character_pic_path']['error'] === UPLOAD_ERR_OK) {
+    $fileTmpPath = $_FILES['character_pic_path']['tmp_name'];
+    $fileName = $_FILES['character_pic_path']['name'];
+    $fileNameCmps = explode(".", $fileName);
+    $fileExtension = strtolower(end($fileNameCmps));
+    $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
+    $uploadFileDir = '../../storage/images/characterPictures/';
+    $destPath = $uploadFileDir . $newFileName;
+
+    if (move_uploaded_file($fileTmpPath, $destPath)) {
+        $data['character_pic_path'] = $newFileName;
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Failed to upload character picture.']);
+        exit();
+    }
+}
+
+// Handle alias picture uploads
+if (isset($_FILES['alias_pics'])) {
+    foreach ($_FILES['alias_pics']['tmp_name'] as $index => $tmpName) {
+        if ($_FILES['alias_pics']['error'][$index] === UPLOAD_ERR_OK) {
+            $fileTmpPath = $tmpName;
+            $fileName = $_FILES['alias_pics']['name'][$index];
+            $fileNameCmps = explode(".", $fileName);
+            $fileExtension = strtolower(end($fileNameCmps));
+            $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
+            $uploadFileDir = '../../storage/images/aliasPictures/';
+            $destPath = $uploadFileDir . $newFileName;
+
+            if (move_uploaded_file($fileTmpPath, $destPath)) {
+                $data['aliases'][$index]['character_pic_path'] = $newFileName;
+            }
+        }
+    }
 }
 
 // Validate and assign data

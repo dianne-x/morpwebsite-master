@@ -205,21 +205,32 @@ const CharacterEdit = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const payload = {
-            ...formData,
-            aliases: aliases.map(alias => ({
-                id: alias.id,
-                name: alias.name,
-                character_pic_path: alias.character_pic_path
-            })),
-            deleteExistingAliasIds
-        };
+        const formDataToSend = new FormData();
+        for (const key in formData) {
+            formDataToSend.append(key, formData[key]);
+        }
 
-        console.log('Payload:', payload);
+        if (profilePicFile) {
+            formDataToSend.append('character_pic_path', profilePicFile);
+        }
 
-        axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/updateCharacter.php?character_id=${props.characterId}`, payload, {
+        formDataToSend.append('aliases', JSON.stringify(aliases.map(alias => ({
+            id: alias.id,
+            name: alias.name,
+            character_pic_path: alias.character_pic_path
+        }))));
+
+        aliases.forEach((alias, index) => {
+            if (alias.pic) {
+                formDataToSend.append(`alias_pics[${index}]`, alias.pic);
+            }
+        });
+
+        formDataToSend.append('deleteExistingAliasIds', JSON.stringify(deleteExistingAliasIds));
+
+        axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/updateCharacter.php?character_id=${props.characterId}`, formDataToSend, {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'multipart/form-data'
             }
         })
             .then(response => {
