@@ -1,6 +1,7 @@
 @import '../colors';
 
 main.contact {
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -139,7 +140,7 @@ main.contact {
       transform: translateY(0);
     }
     50% {
-      transform: translateY(-10px);
+      transform: translateY(10px);
     }
   }
 

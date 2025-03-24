@@ -1,0 +1,82 @@
+main.whats-morp-container{
+.whats-morp-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  padding: 20px;
+  text-align: center;
+}
+
+.whats-morp{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    margin-top: 15%;
+    font-size: larger;
+}
+
+.morp-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  margin-left: 20px;
+  margin-top: 15%;
+  font-size: larger;
+}
+
+.morp-text h2 {
+  position: start;
+  display: flex;
+  gap: 0.9rem; /* Add spacing between letters */
+  font-size: 2rem;
+  cursor: pointer;
+  white-space: nowrap;
+  width: 34rem; /* Reserve enough space for "Multiverse Of Role Play" */
+  justify-content: space-between; /* Distribute letters evenly */
+}
+
+.morp-text h2 span {
+  position: relative;
+  display: inline-block;
+  overflow: visible; /* Ensure the expanded text is not clipped */
+  width: auto; /* Allow dynamic width for letters and expanded text */
+  text-align: center;
+  transition: transform 0.3s ease, opacity 0.4s ease;
+  z-index: 1; /* Ensure the original letter is above other elements */
+  color: inherit; /* Ensure the text color remains consistent */
+}
+
+.morp-text h2 span::before {
+  content: attr(data-expand); /* Use data attribute for the expanded text */
+  position: absolute;
+  left: 100%; /* Start hidden to the right of the letter */
+  top: 0;
+  white-space: nowrap;
+  color: inherit; /* Ensure the expanded text has the same color */
+  opacity: 0; /* Initially hidden */
+  transform: translateX(-100%); /* Align with the letter */
+  transition: transform 0.3s ease, opacity 0.3s ease; /* Add opacity transition */
+  z-index: 2; /* Ensure the expanded text is above the original letter */
+}
+
+.morp-text h2:hover span {
+  transform: translateX(-100%); /* Push the original letter to the left */
+  color: inherit; /* Ensure the text color remains consistent */
+}
+
+.morp-text h2:hover span::before {
+  transform: translateX(0); /* Slide the expanded text into view */
+  opacity: 1; /* Fade in the expanded text */
+  color: inherit; /* Ensure the text color remains consistent */
+}
+}
