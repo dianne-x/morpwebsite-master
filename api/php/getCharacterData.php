@@ -27,9 +27,11 @@ $stmt = $conn->prepare("
         user_character.character_name,
         user_character.nickname,
         gender.gender,
-        user_character.birthdate,
-        user_character.deathdate,
-        user_character.resurrected_date,
+        DATE_FORMAT(user_character.birthdate, '%Y-%m-%d') AS birthdate,
+        user_character.died,
+        DATE_FORMAT(user_character.deathdate, '%Y-%m-%d') AS deathdate,
+        user_character.resurrected,
+        DATE_FORMAT(user_character.resurrected_date, '%Y-%m-%d') AS resurrected_date,
         character_species.species,
         occupation.occupation,
         affiliation.affiliation,
@@ -43,7 +45,8 @@ $stmt = $conn->prepare("
         user_character.family,
         user_character.universe,
         character_fc.fc_type,
-        user_character.fc_name
+        user_character.fc_name,
+        user_character.character_pic_path
     FROM user_character
     LEFT JOIN gender ON user_character.gender_id = gender.id
     LEFT JOIN character_species ON user_character.species_id = character_species.id
@@ -65,7 +68,8 @@ if ($result->num_rows > 0) {
 
     // Fetch aliases
     $aliasStmt = $conn->prepare("
-        SELECT 
+        SELECT
+            alias_character.id,
             alias_character.name,
             alias_character.character_pic_path
         FROM alias_character

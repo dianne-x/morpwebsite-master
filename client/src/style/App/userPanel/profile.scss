@@ -89,6 +89,12 @@
             input[type="file"] {
                 display: none;
             }
+
+            input[type="checkbox"] {
+                width: 1rem;
+                height: 1rem;
+                background-color: rgba($color: $text-color, $alpha: .1);
+            }
         }
         button.logout-btn {
             align-self: flex-end;

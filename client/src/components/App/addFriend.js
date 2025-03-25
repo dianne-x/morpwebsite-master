@@ -75,7 +75,8 @@ const AddFriend = () => {
                   <li key={result.uid}>
                     <div 
                       className='info'
-                      onClick={() => setSelectedUserId(result.uid)}>
+                      onClick={() => setSelectedUserId(result.uid)}
+                      style={{ cursor: 'pointer' }}>
                       <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${result.profile_pic_path || 'user.png'}`} />
                       <span>{result.name}</span>
                     </div>

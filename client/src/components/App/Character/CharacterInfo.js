@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../../../style/App/Character/CharacterInfo.scss'; // Import the CSS for CharacterInfo
+import '../../../style/App/Character/CharacterInfo.scss';
+import formatTextWithLineBreaks from '../../FormatTextWithLineBreaks';
 
 const CharacterInfo = ({ characterId, onClose, name, picture }) => {
     const [characterInfo, setCharacterInfo] = useState(null);
+    const [selectedPicMap, setSelectedPicMap] = useState('character');
 
     useEffect(() => {
         // Fetch character information
@@ -27,60 +29,99 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
         return <div>Loading...</div>;
     }
 
+    const characterPictureMap = {
+        'character': `${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${picture || 'character.png'}`,
+        ...characterInfo.aliases.reduce((acc, alias) => {
+            acc[alias.id] = `${process.env.REACT_APP_IMAGE_BASE_URL}/aliasPictures/${alias.character_pic_path || 'alias.png'}`;
+            return acc;
+        }, {})
+    };
+
+    // Log the object for debugging
+    console.log('Character Picture Map:', characterPictureMap);
+
+    const characterDataTable = [
+        { title: 'Nickname', content: characterInfo.nickname },
+        { title: 'Gender', content: characterInfo.gender },
+        { title: 'Species', content: characterInfo.species },
+        { title: 'Status', content: characterInfo.status },
+        { title: 'Affiliation', content: characterInfo.affiliation },
+        { title: 'Nationality', content: characterInfo.nationality },
+        { title: 'Occupation', content: characterInfo.occupation },
+        { title: 'FC Type', content: characterInfo.fc_type },
+        { title: 'FC Name', content: characterInfo.fc_name != '' ? characterInfo.fc_name : 'unknown' },
+        { title: 'Birthdate', content: characterInfo.birthdate || 'unknown date' }
+    ]
+
+    const characterDetails = [
+        { title: 'Biography', content: characterInfo.bio },
+        { title: 'Powers', content: characterInfo.powers },
+        { title: 'Weaknesses', content: characterInfo.weaknesses },
+        { title: 'Used Items', content: characterInfo.used_item },
+        { title: 'Family', content: characterInfo.family },
+        { title: 'Universe', content: characterInfo.universe }
+    ];
+
     return (
         <div className="character-info-modal" onClick={(e) => e.stopPropagation()}>
             <button className="close" onClick={onClose}>&times;</button>
             <div className='character-data'>
                 <div className='character-pic-name'>
-                    <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${picture || 'character.png'}`} alt="Character Icon" style={{width: '100px', height: '100px'}} />
-                    <h2>{name}</h2>
+                    <img src={characterPictureMap[selectedPicMap]} alt="Character Icon" />
+                    <h2
+                        style={{ textWrap: 'wrap' }}
+                        onClick={() => setSelectedPicMap("character")} 
+                        className={selectedPicMap === "character" && "selected"}>
+                        {name}
+                    </h2>
+                    {characterInfo && characterInfo.aliases.length > 0 &&
+                    <ul>
+                        <li>aliases:</li>
+                        {
+                            characterInfo.aliases
+                                .sort((a, b) => b.name.length - a.name.length) // Sort aliases by name length in descending order
+                                .map((alias, index) => (
+                                    <li key={index} onClick={() => setSelectedPicMap(alias.id)}>
+                                        <p className={selectedPicMap === alias.id && "selected"}>{alias.name}</p>
+                                    </li>
+                                ))
+                        }
+                    </ul>}
                 </div>
                 <table>
                     <tbody>
-                        <tr>
-                            <td>Gender</td>
-                            <td>{characterInfo.gender}</td>
-                        </tr>
-                        <tr>
-                            <td>Species</td>
-                            <td>{characterInfo.species}</td>
-                        </tr>
-                        <tr>
-                            <td>Status</td>
-                            <td>{characterInfo.status}</td>
-                        </tr>
-                        <tr>
-                            <td>Affiliation</td>
-                            <td>{characterInfo.affiliation}</td>
-                        </tr>
-                        <tr>
-                            <td>Nationality</td>
-                            <td>{characterInfo.nationality}</td>
-                        </tr>
-                        <tr>
-                            <td>Occupation</td>
-                            <td>{characterInfo.occupation}</td>
-                        </tr>
-                        <tr>
-                            <td>FC Type</td>
-                            <td>{characterInfo.fc_type}</td>
-                        </tr>
-                        <tr>
-                            <td>FC Name</td>
-                            <td>{characterInfo.fc_name != '' ? characterInfo.fc_name : 'unknown'}</td>
-                        </tr>
+                        {characterDataTable.map((data, index) => (
+                            data.content && (
+                                <tr key={index}>
+                                    <td>{data.title}</td>
+                                    <td>{data.content}</td>
+                                </tr>
+                            )
+                        ))}
+                        {characterInfo.died != 0 &&
+                            <tr>
+                                <td>Died</td>
+                                <td>{characterInfo.deathdate || 'unknown date'}</td>
+                            </tr>
+                        }
+                        {characterInfo.resurrected != 0 &&
+                            <tr>
+                                <td>Resurrected</td>
+                                <td>{characterInfo.resurrected_date || 'unknown date'}</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
             <div className='character-details'>
-                <h3>Biography</h3>
-                <p>{characterInfo.bio}</p>
-    
-                <h3>Powers</h3>
-                <p>{characterInfo.powers}</p>
-    
-                <h3>Weaknesses</h3>
-                <p>{characterInfo.weaknesses}</p>
+                {characterDetails.map((detail, index) => (
+                    detail.content && (
+                        <div key={index}>
+                            <h3>{detail.title}</h3>
+                            {formatTextWithLineBreaks(detail.content)}
+                        </div>
+                    )
+                ))}
             </div>
         </div>
     );

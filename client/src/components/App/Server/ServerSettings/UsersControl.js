@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import UserInfo from '../../User/UserInfo';
 
 const UsersControl = ({ allUsers, onRoleReload }) => {
     const [filter, setFilter] = useState('all');
     const [filteredUsers, setFilteredUsers] = useState([]);
+    const [selectedUserId, setSelectedUserId] = useState(null);
 
     useEffect(() => {
         console.log('All users:', allUsers);
@@ -67,42 +69,53 @@ const UsersControl = ({ allUsers, onRoleReload }) => {
     }
 
     return (
-        <div>
-            <h1>Users Control</h1>
-            <select onChange={(e) => setFilter(e.target.value)} value={filter} className='server-character-list-view-select'>
-                <option value="all">All</option>
-                <option value="moderators">Moderators</option>
-                <option value="users">Users</option>
-            </select>
-            <ul className='server-character-list-view'>
-                {filteredUsers.map(user => (
-                    <li key={user.uid} className={user.is_moderator == 1 ? 'moderator' : 'user'}>
-                        <div className='info'>
-                            <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${user.profile_pic_path || 'user.png'}`} />
-                            {user.name}
-                        </div>
-                        <div className='modify'>
-                            <button 
-                                className='accept'
-                                onClick={() => changeRole(user, true)}>
-                                Promote
-                            </button>
-                            {user.is_moderator == 1 && 
-                                <button 
-                                    className='reject'
-                                    onClick={() => changeRole(user, false)}>
-                                    Demote
-                                </button>}
-                            <button 
-                                className='reject'
-                                onClick={() => kickUser(user)}>
-                                Kick
-                            </button>
-                        </div>
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <>
+            {
+                !selectedUserId
+                ?
+                <div>
+                    <h1>Users Control</h1>
+                    <select onChange={(e) => setFilter(e.target.value)} value={filter} className='server-character-list-view-select'>
+                        <option value="all">All</option>
+                        <option value="moderators">Moderators</option>
+                        <option value="users">Users</option>
+                    </select>
+                    <ul className='server-character-list-view'>
+                        {filteredUsers.map(user => (
+                            <li key={user.uid} className={user.is_moderator == 1 ? 'moderator' : 'user'}>
+                                <div className='info' onClick={() => setSelectedUserId(user.uid)} style={{ cursor: 'pointer' }}>
+                                    <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${user.profile_pic_path || 'user.png'}`} />
+                                    {user.name}
+                                </div>
+                                <div className='modify'>
+                                    <button 
+                                        className='accept'
+                                        onClick={() => changeRole(user, true)}>
+                                        Promote
+                                    </button>
+                                    {user.is_moderator == 1 && 
+                                        <button 
+                                            className='reject'
+                                            onClick={() => changeRole(user, false)}>
+                                            Demote
+                                        </button>}
+                                    <button 
+                                        className='reject'
+                                        onClick={() => kickUser(user)}>
+                                        Kick
+                                    </button>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                :
+                <div style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1000}}>
+                    <UserInfo userId={selectedUserId} onClose={() => setSelectedUserId(null)} />
+                </div>
+
+            }
+        </>
     );
 };
 
