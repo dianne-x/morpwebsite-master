@@ -46,7 +46,7 @@ main.whats-morp-container{
   white-space: nowrap;
   width: auto; /* Adjust width dynamically */
   align-items: flex-start; /* Align spans to the start */
-  margin-left: 50px; /* Move the h2 further to the right */
+  margin-left: 20%; /* Move the h1 further to the right */
   margin-bottom: 5%;
 }
 
@@ -83,5 +83,49 @@ main.whats-morp-container{
   transform: translateX(0); /* Slide the expanded text into view */
   opacity: 1; /* Fade in the expanded text */
   color: inherit; /* Ensure the text color remains consistent */
+}
+
+.morp-image {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: 60%;
+  margin-top: -50%;
+  width: 100%;
+}
+
+.morp-image .portal {
+  position: relative;
+  width: 300px;
+  height: auto;
+  z-index: 1;
+}
+
+.morp-image .astronaut {
+  position: absolute;
+  width: 150px;
+  height: auto;
+  left: -80px;
+  animation: float 3s ease-in-out infinite, rotate 10s linear infinite;
+  z-index: 2;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-100px);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 }
