@@ -846,6 +846,8 @@ CREATE TABLE `users` (
   `bio_text_color` varchar(7) DEFAULT '#FFFFFF',
   `verified` tinyint(1) DEFAULT NULL,
   `is_admin` tinyint(1) DEFAULT NULL,
+  `timeout_until` DATETIME DEFAULT NULL,
+  `isBanned` TINYINT(1) DEFAULT 0,
   PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
