@@ -93,7 +93,7 @@ const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => 
                     moderators={moderators} 
                     regularUsers={regularUsers} 
                     openServerSettings={openServerSettings} 
-                    isModerator={isModerator} 
+                    isModerator={isModerator}
                 />
             </div>
             { isSettingsOpen && 

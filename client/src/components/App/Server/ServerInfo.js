@@ -4,7 +4,7 @@ import ServerSettings from './ServerSettings';
 import UserInfo from '../User/UserInfo'; // Import the UserInfo component
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faCopy } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faCopy, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 const ServerInfo = ({ server, owners = [], moderators = [], regularUsers = [], openServerSettings, isModerator }) => {
     const [selectedUserId, setSelectedUserId] = useState(null); // State to track selected user ID
@@ -20,6 +20,29 @@ const ServerInfo = ({ server, owners = [], moderators = [], regularUsers = [], o
         
         navigator.clipboard.writeText(link);
         alert('Invite link copied to clipboard!');
+    }
+
+    const leaveServer = async () => {
+        // eslint-disable-next-line no-restricted-globals
+        if (!confirm(`Are you sure you want to leave the server?`)) return;
+
+        try {
+            const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/kickUserFromServer.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: JSON.parse(localStorage.getItem('morp-login-user'))
+                })
+            });
+            const data = await response.json();
+            console.log(data);
+
+            window.location.reload();
+        } catch (error) {
+            console.error('Error kicking user:', error);
+        }
     }
 
     return (
@@ -65,21 +88,26 @@ const ServerInfo = ({ server, owners = [], moderators = [], regularUsers = [], o
                         )}
                     </ul>
                 </div>
-                {
-                    isModerator &&
-                    <div className='settings-content'>
-                        <button className='server-settings' onClick={openServerSettings} >
-                            <span>
-                                <FontAwesomeIcon icon={faCog} />
-                            </span>
-                            <span>Settings</span>
-                        </button>
+                    
+                <div className='settings-content'>
+                    {isModerator &&
+                    <>
+                            <button className='server-settings' onClick={openServerSettings} >
+                                <span>
+                                    <FontAwesomeIcon icon={faCog} />
+                                </span>
+                                <span>Settings</span>
+                            </button>
 
-                        <button className='server-invite-link' onClick={getInviteLink} title='Copy Invite Link'>
-                            <FontAwesomeIcon icon={faCopy} />
-                        </button>
-                    </div>
-                }
+                            <button className='server-invite-link' onClick={getInviteLink} title='Copy Invite Link'>
+                                <FontAwesomeIcon icon={faCopy} />
+                            </button>
+                    </>
+                    }
+                    <button className='server-invite-link' title='Leave server' onClick={leaveServer}>
+                        <FontAwesomeIcon icon={faArrowRightFromBracket} />
+                    </button>
+                </div>
             </div>
             {selectedUserId && (
                 <div className="modal-overlay" onClick={() => setSelectedUserId(null)}>
