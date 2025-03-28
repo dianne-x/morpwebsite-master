@@ -24,6 +24,14 @@ const ManageUsersModal = ({ users, onClose, onRemoveUser }) => {
       .then(response => {
         if (response.data.success) {
           alert(`User has been timed out for ${duration} minutes.`);
+  
+          // Kick the user via WebSocket
+          const ws = getWebSocket();
+          if (ws && ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ action: 'kick', userId }));
+          } else {
+            console.error('WebSocket is not open. Cannot send kick message.');
+          }
         } else {
           alert(`Error timing out user: ${response.data.error}`);
         }
@@ -40,6 +48,10 @@ const ManageUsersModal = ({ users, onClose, onRemoveUser }) => {
       .then(response => {
         if (response.data.success) {
           alert('User has been banned.');
+
+          // Kick the user via WebSocket
+          handleKickUser(userId);
+          
         } else {
           alert(`Error banning user: ${response.data.error}`);
         }
@@ -57,6 +69,9 @@ const ManageUsersModal = ({ users, onClose, onRemoveUser }) => {
         if (response.data.success) {
           alert('User has been deleted.');
           onRemoveUser(userId); // Remove the user from the UI
+
+          // Kick the user via WebSocket
+          handleKickUser(userId);
         } else {
           alert(`Error deleting user: ${response.data.error}`);
         }

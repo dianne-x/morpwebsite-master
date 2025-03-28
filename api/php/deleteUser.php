@@ -13,7 +13,7 @@ $conn->begin_transaction();
 
 try {
     // Delete related characters
-    $stmt = $conn->prepare("DELETE FROM user_character WHERE user_id = ?");
+    $stmt = $conn->prepare("DELETE FROM user_character WHERE servermember_id = ?");
     $stmt->bind_param("s", $userId);
     $stmt->execute();
     $stmt->close();

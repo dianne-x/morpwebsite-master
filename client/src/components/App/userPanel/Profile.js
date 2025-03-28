@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import '../../../style/App/userPanel/profile.scss';
+import { getWebSocket } from '../../../utils/websocket'; // Import WebSocket utility
 
 const Profile = (props) => {
-
     const [userData, setUserData] = useState({
         profile_pic_path: '',
         name: '',
@@ -99,6 +99,23 @@ const Profile = (props) => {
         }
     };
 
+    const handleLogOut = () => {
+        // Disconnect from WebSocket
+        const ws = getWebSocket();
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            ws.close(); // Close the WebSocket connection
+            console.log('WebSocket connection closed.');
+        }
+
+        // Clear user data from localStorage
+        localStorage.removeItem('morp-login-user');
+
+        // Call the parent LogOut function (if provided)
+        if (props.LogOut) {
+            props.LogOut();
+        }
+    };
+
     return (
         <>
             <h2>Profile</h2>
@@ -152,7 +169,7 @@ const Profile = (props) => {
                 
                 <button type="submit">Save</button>
             </form>
-            <button style={{color: 'red'}} onClick={props.LogOut} className="logout-btn">
+            <button style={{color: 'red'}} onClick={handleLogOut} className="logout-btn">
                 Log out
             </button>
         </>

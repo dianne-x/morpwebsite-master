@@ -1,5 +1,6 @@
 <?php
 include 'dbConnection.php'; // Include the database connection file
+
 // Add CORS headers
 header('Access-Control-Allow-Origin: http://localhost:3000'); // Allow requests from your React app
 header('Access-Control-Allow-Methods: POST, GET, OPTIONS'); // Allow specific HTTP methods
@@ -10,8 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     // Handle preflight requests
     exit(0);
 }
-
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get the email and password from the POST request
@@ -25,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Prepare a SQL statement to retrieve the user by email
-    $stmt = $conn->prepare("SELECT uid, password, verified FROM Users WHERE email = ?");
+    $stmt = $conn->prepare("SELECT uid, password, verified, timeout_until, isBanned FROM Users WHERE email = ?");
     
     if ($stmt === false) {
         echo json_encode(['success' => false, 'message' => 'Failed to prepare the query.']);
@@ -47,8 +46,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    // Fetch the user's data (ID, uid, and hashed password)
+    // Fetch the user's data (uid, hashed password, verified status, timeout_until, and isBanned)
     $user = $result->fetch_assoc();
+
+    // Check if the user is banned
+    if ($user['isBanned'] == 1) {
+        echo json_encode(['success' => false, 'message' => 'Your account has been banned.']);
+        exit();
+    }
+
+    // Check if the user is timed out
+    if (!is_null($user['timeout_until']) && strtotime($user['timeout_until']) > time()) {
+        echo json_encode(['success' => false, 'message' => 'You are timed out until ' . $user['timeout_until'] . '.']);
+        exit();
+    }
 
     // Verify the provided password against the stored hashed password
     if (password_verify($password, $user['password'])) {
