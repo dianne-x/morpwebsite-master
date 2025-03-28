@@ -20,9 +20,6 @@ const Contact = () => {
           <h2>Follow us on social media!</h2>
           <div className='icons'>
             <a href='https://x.com/TeamMORP' target='_blank'><FontAwesomeIcon icon={faSquareXTwitter}/></a> 
-            <a href='https://github.com/BevizLaszlo' target='_blank'><FontAwesomeIcon icon={faSquareGithub}/></a>
-            <a href='https://github.com/dianne-x' target='_blank'><FontAwesomeIcon icon={faSquareGithub}/></a>
-            <a href='https://github.com/RevaiErik' target='_blank'><FontAwesomeIcon icon={faSquareGithub}/></a>
             <a href='https://instagram.com/TeamMORP' target='_blank'><FontAwesomeIcon icon={faSquareInstagram}/></a>
           </div>
         </div>
