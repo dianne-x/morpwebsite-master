@@ -1,52 +1,117 @@
-.user-info-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+@import '../../colors';
+
+.user-info-modal, .character-info-modal {
+    background-color: $main-color;
+    color: $text-color;
     z-index: 1001; // Ensure it is above the overlay
+    position: relative;
+    width: 800px;
+    height: 600px;
+    max-width: 100%;
+    max-height: 100%;
+    padding: 30px 15px;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
+
     .close {
         position: absolute;
-        top: 10px;
-        right: 10px;
-        background: red;
+        top: 30px;
+        right: 30px;
+        color: $text-color;
+        background: none;
         border: none;
-        font-size: 20px;
         cursor: pointer;
+        font-size: 1.3rem;
+
+        &:hover {
+            color: $third-color;
+        }
     }
-    h2 {
-       margin-top: 0;
+
+    img {
+        width: 120px;
+        max-width: 70%;
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+        object-fit: cover;
     }
-    
-    ul {
-       list-style-type: none;
-       padding: 0;
+
+    h2, .characters-wrapper {
+        margin-top: 15px;
     }
-    
-    ul li {
-       margin: 5px 0;
+
+    span {
+        opacity: .4;
+    }
+
+    h2, h3, td:first-child {
+        color: $third-color;
+    }
+
+    table {
+        width: 500px;
+        max-width: 100%;
+        border-collapse: collapse;
+        text-wrap: wrap;
+        margin-bottom: 10px;
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        td {
+            padding: 7px 10px;
+            border-bottom: 1px solid rgba($color: $third-color, $alpha: .3);
+
+            &:first-child {
+                text-align: right;
+                font-weight: bold;
+            }
+        }
+    }
+
+    .characters-wrapper {
+        max-height: 100%;
+        min-height: 300px;
+        width: 500px;
+        max-width: 70%;
+
+        border: 1px solid rgba($color: $third-color, $alpha: .3);
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        overflow-y: auto;
     }
 }
 
 
 
 .modal-overlay {
-    position: fixed;
+    position: relative;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.75);
     z-index: 1000; // Ensure it is below the modal
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.modal-content {
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+@media screen and (max-width: 481px) {
+    .user-info-modal {
+        padding-top: 100px;
+        height: 100%;
+
+        .close {
+            padding-top: 70px;
+        }
+    }
 }

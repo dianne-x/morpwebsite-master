@@ -223,6 +223,90 @@ io.on("connection", (socket) => {
       });
   });
 
+
+// Join a direct message room
+  socket.on("join_direct_message_room", async (roomId) => {
+    socket.join(roomId);
+    console.log("User joined direct message room: " + roomId);
+
+    // Send previous direct messages in the room
+    try {
+      const messages = await DirectMessage.findAll({
+        where: { room_id: roomId },
+        order: [['sent', 'ASC']]
+      });
+
+      const messagesWithUserNames = messages.map(msg => ({
+        id: msg.id,
+        room_id: msg.room_id,
+        sent_from: msg.sent_from,
+        sent_to: msg.sent_to,
+        message: msg.message,
+        sent: msg.sent,
+        seen: msg.seen,
+        seen_at: msg.seen_at
+      }));
+      console.log('Previous direct messages:', messagesWithUserNames);
+      socket.emit('previous_direct_messages', messagesWithUserNames);
+    } catch (err) {
+      console.error('Error fetching previous direct messages:', err);
+    }
+  });
+
+  // Handle sending direct messages
+  socket.on('send_direct_message', async (data) => {
+    const { roomId, sentFrom, sentTo, message } = data;
+    console.log('Received direct message data:', data);
+
+    try {
+     // Check if the DirectMessageRoom exists
+     let room = await DirectMessageRoom.findOne({
+      where: {
+        [Sequelize.Op.or]: [
+          { user1_id: sentFrom, user2_id: sentTo },
+          { user1_id: sentTo, user2_id: sentFrom }
+        ]
+      }
+    });
+
+      if (!room) {
+        room = await DirectMessageRoom.create({
+          user1_id: sentFrom,
+          user2_id: sentTo
+        });
+      }
+
+      const newMessage = await DirectMessage.create({
+        room_id: room.id,
+        sent_from: sentFrom,
+        sent_to: sentTo,
+        message,
+        sent: new Date()
+      });
+
+      const messageData = {
+        id: newMessage.id,
+        room_id: newMessage.room_id,
+        sent_from: newMessage.sent_from,
+        sent_to: newMessage.sent_to,
+        message: newMessage.message,
+        sent: newMessage.sent,
+        seen: newMessage.seen,
+        seen_at: newMessage.seen_at
+      };
+
+      console.log('Direct message saved to database:', messageData);
+      io.to(roomId).emit('receive_direct_message', messageData);
+    } catch (err) {
+      console.error('Error saving direct message to database:', err);
+    }
+  });
+
+
+
+
+
+
   socket.on('disconnect', () => {
     console.log('Client disconnected');
   });

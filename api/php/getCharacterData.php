@@ -27,14 +27,16 @@ $stmt = $conn->prepare("
         user_character.character_name,
         user_character.nickname,
         gender.gender,
-        user_character.birthdate,
-        user_character.deathdate,
-        user_character.resurrected_date,
+        DATE_FORMAT(user_character.birthdate, '%Y-%m-%d') AS birthdate,
+        user_character.died,
+        DATE_FORMAT(user_character.deathdate, '%Y-%m-%d') AS deathdate,
+        user_character.resurrected,
+        DATE_FORMAT(user_character.resurrected_date, '%Y-%m-%d') AS resurrected_date,
         character_species.species,
         occupation.occupation,
         affiliation.affiliation,
         nationality.nationality,
-        user_status.status_type,
+        character_status.status,
         character_story.stories_id,
         user_character.bio,
         user_character.powers,
@@ -43,14 +45,15 @@ $stmt = $conn->prepare("
         user_character.family,
         user_character.universe,
         character_fc.fc_type,
-        user_character.fc_name
+        user_character.fc_name,
+        user_character.character_pic_path
     FROM user_character
     LEFT JOIN gender ON user_character.gender_id = gender.id
     LEFT JOIN character_species ON user_character.species_id = character_species.id
     LEFT JOIN occupation ON user_character.occupation_id = occupation.id
     LEFT JOIN affiliation ON user_character.affiliation_id = affiliation.id
     LEFT JOIN nationality ON user_character.nationality_id = nationality.id
-    LEFT JOIN user_status ON user_character.status_id = user_status.id
+    LEFT JOIN character_status ON user_character.status_id = character_status.id
     LEFT JOIN character_story ON user_character.story_id = character_story.stories_id
     LEFT JOIN character_fc ON user_character.fc_type_id = character_fc.id
     WHERE user_character.id = ?;
@@ -65,7 +68,8 @@ if ($result->num_rows > 0) {
 
     // Fetch aliases
     $aliasStmt = $conn->prepare("
-        SELECT 
+        SELECT
+            alias_character.id,
             alias_character.name,
             alias_character.character_pic_path
         FROM alias_character

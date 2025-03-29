@@ -6,7 +6,7 @@ import SectionCreation from './SectionCreation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId, onReload }) => {
+const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId, onReload, isModerator }) => {
   const [openRoomCreationId, setOpenRoomCreationId] = useState(null);
   const [openSectionCreationId, setOpenSectionCreationId] = useState(false);
   const [sectionList, setSectionList] = useState(sections);
@@ -190,16 +190,18 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
                 : 
                 (<>
                   <p>{section.section_name}</p>
-                  <button title='Edit section name' className='change-btn' onClick={() => {
-                    setSelectedEditRoomId(null);
-                    setSelectedEditSectionId(section.id);
-                    setEditSectionName(section.section_name);
-                  }}>
-                    <FontAwesomeIcon icon={faPenToSquare} />
-                  </button>
-                  <button title='Delete section' className='change-btn' onClick={() => handleDeleteSection(section.id, section.section_name)}>
-                    <FontAwesomeIcon icon={faTrash} />
-                  </button>
+                  {isModerator && <>
+                    <button title='Edit section name' className='change-btn' onClick={() => {
+                      setSelectedEditRoomId(null);
+                      setSelectedEditSectionId(section.id);
+                      setEditSectionName(section.section_name);
+                    }}>
+                      <FontAwesomeIcon icon={faPenToSquare} />
+                    </button>
+                    <button title='Delete section' className='change-btn' onClick={() => handleDeleteSection(section.id, section.section_name)}>
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  </>}
                 </>)}
             </summary>
             <ul>
@@ -226,18 +228,21 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
                           : 
                           (<>
                             <p>{room.room_name}</p>
-                            <div>
-                              <button title='Edit room name' className='change-btn' onClick={() => {
-                                setSelectedEditSectionId(null);
-                                setSelectedEditRoomId(room.id);
-                                setEditRoomName(room.room_name);
-                              }}>
-                                <FontAwesomeIcon icon={faPenToSquare} />
-                              </button>
-                              <button title='Delete room' className='change-btn' onClick={() => handleDeleteRoom(room.id, room.room_name)}>
-                                <FontAwesomeIcon icon={faTrash} />
-                              </button>
-                            </div>
+                            {
+                            isModerator &&
+                              <div>
+                                <button title='Edit room name' className='change-btn' onClick={() => {
+                                  setSelectedEditSectionId(null);
+                                  setSelectedEditRoomId(room.id);
+                                  setEditRoomName(room.room_name);
+                                }}>
+                                  <FontAwesomeIcon icon={faPenToSquare} />
+                                </button>
+                                <button title='Delete room' className='change-btn' onClick={() => handleDeleteRoom(room.id, room.room_name)}>
+                                  <FontAwesomeIcon icon={faTrash} />
+                                </button>
+                              </div>
+                            }
                           </>)}
                     </div>
                   </li>
@@ -245,21 +250,29 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
               ) : (
                 <li className="room-item no-room">No rooms available</li>
               )}
-              <li>
-                <button className='addnew' onClick={() => handleOpenRoomCreation(section.id)}>
-                  <span>{openRoomCreationId === section.id ? "- Discard creation" : "+ Add new room"}</span>
-                </button>
-                {openRoomCreationId === section.id && <RoomCreation sectionId={section.id} onRoomCreated={handleRoomCreated} />}
-              </li>
+              {isModerator &&
+                <>
+                  <li>
+                    <button className='addnew' onClick={() => handleOpenRoomCreation(section.id)}>
+                      <span>{openRoomCreationId === section.id ? "- Discard creation" : "+ Add new room"}</span>
+                    </button>
+                    {openRoomCreationId === section.id && <RoomCreation sectionId={section.id} onRoomCreated={handleRoomCreated} />}
+                  </li>
+                </>
+              }
             </ul>
           </details>
         ))}
-        {
-          !openSectionCreationId &&
-          <button className='addnew' onClick={() => setOpenSectionCreationId(true)}>
-          <span>+ Add new section</span>
-        </button>}
-        {openSectionCreationId && <SectionCreation serverId={serverId} onSectionCreated={handleSectionCreated} />}
+        {isModerator &&
+        <>
+          {
+            !openSectionCreationId &&
+            <button className='addnew' onClick={() => setOpenSectionCreationId(true)}>
+              <span>+ Add new section</span>
+            </button>}
+          {openSectionCreationId && <SectionCreation serverId={serverId} onSectionCreated={handleSectionCreated} />}
+        </>
+        }
       </div>
     </div>
   );

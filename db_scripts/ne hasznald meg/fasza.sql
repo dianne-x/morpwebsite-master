@@ -184,7 +184,7 @@ CREATE TABLE `character_story` (
 CREATE TABLE `direct_message` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `room_id` int(11) DEFAULT NULL,
-  `sent_from` int(11) DEFAULT NULL,
+  `sent_from` VARCHAR(255) DEFAULT NULL,
   `message` varchar(255) DEFAULT NULL,
   `sent` datetime DEFAULT NULL,
   `seen` tinyint(1) DEFAULT NULL,
@@ -846,6 +846,8 @@ CREATE TABLE `users` (
   `bio_text_color` varchar(7) DEFAULT '#FFFFFF',
   `verified` tinyint(1) DEFAULT NULL,
   `is_admin` tinyint(1) DEFAULT NULL,
+  `timeout_until` DATETIME DEFAULT NULL,
+  `isBanned` TINYINT(1) DEFAULT 0,
   PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 

@@ -6,6 +6,7 @@
     color: $text-color;
     display: flex;
     flex-direction: row-reverse;
+    overflow-y: hidden;
 
     &>* {
         padding: 3vw 4vw;

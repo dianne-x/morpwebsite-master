@@ -42,11 +42,11 @@ const UserPanel = ({ onClose, LogOut }) => {
           <button onClick={() => setActiveTab('FriendRequests')} className={activeTab == 'FriendRequests' ? 'active' : ''}>
             <span>Friend Requests</span>
           </button>
-
+          {/*
           <button onClick={() => setActiveTab('Inventory')} className={activeTab == 'Inventory' ? 'active' : ''}>
             <span>Inventory</span>
           </button>
-
+          */}
           <button onClick={() => setActiveTab('ManageServer')} className={activeTab == 'ManageServer' ? 'active' : ''}>
             <span>Manage Server</span>
           </button>

@@ -4,18 +4,46 @@ import ServerSettings from './ServerSettings';
 import UserInfo from '../User/UserInfo'; // Import the UserInfo component
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faCopy, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
-const ServerInfo = ({ server, users = [], openServerSettings }) => {
+const ServerInfo = ({ server, owners = [], moderators = [], regularUsers = [], openServerSettings, isModerator }) => {
     const [selectedUserId, setSelectedUserId] = useState(null); // State to track selected user ID
 
     if (!server) {
         return <div className='server-info server-side'>No server information available.</div>;
     }
+    
+    
+    const getInviteLink = () => {
+        const link = server.invite_link;
+        console.log(link);
+        
+        navigator.clipboard.writeText(link);
+        alert('Invite link copied to clipboard!');
+    }
 
-    const owners = users.filter(user => user.is_owner == 1);
-    const moderators = users.filter(user => user.is_moderator == 1 && user.is_owner != 1);  
-    const regularUsers = users.filter(user => user.is_owner != 1 && user.is_moderator != 1);
+    const leaveServer = async () => {
+        // eslint-disable-next-line no-restricted-globals
+        if (!confirm(`Are you sure you want to leave the server?`)) return;
+
+        try {
+            const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/kickUserFromServer.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: JSON.parse(localStorage.getItem('morp-login-user'))
+                })
+            });
+            const data = await response.json();
+            console.log(data);
+
+            window.location.reload();
+        } catch (error) {
+            console.error('Error kicking user:', error);
+        }
+    }
 
     return (
         <>
@@ -32,7 +60,7 @@ const ServerInfo = ({ server, users = [], openServerSettings }) => {
                                 </li>
                             ))
                         ) : (
-                            <li>No owners available</li>
+                            <span>No owners available</span>
                         )}
                     </ul>
                     <h3>Moderators:</h3>
@@ -44,7 +72,7 @@ const ServerInfo = ({ server, users = [], openServerSettings }) => {
                                 </li>
                             ))
                         ) : (
-                            <li>No moderators available</li>
+                            <span>No moderators available</span>
                         )}
                     </ul>
                     <h3>Users:</h3>
@@ -56,24 +84,37 @@ const ServerInfo = ({ server, users = [], openServerSettings }) => {
                                 </li>
                             ))
                         ) : (
-                            <li>No users available</li>
+                            <span>No users available</span>
                         )}
                     </ul>
                 </div>
+                    
                 <div className='settings-content'>
-                    <button className='server-settings' onClick={openServerSettings} >
-                        <span>
-                            <FontAwesomeIcon icon={faCog} />
-                        </span>
-                        <span>Settings</span>
+                    {isModerator &&
+                    <>
+                            <button className='server-settings' onClick={openServerSettings} >
+                                <span>
+                                    <FontAwesomeIcon icon={faCog} />
+                                </span>
+                                <span>Settings</span>
+                            </button>
+
+                            <button className='server-invite-link' onClick={getInviteLink} title='Copy Invite Link'>
+                                <FontAwesomeIcon icon={faCopy} />
+                            </button>
+                    </>
+                    }
+                    <button className='server-invite-link' title='Leave server' onClick={leaveServer}>
+                        <FontAwesomeIcon icon={faArrowRightFromBracket} />
                     </button>
                 </div>
             </div>
             {selectedUserId && (
                 <div className="modal-overlay" onClick={() => setSelectedUserId(null)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <UserInfo userId={selectedUserId} onClose={() => setSelectedUserId(null)} />
-                    </div>
+                        <UserInfo 
+                            userId={selectedUserId} 
+                            serverId={server.id}
+                            onClose={() => setSelectedUserId(null)} />
                 </div>
             )} {/* Show UserInfo modal */}
         </>
