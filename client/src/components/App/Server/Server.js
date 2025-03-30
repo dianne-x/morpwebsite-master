@@ -19,6 +19,9 @@ const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => 
     const [regularUsers, setRegularUsers] = useState([]);
     const [selectedCharacter, setSelectedCharacter] = useState(null);
 
+    const [serverRoomsOpen, setServerRoomsOpen] = useState(false);
+    const [serverInfoOpen, setServerInfoOpen] = useState(false);
+
     useEffect(() => {
         console.log("selected server next line:");
         
@@ -95,12 +98,22 @@ const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => 
     return (
         <>
             <div className="server-main-content">
-                <ChannelList sections={sections} changeSelectedRoomId={changeSelectedRoomId} selectedRoomId={selectedRoomId} serverId={selectedServer.id} onReload={onReload} isModerator={isModerator} />
+                <ChannelList 
+                    sections={sections} 
+                    changeSelectedRoomId={changeSelectedRoomId} 
+                    selectedRoomId={selectedRoomId} 
+                    serverId={selectedServer.id} 
+                    onReload={onReload} 
+                    isModerator={isModerator}
+                    closeServerRooms={() => setServerRoomsOpen(false)} />
+                    serverRoomsOpen={serverRoomsOpen}
                 <ChatWindow 
                     serverId={selectedServer.id} 
                     roomId={selectedRoomId} 
                     roomDetails={getRoomDetails()} 
-                    onCharacterClick={handleCharacterClick} 
+                    onCharacterClick={handleCharacterClick}
+                    openServerInfo={() => setServerInfoOpen(true)}
+                    openServerRooms={() => setServerRoomsOpen(true)}
                 />
                 <ServerInfo 
                     server={selectedServer} 
@@ -110,6 +123,8 @@ const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => 
                     openServerSettings={openServerSettings} 
                     isModerator={isModerator}
                     setSelectedUserId={setSelectedUserId}
+                    closeServerInfo={() => setServerInfoOpen(false)}
+                    serverInfoOpen={serverInfoOpen}
                 />
             </div>
             { isSettingsOpen && 

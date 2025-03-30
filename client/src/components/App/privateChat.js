@@ -131,7 +131,7 @@ const PrivateChat = ({ user2, onClose }) => {
         <FontAwesomeIcon icon={faTimes} />
       </button>
       <div className='room-details-wrapper'>
-        <h1>Private Chat with {user2.name}</h1>
+        <h1>{user2.name}</h1>
       </div>
 
       <div className='chat-messages-wrapper' ref={chatMessagesRef}>

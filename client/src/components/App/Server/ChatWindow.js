@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import '../../../style/App/Server/ChatWindow.scss';
 import io from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane, faBars, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import ChatMessage from './ChatMessage';
 
 const socket = io.connect('http://localhost:3001'); 
@@ -102,7 +102,9 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
       {roomDetails ? (
         <>
           <div className='room-details-wrapper'>
+            <FontAwesomeIcon icon={faBars} className='room-icon' />
             <h1>{roomDetails.room_name}</h1>
+            <FontAwesomeIcon icon={faInfoCircle} className='room-icon'/>
           </div>
 
           <div className='chat-messages-wrapper'>

@@ -168,7 +168,9 @@ const TopBar = ({ onServerClick, LogOut }) => {
         friends={friends}
         servers={servers} />}
       {isChatOpen && selectedFriend && (
-        <PrivateChat user2={selectedFriend} onClose={closeChat} />
+        <div className='overlay'>
+          <PrivateChat user2={selectedFriend} onClose={closeChat} />
+        </div>
       )}
     </>
   );

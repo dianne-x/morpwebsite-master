@@ -18,20 +18,27 @@
         background-color: $main-color;
         z-index: 1;
         max-height: calc(1.8rem + 20px);
-        display: grid;
-        place-items: center;
+        display: flex;
+        gap: 10px;
         padding: 10px 0;
         position: relative;
         overflow: hidden;
         h1 {
           //text-align: center;
-          color: rgba($color: $third-color, $alpha: .4);
-          padding: 0 25px;
-          width: 100%;
+          padding: 0;
           z-index: 2;
           text-align: center;
           font-size: 1.8rem;
-
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .room-icon, h1 {
+          color: rgba($color: $third-color, $alpha: .4);
+        }
+        .room-icon {
+          align-self: center;
+          cursor: pointer;
+          display: none;
         }
       }
 
@@ -104,6 +111,16 @@
         }
       }
       
+    }
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .app-container {
+    .server-main-content {
+      .chat-window .room-details-wrapper .room-icon {
+        display: block;
+      }
     }
   }
 }
