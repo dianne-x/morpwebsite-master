@@ -10,7 +10,7 @@ import ManageServer from './userPanel/ManageServer';
 import AdminPanel from './userPanel/adminPanel';
 import FriendRequests from './userPanel/friendRequests';
 
-const UserPanel = ({ onClose, LogOut }) => {
+const UserPanel = ({ onClose, LogOut, friendTrigger }) => {
   const [activeTab, setActiveTab] = useState('Profile');
   const [user, setUser] = useState(null);
 
@@ -70,7 +70,7 @@ const UserPanel = ({ onClose, LogOut }) => {
             <Characters />
           )}
           {activeTab === 'FriendRequests' && (
-            <FriendRequests />
+            <FriendRequests friendTrigger={friendTrigger} />
           )}
           {activeTab === 'Inventory' && (
             <Inventory />

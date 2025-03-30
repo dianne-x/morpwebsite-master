@@ -6,7 +6,7 @@ import ServerCreationForm from './createServerForm';
 import AddFriend from './addFriend';
 
 
-const CreateJoinPanel = ({onClose}) => {
+const CreateJoinPanel = ({onClose, serverTrigger}) => {
     const [activeTab, setActiveTab] = useState('CreateServer');
 
     return (
@@ -30,10 +30,10 @@ const CreateJoinPanel = ({onClose}) => {
             </div>
             <div className="server-content">
                 {activeTab === 'CreateServer' && (
-                    <ServerCreationForm />
+                    <ServerCreationForm serverTrigger={serverTrigger} />
                 )}
                 {activeTab === 'JoinServer' && (
-                    <JoinServerForm />
+                    <JoinServerForm serverTrigger={serverTrigger} />
                 )}
                 {activeTab === 'AddFriend' && (
                     <AddFriend />

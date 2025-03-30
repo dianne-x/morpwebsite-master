@@ -23,6 +23,46 @@ const TopBar = ({ onServerClick, LogOut }) => {
   const [profilePicPath, setProfilePicPath] = useState('');
   const topbarRef = useRef(null);
 
+  const [friends, setFriends] = useState([]);
+  const [servers, setServers] = useState([]);
+  const [serverChangeTrigger, setServerChangeTrigger] = useState(0);
+  const [friendChangeTrigger, setFriendChangeTrigger] = useState(0);
+  const user = JSON.parse(localStorage.getItem('morp-login-user'));
+
+  useEffect(() => {
+    const fetchFriends = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/viewFriends.php?user_id=${user}`);
+        const data = await response.json();
+        console.log('Fetched friends:', data);
+        setFriends(data);
+      } catch (error) {
+        console.error('Error fetching friends:', error);
+      }
+    };
+
+    fetchFriends();
+  }, [user, friendChangeTrigger]);
+
+  useEffect(() => {
+      // Fetch the joined servers from the backend
+      const fetchJoinedServers = async () => {
+        try {
+          const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/getJoinedServers.php?userId=${user}`); // Update with your actual API endpoint
+          const data = await response.json();
+          if (data.success) {
+            setServers(data.servers);
+          } else {
+            console.error('Failed to fetch servers:', data.message);
+          }
+        } catch (error) {
+          console.error('Error fetching servers:', error);
+        }
+      };
+  
+      fetchJoinedServers();
+    }, [user, serverChangeTrigger]);
+
   useEffect(() => {
     const fetchProfilePic = async () => {
       try {
@@ -75,8 +115,8 @@ const TopBar = ({ onServerClick, LogOut }) => {
         <div ref={topbarRef} className="icon-list">
           {
             isServersSelected ? 
-            <ServerList onServerClick={onServerClick} onCreateServerClick={handleFormOpen} /> : 
-            <FriendList onFriendClick={() => {}} />
+            <ServerList onServerClick={onServerClick} onCreateServerClick={handleFormOpen} servers={servers} /> : 
+            <FriendList onFriendClick={() => {}} friends={friends} />
           }
         </div>
   
@@ -101,8 +141,8 @@ const TopBar = ({ onServerClick, LogOut }) => {
           <span>Open Menu</span>
         </button>
       </div>
-      {isFormOpen && <CreateJoinPanel onClose={handleFormClose} />}
-      {isUserPanelOpen && <UserPanel onClose={handleUserPanelClose} LogOut={LogOut} />}
+      {isFormOpen && <CreateJoinPanel onClose={handleFormClose} serverTrigger={() => setServerChangeTrigger(prev => prev + 1)} />}
+      {isUserPanelOpen && <UserPanel onClose={handleUserPanelClose} LogOut={LogOut} friendTrigger={() => setFriendChangeTrigger(prev => prev + 1)} />}
       {isTopbarMobileOpen && 
       <TopBarMobileView 
         onClose={() => setIsTopbarMobileOpen(false)}

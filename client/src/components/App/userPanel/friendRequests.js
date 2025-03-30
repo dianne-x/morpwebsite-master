@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const FriendRequests = () => {
+const FriendRequests = ({friendTrigger}) => {
   const [friendRequests, setFriendRequests] = useState([]);
   const user = JSON.parse(localStorage.getItem('morp-login-user'));
 
@@ -33,6 +33,7 @@ const FriendRequests = () => {
       const data = await response.json();
       console.log('Accept request response:', data);
       if (data.success) {
+        friendTrigger();
         alert('Friend request accepted!');
         setFriendRequests(friendRequests.filter(request => request.id !== requestId));
       } else {
