@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import '../../../../style/App/Server/WantedElements.scss';
 
 const WantedElements = ({ serverId }) => {
     const [neededElements, setNeededElements] = useState([
@@ -68,9 +69,9 @@ const WantedElements = ({ serverId }) => {
     };
 
     return (
-        <div>
+        <div className='wanted-elements-container'>
             <h1>Wanted Elements</h1>
-            <p>In this section you can decide...</p>
+            <p>In this section you can decide what optional elements do users need to fill in character creation.</p>
             <form onSubmit={handleSubmit}>
                 {neededElements.map((element, index) => (
                     <div key={index} className='needed-element'>

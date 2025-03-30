@@ -94,11 +94,17 @@ ul.server-character-list-view {
             align-items: center;
         }
         .info {
+            max-width: 70%;
             img {
                 width: 35px;
                 aspect-ratio: 1;
                 border-radius: 50%;
                 object-fit: cover;
+            }
+            p, span {
+                max-width: 100%;
+                white-space: wrap;
+                word-break: break-all;
             }
         }
         .modify {

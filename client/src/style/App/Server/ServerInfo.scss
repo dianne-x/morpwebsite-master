@@ -17,6 +17,12 @@
           border-radius: 50%;
           object-fit: cover;
         }
+        h2 {
+          max-width: 100%;
+          word-break: break-all;
+          text-align: center;
+          font-size: 1.5rem;
+        }
 
         .server-users {
           height: 100%;
@@ -24,6 +30,7 @@
           padding: 15px;
           background-color: $main-color;
           overflow-y: auto;
+
 
           h3 {
             text-align: center;
@@ -47,6 +54,8 @@
               background-color: rgba($color: $text-color, $alpha: .05);
               cursor: pointer;
               text-align: center;
+
+              word-break: break-all;
 
               &:hover {
                 background-color: rgba($color: $text-color, $alpha: .1);

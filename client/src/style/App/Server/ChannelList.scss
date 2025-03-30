@@ -126,7 +126,10 @@
           }
           .room-item-wrapper {
             p {
-              width: 100%;
+              max-width: 75%;
+              width: 75%;
+              //height: 1rem;
+              overflow: hidden;
             }
 
             &>div {
@@ -139,9 +142,6 @@
             //border-bottom: 1px solid $text-color;
             padding: 5px;
             
-
-            
-
             position: relative;
             anchor-name: --summary;
 
@@ -172,6 +172,10 @@
 
           &[open] summary::after {
             transform: rotate(0deg);
+          }
+
+          p {
+            max-width: 65%;
           }
   
           ul {
