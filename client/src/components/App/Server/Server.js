@@ -105,8 +105,9 @@ const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => 
                     serverId={selectedServer.id} 
                     onReload={onReload} 
                     isModerator={isModerator}
-                    closeServerRooms={() => setServerRoomsOpen(false)} />
-                    serverRoomsOpen={serverRoomsOpen}
+                    closeServerRooms={() => setServerRoomsOpen(false)}
+                    serverRoomsOpen={serverRoomsOpen} 
+                />
                 <ChatWindow 
                     serverId={selectedServer.id} 
                     roomId={selectedRoomId} 
