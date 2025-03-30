@@ -5,10 +5,12 @@ import ServerInfo from './ServerInfo';
 import '../../../style/App/Server/Server.scss';
 import ServerSettings from './ServerSettings';
 import SectionCreation from './SectionCreation';
+import UserInfo from '../User/UserInfo'; // Import the UserInfo component
 
 const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => {
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [selectedRoomId, setSelectedRoomId] = useState(null);
+    const [selectedUserId, setSelectedUserId] = useState(null); 
     const [isModerator, setIsModerator] = useState(false);
     const [isOwner, setIsOwner] = useState(false);
     const [owners, setOwners] = useState([]);
@@ -94,6 +96,7 @@ const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => 
                     regularUsers={regularUsers} 
                     openServerSettings={openServerSettings} 
                     isModerator={isModerator}
+                    setSelectedUserId={setSelectedUserId}
                 />
             </div>
             { isSettingsOpen && 
@@ -108,6 +111,23 @@ const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => 
                     }}
                     onRoleReload={onRoleReload} /> 
             }
+            {selectedUserId && (
+            <>
+                <div 
+                    className='overlay'
+                    onClick={() => setSelectedUserId(null)}
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                    <UserInfo 
+                        userId={selectedUserId} 
+                        serverId={selectedServer.id}
+                        onClose={() => setSelectedUserId(null)} />
+                </div>
+            </>
+            )}
         </>
     );
 };
