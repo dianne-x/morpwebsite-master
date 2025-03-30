@@ -1,0 +1,29 @@
+@import '../colors';
+
+// fade-in animation
+@keyframes fade-in {
+    from {right: 100%; left: -100%;}
+    to {right: 0; left: 0;}
+}
+
+// fade-out animation
+@keyframes fade-out {
+    from {right: 0; left: 0;}
+    to {right: 200%; left: -200%;}
+}
+
+.top-bar-mobile-view {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5000;
+    background-color: $main-color;
+    color: $text-color;
+    animation: fade-in 450ms ease-in-out;
+
+    &.closing {
+        animation: fade-out 900ms ease-in-out;
+    }
+}

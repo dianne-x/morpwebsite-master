@@ -8,16 +8,18 @@ import JoinServerForm from './joinServer';
 import TopBarButton from './TopBarButton';
 import UserPanel from './userPanel';
 import CreateJoinPanel from './CreateJoinPanel';
+import TopBarMobileView from './TopBarMobileView';
 import ChannelList from './Server/ChannelList';
 import ChatWindow from './Server/ChatWindow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome, faAdd, faUser, faUsers, faCompass } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faAdd, faUser, faUsers, faCompass, faBars } from '@fortawesome/free-solid-svg-icons'
 
 const TopBar = ({ onServerClick, LogOut }) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isJoinFormOpen, setIsJoinFormOpen] = useState(false);
   const [isUserPanelOpen, setIsUserPanelOpen] = useState(false);
   const [isServersSelected, setIsServersSelected] = useState(true);
+  const [isTopbarMobileOpen, setIsTopbarMobileOpen] = useState(false);
   const [profilePicPath, setProfilePicPath] = useState('');
   const topbarRef = useRef(null);
 
@@ -63,37 +65,52 @@ const TopBar = ({ onServerClick, LogOut }) => {
   };
 
   return (
-    <div className="topbar">
-      <div className='home-list'>
-        <TopBarButton icon={<FontAwesomeIcon icon={faHome} />} title="Home" onClick={() => onServerClick({ id: 0, name: 'Home' })} />
-        <TopBarButton icon={<FontAwesomeIcon icon={faAdd} />} title="Add Server" onClick={() => handleFormOpen()} />
+    <>
+      <div className="topbar">
+        <div className='home-list'>
+          <TopBarButton icon={<FontAwesomeIcon icon={faHome} />} title="Home" onClick={() => onServerClick({ id: 0, name: 'Home' })} />
+          <TopBarButton icon={<FontAwesomeIcon icon={faAdd} />} title="Add Server" onClick={() => handleFormOpen()} />
+        </div>
+  
+        <div ref={topbarRef} className="icon-list">
+          {
+            isServersSelected ? 
+            <ServerList onServerClick={onServerClick} onCreateServerClick={handleFormOpen} /> : 
+            <FriendList onFriendClick={() => {}} />
+          }
+        </div>
+  
+  
+        <div className='user-list'>
+          <TopBarButton 
+            icon={<FontAwesomeIcon icon={(isServersSelected ? faCompass : faUsers)} />} 
+            title={(isServersSelected ? "Show Friends" : "Show Servers")} 
+            onClick={() => setIsServersSelected(!isServersSelected)} 
+            />
+          <TopBarButton 
+            icon={<FontAwesomeIcon icon={faUser} />} 
+            title="Profile"  
+            onClick={() => handleUserPanelOpen()}
+            picPath={`url(${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${profilePicPath})`}
+            />
+        </div>
+  
+  
+        <button className='open-menu-btn' onClick={() => setIsTopbarMobileOpen(true)}>
+          <FontAwesomeIcon icon={faBars} />
+          <span>Open Menu</span>
+        </button>
       </div>
-
-      <div ref={topbarRef} className="icon-list">
-        {
-          isServersSelected ? 
-          <ServerList onServerClick={onServerClick} onCreateServerClick={handleFormOpen} /> : 
-          <FriendList onFriendClick={() => {}} />
-        }
-      </div>
-
       {isFormOpen && <CreateJoinPanel onClose={handleFormClose} />}
       {isUserPanelOpen && <UserPanel onClose={handleUserPanelClose} LogOut={LogOut} />}
-
-      <div className='user-list'>
-        <TopBarButton 
-          icon={<FontAwesomeIcon icon={(isServersSelected ? faCompass : faUsers)} />} 
-          title={(isServersSelected ? "Show Friends" : "Show Servers")} 
-          onClick={() => setIsServersSelected(!isServersSelected)} 
-        />
-        <TopBarButton 
-          icon={<FontAwesomeIcon icon={faUser} />} 
-          title="Profile"  
-          onClick={() => handleUserPanelOpen()}
-          picPath={`url(${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${profilePicPath})`}
-        />
-      </div>
-    </div>
+      {isTopbarMobileOpen && 
+      <TopBarMobileView 
+        onClose={() => setIsTopbarMobileOpen(false)}
+        profilePicPath={profilePicPath}
+        onServerClick={onServerClick}
+        handleFormOpen={handleFormOpen}
+        handleUserPanelOpen={handleUserPanelOpen} />}
+    </>
   );
 };
 
