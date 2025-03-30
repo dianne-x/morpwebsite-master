@@ -7,7 +7,7 @@ import ChatMessage from './ChatMessage';
 
 const socket = io.connect('http://localhost:3001'); 
 
-const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterClick }) => {
+const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterClick, openServerInfo, openServerRooms }) => {
   const [selectedServer, setSelectedServer] = useState(serverId);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
@@ -102,9 +102,9 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
       {roomDetails ? (
         <>
           <div className='room-details-wrapper'>
-            <FontAwesomeIcon icon={faBars} className='room-icon' />
+            <FontAwesomeIcon icon={faBars} className='room-icon' onClick={openServerRooms} />
             <h1>{roomDetails.room_name}</h1>
-            <FontAwesomeIcon icon={faInfoCircle} className='room-icon'/>
+            <FontAwesomeIcon icon={faInfoCircle} className='room-icon' onClick={openServerInfo}/>
           </div>
 
           <div className='chat-messages-wrapper'>
@@ -149,7 +149,12 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
           </div>
         </>
       ) : (
+        <>
         <h1>Select or create a room first</h1>
+        <button className='redirect-roomcreation' onClick={openServerRooms}>Create</button>
+        <button className='redirect-roomcreation' onClick={openServerInfo}>About the Server</button>
+        </>
+        
       )}
     </div>
   );

@@ -17,6 +17,19 @@
         z-index: 3;
         background-color: rgba($color: $text-color, $alpha: .03)
       }
+
+      button.redirect-roomcreation {
+        display: none;
+        width: 150px;
+        max-width: 100%;
+        padding: 10px;
+        background-color: $third-color;
+        border-radius: 5px;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        margin-top: 20px;
+      }
     }
 }
 
@@ -33,6 +46,29 @@
         right: 0;
         bottom: 0;
         max-width: 100% !important;
+        transition: all 200ms ease-in-out;
+      }
+
+      &:has(.channel-list.open) {
+        .channel-list {
+          left: 0;
+          right: 0;
+        }
+        .chat-window {
+          left: 100%;
+          right: -100%;
+        }
+      }
+
+      &:has(.server-info.open) {
+        .server-info {
+          left: 0;
+          right: 0;
+        }
+        .chat-window {
+          left: -100%;
+          right: 100%;
+        }
       }
 
       .channel-list {
@@ -42,6 +78,9 @@
       .server-info {
         left: 100%;
         right: -100%;
+      }
+      button.redirect-roomcreation {
+        display: block;
       }
     }
   }

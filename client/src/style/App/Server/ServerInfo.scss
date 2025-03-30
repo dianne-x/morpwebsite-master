@@ -11,8 +11,23 @@
         padding: 20px;
         gap: 20px;
 
+        button.close-server-info {
+          display: none;
+          position: absolute;
+          top: 20px;
+          left: 20px;
+          width: 30px;
+          border: none;
+          background-color: $third-color;
+          font-size: 1rem;
+          aspect-ratio: 1/1;
+          cursor: pointer;
+          color: $main-color;
+        }
+
         img.server-image {
           width: 50%;
+          max-width: 170px;
           aspect-ratio: 1/1;
           border-radius: 50%;
           object-fit: cover;
@@ -146,4 +161,14 @@
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     z-index: 1001; // Ensure it is above the overlay
+}
+
+@media screen and (max-width: 950px) {
+    .app-container {
+      .server-main-content {
+        .server-info button.close-server-info {
+          display: block;
+        }
+    }
+    }
 }

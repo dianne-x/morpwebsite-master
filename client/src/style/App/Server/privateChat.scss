@@ -29,12 +29,10 @@
   }
 
   .room-details-wrapper {
-    height: 10%;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: $third-color;
-    border-bottom: 1px solid $text-color;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 
@@ -142,6 +140,10 @@
   .private-chat-container {
     height: 100%;
     border: none;
+
+    .room-details-wrapper, .chat-input-wrapper {
+      border-radius: 0;
+    }
   }
   
 }

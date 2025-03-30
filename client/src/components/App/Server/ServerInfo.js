@@ -4,9 +4,9 @@ import ServerSettings from './ServerSettings';
 import UserInfo from '../User/UserInfo'; // Import the UserInfo component
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog, faCopy, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faCopy, faArrowRightFromBracket, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
-const ServerInfo = ({ server, owners = [], moderators = [], regularUsers = [], openServerSettings, isModerator, setSelectedUserId }) => {
+const ServerInfo = ({ server, owners = [], moderators = [], regularUsers = [], openServerSettings, isModerator, setSelectedUserId, closeServerInfo, serverInfoOpen }) => {
 
     if (!server) {
         return <div className='server-info server-side'>No server information available.</div>;
@@ -46,7 +46,10 @@ const ServerInfo = ({ server, owners = [], moderators = [], regularUsers = [], o
 
     return (
         <>
-            <div className='server-info server-side'>
+            <div className={`server-info server-side ${serverInfoOpen ? 'open' : ''}`}>
+                <button className='close-server-info' onClick={closeServerInfo}>
+                    <FontAwesomeIcon icon={faArrowLeft} />
+                </button>
                 <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/serverPictures/${server.icon}`} className="server-image" alt="Server Icon"/>
                 <h2>{server.name}</h2>
                 <div className='server-users'>

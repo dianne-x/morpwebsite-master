@@ -9,7 +9,7 @@
 // fade-out animation
 @keyframes fade-out {
     from {right: 0; left: 0;}
-    to {right: 200%; left: -200%;}
+    to {right: 100%; left: -100%;}
 }
 
 .top-bar-mobile-view {
@@ -21,10 +21,10 @@
     z-index: 5000;
     background-color: $main-color;
     color: $text-color;
-    animation: fade-in 450ms ease-in-out;
+    animation: fade-in 200ms ease-in-out;
 
     &.closing {
-        animation: fade-out 900ms ease-in-out;
+        animation: fade-out 200ms ease-in-out forwards;
     }
 
     display: flex;
