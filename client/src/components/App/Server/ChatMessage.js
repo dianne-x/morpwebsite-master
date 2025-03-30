@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import '../../../style/App/Server/ChatMessage.scss';
-import CharacterInfo from '../Character/CharacterInfo'; // Import the CharacterInfo component
 
-const ChatMessage = ({ name, message, date, showIconAndName, characterId, character_pic_path }) => {
+const ChatMessage = ({ name, message, date, showIconAndName, characterId, character_pic_path, onCharacterClick }) => {
     const [isHovered, setIsHovered] = useState(false);
-    const [showCharacterInfo, setShowCharacterInfo] = useState(false); // State to track if CharacterInfo should be shown
-  
     
     const handleMouseOver = () => {
         setIsHovered(true);
@@ -34,15 +31,24 @@ const ChatMessage = ({ name, message, date, showIconAndName, characterId, charac
         formatMessage(message) === "" ? <></> : // If message is empty, return null
         <>
             <div className="chat-message" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
-                <div className='chat-message-icon'> {/* Show CharacterInfo on click */}
-                    {showIconAndName && <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${characterId != null ? character_pic_path : "deleted.png"}`} alt="Character Avatar" onClick={() => setShowCharacterInfo(true)}/>}
+                <div className='chat-message-icon'>
+                    {showIconAndName && (
+                        <img 
+                            src={`${process.env.REACT_APP_IMAGE_BASE_URL}/characterPictures/${characterId != null ? character_pic_path : "deleted.png"}`} 
+                            alt="Character Avatar" 
+                            onClick={() => onCharacterClick(characterId, name, character_pic_path)} 
+                        />
+                    )}
                 </div>
                 <div className="chat-message-content">
                     {
                     showIconAndName 
                     && 
                     <div className='chat-message-head'>
-                        <h3 onClick={() => setShowCharacterInfo(true)} style={{color: characterId == null ? 'rgb(206, 32, 41)' : ''}}>
+                        <h3 
+                            onClick={() => onCharacterClick(characterId, name, character_pic_path)} 
+                            style={{color: characterId == null ? 'rgb(206, 32, 41)' : ''}}
+                        >
                             {characterId != null ? name : "[Deleted Character]"}
                         </h3>
                         <span className='date'>{formatDate(date)}</span>
@@ -59,11 +65,6 @@ const ChatMessage = ({ name, message, date, showIconAndName, characterId, charac
                     </p>
                 </div>
             </div>
-            {showCharacterInfo && characterId != null && (
-                <div className="modal-overlay" onClick={() => setShowCharacterInfo(false)}>
-                        <CharacterInfo characterId={characterId} onClose={() => setShowCharacterInfo(false)} name={name} picture={character_pic_path} />
-                </div>
-            )} {/* Show CharacterInfo modal */}
         </>
     );
 };

@@ -7,7 +7,7 @@ import ChatMessage from './ChatMessage';
 
 const socket = io.connect('http://localhost:3001'); 
 
-const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
+const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterClick }) => {
   const [selectedServer, setSelectedServer] = useState(serverId);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
@@ -115,7 +115,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
                   console.log(msg);
                   return (
                     <div key={index}>
-                      <ChatMessage key={index} name={msg.character_name} characterId={msg.character_id} message={msg.message} date={msg.date} character_pic_path={msg.character_pic_path || "character.png"} showIconAndName={showIconAndName} />
+                      <ChatMessage key={index} name={msg.character_name} characterId={msg.character_id} message={msg.message} date={msg.date} character_pic_path={msg.character_pic_path || "character.png"} showIconAndName={showIconAndName} onCharacterClick={onCharacterClick} />
                     </div>
                   );
                 })}

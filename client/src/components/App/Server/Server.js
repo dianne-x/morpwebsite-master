@@ -6,6 +6,7 @@ import '../../../style/App/Server/Server.scss';
 import ServerSettings from './ServerSettings';
 import SectionCreation from './SectionCreation';
 import UserInfo from '../User/UserInfo'; // Import the UserInfo component
+import CharacterInfo from '../Character/CharacterInfo'; // Import the CharacterInfo component
 
 const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => {
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -16,6 +17,7 @@ const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => 
     const [owners, setOwners] = useState([]);
     const [moderators, setModerators] = useState([]);
     const [regularUsers, setRegularUsers] = useState([]);
+    const [selectedCharacter, setSelectedCharacter] = useState(null);
 
     useEffect(() => {
         console.log("selected server next line:");
@@ -80,6 +82,12 @@ const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => 
         return null;
     };
 
+    const handleCharacterClick = (characterId, name, picture) => {
+        if (characterId) {
+            setSelectedCharacter({ id: characterId, name, picture });
+        }
+    };
+
     function openServerSettings() {
         setIsSettingsOpen(true);
     }
@@ -88,7 +96,12 @@ const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => 
         <>
             <div className="server-main-content">
                 <ChannelList sections={sections} changeSelectedRoomId={changeSelectedRoomId} selectedRoomId={selectedRoomId} serverId={selectedServer.id} onReload={onReload} isModerator={isModerator} />
-                <ChatWindow serverId={selectedServer.id} roomId={selectedRoomId} roomDetails={getRoomDetails()} />
+                <ChatWindow 
+                    serverId={selectedServer.id} 
+                    roomId={selectedRoomId} 
+                    roomDetails={getRoomDetails()} 
+                    onCharacterClick={handleCharacterClick} 
+                />
                 <ServerInfo 
                     server={selectedServer} 
                     owners={owners} 
@@ -127,6 +140,23 @@ const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => 
                         onClose={() => setSelectedUserId(null)} />
                 </div>
             </>
+            )}
+            {selectedCharacter && (
+                <div 
+                    className='overlay'
+                    onClick={() => setSelectedCharacter(null)}
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                    <CharacterInfo 
+                        characterId={selectedCharacter.id} 
+                        onClose={() => setSelectedCharacter(null)} 
+                        name={selectedCharacter.name} 
+                        picture={selectedCharacter.picture} 
+                    />
+                </div>
             )}
         </>
     );
