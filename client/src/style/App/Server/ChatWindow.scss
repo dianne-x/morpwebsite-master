@@ -4,22 +4,25 @@
   .server-main-content {
     
     .chat-window {
-      padding: 2%;
+      padding: 20px;
       width: 100%;
       height: 100%;
+      max-height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 20px;
+      //gap: 20px;
 
       .room-details-wrapper {
-        height: 6%;
-        min-height: 6%;
         border-bottom: 2px solid rgba($color: $third-color, $alpha: .4);
+        background-color: $main-color;
+        z-index: 1;
+        max-height: calc(1.8rem + 20px);
         display: grid;
         place-items: center;
-        margin: 10px 0;
+        padding: 10px 0;
         position: relative;
+        overflow: hidden;
         h1 {
           //text-align: center;
           color: rgba($color: $third-color, $alpha: .4);
@@ -27,13 +30,15 @@
           width: 100%;
           z-index: 2;
           text-align: center;
+          font-size: 1.8rem;
 
         }
       }
 
       .chat-messages-wrapper {
-        height: 84%;
-        min-height: 84%;
+        height: 100%;
+        //max-height: 100%;
+        padding: 10px 0;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
@@ -51,11 +56,13 @@
           z-index: 10;
         }
         .chat-messages {
+          position: absolute;
+          display: flex;
+          flex-direction: column;
           width: 100%;
-          height: auto;
+          height: 100%;
           overflow-y: auto;
           padding-top: 20px;
-
 
           .chat-message {
             word-wrap: break-word;
