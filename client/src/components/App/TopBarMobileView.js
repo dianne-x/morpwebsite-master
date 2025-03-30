@@ -4,9 +4,9 @@ import TopBarButton from './TopBarButton';
 import ServerList from './ServerList';
 import FriendList from './FriendList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faAdd, faUser, faUsers, faCompass } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faAdd, faBars, faUsers, faCompass } from '@fortawesome/free-solid-svg-icons';
 
-const TopBarMobileView = ({ onClose, onServerClick, profilePicPath, handleFormOpen, handleUserPanelOpen }) => {
+const TopBarMobileView = ({ onClose, onFriendClick, onServerClick, profilePicPath, handleFormOpen, handleUserPanelOpen, friends, servers }) => {
     const [isServersSelected, setIsServersSelected] = useState(true);
     const [isClosing, setIsClosing] = useState(false);
     const topbarRef = useRef(null);
@@ -16,13 +16,50 @@ const TopBarMobileView = ({ onClose, onServerClick, profilePicPath, handleFormOp
         setTimeout(onClose, 450); // Delay to allow animation
     };
 
+    const handleFriendClick = (friend) => {
+        onFriendClick(friend);
+        handleClose();
+    };
+
+    console.log(friends);
+    console.log(servers);
+
+    const friendList = <div className='friend-list-mobile'>
+        {
+            friends.map((friend) => (
+                <button
+                    key={friend.uid}
+                    onClick={() => handleFriendClick(friend)}>
+                    <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${friend.profile_pic_path}`} alt="Friend" />
+                        {friend.name}
+                </button>
+            ))
+        }
+    </div>
+
+    const serverList = <div className='server-list-mobile'>
+        {
+            servers.map((server) => (
+                <button
+                    key={server.id}
+                    onClick={() => { onServerClick(server); handleClose(); }}>
+                    <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/serverPictures/${server.icon}`} alt="Server" />
+                        {server.name}
+                </button>
+            ))
+        }
+    </div>
+    
+    
+
     return (
         <>
             <div className={`top-bar-mobile-view ${isClosing ? 'closing' : ''}`}>
-                <button className="close-button" onClick={handleClose}>
-                    Close
-                </button>
                 <div className='topbar-content'>
+                <button className="close-button" onClick={handleClose}>
+                    <FontAwesomeIcon icon={faBars} />
+                    Close Menu
+                </button>
                     <div className='home-list-mobile'>
                         <button
                             title="Home" 
@@ -41,24 +78,26 @@ const TopBarMobileView = ({ onClose, onServerClick, profilePicPath, handleFormOp
                     <div ref={topbarRef} className="icon-list-mobile">
                         {
                             isServersSelected ? 
-                            <ServerList 
-                                onServerClick={(server) => { onServerClick(server); handleClose(); }}  /> : 
-                            <FriendList onFriendClick={() => handleClose()} />
+                            serverList : 
+                            friendList
                         }
                     </div>
             
                     <div className='user-list-mobile'>
-                        <TopBarButton 
-                            icon={<FontAwesomeIcon icon={(isServersSelected ? faCompass : faUsers)} />} 
-                            title={(isServersSelected ? "Show Friends" : "Show Servers")} 
-                            onClick={() => setIsServersSelected(!isServersSelected)} 
-                        />
-                        <TopBarButton 
-                            icon={<FontAwesomeIcon icon={faUser} />} 
+                        <button
+                            title="Show Friends" 
+                            onClick={() => { setIsServersSelected(!isServersSelected); }}>
+                            <FontAwesomeIcon icon={!isServersSelected ? faCompass : faUsers} />
+                        {(isServersSelected ? "Show Friends" : "Show Servers")}
+                        </button>
+                        
+                        <button
                             title="Profile"  
-                            onClick={() => { handleUserPanelOpen(); handleClose(); }}
-                            picPath={`url(${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${profilePicPath})`}
-                        />
+                            onClick={() => { handleUserPanelOpen(); handleClose(); }}>
+                            <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${profilePicPath}`} alt="Profile" />
+                            <span>Profile</span>
+                        </button>
+                        
                     </div>
                 </div>
             </div>

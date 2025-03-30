@@ -13,6 +13,7 @@ import ChannelList from './Server/ChannelList';
 import ChatWindow from './Server/ChatWindow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHome, faAdd, faUser, faUsers, faCompass, faBars } from '@fortawesome/free-solid-svg-icons'
+import PrivateChat from './privateChat';
 
 const TopBar = ({ onServerClick, LogOut }) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -28,6 +29,19 @@ const TopBar = ({ onServerClick, LogOut }) => {
   const [serverChangeTrigger, setServerChangeTrigger] = useState(0);
   const [friendChangeTrigger, setFriendChangeTrigger] = useState(0);
   const user = JSON.parse(localStorage.getItem('morp-login-user'));
+
+  const [selectedFriend, setSelectedFriend] = useState(null);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
+  const handleFriendClick = (friend) => {
+    setSelectedFriend(friend);
+    setIsChatOpen(true);
+  };
+
+  const closeChat = () => {
+    setIsChatOpen(false);
+    setSelectedFriend(null);
+  };
 
   useEffect(() => {
     const fetchFriends = async () => {
@@ -116,7 +130,7 @@ const TopBar = ({ onServerClick, LogOut }) => {
           {
             isServersSelected ? 
             <ServerList onServerClick={onServerClick} onCreateServerClick={handleFormOpen} servers={servers} /> : 
-            <FriendList onFriendClick={() => {}} friends={friends} />
+            <FriendList onFriendClick={handleFriendClick} friends={friends} />
           }
         </div>
   
@@ -147,9 +161,15 @@ const TopBar = ({ onServerClick, LogOut }) => {
       <TopBarMobileView 
         onClose={() => setIsTopbarMobileOpen(false)}
         profilePicPath={profilePicPath}
+        onFriendClick={handleFriendClick}
         onServerClick={onServerClick}
         handleFormOpen={handleFormOpen}
-        handleUserPanelOpen={handleUserPanelOpen} />}
+        handleUserPanelOpen={handleUserPanelOpen}
+        friends={friends}
+        servers={servers} />}
+      {isChatOpen && selectedFriend && (
+        <PrivateChat user2={selectedFriend} onClose={closeChat} />
+      )}
     </>
   );
 };

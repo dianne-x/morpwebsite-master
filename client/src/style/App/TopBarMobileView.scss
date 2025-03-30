@@ -26,4 +26,83 @@
     &.closing {
         animation: fade-out 900ms ease-in-out;
     }
+
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+
+    button {
+        font-size: 1rem;
+    }
+
+    button.close-button {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+        background-color: $third-color;
+        color: $main-color;
+    }
+
+    .topbar-content {
+        height: 100%;
+        max-height: 100%;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .home-list-mobile {
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba($color: $text-color, $alpha: .25);
+        }
+
+        .user-list-mobile {
+            padding-top: 10px;
+            border-top: 1px solid rgba($color: $text-color, $alpha: .25);
+        }
+
+        &>div {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            button {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                text-align: start;
+                gap: 10px;
+                padding: 5px 15px;
+                height: 50px;
+                border: none;
+                background-color: rgba($color: $text-color, $alpha: .05);
+                color: $text-color;
+                
+                &:hover {
+                    background-color: rgba($color: $text-color, $alpha: .1);
+                }
+
+                img {
+                    width: 30px;
+                    height: 30px;
+                    object-fit: cover;
+                }
+            }
+
+            &.icon-list-mobile {
+                height: 100%;
+                max-height: 100%;
+                display: flex;
+                overflow-y: auto;
+                &>div {
+
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                }
+            }
+        }
+    }
 }
