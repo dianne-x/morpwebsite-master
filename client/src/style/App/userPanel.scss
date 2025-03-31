@@ -123,6 +123,8 @@
 
     .sidebar {
       flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
       button {
         padding: .5rem 1rem;
       }

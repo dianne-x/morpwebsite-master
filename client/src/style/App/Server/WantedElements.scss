@@ -1,0 +1,26 @@
+@import "../../colors";
+
+.wanted-elements-container {
+    overflow-y: auto;
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        width: 100%;
+
+        .needed-element {
+            padding: 5px 20px;
+            display: flex;
+            label {
+                width: 100%;
+            }
+
+            &:nth-child(odd) {
+                background-color: rgba($color: $text-color, $alpha: .05);
+            }
+        }
+    }
+    form, button {
+        margin-top: 20px;
+    }
+}

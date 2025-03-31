@@ -11,11 +11,32 @@
         padding: 20px;
         gap: 20px;
 
+        button.close-server-info {
+          display: none;
+          position: absolute;
+          top: 20px;
+          left: 20px;
+          width: 30px;
+          border: none;
+          background-color: $third-color;
+          font-size: 1rem;
+          aspect-ratio: 1/1;
+          cursor: pointer;
+          color: $main-color;
+        }
+
         img.server-image {
           width: 50%;
+          max-width: 170px;
           aspect-ratio: 1/1;
           border-radius: 50%;
           object-fit: cover;
+        }
+        h2 {
+          max-width: 100%;
+          word-break: break-all;
+          text-align: center;
+          font-size: 1.5rem;
         }
 
         .server-users {
@@ -24,6 +45,7 @@
           padding: 15px;
           background-color: $main-color;
           overflow-y: auto;
+
 
           h3 {
             text-align: center;
@@ -47,6 +69,8 @@
               background-color: rgba($color: $text-color, $alpha: .05);
               cursor: pointer;
               text-align: center;
+
+              word-break: break-all;
 
               &:hover {
                 background-color: rgba($color: $text-color, $alpha: .1);
@@ -137,4 +161,14 @@
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     z-index: 1001; // Ensure it is above the overlay
+}
+
+@media screen and (max-width: 950px) {
+    .app-container {
+      .server-main-content {
+        .server-info button.close-server-info {
+          display: block;
+        }
+    }
+    }
 }

@@ -21,9 +21,10 @@
     align-items: center;
     justify-content: center;
     gap: 20px;
-    width: 100%;
     max-width: 100%;
-    height: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the content */
 
     .logo {
       img {
@@ -162,4 +163,13 @@
   .cooldown-message {
     color: red;
   } 
+}
+
+@media screen and (max-width: 482px) {
+  .bug-report {
+    left: 5%;
+    width: 90% !important; 
+    top: 5% !important;
+    height: 80%;
+  }
 }

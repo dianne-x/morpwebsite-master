@@ -71,7 +71,7 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
                     <h2
                         style={{ textWrap: 'wrap' }}
                         onClick={() => setSelectedPicMap("character")} 
-                        className={selectedPicMap === "character" && "selected"}>
+                        className={selectedPicMap === "character" ? "selected" : ""}>
                         {name}
                     </h2>
                     {characterInfo && characterInfo.aliases.length > 0 &&
@@ -82,7 +82,7 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
                                 .sort((a, b) => b.name.length - a.name.length) // Sort aliases by name length in descending order
                                 .map((alias, index) => (
                                     <li key={index} onClick={() => setSelectedPicMap(alias.id)}>
-                                        <p className={selectedPicMap === alias.id && "selected"}>{alias.name}</p>
+                                        <p className={selectedPicMap === alias.id ? "selected" : ""}>{alias.name}</p>
                                     </li>
                                 ))
                         }

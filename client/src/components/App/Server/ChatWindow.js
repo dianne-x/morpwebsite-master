@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import '../../../style/App/Server/ChatWindow.scss';
 import io from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane, faBars, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import ChatMessage from './ChatMessage';
 
 const socket = io.connect('http://localhost:3001'); 
 
-const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
+const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterClick, openServerInfo, openServerRooms }) => {
   const [selectedServer, setSelectedServer] = useState(serverId);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
@@ -102,7 +102,9 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
       {roomDetails ? (
         <>
           <div className='room-details-wrapper'>
+            <FontAwesomeIcon icon={faBars} className='room-icon' onClick={openServerRooms} />
             <h1>{roomDetails.room_name}</h1>
+            <FontAwesomeIcon icon={faInfoCircle} className='room-icon' onClick={openServerInfo}/>
           </div>
 
           <div className='chat-messages-wrapper'>
@@ -115,7 +117,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
                   console.log(msg);
                   return (
                     <div key={index}>
-                      <ChatMessage key={index} name={msg.character_name} characterId={msg.character_id} message={msg.message} date={msg.date} character_pic_path={msg.character_pic_path || "character.png"} showIconAndName={showIconAndName} />
+                      <ChatMessage key={index} name={msg.character_name} characterId={msg.character_id} message={msg.message} date={msg.date} character_pic_path={msg.character_pic_path || "character.png"} showIconAndName={showIconAndName} onCharacterClick={onCharacterClick} />
                     </div>
                   );
                 })}
@@ -147,7 +149,12 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails }) => {
           </div>
         </>
       ) : (
+        <>
         <h1>Select or create a room first</h1>
+        <button className='redirect-roomcreation' onClick={openServerRooms}>Create</button>
+        <button className='redirect-roomcreation' onClick={openServerInfo}>About the Server</button>
+        </>
+        
       )}
     </div>
   );

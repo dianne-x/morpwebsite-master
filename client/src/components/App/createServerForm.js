@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import '../../style/App/createServerForm.scss'; // Import the SCSS file
 
-const ServerCreationForm = () => {
+const ServerCreationForm = ({serverTrigger}) => {
   const [serverName, setServerName] = useState('');
   const [serverIcon, setServerIcon] = useState(null);
   const [tempServerPic, setTempServerPic] = useState('');
@@ -46,6 +46,7 @@ const ServerCreationForm = () => {
       const result = JSON.parse(text); // Parse the response text as JSON
 
       if (result.success) {
+        serverTrigger();
         setSuccess('Server created successfully.');
       } else {
         setError(result.message);
@@ -86,10 +87,10 @@ const ServerCreationForm = () => {
             onChange={(e) => setUid(e.target.value)}
             required
           />
-        {error && <p className="error">{error}</p>}
-        {success && <p className="success">{success}</p>}
         <button type="submit">Create Server</button>
       </form>
+      {error && <p className="error">{error}</p>}
+      {success && <p className="success">{success}</p>}
     </>
   );
 };
