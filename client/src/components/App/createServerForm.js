@@ -87,10 +87,10 @@ const ServerCreationForm = ({serverTrigger}) => {
             onChange={(e) => setUid(e.target.value)}
             required
           />
-        {error && <p className="error">{error}</p>}
-        {success && <p className="success">{success}</p>}
         <button type="submit">Create Server</button>
       </form>
+      {error && <p className="error">{error}</p>}
+      {success && <p className="success">{success}</p>}
     </>
   );
 };
