@@ -31,6 +31,23 @@ $email = $_POST['email'] ?? null;
 $nickname = $_POST['nickname'] ?? null;
 $about_me = $_POST['about_me'] ?? null;
 
+// Check if the new username is already in use by another user
+if ($name) {
+    $stmt = $conn->prepare("SELECT * FROM users WHERE name = ? AND email != ?");
+    $stmt->bind_param("ss", $name, $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        echo json_encode(["success" => false, "message" => "Username is already in use."]);
+        $stmt->close();
+        $conn->close();
+        exit();
+    }
+
+    $stmt->close();
+}
+
 // Check if the request is a multipart form data and a file is uploaded
 if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] === UPLOAD_ERR_OK) {
     // Handle file upload

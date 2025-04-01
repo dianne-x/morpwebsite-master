@@ -65,7 +65,7 @@ const Profile = (props) => {
                     alert('User data saved successfully.');
                     fetchUserProfile(); // Refresh the profile data
                 } else {
-                    alert('Failed to save user data.');
+                    alert(data.message);
                 }
             })
             .catch((error) => {
