@@ -76,7 +76,7 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
                     </h2>
                     {characterInfo && characterInfo.aliases.length > 0 &&
                     <ul>
-                        <li>aliases:</li>
+                        <li>Aliases:</li>
                         {
                             characterInfo.aliases
                                 .sort((a, b) => b.name.length - a.name.length) // Sort aliases by name length in descending order
