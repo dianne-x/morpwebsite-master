@@ -57,9 +57,9 @@ const UserPanel = ({ onClose, LogOut, friendTrigger }) => {
             </button>
           )}
 
-          <button onClick={() => setActiveTab('Settings')} className={activeTab == 'Settings' ? 'active' : ''}>
+          {/*<button onClick={() => setActiveTab('Settings')} className={activeTab == 'Settings' ? 'active' : ''}>
             <span>Settings</span>
-          </button>
+          </button>*/}
           
         </div>
         <div className="content user-content">
