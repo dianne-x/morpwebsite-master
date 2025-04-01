@@ -29,10 +29,17 @@ const ServerCreationForm = ({serverTrigger}) => {
     setError('');
     setSuccess('');
 
+    // Validate UID
+    const sanitizedUid = uid.toLowerCase().replace(/\s+/g, '');
+    if (sanitizedUid !== uid) {
+      setError('UID must be lowercase and contain no spaces.');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('serverName', serverName);
     formData.append('serverIcon', serverIcon);
-    formData.append('uid', uid);
+    formData.append('uid', sanitizedUid);
 
     try {
       const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/createServer.php?userId=${userId}`, {
@@ -89,7 +96,7 @@ const ServerCreationForm = ({serverTrigger}) => {
           />
         <button type="submit">Create Server</button>
       </form>
-      {error && <p className="error">{error}</p>}
+      {error && <p className="error" onClick={() => setError('')}>{error}</p>}
       {success && <p className="success">{success}</p>}
     </>
   );

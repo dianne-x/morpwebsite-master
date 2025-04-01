@@ -54,6 +54,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     exit();
                 }
 
+                // Check if the UID is already taken
+                $stmt = $conn->prepare("SELECT COUNT(*) FROM Servers WHERE uid = ?");
+                if ($stmt === false) {
+                    echo json_encode(['success' => false, 'message' => 'Failed to prepare the query to check UID: ' . $conn->error]);
+                    exit();
+                }
+
+                $stmt->bind_param('s', $uid);
+                $stmt->execute();
+                $stmt->bind_result($uidCount);
+                $stmt->fetch();
+                $stmt->close();
+
+                if ($uidCount > 0) {
+                    echo json_encode(['success' => false, 'message' => 'The UID is already taken. Please choose a different UID.']);
+                    exit();
+                }
+
                 // Generate the invite link
                 $inviteLink = 'morp.ru/' . $uid;
 
