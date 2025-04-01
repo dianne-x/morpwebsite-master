@@ -39,12 +39,24 @@
         }
     }
 
+}
+
+main.home-container {
+    flex-direction: column;
+    h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        text-align: center;
+    }
     .image-container {
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        justify-content: flex-start; // Align items at the top
         align-items: center;
+        margin-top: 2rem;
         img {
-            max-width: 100%;
+            width: 700px;
+            max-width: 80%;
             height: auto;
         }
     }

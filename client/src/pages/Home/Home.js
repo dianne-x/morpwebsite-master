@@ -13,11 +13,11 @@ const Home = () => {
           </Helmet>
         </HelmetProvider>
 
+        <h1>Home</h1>
+        
         <div className="image-container">
           <img src={morpHomepic} alt="Morp Home" />
         </div>
-
-        <h1>Home</h1>
       </main>
     );
   };
