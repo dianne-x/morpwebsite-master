@@ -15,10 +15,12 @@ const AddFriend = () => {
 
   const handleSearch = async () => {
     try {
+      const currentUserId = JSON.parse(localStorage.getItem('morp-login-user'));
       const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/searchFriend.php?name=${searchQuery}`);
       const data = await response.json();
-      setSearchResults(data);
-      console.log('Search results:', data); // Log the search results to verify the uid
+      const filteredResults = data.filter(user => user.uid !== currentUserId);
+      setSearchResults(filteredResults);
+      console.log('Search results:', filteredResults); // Log the filtered search results
     } catch (error) {
       console.error('Error fetching search results:', error);
     }
