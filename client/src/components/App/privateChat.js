@@ -22,6 +22,14 @@ const PrivateChat = ({ user2, onClose }) => {
     return new Intl.DateTimeFormat(navigator.language || navigator.userLanguage, options).format(new Date(dateString));
   };
 
+  const formatMessage = (message) => {
+    if (!message) return message; // Only format if there is some text
+    return message.replace(/((https?:\/\/|www\.)[^\s]+|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g, (match) => {
+      const url = match.startsWith('http') ? match : `http://${match}`;
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer">${match}</a>`;
+    });
+  };
+
   useEffect(() => {
     const fetchRoomId = async () => {
       try {
@@ -135,10 +143,10 @@ const PrivateChat = ({ user2, onClose }) => {
       </div>
 
       <div className='chat-messages-wrapper' ref={chatMessagesRef}>
-        <div className='chat-messages' >
+        <div className='chat-messages'>
           {messages.map((msg, index) => (
             <div key={index} className={`chat-message ${msg.sentFrom === user1.uid ? 'sent' : 'received'}`}>
-              <span>{msg.message}</span>
+              <span dangerouslySetInnerHTML={{ __html: formatMessage(msg.message) }} />
               <span className="chat-date">{formatDate(msg.sent)}</span>
             </div>
           ))}

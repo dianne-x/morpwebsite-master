@@ -24,6 +24,10 @@ const ChatMessage = ({ name, message, date, showIconAndName, characterId, charac
         formattedMessage = formattedMessage.replace(/\*\*(.*?)\*\*/g, (match, p1) => p1.trim() != "" ? `<span style="font-weight: bold;">${p1}</span>` : match);
         formattedMessage = formattedMessage.replace(/\*(.*?)\*/g, (match, p1) => p1.trim() != "" ? `<span style="font-style: italic;">${p1}</span>` : match);
         formattedMessage = formattedMessage.replace(/!spl\((.*?)\)/g, (match, p1) => p1.trim() != "" ? `<span class="spoiler-span" onclick="if (!this.classList.contains('shown')) this.classList.add('shown')">${p1}</span>` : match);
+        formattedMessage = formattedMessage.replace(/((https?:\/\/|www\.)[^\s]+|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g, (match) => {
+            const url = match.startsWith('http') ? match : `http://${match}`;
+            return `<a href="${url}" target="_blank" rel="noopener noreferrer">${match}</a>`;
+        });
         return formattedMessage.trim();
     };
 
