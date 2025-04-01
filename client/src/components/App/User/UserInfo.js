@@ -54,10 +54,10 @@ const UserInfo = ({ userId, onClose, serverId }) => {
                 <h2>{userInfo.name}</h2>
                 <table>
                     <tbody>
-                        <tr>
+                        {/*<tr>
                             <td>Email:</td>
                             <td>{userInfo.email}</td>
-                        </tr>
+                        </tr>*/}
                         <tr>
                             <td>Nickname:</td>
                             <td>{userInfo.nickname || <span>No nickname</span>}</td>
