@@ -44,6 +44,23 @@
         }
     }
 
+    .ufo-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        left: 20%;
+        top: 20%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+
+        .ufo {
+            max-width: 200px;
+            width: 100%;
+            height: auto;
+        }
+    }
 }
 
 main.home-container {
