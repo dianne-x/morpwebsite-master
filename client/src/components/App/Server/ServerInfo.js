@@ -22,6 +22,11 @@ const ServerInfo = ({ server, owners = [], moderators = [], regularUsers = [], o
     }
 
     const leaveServer = async () => {
+        if (owners[0]?.uid === JSON.parse(localStorage.getItem('morp-login-user'))) {
+            alert('You cannot leave the server as you are the owner. Please transfer ownership before leaving.');
+            return;
+        }
+
         // eslint-disable-next-line no-restricted-globals
         if (!confirm(`Are you sure you want to leave the server?`)) return;
 
@@ -32,7 +37,8 @@ const ServerInfo = ({ server, owners = [], moderators = [], regularUsers = [], o
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    user_id: JSON.parse(localStorage.getItem('morp-login-user'))
+                    user_id: JSON.parse(localStorage.getItem('morp-login-user')),
+                    server_id: server.id
                 })
             });
             const data = await response.json();

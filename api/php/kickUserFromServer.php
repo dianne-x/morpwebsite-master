@@ -17,9 +17,10 @@ if ($conn->connect_error) {
 // Get the data from the request
 $data = json_decode(file_get_contents('php://input'), true);
 $user_id = $conn->real_escape_string($data['user_id']);
+$server_id = $conn->real_escape_string($data['server_id']);
 
 // Delete the user from the server
-$sql = "DELETE FROM server_member WHERE user_id = '$user_id'";
+$sql = "DELETE FROM server_member WHERE user_id = '$user_id' AND server_id = $server_id";
 
 if ($conn->query($sql) === TRUE) {
     echo json_encode(["message" => "User removed successfully"]);
