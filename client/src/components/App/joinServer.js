@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import '../../style/App/JoinServerForm.scss'; // Import the SCSS file
 
-const JoinServerForm = () => {
+const JoinServerForm = ({serverTrigger}) => {
   const [inviteLink, setInviteLink] = useState('');
 
   const handleSubmit = async (e) => {
@@ -39,6 +39,7 @@ const JoinServerForm = () => {
       const data = await response.json();
 
       if (data.success) {
+        serverTrigger();
         alert(data.message);
       } else {
         alert(data.message);

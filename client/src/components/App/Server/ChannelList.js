@@ -4,9 +4,9 @@ import RoomCreation from './RoomCreation';
 import SectionCreation from './SectionCreation';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faTrash, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId, onReload, isModerator }) => {
+const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId, onReload, isModerator, closeServerRooms, serverRoomsOpen }) => {
   const [openRoomCreationId, setOpenRoomCreationId] = useState(null);
   const [openSectionCreationId, setOpenSectionCreationId] = useState(false);
   const [sectionList, setSectionList] = useState(sections);
@@ -168,8 +168,13 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
   };
 
   return (
-    <div className="channel-list server-side">
-      <h3>Sections and Rooms:</h3>
+    <div className={`channel-list server-side ${serverRoomsOpen ? 'open' : ''}`}>
+      <div className='server-side-header'>
+        <h3>Sections and Rooms:</h3>
+        <button className='close-btn' onClick={closeServerRooms}>
+          <FontAwesomeIcon icon={faArrowRight} />
+        </button>
+      </div>
       <div className='list-wrapper'>
         {sectionList.map((section, sectionIndex) => (
           <details key={sectionIndex} className="section-item" open={true}>
@@ -210,7 +215,7 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
                 section.rooms.map((room, roomIndex) => (
                   <li key={roomIndex} className="room-item">
                     <div 
-                      onClick={() => changeSelectedRoomId(room.id)}
+                      onClick={() => {changeSelectedRoomId(room.id); closeServerRooms()}}
                       className={`room-item-wrapper ${room.id === selectedRoomId ? 'selected' : ''}`}>
                         {
                           selectedEditRoomId === room.id ? 

@@ -2,6 +2,29 @@
 
 .app-container {
   .server-main-content {
+
+    .server-side-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h3 {
+        width: 100%;
+      }
+
+      button.close-btn {
+        display: none;
+        width: 30px;
+        font-size: 1rem;
+        aspect-ratio: 1/1;
+        background-color: $third-color;
+        color: $main-color;
+
+        &:hover {
+          background-color: $third-color !important;
+        }
+      }
+    }
     .channel-list {
       display: flex;
       flex-direction: column;
@@ -82,6 +105,10 @@
           background-color: rgba($color: $main-color, $alpha: .5);
           padding: 5px;
           
+          .room-item-wrapper {
+            justify-content: space-between !important;
+          }
+
           summary, .room-item-wrapper {
             display: flex;
             justify-content: start;
@@ -126,7 +153,10 @@
           }
           .room-item-wrapper {
             p {
-              width: 100%;
+              max-width: 75%;
+              width: 75%;
+              //height: 1rem;
+              overflow: hidden;
             }
 
             &>div {
@@ -139,9 +169,6 @@
             //border-bottom: 1px solid $text-color;
             padding: 5px;
             
-
-            
-
             position: relative;
             anchor-name: --summary;
 
@@ -172,6 +199,10 @@
 
           &[open] summary::after {
             transform: rotate(0deg);
+          }
+
+          p {
+            max-width: 65%;
           }
   
           ul {
@@ -223,6 +254,27 @@
       
     }
     
+
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .server-main-content {
+    .server-side-header {
+      button.close-btn {
+        display: block !important;
+      }
+
+    }
+  }
+}
+
+
+@media screen and (max-width: 500px) {
+  .server-main-content {
+      button.change-btn {
+        display: block !important;
+      }
 
   }
 }

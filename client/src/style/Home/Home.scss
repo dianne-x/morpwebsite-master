@@ -8,6 +8,8 @@
     flex-direction: row-reverse;
     overflow-y: hidden;
 
+    img { image-rendering: pixelated; }
+
     &>* {
         padding: 3vw 4vw;
     }
@@ -24,18 +26,60 @@
         display: none;
         flex-direction: column;
         gap: 1vw;
-
+        z-index: 500;
+        
         button {
+            cursor: pointer;
             padding: 13px;
             font-size: 1rem;
             aspect-ratio: 1/1;
             border-radius: 50%;
-            border: 1px solid $text-color;
-            color: $text-color;
-            background: none;
+            //border: 1px solid $text-color;
+            border: none;
+            color: $main-color;
+            background: $text-color;
 
             display: grid;
             place-items: center;
+        }
+    }
+
+    .ufo-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        left: 20%;
+        top: 20%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+
+        .ufo {
+            max-width: 200px;
+            width: 100%;
+            height: auto;
+        }
+    }
+}
+
+main.home-container {
+    flex-direction: column;
+    h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        text-align: center;
+    }
+    .image-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; // Align items at the top
+        align-items: center;
+        margin-top: 2rem;
+        img {
+            width: 700px;
+            max-width: 80%;
+            height: auto;
         }
     }
 }

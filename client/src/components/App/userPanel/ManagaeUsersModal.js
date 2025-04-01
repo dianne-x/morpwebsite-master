@@ -61,6 +61,26 @@ const ManageUsersModal = ({ users, onClose, onRemoveUser }) => {
       });
   };
 
+
+  // Function to handle unbanning a user
+  const handleUnBanUser = (userId) => {
+    console.log(`Attempting to unban user with ID: ${userId}`);
+    axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/unbanUser.php`, { userId })
+      .then(response => {
+        if (response.data.success) {
+          alert('User has been unbanned.');
+
+
+        } else {
+          alert(`Error unbanning user: ${response.data.error}`);
+        }
+      })
+      .catch(error => {
+        console.error('Error unbanning user:', error);
+      });
+  };
+
+
   // Function to handle deleting a user
   const handleDeleteUser = (userId) => {
     console.log(`Attempting to delete user with ID: ${userId}`);
@@ -98,6 +118,7 @@ const ManageUsersModal = ({ users, onClose, onRemoveUser }) => {
                 <button onClick={() => handleTimeoutUser(user.id, 10)}>Timeout 10m</button>
                 <button onClick={() => handleTimeoutUser(user.id, 60)}>Timeout 1h</button>
                 <button onClick={() => handleBanUser(user.id)}>Ban</button>
+                <button onClick={() => handleUnBanUser(user.id)}>Unban</button>
                 <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
               </div>
             </li>

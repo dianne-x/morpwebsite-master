@@ -1,0 +1,155 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: 2025-02-03 09:24
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+-- --------------------------------------------------------
+-- Database: `morpdatabase2`
+-- --------------------------------------------------------
+
+DROP DATABASE IF EXISTS morpdatabase2;
+
+CREATE DATABASE morpdatabase2
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+USE morpdatabase2;
+
+-- --------------------------------------------------------
+-- Table structure for `servers`
+-- --------------------------------------------------------
+
+CREATE TABLE `servers` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `uid` varchar(255) DEFAULT NULL,
+  `server_name` varchar(255) DEFAULT NULL,
+  `server_picture_path` varchar(255) DEFAULT 'server.png',
+  `main_color` varchar(7) DEFAULT '#000000',
+  `text_color` varchar(7) DEFAULT '#FFFFFF',
+  `invite_link` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+-- Table structure for `server_member`
+-- --------------------------------------------------------
+
+CREATE TABLE `server_member` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(255) DEFAULT NULL,
+  `server_id` int(11) DEFAULT NULL,
+  `is_owner` tinyint(1) DEFAULT NULL,
+  `is_moderator` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`server_id`) REFERENCES `servers` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+-- Table structure for `server_bio`
+-- --------------------------------------------------------
+
+CREATE TABLE `server_bio` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `about_us` varchar(255) DEFAULT NULL,
+  `about_us_color` varchar(7) DEFAULT '#000000',
+  `about_us_text_color` varchar(7) DEFAULT '#FFFFFF',
+  `about_us_header_picture_path` varchar(255) DEFAULT NULL,
+  `rp_category_id` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`id`) REFERENCES `servers` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`rp_category_id`) REFERENCES `rp_category` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+-- Table structure for `server_stories`
+-- --------------------------------------------------------
+
+CREATE TABLE `server_stories` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `stories_id` int(11) DEFAULT NULL,
+  `server_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`server_id`) REFERENCES `servers` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`stories_id`) REFERENCES `stories` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+-- Table structure for `section`
+-- --------------------------------------------------------
+
+CREATE TABLE `section` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `server_id` int(11) DEFAULT NULL,
+  `section_name` varchar(255) DEFAULT NULL,
+  `text_color` varchar(7) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`server_id`) REFERENCES `servers` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+-- Table structure for `user_character_need`
+-- --------------------------------------------------------
+
+CREATE TABLE `user_character_need` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `server_id` int(11) DEFAULT NULL,
+  `birthdate_need` tinyint(1) DEFAULT NULL,
+  `deathdate_need` tinyint(1) DEFAULT NULL,
+  `resurrected_date_need` tinyint(1) DEFAULT NULL,
+  `species_need` tinyint(1) DEFAULT NULL,
+  `occupation_need` tinyint(1) DEFAULT NULL,
+  `affiliation_need` tinyint(1) DEFAULT NULL,
+  `nationality_need` tinyint(1) DEFAULT NULL,
+  `powers_need` tinyint(1) DEFAULT NULL,
+  `weaknesses_need` tinyint(1) DEFAULT NULL,
+  `used_item_need` tinyint(1) DEFAULT NULL,
+  `family_need` tinyint(1) DEFAULT NULL,
+  `universe_need` tinyint(1) DEFAULT NULL,
+  `fc_need` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`server_id`) REFERENCES `servers` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+-- Table structure for `users`
+-- --------------------------------------------------------
+
+CREATE TABLE `users` (
+  `uid` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `nickname` varchar(255) DEFAULT '',
+  `gender_id` int(11) DEFAULT 0,
+  `profile_pic_path` varchar(255) DEFAULT 'user.png',
+  `language_id` varchar(255) DEFAULT '0',
+  `thread_id` int(11) DEFAULT NULL,
+  `status_id` int(11) DEFAULT 0,
+  `about_me` varchar(255) DEFAULT '',
+  `about_me_color` varchar(7) DEFAULT '#000000',
+  `bio_main_color` varchar(7) DEFAULT '#000000',
+  `bio_text_color` varchar(7) DEFAULT '#FFFFFF',
+  `verified` tinyint(1) DEFAULT NULL,
+  `is_admin` tinyint(1) DEFAULT NULL,
+  `timeout_until` DATETIME DEFAULT NULL,
+  `isBanned` TINYINT(1) DEFAULT 0,
+  PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+-- Add other tables as needed, ensuring that all foreign keys referencing `servers` include `ON DELETE CASCADE`.
+
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

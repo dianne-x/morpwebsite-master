@@ -45,6 +45,8 @@
         margin-top: 15px;
     }
 
+    h2 { text-align: center; word-break: break-all; max-width: 80%; white-space: wrap;}
+
     span {
         opacity: .4;
     }
@@ -79,7 +81,7 @@
         max-height: 100%;
         min-height: 300px;
         width: 500px;
-        max-width: 70%;
+        max-width: 95%;
 
         border: 1px solid rgba($color: $third-color, $alpha: .3);
         padding: 10px;
@@ -90,7 +92,9 @@
     }
 }
 
-
+.character-info-modal h2 {
+    word-break: keep-all;
+}
 
 .modal-overlay {
     position: relative;

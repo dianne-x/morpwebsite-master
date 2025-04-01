@@ -126,7 +126,7 @@ main.contact {
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    animation: float 3s ease-in-out infinite;
+    animation: float_like 3s ease-in-out infinite;
 
     img {
       max-width: 200px; // Default size for large screens
@@ -135,12 +135,12 @@ main.contact {
     }
   }
 
-  @keyframes float {
+  @keyframes float_like {
     0%, 100% {
       transform: translateY(0);
     }
     50% {
-      transform: translateY(10px);
+      transform: translateY(10px); // Further reduced height of the float effect
     }
   }
 

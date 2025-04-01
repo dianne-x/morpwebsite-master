@@ -1,0 +1,108 @@
+@import '../colors';
+
+// fade-in animation
+@keyframes fade-in {
+    from {right: 100%; left: -100%;}
+    to {right: 0; left: 0;}
+}
+
+// fade-out animation
+@keyframes fade-out {
+    from {right: 0; left: 0;}
+    to {right: 100%; left: -100%;}
+}
+
+.top-bar-mobile-view {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5000;
+    background-color: $main-color;
+    color: $text-color;
+    animation: fade-in 200ms ease-in-out;
+
+    &.closing {
+        animation: fade-out 200ms ease-in-out forwards;
+    }
+
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+
+    button {
+        font-size: 1rem;
+    }
+
+    button.close-button {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+        background-color: $third-color;
+        color: $main-color;
+    }
+
+    .topbar-content {
+        height: 100%;
+        max-height: 100%;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .home-list-mobile {
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba($color: $text-color, $alpha: .25);
+        }
+
+        .user-list-mobile {
+            padding-top: 10px;
+            border-top: 1px solid rgba($color: $text-color, $alpha: .25);
+        }
+
+        &>div {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            button {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                text-align: start;
+                gap: 10px;
+                padding: 5px 15px;
+                height: 50px;
+                border: none;
+                background-color: rgba($color: $text-color, $alpha: .05);
+                color: $text-color;
+                
+                &:hover {
+                    background-color: rgba($color: $text-color, $alpha: .1);
+                }
+
+                img {
+                    width: 30px;
+                    height: 30px;
+                    object-fit: cover;
+                }
+            }
+
+            &.icon-list-mobile {
+                height: 100%;
+                max-height: 100%;
+                display: flex;
+                overflow-y: auto;
+                &>div {
+
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                }
+            }
+        }
+    }
+}
