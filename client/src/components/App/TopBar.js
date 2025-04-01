@@ -94,6 +94,27 @@ const TopBar = ({ onServerClick, LogOut }) => {
     fetchProfilePic();
   }, []);
 
+  useEffect(() => {
+    const iconList = topbarRef.current;
+  
+    const handleWheelScroll = (event) => {
+      if (iconList) {
+        event.preventDefault();
+        iconList.scrollLeft += event.deltaY;
+      }
+    };
+  
+    if (iconList) {
+      iconList.addEventListener('wheel', handleWheelScroll);
+    }
+  
+    return () => {
+      if (iconList) {
+        iconList.removeEventListener('wheel', handleWheelScroll);
+      }
+    };
+  }, []);
+
   const handleFormOpen = () => {
     setIsFormOpen(true);
   };
