@@ -7,7 +7,7 @@ import ChatMessage from './ChatMessage';
 
 const socket = io.connect('http://localhost:3001'); 
 
-const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterClick, openServerInfo, openServerRooms }) => {
+const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterClick, openServerInfo, openServerRooms, characterChangeTrigger }) => {
   const [selectedServer, setSelectedServer] = useState(serverId);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
@@ -89,7 +89,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
     if (selectedServer) {
       fetchVerifiedCharacters();
     }
-  }, [selectedServer, user]);
+  }, [selectedServer, user, characterChangeTrigger]);
 
   useEffect(() => {
     if (chatMessagesRef.current) {

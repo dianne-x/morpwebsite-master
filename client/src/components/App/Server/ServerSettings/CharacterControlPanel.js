@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CharacterInfo from '../../Character/CharacterInfo';
 
-const CharacterControlPanel = ({ serverId }) => {
+const CharacterControlPanel = ({ serverId, characterChanging }) => {
     const [characters, setCharacters] = useState([]);
     const [filter, setFilter] = useState('all');
     const [characterInfoData, setCharacterInfoData] = useState(null);
@@ -39,6 +39,7 @@ const CharacterControlPanel = ({ serverId }) => {
                 setCharacters(characters.map(character => 
                     character.id === characterId ? { ...character, is_verified: 1 } : character
                 ));
+                characterChanging();
             })
             .catch(error => console.error('Error accepting character:', error));
         }
@@ -55,6 +56,7 @@ const CharacterControlPanel = ({ serverId }) => {
             .then(response => {
                 console.log('Character rejected:', response.data);
                 setCharacters(characters.filter(character => character.id !== characterId));
+                characterChanging();
             })
             .catch(error => console.error('Error rejecting character:', error));
         }

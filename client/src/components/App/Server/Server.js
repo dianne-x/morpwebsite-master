@@ -22,6 +22,8 @@ const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => 
     const [serverRoomsOpen, setServerRoomsOpen] = useState(false);
     const [serverInfoOpen, setServerInfoOpen] = useState(false);
 
+    const [characterChangeTrigger, setCharacterChangeTrigger] = useState(0);
+
     useEffect(() => {
         console.log("selected server next line:");
         
@@ -115,6 +117,7 @@ const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => 
                     onCharacterClick={handleCharacterClick}
                     openServerInfo={() => setServerInfoOpen(true)}
                     openServerRooms={() => setServerRoomsOpen(true)}
+                    characterChangeTrigger={characterChangeTrigger}
                 />
                 <ServerInfo 
                     server={selectedServer} 
@@ -138,7 +141,8 @@ const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => 
                         moderators: moderators,
                         regularUsers: regularUsers
                     }}
-                    onRoleReload={onRoleReload} /> 
+                    onRoleReload={onRoleReload}
+                    characterChanging={() => setCharacterChangeTrigger(prev => prev + 1)} /> 
             }
             {selectedUserId && (
             <>

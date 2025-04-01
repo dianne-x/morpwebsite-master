@@ -34,7 +34,9 @@ const ServerSettings = (props) => {
                 </div>
                 <div className="content">
                     {activeTab === 'CharactersControl' && (
-                        <CharacterControlPanel serverId={props.server.id}/>
+                        <CharacterControlPanel 
+                            serverId={props.server.id}
+                            characterChanging={props.characterChanging}/>
                         
                     )}
                     {activeTab === 'CharacterWantedElements' && (
