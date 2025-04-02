@@ -10,7 +10,7 @@ import ManageServer from './userPanel/ManageServer';
 import AdminPanel from './userPanel/adminPanel';
 import FriendRequests from './userPanel/friendRequests';
 
-const UserPanel = ({ onClose, LogOut, friendTrigger }) => {
+const UserPanel = ({ onClose, LogOut, friendTrigger, serverTrigger }) => {
   const [activeTab, setActiveTab] = useState('Profile');
   const [user, setUser] = useState(null);
 
@@ -76,7 +76,7 @@ const UserPanel = ({ onClose, LogOut, friendTrigger }) => {
             <Inventory />
           )}
           {activeTab === 'ManageServer' && (
-            <ManageServer />
+            <ManageServer serverTrigger={serverTrigger} />
           )}
           {activeTab === 'AdminPanel' && (
             <AdminPanel />

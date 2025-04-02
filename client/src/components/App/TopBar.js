@@ -177,7 +177,13 @@ const TopBar = ({ onServerClick, LogOut }) => {
         </button>
       </div>
       {isFormOpen && <CreateJoinPanel onClose={handleFormClose} serverTrigger={() => setServerChangeTrigger(prev => prev + 1)} />}
-      {isUserPanelOpen && <UserPanel onClose={handleUserPanelClose} LogOut={LogOut} friendTrigger={() => setFriendChangeTrigger(prev => prev + 1)} />}
+      {isUserPanelOpen && 
+      <UserPanel 
+        onClose={handleUserPanelClose} 
+        LogOut={LogOut} 
+        friendTrigger={() => setFriendChangeTrigger(prev => prev + 1)}
+        serverTrigger={() => setServerChangeTrigger(prev => prev + 1)} 
+      />}
       {isTopbarMobileOpen && 
       <TopBarMobileView 
         onClose={() => setIsTopbarMobileOpen(false)}

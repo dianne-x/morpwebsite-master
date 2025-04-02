@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../../style/App/userPanel/ManageServer.scss';
 
-const ManageServer = () => {
+const ManageServer = ({ serverTrigger }) => { // Destructure serverTrigger from props
     const [servers, setServers] = useState([]);
     const [userId, setUserId] = useState(null);
 
@@ -64,6 +64,7 @@ const ManageServer = () => {
 
             if (response.data.success) {
                 alert('Server data saved successfully.');
+                serverTrigger();
             } else {
                 alert(response.data.error || 'An error occurred while saving server data.');
             }
@@ -89,6 +90,7 @@ const ManageServer = () => {
             });
             setServers(servers.filter(server => server.id !== serverId));
             alert('Server deleted successfully.');
+            serverTrigger();
         } catch (error) {
             console.error('Error deleting server:', error);
             alert('An error occurred while deleting the server.');
