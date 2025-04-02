@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-/*import "../../../style/App/Server/RoomCreation.scss";*/
+import { convertEmojisToText } from '../../../utils/emojiConverter';
 
 const SectionCreation = ({ serverId, onSectionCreated }) => {
   const [sectionName, setSectionName] = useState("");
@@ -11,6 +11,7 @@ const SectionCreation = ({ serverId, onSectionCreated }) => {
       return;
     }
     try {
+      const formattedSectionName = convertEmojisToText(sectionName); // Convert emojis to text codes
       const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/create_section.php`, {
         method: "POST",
         headers: {
@@ -18,7 +19,7 @@ const SectionCreation = ({ serverId, onSectionCreated }) => {
         },
         body: JSON.stringify({
           server_id: serverId,
-          section_name: sectionName,
+          section_name: formattedSectionName,
         }),
       });
       const data = await response.json();

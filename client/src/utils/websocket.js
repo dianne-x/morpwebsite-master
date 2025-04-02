@@ -1,3 +1,5 @@
+import { emojiMap } from './emojiConverter';
+
 let ws = null;
 
 export const connectWebSocket = (userId) => {
@@ -12,6 +14,13 @@ export const connectWebSocket = (userId) => {
 
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
+
+      // Convert emoji codes back to emojis for display
+      message.content = Object.keys(emojiMap).reduce((msg, emoji) => {
+        const code = emojiMap[emoji];
+        return msg.replace(new RegExp(code, 'g'), emoji);
+      }, message.content);
+
       console.log('Message received from server:', message);
 
       // Handle "kicked" action
