@@ -75,6 +75,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
         const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/useableCharacterForChat.php?serverId=${selectedServer}&userId=${user}`);
         console.log(`fetch url: ${process.env.REACT_APP_PHP_BASE_URL}/useableCharacterForChat.php?serverId=${selectedServer}&userId=${user}`);
         const data = await response.json();
+        console.log('Fetched characters:', data); // Log the fetched data to verify structure
         setVerifiedCharacters(data);
         if (data.length > 0) {
           setSelectedCharacter(data[0].id);
@@ -90,6 +91,10 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
       fetchVerifiedCharacters();
     }
   }, [selectedServer, user, characterChangeTrigger]);
+
+  useEffect(() => {
+    console.log('Verified Characters:', verifiedCharacters); // Log the state to verify aliases
+  }, [verifiedCharacters]);
 
   useEffect(() => {
     if (chatMessagesRef.current) {
@@ -114,10 +119,25 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
                 .map((msg, index) => {
                   const showIconAndName = index === 0 || prevCharacterRef.current !== msg.character_id;
                   prevCharacterRef.current = msg.character_id; // Update prevCharacterRef to current msg.character_id
-                  console.log(msg);
+
+                  // Ensure aliases is always an array
+                  const character = verifiedCharacters.find((char) => char.id === msg.character_id);
+                  const aliases = character && Array.isArray(character.aliases) ? character.aliases : [];
+                  console.log('Message aliases:', aliases); // Debug log to verify aliases structure
+
                   return (
                     <div key={index}>
-                      <ChatMessage key={index} name={msg.character_name} characterId={msg.character_id} message={msg.message} date={msg.date} character_pic_path={msg.character_pic_path || "character.png"} showIconAndName={showIconAndName} onCharacterClick={onCharacterClick} />
+                      <ChatMessage 
+                        key={index} 
+                        name={msg.character_name} 
+                        aliases={aliases.map(alias => alias.name)} // Extract alias names
+                        characterId={msg.character_id} 
+                        message={msg.message} 
+                        date={msg.date} 
+                        character_pic_path={msg.character_pic_path || "character.png"} 
+                        showIconAndName={showIconAndName} 
+                        onCharacterClick={onCharacterClick} 
+                      />
                     </div>
                   );
                 })}

@@ -27,11 +27,49 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("is", $serverId, $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
-while($row = $result->fetch_assoc()) {
+
+while ($row = $result->fetch_assoc()) {
+    // Log the character ID being processed
+    error_log("Processing Character ID: " . $row['id']);
+
+    // Fetch aliases for each character
+    $aliasStmt = $conn->prepare("
+        SELECT 
+            alias_character.id,
+            alias_character.name,
+            alias_character.character_pic_path
+        FROM alias_character
+        WHERE alias_character.character_id = ?
+    ");
+    $aliasStmt->bind_param("i", $row['id']);
+    if (!$aliasStmt->execute()) {
+        error_log("Error executing alias query for Character ID: " . $row['id']);
+    }
+    $aliasResult = $aliasStmt->get_result();
+
+    $aliases = [];
+    while ($aliasRow = $aliasResult->fetch_assoc()) {
+        $aliases[] = $aliasRow; // Include full alias data
+    }
+
+    // Log the aliases fetched for debugging
+    if (empty($aliases)) {
+        error_log("No aliases found for Character ID: " . $row['id']);
+    } else {
+        error_log("Character ID: " . $row['id'] . " Aliases: " . json_encode($aliases));
+    }
+
+    $row['aliases'] = $aliases; // Add aliases to the character data
     $verified_characters[] = $row;
 }
 
-error_log("Characters" . json_encode($verified_characters));
+// Log the final verified characters array
+if (empty($verified_characters)) {
+    error_log("No verified characters found for Server ID: $serverId and User ID: $user_id");
+} else {
+    error_log("Verified Characters: " . json_encode($verified_characters));
+}
+
 $conn->close();
 echo json_encode($verified_characters);
 ?>

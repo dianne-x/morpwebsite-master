@@ -48,9 +48,9 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
         { title: 'Affiliation', content: characterInfo.affiliation },
         { title: 'Nationality', content: characterInfo.nationality },
         { title: 'Occupation', content: characterInfo.occupation },
+        { title: 'Birthdate', content: characterInfo.birthdate || 'unknown date' },
         { title: 'FC Type', content: characterInfo.fc_type },
-        { title: 'FC Name', content: characterInfo.fc_name != '' ? characterInfo.fc_name : 'unknown' },
-        { title: 'Birthdate', content: characterInfo.birthdate || 'unknown date' }
+        { title: 'FC Name', content: characterInfo.fc_name != '' ? characterInfo.fc_name : 'unknown' }
     ]
 
     const characterDetails = [
