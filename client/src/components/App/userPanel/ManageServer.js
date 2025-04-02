@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import '../../../style/App/userPanel/ManageServer.scss';
 
 const ManageServer = () => {
     const [servers, setServers] = useState([]);
     const [userId, setUserId] = useState(null);
 
     useEffect(() => {
-        const uid = JSON.parse(localStorage.getItem('morp-login-user')); // Parse the user ID from localStorage
-        console.log(`manageserver uid: ${uid}`);
+        const uid = JSON.parse(localStorage.getItem('morp-login-user'));
         setUserId(uid);
         fetchServers(uid);
     }, []);
@@ -15,128 +15,132 @@ const ManageServer = () => {
     const fetchServers = async (uid) => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/manage_servers.php?uid=${uid}`);
-            console.log('Fetched servers:', response.data); // Debugging line
             setServers(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
             console.error('Error fetching servers:', error);
-            setServers([]); // Ensure servers is an array even on error
+            setServers([]);
+        }
+    };
+
+    const handleInputChange = (e, serverId) => {
+        const { name, value } = e.target;
+        setServers(servers.map(server =>
+            server.id === serverId ? { ...server, [name]: value } : server
+        ));
+    };
+
+    const handleFileChange = (e, serverId) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setServers(servers.map(server =>
+                    server.id === serverId ? { ...server, tempPicture: reader.result, server_picture_file: file } : server
+                ));
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleSave = async (serverId) => {
+        // eslint-disable-next-line no-restricted-globals
+        if (!window.confirm('Are you sure you want to save changes?')) {
+            return;
+        }
+
+        const server = servers.find(s => s.id === serverId);
+        const formData = new FormData();
+        if (server.server_picture_file) {
+            formData.append('server_picture', server.server_picture_file);
+        }
+        formData.append('id', serverId);
+        formData.append('server_name', server.server_name || '');
+        formData.append('uid', server.uid || '');
+
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/manage_servers.php`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+
+            if (response.data.success) {
+                alert('Server data saved successfully.');
+            } else {
+                alert(response.data.error || 'An error occurred while saving server data.');
+            }
+            fetchServers(userId);
+        } catch (error) {
+            console.error('Error saving server data:', error);
+            alert('An error occurred while saving server data.');
         }
     };
 
     const handleDelete = async (serverId) => {
+        // eslint-disable-next-line no-restricted-globals
+        if (!window.confirm('Are you sure you want to delete this server?')) {
+            return;
+        }
+
         try {
             await axios({
                 method: 'DELETE',
                 url: `${process.env.REACT_APP_PHP_BASE_URL}/manage_servers.php`,
                 data: { id: serverId },
-                headers: { 'Content-Type': 'application/json' } // Ensure the correct headers are set
+                headers: { 'Content-Type': 'application/json' }
             });
             setServers(servers.filter(server => server.id !== serverId));
+            alert('Server deleted successfully.');
         } catch (error) {
             console.error('Error deleting server:', error);
-        }
-    };
-
-    const handleNameChange = async (serverId, newName) => {
-        try {
-            await axios({
-                method: 'PUT',
-                url: `${process.env.REACT_APP_PHP_BASE_URL}/manage_servers.php`,
-                data: { id: serverId, name: newName }
-            });
-            setServers(servers.map(server => 
-                server.id === serverId ? { ...server, server_name: newName } : server
-            ));
-        } catch (error) {
-            console.error('Error changing server name:', error);
-        }
-    };
-
-    const handleUidChange = async (serverId, newUid) => {
-        try {
-            await axios({
-                method: 'PUT',
-                url: `${process.env.REACT_APP_PHP_BASE_URL}/manage_servers.php`,
-                data: { id: serverId, uid: newUid }
-            });
-            setServers(servers.map(server => 
-                server.id === serverId ? { ...server, uid: newUid } : server
-            ));
-        } catch (error) {
-            console.error('Error changing server UID:', error);
-        }
-    };
-
-    const handlePicChange = async (serverId, newPicPath) => {
-        try {
-            await axios({
-                method: 'PUT',
-                url: `${process.env.REACT_APP_PHP_BASE_URL}/manage_servers.php`,
-                data: { id: serverId, server_picture_path: newPicPath }
-            });
-            setServers(servers.map(server => 
-                server.id === serverId ? { ...server, server_picture_path: newPicPath } : server
-            ));
-        } catch (error) {
-            console.error('Error changing server picture:', error);
+            alert('An error occurred while deleting the server.');
         }
     };
 
     return (
-        <div>
+        <div className='manage-server-panel'>
             <h1>Manage Servers</h1>
             {Array.isArray(servers) && servers.length > 0 ? (
                 servers.map(server => (
-                    <div key={server.id}>
-                        <h2>{server.name}</h2>
-                        <button onClick={() => handleDelete(server.id)}>Delete</button>
-                        <button onClick={() => handleNameChange(server.id, prompt('Enter new name:'))}>Change Name</button>
-                        <button onClick={() => handleUidChange(server.id, prompt('Enter new UID:'))}>Change UID</button>
-                        <button onClick={() => handlePicChange(server.id, prompt('Enter new picture path:'))}>Change Picture</button>
-                        <ServerInfo serverId={server.id} />
-                    </div>
+                    <form key={server.id} onSubmit={(e) => { e.preventDefault(); handleSave(server.id); }}>
+                        <label
+                            className='server-picture-label'
+                            htmlFor={`server_pic_${server.id}`}
+                            style={{
+                                backgroundImage: `url(${server.tempPicture || `${process.env.REACT_APP_IMAGE_BASE_URL}/serverPictures/${server.server_picture_path}`})`
+                            }}
+                        ></label>
+                        <input
+                            type="file"
+                            id={`server_pic_${server.id}`}
+                            onChange={(e) => handleFileChange(e, server.id)}
+                        />
+                        <div className='input-wrapper'>
+                            <label>
+                                Server Name
+                            </label>
+                            <input
+                                type="text"
+                                name="server_name"
+                                value={server.server_name || ''}
+                                onChange={(e) => handleInputChange(e, server.id)}
+                            />
+                        </div>
+                        <div className='input-wrapper'>
+                            <label>
+                                UID
+                            </label>
+                            <input
+                                type="text"
+                                name="uid"
+                                value={server.uid || ''}
+                                onChange={(e) => handleInputChange(e, server.id)}
+                            />
+                        </div>
+                        <button type="submit">Save</button>
+                        <button type="button" onClick={() => handleDelete(server.id)} className="server-delete-btn">Delete</button>
+                    </form>
                 ))
             ) : (
                 <p>No servers found.</p>
-            )}
-        </div>
-    );
-};
-
-const fetchServerInfo = async (serverId) => {
-    try {
-        const response = await axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/manage_servers.php?id=${serverId}`);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching server info:', error);
-        return null;
-    }
-};
-
-const ServerInfo = ({ serverId }) => {
-    const [info, setInfo] = useState(null);
-
-    useEffect(() => {
-        const fetchInfo = async () => {
-            const data = await fetchServerInfo(serverId);
-            setInfo(data);
-        };
-        fetchInfo();
-    }, [serverId]);
-
-    return (
-        <div>
-            {info ? (
-                <div>
-                    <p>Server Name: {info.server_name}</p>
-                    <p>UID: {info.uid}</p>
-                    <p>Main Color: {info.main_color}</p>
-                    <p>Text Color: {info.text_color}</p>
-                    <p>Picture Path: {info.server_picture_path}</p>
-                    {/* Add more fields as needed */}
-                </div>
-            ) : (
-                <p>Loading server info...</p>
             )}
         </div>
     );

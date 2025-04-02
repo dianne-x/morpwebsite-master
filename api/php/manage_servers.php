@@ -19,7 +19,6 @@ if ($conn->connect_error) {
 }
 
 $method = $_SERVER['REQUEST_METHOD'];
-$input = json_decode(file_get_contents('php://input'), true);
 
 switch ($method) {
     case 'GET':
@@ -30,23 +29,16 @@ switch ($method) {
         }
         break;
     case 'DELETE':
+        $input = json_decode(file_get_contents('php://input'), true);
         if (isset($input['id'])) {
             deleteServer($input['id']);
         } else {
             echo json_encode(['error' => 'Missing server ID']);
         }
         break;
-    case 'PUT':
-        if (isset($input['id'])) {
-            if (isset($input['name'])) {
-                changeServerName($input['id'], $input['name']);
-            } elseif (isset($input['uid'])) {
-                changeServerUid($input['id'], $input['uid']);
-            } elseif (isset($input['server_picture_path'])) {
-                changeServerPicture($input['id'], $input['server_picture_path']);
-            } else {
-                echo json_encode(['error' => 'No valid fields to update']);
-            }
+    case 'POST':
+        if (isset($_POST['id'])) {
+            updateServerData();
         } else {
             echo json_encode(['error' => 'Missing server ID']);
         }
@@ -62,8 +54,6 @@ function fetchServers() {
     $sql = "SELECT s.* FROM servers s
             JOIN server_member sm ON s.id = sm.server_id
             WHERE sm.user_id = '$uid' AND sm.is_owner = 1";
-    // Debugging line
-    error_log("Executing query: $sql");
     $result = $conn->query($sql);
     $servers = [];
     while ($row = $result->fetch_assoc()) {
@@ -85,57 +75,103 @@ function getServerInfo($id) {
 
 function deleteServer($id) {
     global $conn;
-    // Delete related rows in server_member table
     $sql = "DELETE FROM server_member WHERE server_id = $id";
-    // Debugging line
-    error_log("Executing query: $sql");
     if ($conn->query($sql) === TRUE) {
-        // Now delete the server
         $sql = "DELETE FROM servers WHERE id = $id";
-        // Debugging line
-        error_log("Executing query: $sql");
         if ($conn->query($sql) === TRUE) {
             echo json_encode(['success' => 'Server deleted successfully']);
         } else {
-            // Debugging line
-            error_log("Error deleting server: " . $conn->error);
             echo json_encode(['error' => 'Error deleting server: ' . $conn->error]);
         }
     } else {
-        // Debugging line
-        error_log("Error deleting server members: " . $conn->error);
         echo json_encode(['error' => 'Error deleting server members: ' . $conn->error]);
     }
 }
 
-function changeServerName($id, $name) {
+function updateServerData() {
     global $conn;
-    $sql = "UPDATE servers SET server_name = '$name' WHERE id = $id";
-    if ($conn->query($sql) === TRUE) {
-        echo json_encode(['success' => 'Server name updated successfully']);
-    } else {
-        echo json_encode(['error' => 'Error updating server name: ' . $conn->error]);
-    }
-}
 
-function changeServerUid($id, $uid) {
-    global $conn;
-    $newInviteLink = "morp.ru/$uid";
-    $sql = "UPDATE servers SET uid = '$uid', invite_link = '$newInviteLink' WHERE id = $id";
-    if ($conn->query($sql) === TRUE) {
-        echo json_encode(['success' => 'Server UID and invite link updated successfully']);
-    } else {
-        echo json_encode(['error' => 'Error updating server UID: ' . $conn->error]);
-    }
-}
+    $id = $_POST['id'];
+    $server_name = isset($_POST['server_name']) ? $conn->real_escape_string($_POST['server_name']) : null;
+    $uid = isset($_POST['uid']) ? $conn->real_escape_string($_POST['uid']) : null;
+    $server_picture_path = null;
 
-function changeServerPicture($id, $server_picture_path) {
-    global $conn;
-    $sql = "UPDATE servers SET server_picture_path = '$server_picture_path' WHERE id = $id";
-    if ($conn->query($sql) === TRUE) {
-        echo json_encode(['success' => 'Server picture updated successfully']);
+    // Check if the UID is already taken by another server
+    if ($uid !== null) {
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM servers WHERE uid = ? AND id != ?");
+        if ($stmt === false) {
+            echo json_encode(['error' => 'Failed to prepare the query to check UID: ' . $conn->error]);
+            return;
+        }
+
+        $stmt->bind_param('si', $uid, $id);
+        $stmt->execute();
+        $stmt->bind_result($uidCount);
+        $stmt->fetch();
+        $stmt->close();
+
+        if ($uidCount > 0) {
+            echo json_encode(['error' => 'The UID is already taken. Please choose a different UID.']);
+            return;
+        }
+    }
+
+    // Handle file upload
+    if (isset($_FILES['server_picture']) && $_FILES['server_picture']['error'] === UPLOAD_ERR_OK) {
+        $fileTmpPath = $_FILES['server_picture']['tmp_name'];
+        $fileName = $_FILES['server_picture']['name'];
+        $fileNameCmps = explode(".", $fileName);
+        $fileExtension = strtolower(end($fileNameCmps));
+
+        // Sanitize file name
+        $newFileName = md5(time() . $fileName) . '.' . $fileExtension;
+
+        // Check if the file extension is allowed
+        $allowedfileExtensions = array('jpg', 'gif', 'png', 'jpeg');
+        if (in_array($fileExtension, $allowedfileExtensions)) {
+            $uploadFileDir = '../../storage/images/serverPictures/';
+            $dest_path = $uploadFileDir . $newFileName;
+
+            // Debugging logs
+            error_log("Temporary file path: " . $fileTmpPath);
+            error_log("Destination path: " . $dest_path);
+
+            if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                $server_picture_path = $newFileName;
+            } else {
+                error_log("Error moving uploaded file.");
+                echo json_encode(['error' => 'There was an error moving the uploaded file.']);
+                return;
+            }
+        } else {
+            error_log("Invalid file extension: " . $fileExtension);
+            echo json_encode(['error' => 'Upload failed. Allowed file types: ' . implode(',', $allowedfileExtensions)]);
+            return;
+        }
+    }
+
+    // Update server data
+    $updateFields = [];
+    if ($server_name !== null) {
+        $updateFields[] = "server_name = '$server_name'";
+    }
+    if ($uid !== null) {
+        $newInviteLink = "morp.ru/$uid";
+        $updateFields[] = "uid = '$uid', invite_link = '$newInviteLink'";
+    }
+    if ($server_picture_path !== null) {
+        $updateFields[] = "server_picture_path = '$server_picture_path'";
+    }
+
+    if (!empty($updateFields)) {
+        $sql = "UPDATE servers SET " . implode(', ', $updateFields) . " WHERE id = $id";
+        if ($conn->query($sql) === TRUE) {
+            echo json_encode(['success' => 'Server data updated successfully', 'server_picture_path' => $server_picture_path]);
+        } else {
+            echo json_encode(['error' => 'Error updating server data: ' . $conn->error]);
+        }
     } else {
-        echo json_encode(['error' => 'Error updating server picture: ' . $conn->error]);
+        echo json_encode(['error' => 'No valid fields to update']);
     }
 }
 

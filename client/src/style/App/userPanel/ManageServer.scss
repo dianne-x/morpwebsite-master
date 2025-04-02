@@ -1,0 +1,80 @@
+@import '../../colors';
+
+.manage-server-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: auto;
+
+    form {
+        overflow-y: visible !important;
+        display: flex !important;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba($color: $text-color, $alpha: .05);
+        padding: 15px;
+
+        .server-picture-label {
+            width: 100px !important;
+            background-size: cover;
+            background-position: center;
+            aspect-ratio: 1/1;
+            cursor: pointer;
+            position: relative;
+            border-radius: 50%;
+            overflow: hidden;
+
+            &::after {
+                content: 'change pic';
+                font-size: .7rem;
+                position: absolute;
+                display: grid;
+                place-items: center;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba($color: black, $alpha: .6);
+                visibility: hidden;
+            }
+
+            &:hover::after {
+                visibility: visible;
+            }
+        }
+
+        .input-wrapper {
+            display: flex;
+            justify-content: end;
+            align-items: center;
+            gap: 1rem;
+            width: 400px;
+            max-width: 100%;
+
+            label {
+                width: auto !important;
+                text-wrap: nowrap;
+            }
+            input {
+                width: 100%;
+            }
+        }
+
+        button.server-delete-btn {
+            background-color: #640a0a !important;
+        }
+    }
+}
+
+@media screen and (max-width: 481px) {
+    .manage-server-panel {
+        form {
+            .input-wrapper {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.2rem;
+            }
+        }
+    }
+}
