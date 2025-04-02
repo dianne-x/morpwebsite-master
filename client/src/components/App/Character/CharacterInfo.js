@@ -7,6 +7,11 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
     const [characterInfo, setCharacterInfo] = useState(null);
     const [selectedPicMap, setSelectedPicMap] = useState('character');
 
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'long', day: '2-digit' };
+        return new Intl.DateTimeFormat(navigator.language || navigator.userLanguage, options).format(new Date(dateString));
+    };
+
     useEffect(() => {
         // Fetch character information
         axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/getCharacterData.php?characterId=${characterId}`)
@@ -48,13 +53,13 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
         { title: 'Affiliation', content: characterInfo.affiliation },
         { title: 'Nationality', content: characterInfo.nationality },
         { title: 'Occupation', content: characterInfo.occupation },
-        { title: 'Birthdate', content: characterInfo.birthdate || 'unknown date' },
+        { title: 'Birthdate', content: characterInfo.birthdate ? formatDate(characterInfo.birthdate) : 'unknown date' },
         characterInfo.fc_name && { 
             title: 'FC', 
             content: `${characterInfo.fc_name} (${characterInfo.fc_type || 'unknown type'})` 
         },
-        { title: 'Died', content: characterInfo.died != 0 ? (characterInfo.deathdate || 'unknown date') : null },
-        { title: 'Resurrected', content: characterInfo.resurrected != 0 ? (characterInfo.resurrected_date || 'unknown date') : null }
+        { title: 'Died', content: characterInfo.died != 0 ? (characterInfo.deathdate ? formatDate(characterInfo.deathdate) : 'unknown date') : null },
+        { title: 'Resurrected', content: characterInfo.resurrected != 0 ? (characterInfo.resurrected_date ? formatDate(characterInfo.resurrected_date) : 'unknown date') : null }
     ].filter(Boolean); // Filter out null or undefined entries
 
     const characterDetails = [
@@ -102,18 +107,6 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
                                 </tr>
                             )
                         ))}
-                        {characterInfo.died != 0 &&
-                            <tr>
-                                <td>Died</td>
-                                <td>{characterInfo.deathdate || 'unknown date'}</td>
-                            </tr>
-                        }
-                        {characterInfo.resurrected != 0 &&
-                            <tr>
-                                <td>Resurrected</td>
-                                <td>{characterInfo.resurrected_date || 'unknown date'}</td>
-                            </tr>
-                        }
                     </tbody>
                 </table>
             </div>
