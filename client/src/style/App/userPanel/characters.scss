@@ -2,6 +2,10 @@
 
 .user-panel {
 .content {
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
+    position: relative;
     gap: 1rem;
     .character-container {
         display: flex;

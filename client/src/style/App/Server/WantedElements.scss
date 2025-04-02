@@ -23,4 +23,22 @@
     form, button {
         margin-top: 20px;
     }
+
+    button {
+        background: $third-color;
+        color: $main-color;
+        border: none;
+        width: 200px;
+        max-width: 100%;
+        align-self: center;
+        padding: 10px 20px;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: .05rem;
+        margin-right: -.05rem;
+
+        &:hover {
+            background: darken($color: $third-color, $amount: 10);
+        }
+    }
 }
