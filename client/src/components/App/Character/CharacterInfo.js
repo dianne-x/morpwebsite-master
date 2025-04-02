@@ -49,9 +49,13 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
         { title: 'Nationality', content: characterInfo.nationality },
         { title: 'Occupation', content: characterInfo.occupation },
         { title: 'Birthdate', content: characterInfo.birthdate || 'unknown date' },
-        { title: 'FC Type', content: characterInfo.fc_type },
-        { title: 'FC Name', content: characterInfo.fc_name != '' ? characterInfo.fc_name : 'unknown' }
-    ]
+        characterInfo.fc_name && { 
+            title: 'FC', 
+            content: `${characterInfo.fc_name} (${characterInfo.fc_type || 'unknown type'})` 
+        },
+        { title: 'Died', content: characterInfo.died != 0 ? (characterInfo.deathdate || 'unknown date') : null },
+        { title: 'Resurrected', content: characterInfo.resurrected != 0 ? (characterInfo.resurrected_date || 'unknown date') : null }
+    ].filter(Boolean); // Filter out null or undefined entries
 
     const characterDetails = [
         { title: 'Biography', content: characterInfo.bio },
