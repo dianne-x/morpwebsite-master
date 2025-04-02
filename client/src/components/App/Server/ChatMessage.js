@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../../../style/App/Server/ChatMessage.scss';
+import { convertEmojisToText, emojiMap } from '../../../utils/emojiConverter';
 
 const ChatMessage = ({ name, aliases, message, date, showIconAndName, characterId, character_pic_path, onCharacterClick }) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -23,7 +24,13 @@ const ChatMessage = ({ name, aliases, message, date, showIconAndName, characterI
 
     const formatMessage = (message) => {
         if (!message) return message; // Only format if there is some text
-        let formattedMessage = message;
+
+        // Convert emoji codes back to emojis for display
+        let formattedMessage = Object.keys(emojiMap).reduce((msg, emoji) => {
+            const code = emojiMap[emoji];
+            return msg.replace(new RegExp(code, 'g'), emoji);
+        }, message);
+
         formattedMessage = formattedMessage.replace(/\*\*\*(.*?)\*\*\*/g, (match, p1) => p1.trim() != "" ? `<span style="font-style: italic; font-weight: bold;">${p1}</span>` : match);
         formattedMessage = formattedMessage.replace(/\*\*(.*?)\*\*/g, (match, p1) => p1.trim() != "" ? `<span style="font-weight: bold;">${p1}</span>` : match);
         formattedMessage = formattedMessage.replace(/\*(.*?)\*/g, (match, p1) => p1.trim() != "" ? `<span style="font-style: italic;">${p1}</span>` : match);

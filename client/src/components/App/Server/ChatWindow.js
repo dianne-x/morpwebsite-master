@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faBars, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import ChatMessage from './ChatMessage';
+import { convertEmojisToText, emojiMap } from '../../../utils/emojiConverter';
 
 const socket = io.connect('http://localhost:3001'); 
 
@@ -35,8 +36,9 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
   };
 
   const handleSendMessage = () => {
-    console.log('Sending message:', { roomId, userId: user.uid, characterId: selectedCharactersId, message });
-    socket.emit("send_message", { roomId: roomId, userId: user.uid, characterId: selectedCharactersId, message });
+    const formattedMessage = convertEmojisToText(message); // Convert emojis to text codes for saving
+    console.log('Sending message:', { roomId, userId: user.uid, characterId: selectedCharactersId, message: formattedMessage });
+    socket.emit("send_message", { roomId: roomId, userId: user.uid, characterId: selectedCharactersId, message: formattedMessage });
     setMessage(''); // Clear the input after sending the message
   };
 
@@ -48,7 +50,13 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
-      setMessages((prevMessages) => [...prevMessages, data]);
+        // Convert emoji codes back to emojis for display
+        const displayMessage = Object.keys(emojiMap).reduce((msg, emoji) => {
+            const code = emojiMap[emoji];
+            return msg.replace(new RegExp(code, 'g'), emoji);
+        }, data.message);
+
+        setMessages((prevMessages) => [...prevMessages, { ...data, message: displayMessage }]);
     });
 
     socket.on("previous_messages", (messages) => {
