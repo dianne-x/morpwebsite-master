@@ -43,15 +43,16 @@
             gap: 5px;
             
             .chat-message-head {
-                display: flex;
-                gap: 10px;
-                align-items: center;
+                display: block;
+
 
                 h3 {
                     font-size: 1rem;
                     font-weight: bold;
                     color: $text-color;
                     cursor: pointer;
+                    float: left;
+                    padding-right: 10px;
                 }
             }
 
