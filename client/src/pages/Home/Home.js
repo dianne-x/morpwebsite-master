@@ -15,12 +15,16 @@ const Home = () => {
         </HelmetProvider>
 
         <div className="ufo-container">
-          <img src={morpHomeUFO} alt="Morp UFO" className="ufo" /></div>
-        <h1>Home</h1>
+          <img src={morpHomeUFO} alt="Morp UFO" className="ufo" />
+        </div>
         
         <div className="image-container">
           <img src={morpHomepic} alt="Morp Home" />
         </div>
+
+        <button>
+          <span>Download Desktop Client</span>
+        </button>
       </main>
     );
   };
