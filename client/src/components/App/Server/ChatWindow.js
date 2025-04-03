@@ -20,9 +20,13 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
 
   const user = JSON.parse(localStorage.getItem('morp-login-user'));
 
-  const handleServerChange = (event) => {
-    setSelectedServer(event.target.value);
+  const handleServerChange = (id) => {
+    setSelectedServer(id);
   };
+
+  useEffect(() => {
+    handleServerChange(serverId);
+  }, [serverId]);
 
   const handleCharacterChange = (event) => {
     const characterId = event.target.value;
