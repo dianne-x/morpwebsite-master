@@ -1,155 +1,85 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: 2025-02-03 09:24
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Drop and recreate foreign key constraints for `server_member`
+ALTER TABLE `server_member`
+  DROP FOREIGN KEY IF EXISTS `server_member_ibfk_2`;
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+ALTER TABLE `server_member`
+  ADD CONSTRAINT `server_member_ibfk_2` FOREIGN KEY (`server_id`) REFERENCES `servers` (`id`) ON DELETE CASCADE;
 
--- --------------------------------------------------------
--- Database: `morpdatabase2`
--- --------------------------------------------------------
+-- Drop and recreate foreign key constraints for `section`
+ALTER TABLE `section`
+  DROP FOREIGN KEY IF EXISTS `section_ibfk_1`;
 
-DROP DATABASE IF EXISTS morpdatabase2;
+ALTER TABLE `section`
+  ADD CONSTRAINT `section_ibfk_1` FOREIGN KEY (`server_id`) REFERENCES `servers` (`id`) ON DELETE CASCADE;
 
-CREATE DATABASE morpdatabase2
-DEFAULT CHARACTER SET utf8
-COLLATE utf8_general_ci;
+-- Drop and recreate foreign key constraints for `server_stories`
+ALTER TABLE `server_stories`
+  DROP FOREIGN KEY IF EXISTS `server_stories_ibfk_2`;
 
-USE morpdatabase2;
+ALTER TABLE `server_stories`
+  ADD CONSTRAINT `server_stories_ibfk_2` FOREIGN KEY (`server_id`) REFERENCES `servers` (`id`) ON DELETE CASCADE;
 
--- --------------------------------------------------------
--- Table structure for `servers`
--- --------------------------------------------------------
+-- Drop and recreate foreign key constraints for `server_bio`
+ALTER TABLE `server_bio`
+  DROP FOREIGN KEY IF EXISTS `server_bio_ibfk_2`;
 
-CREATE TABLE `servers` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `uid` varchar(255) DEFAULT NULL,
-  `server_name` varchar(255) DEFAULT NULL,
-  `server_picture_path` varchar(255) DEFAULT 'server.png',
-  `main_color` varchar(7) DEFAULT '#000000',
-  `text_color` varchar(7) DEFAULT '#FFFFFF',
-  `invite_link` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+ALTER TABLE `server_bio`
+  ADD CONSTRAINT `server_bio_ibfk_2` FOREIGN KEY (`id`) REFERENCES `servers` (`id`) ON DELETE CASCADE;
 
--- --------------------------------------------------------
--- Table structure for `server_member`
--- --------------------------------------------------------
+-- Drop and recreate foreign key constraints for `room`
+ALTER TABLE `room`
+  DROP FOREIGN KEY IF EXISTS `room_ibfk_1`;
 
-CREATE TABLE `server_member` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(255) DEFAULT NULL,
-  `server_id` int(11) DEFAULT NULL,
-  `is_owner` tinyint(1) DEFAULT NULL,
-  `is_moderator` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`server_id`) REFERENCES `servers` (`id`) ON DELETE CASCADE,
-  FOREIGN KEY (`user_id`) REFERENCES `users` (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+ALTER TABLE `room`
+  ADD CONSTRAINT `room_ibfk_1` FOREIGN KEY (`section_id`) REFERENCES `section` (`id`) ON DELETE CASCADE;
 
--- --------------------------------------------------------
--- Table structure for `server_bio`
--- --------------------------------------------------------
+-- Drop and recreate foreign key constraints for `room_message`
+ALTER TABLE `room_message`
+  DROP FOREIGN KEY IF EXISTS `room_message_ibfk_1`;
 
-CREATE TABLE `server_bio` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `about_us` varchar(255) DEFAULT NULL,
-  `about_us_color` varchar(7) DEFAULT '#000000',
-  `about_us_text_color` varchar(7) DEFAULT '#FFFFFF',
-  `about_us_header_picture_path` varchar(255) DEFAULT NULL,
-  `rp_category_id` int(11) DEFAULT 0,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`id`) REFERENCES `servers` (`id`) ON DELETE CASCADE,
-  FOREIGN KEY (`rp_category_id`) REFERENCES `rp_category` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+ALTER TABLE `room_message`
+  ADD CONSTRAINT `room_message_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `room` (`id`) ON DELETE CASCADE;
 
--- --------------------------------------------------------
--- Table structure for `server_stories`
--- --------------------------------------------------------
+-- Drop and recreate foreign key constraints for `user_character`
+ALTER TABLE `user_character`
+  DROP FOREIGN KEY IF EXISTS `user_character_ibfk_1`;
 
-CREATE TABLE `server_stories` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `stories_id` int(11) DEFAULT NULL,
-  `server_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`server_id`) REFERENCES `servers` (`id`) ON DELETE CASCADE,
-  FOREIGN KEY (`stories_id`) REFERENCES `stories` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+ALTER TABLE `user_character`
+  ADD CONSTRAINT `user_character_ibfk_1` FOREIGN KEY (`servermember_id`) REFERENCES `server_member` (`id`) ON DELETE CASCADE;
 
--- --------------------------------------------------------
--- Table structure for `section`
--- --------------------------------------------------------
+-- Drop and recreate foreign key constraints for `user_character_need`
+ALTER TABLE `user_character_need`
+  DROP FOREIGN KEY IF EXISTS `user_character_need_ibfk_1`;
 
-CREATE TABLE `section` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `server_id` int(11) DEFAULT NULL,
-  `section_name` varchar(255) DEFAULT NULL,
-  `text_color` varchar(7) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`server_id`) REFERENCES `servers` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+ALTER TABLE `user_character_need`
+  ADD CONSTRAINT `user_character_need_ibfk_1` FOREIGN KEY (`server_id`) REFERENCES `servers` (`id`) ON DELETE CASCADE;
 
--- --------------------------------------------------------
--- Table structure for `user_character_need`
--- --------------------------------------------------------
+-- Drop and recreate foreign key constraints for `character_story`
+ALTER TABLE `character_story`
+  DROP FOREIGN KEY IF EXISTS `character_story_ibfk_2`;
 
-CREATE TABLE `user_character_need` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `server_id` int(11) DEFAULT NULL,
-  `birthdate_need` tinyint(1) DEFAULT NULL,
-  `deathdate_need` tinyint(1) DEFAULT NULL,
-  `resurrected_date_need` tinyint(1) DEFAULT NULL,
-  `species_need` tinyint(1) DEFAULT NULL,
-  `occupation_need` tinyint(1) DEFAULT NULL,
-  `affiliation_need` tinyint(1) DEFAULT NULL,
-  `nationality_need` tinyint(1) DEFAULT NULL,
-  `powers_need` tinyint(1) DEFAULT NULL,
-  `weaknesses_need` tinyint(1) DEFAULT NULL,
-  `used_item_need` tinyint(1) DEFAULT NULL,
-  `family_need` tinyint(1) DEFAULT NULL,
-  `universe_need` tinyint(1) DEFAULT NULL,
-  `fc_need` tinyint(1) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`server_id`) REFERENCES `servers` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+ALTER TABLE `character_story`
+  ADD CONSTRAINT `character_story_ibfk_2` FOREIGN KEY (`character_id`) REFERENCES `user_character` (`id`) ON DELETE CASCADE;
 
--- --------------------------------------------------------
--- Table structure for `users`
--- --------------------------------------------------------
+-- Drop and recreate foreign key constraints for `alias_character`
+ALTER TABLE `alias_character`
+  DROP FOREIGN KEY IF EXISTS `alias_character_ibfk_1`;
 
-CREATE TABLE `users` (
-  `uid` varchar(255) NOT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `nickname` varchar(255) DEFAULT '',
-  `gender_id` int(11) DEFAULT 0,
-  `profile_pic_path` varchar(255) DEFAULT 'user.png',
-  `language_id` varchar(255) DEFAULT '0',
-  `thread_id` int(11) DEFAULT NULL,
-  `status_id` int(11) DEFAULT 0,
-  `about_me` varchar(255) DEFAULT '',
-  `about_me_color` varchar(7) DEFAULT '#000000',
-  `bio_main_color` varchar(7) DEFAULT '#000000',
-  `bio_text_color` varchar(7) DEFAULT '#FFFFFF',
-  `verified` tinyint(1) DEFAULT NULL,
-  `is_admin` tinyint(1) DEFAULT NULL,
-  `timeout_until` DATETIME DEFAULT NULL,
-  `isBanned` TINYINT(1) DEFAULT 0,
-  PRIMARY KEY (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+ALTER TABLE `alias_character`
+  ADD CONSTRAINT `alias_character_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `user_character` (`id`) ON DELETE CASCADE;
 
--- --------------------------------------------------------
--- Add other tables as needed, ensuring that all foreign keys referencing `servers` include `ON DELETE CASCADE`.
+-- Drop and recreate foreign key constraints for `direct_message`
+ALTER TABLE `direct_message`
+  DROP FOREIGN KEY IF EXISTS `direct_message_ibfk_1`;
 
-COMMIT;
+ALTER TABLE `direct_message`
+  ADD CONSTRAINT `direct_message_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `direct_message_room` (`id`) ON DELETE CASCADE;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- Drop and recreate foreign key constraints for `direct_message_room`
+ALTER TABLE `direct_message_room`
+  DROP FOREIGN KEY IF EXISTS `direct_message_room_ibfk_1`,
+  DROP FOREIGN KEY IF EXISTS `direct_message_room_ibfk_2`;
+
+ALTER TABLE `direct_message_room`
+  ADD CONSTRAINT `direct_message_room_ibfk_1` FOREIGN KEY (`user1_id`) REFERENCES `users` (`uid`),
+  ADD CONSTRAINT `direct_message_room_ibfk_2` FOREIGN KEY (`user2_id`) REFERENCES `users` (`uid`);
