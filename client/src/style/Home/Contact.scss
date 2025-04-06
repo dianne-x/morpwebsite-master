@@ -5,18 +5,17 @@ main.contact {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: 3rem;
   padding: 2rem;
 
-  h1 {
-    align-self: flex-start; // Align the "Contact" title to the left
-  }
 
   .socials {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    margin-top: 2rem;
+    //margin-top: 2rem;
 
     h2 {
       text-align: center;
@@ -45,24 +44,19 @@ main.contact {
 
   .content {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    gap: 2rem;
-    margin-top: auto; // Push content to the bottom
+    gap: 3rem;
+    //margin-top: auto; // Push content to the bottom
 
     .email {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      width: 50%; // Take half the screen width
+      gap: 1rem;
+      width: 100%;
       max-width: 600px;
-      margin-left: 4rem; // Offset slightly from the left
-      margin-bottom: 2rem; // Position higher on larger screens
-
-      h2{
-        margin-bottom: 30px;
-      }
 
       form {
         display: flex;
@@ -121,17 +115,16 @@ main.contact {
       }
     }
 
-  }
-  .morp-like {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    animation: float_like 3s ease-in-out infinite;
-
-    img {
-      max-width: 200px; // Default size for large screens
-      height: auto;
-      transition: max-width 0.3s ease; // Smooth resizing
+    .morp-like {
+      display: flex;
+      justify-content: flex-end;
+      animation: float_like 3s ease-in-out infinite;
+  
+      img {
+        max-width: 150px;
+        height: auto;
+        transition: max-width 0.3s ease;
+      }
     }
   }
 
@@ -146,7 +139,7 @@ main.contact {
 
   @media (max-width: 1024px) {
     .morp-like img {
-      max-width: 120px; // Adjust size for medium screens
+      max-width: 100px; // Adjust size for medium screens
     }
   }
 
@@ -159,11 +152,6 @@ main.contact {
         width: 80%; // Full width for smaller screens
       }
 
-      .email {
-        margin-left: 0; // Reset margin for smaller screens
-        margin-top: 0; // Reset position for smaller screens
-      }
-
     }
     .morp-like {
       justify-content: center;
@@ -171,6 +159,7 @@ main.contact {
 
       img {
         max-width: 55px;
+        display: none;
       }
     }
   }
@@ -181,9 +170,5 @@ main.contact {
         font-size: 2rem;
       }
     }
-
-      .morp-like img {
-        display: none;
-      }
   }
 }

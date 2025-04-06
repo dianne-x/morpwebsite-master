@@ -36,9 +36,9 @@ const Contact = () => {
               <button type='submit'>Send</button>
             </form>
           </div>
-        </div>
-        <div className='morp-like'>
-          <img src={morpLike} alt='MORP Like' />
+          <div className='morp-like'>
+            <img src={morpLike} alt='MORP Like' />
+          </div>
         </div>
       </main>
     );
