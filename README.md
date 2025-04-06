@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+# MORP Webes Alkalmazás
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Ez a dokumentum a MORP webes alkalmazás telepítési és használati útmutatója.
 
-## Available Scripts
+## Szerkezet
 
-In the project directory, you can run:
+Az alkalmazás a következő főbb részekből áll:
 
-### `npm start`
+- **api:** PHP alapú websocket szerver.
+- **client:** A webes felhasználói felület.
+- **server:** Socket.IO szerver.
+- **storage:** Az alkalmazásból feltöltött képek tárolására szolgáló mappa.
+- **db scripts:** MySQL adatbázis létrehozásához szükséges szkriptek.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Adatbázis (MySQL)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Az adatbázis inicializálásához futtasd a következő SQL fájlokat a megadott sorrendben:
 
-### `npm test`
+1.  `db_scripts/ne hasznald meg/fasza.sql`
+2.  `ideas/cascade` (a constraint-ek miatt külön importálni kell)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Lokális Telepítés
 
-### `npm run build`
+A lokális telepítéshez kövesd az alábbi lépéseket:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1.  **Helyezd a `morpwebsite-master` mappát a XAMPP `htdocs` mappájába.**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2.  **`api` mappa:**
+    ```bash
+    cd morpwebsite-master/api
+    c:/xampp/php/php.exe composer.phar install
+    ```
+    Másold át a `.env.example` fájlt `.env` néven, és konfiguráld a szükséges beállításokat.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3.  **`client` mappa:**
+    ```bash
+    cd /client
+    npm i
+    yarn install
+    ```
+    Másold át a `.env.example` fájlt `.env` néven, és konfiguráld a szükséges beállításokat.
 
-### `npm run eject`
+4.  **`server` mappa:**
+    ```bash
+    cd /server
+    npm i
+    yarn install
+    ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Futtatás
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+A fejlesztői környezet elindításához használd a `runDevelopment.bat` fájlt a főkönyvtárban. Ez elindítja a websocket szervert, a Socket.IO szervert, az SQL adatbázist stb.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Lokális Portok
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Az alkalmazás lokálisan a következő portokon érhető el:
 
-## Learn More
+-   **Client:** `http://localhost:3000`
+-   **Socket.IO Server:** `http://localhost:3001`
+-   **Websocket Server:** `ws://localhost:8080`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Mire Figyelj a Felrakásnál (Élesítésnél)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+-   **Client mappa lebuildelése:** Ha lehetséges, buildeld le a `client` mappát az optimális teljesítmény érdekében.
+-   **.env fájlok konfigurálása:** Minden `.env` fájlban (`api`, `client`) írd át a példa adatokat a valós éles adatokra.
+-   **`server/index.js` konfigurálása:**
+    -   A 12. sorban állítsd be a megfelelő MySQL kapcsolatot.
+    -   Ellenőrizd és szükség esetén módosítsd a szerver futtatási portját a fájl végén.
+-   **Websocket port konfigurálása:** Ha a websocket szerver nem a `ws://localhost:8080` címen fog futni, akkor frissítsd a portot az `api/php/WebSocketServer.php` fájlban.
