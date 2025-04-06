@@ -26,6 +26,11 @@
   }
 
   &.character-creation, &.character-edit {
+
+    .character-container {
+      position: absolute;
+    }
+
     grid-template-columns: 1fr;
     &>:nth-child(1) {
       display: none;
