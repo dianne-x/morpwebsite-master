@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import emailjs from 'emailjs-com'; // Import EmailJS
 import '../../style/App/HomePage.scss';
 import logo from '../../img/morp_light.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -59,40 +58,39 @@ const HomePage = () => {
         return () => clearInterval(timer);
     }, [isCooldown]);
 
-    const handleReportSubmit = (e) => {
+    const handleReportSubmit = async (e) => {
         e.preventDefault();
-        
-        if (!name || !problemDescription) {
-            setFeedbackMessage('Please fill out all fields.');
-            return;
-        }
+        setFeedbackMessage('Sending report...');
 
-        if (isCooldown) {
-            setFeedbackMessage(`Please wait before sending another report. Cooldown: ${cooldownTime} seconds.`);
-            return;
-        }
+        const uid = localStorage.getItem('morp-login-user');
+        const body = `
+            <p>UID: ${uid}</p>
+            <p>Name: ${name}</p>
+            <p>Problem: ${problemDescription}</p>`;
 
-        const reportData = {
-            name: name,
-            description: problemDescription,
-        };
-
-        // Send the report via EmailJS
-        emailjs.send('service_q97xman', 'template_uuj3tfj', reportData, 'l-pe4Aftp1ihP4uiH')
-            .then((response) => {
-                console.log('SUCCESS!', response.status, response.text);
-                setFeedbackMessage('Report sent! Thank you for your feedback.');
-                setIsCooldown(true);
-                setCooldownTime(250); // 10 minutes cooldown
-                localStorage.setItem('cooldownTimestamp', Date.now());
-            }, (error) => {
-                console.log('FAILED...', error);
-                setFeedbackMessage('Failed to send report. Please try again later.');
+        try {
+            const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/mailReceive.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    subject: 'MORP App Report',
+                    body: body,
+                }),
             });
 
-        // Clear the form
-        setName('');
-        setProblemDescription('');
+            const result = await response.json();
+            if (result.success) {
+                setFeedbackMessage('Report sent successfully!');
+                setName('');
+                setProblemDescription('');
+            } else {
+                setFeedbackMessage('Failed to send report. Please try again.');
+            }
+        } catch (error) {
+            setFeedbackMessage('An error occurred. Please try again later.');
+        }
     };
 
     return (
