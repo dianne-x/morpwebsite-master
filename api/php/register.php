@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 sendMail(
                     $email, 
                     'MORP - Verify your email', 
-                    "Click the following link to verify your email: <a href='http://localhost/morpwebsite-master/api/php/verification.php?uid=$uid'>confirm your verification</a>"
+                    "Click the following link to verify your email: <a href=\"{$_ENV['PHP_FOLDER']}/verification.php?uid=$uid\">confirm your verification</a>"
                 );
                 // Send success message if user is successfully registered
                 echo json_encode(['success' => true, 'message' => 'Registration successful.']);

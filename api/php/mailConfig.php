@@ -2,7 +2,7 @@
 
 define('MAIL_HOST', 'smtp.gmail.com');
 define('USERNAME', 'morpverse@gmail.com');
-define('PASSWORD', 'cvmc nbko giaj yira'); // (maybe put to dotenv later)
+define('PASSWORD', $_ENV['MAIL_PASSWORD']);
 define('SEND_FROM', 'morpverse@gmail.com');
 define('SEND_FROM_NAME', 'Team MORP');
 define('REPLY_TO', 'morpverse@gmail.com');

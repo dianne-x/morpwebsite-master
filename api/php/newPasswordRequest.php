@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Send email to user
         $subject = "MORP - Password change request";
-        $message = "You have requested a password change. Click the link below to reset your password: <a href='http://localhost/morpwebsite-master/api/php/passwordchange.php?uid=$uid'>here</a>";
+        $message = "You have requested a password change. Click the link below to reset your password: <a href=\"{$_ENV['PHP_FOLDER']}/passwordchange.php?uid=$uid\">here</a>";
 
         // Use the mail function to send the email
         sendMail($email, $subject, $message);
