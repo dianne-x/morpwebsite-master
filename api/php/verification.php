@@ -39,6 +39,6 @@ $conn->close();
     <h1>Verification Status</h1>
     <p><?php echo htmlspecialchars($message); ?></p>
 
-    <a href="http://localhost:3000/login">Go back to login page</a>
+    <a href="<?php echo htmlspecialchars($_ENV['CORS_ORIGIN']); ?>/login">Go back to login page</a>
 </body>
 </html>

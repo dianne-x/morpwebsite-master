@@ -2,7 +2,7 @@
 require 'dbConnection.php'; // Include the database connection file
 
 // CORS
-header('Access-Control-Allow-Origin: http://localhost:3000'); // Allow requests from your React app
+header('Access-Control-Allow-Origin: ' . $_ENV['CORS_ORIGIN']); // Allow requests from your React app
 header('Access-Control-Allow-Methods: POST, OPTIONS'); // Allow POST method
 header('Access-Control-Allow-Headers: Content-Type, Authorization'); // Allow specific headers
 header('Content-Type: application/json'); // Ensure the response is JSON
