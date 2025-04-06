@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import UserInfo from '../../User/UserInfo';
 
-const UsersControl = ({ allUsers, onRoleReload }) => {
+const UsersControl = ({ allUsers, onRoleReload, serverId }) => {
     const [filter, setFilter] = useState('all');
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [selectedUserId, setSelectedUserId] = useState(null);
@@ -57,7 +57,8 @@ const UsersControl = ({ allUsers, onRoleReload }) => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    user_id: user.uid
+                    user_id: user.uid,
+                    server_id: serverId
                 })
             });
             const data = await response.json();

@@ -4,7 +4,7 @@ let ws = null;
 
 export const connectWebSocket = (userId) => {
   if (!ws || ws.readyState === WebSocket.CLOSED) {
-    ws = new WebSocket(`ws://localhost:8080/?userId=${userId}`);
+    ws = new WebSocket(`${process.env.REACT_APP_WEBSOCKET_URL}/?userId=${userId}`);
     console.log('WebSocket state after creation:', ws.readyState); // Should log 0 (CONNECTING)
 
     ws.onopen = () => {
@@ -15,11 +15,14 @@ export const connectWebSocket = (userId) => {
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
 
-      // Convert emoji codes back to emojis for display
-      message.content = Object.keys(emojiMap).reduce((msg, emoji) => {
-        const code = emojiMap[emoji];
-        return msg.replace(new RegExp(code, 'g'), emoji);
-      }, message.content);
+      // Check if message.content exists before processing
+      if (message.content) {
+        // Convert emoji codes back to emojis for display
+        message.content = Object.keys(emojiMap).reduce((msg, emoji) => {
+          const code = emojiMap[emoji];
+          return msg.replace(new RegExp(code, 'g'), emoji);
+        }, message.content);
+      }
 
       console.log('Message received from server:', message);
 

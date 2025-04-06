@@ -17,7 +17,7 @@ $stmt->bind_param("s", $userId);
 $response = [];
 if ($stmt->execute()) {
     // Notify the WebSocket server
-    $websocketUrl = 'ws://localhost:8080';
+    $websocketUrl = $_ENV['WEBSOCKET_URL'];
     $msg = json_encode(['action' => 'kick', 'userId' => $userId]);
     $ch = curl_init($websocketUrl);
     curl_setopt($ch, CURLOPT_POST, 1);

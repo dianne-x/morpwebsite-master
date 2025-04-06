@@ -43,7 +43,10 @@ const ServerSettings = (props) => {
                         <WantedElements serverId={props.server.id} />
                     )}
                     {activeTab === 'UsersControl' && (
-                        <UsersControl allUsers={props.allUsers} onRoleReload={props.onRoleReload} />
+                        <UsersControl 
+                            allUsers={props.allUsers} 
+                            onRoleReload={props.onRoleReload}
+                            serverId={props.server.id} />
                     )}
                 </div>
                 <button className="close" onClick={props.onCloseForm}>&times;</button>

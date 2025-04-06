@@ -6,7 +6,7 @@ import io from 'socket.io-client';
 import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 import '../../style/App/Server/privateChat.scss'; // Import the new stylesheet
 
-const socket = io.connect('http://localhost:3001');
+const socket = io.connect(`${process.env.REACT_APP_SOCKET_URL}`);
 
 const PrivateChat = ({ user2, onClose }) => {
   const [messages, setMessages] = useState([]);

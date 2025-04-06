@@ -6,7 +6,7 @@ import { faPaperPlane, faBars, faInfoCircle } from '@fortawesome/free-solid-svg-
 import ChatMessage from './ChatMessage';
 import { convertEmojisToText, emojiMap } from '../../../utils/emojiConverter';
 
-const socket = io.connect('http://localhost:3001'); 
+const socket = io.connect(`${process.env.REACT_APP_SOCKET_URL}`); 
 
 const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterClick, openServerInfo, openServerRooms, characterChangeTrigger }) => {
   const [selectedServer, setSelectedServer] = useState(serverId);
