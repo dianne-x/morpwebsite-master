@@ -56,7 +56,6 @@ const Contact = () => {
           </Helmet>
         </HelmetProvider>
         
-        <h1>Contact</h1>
         <div className='socials'>
           <h2>Follow us on social media!</h2>
           <div className='icons'>

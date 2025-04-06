@@ -149,7 +149,9 @@ main.contact {
       align-items: center;
 
       .email{
-        width: 80%; // Full width for smaller screens
+        width: 80%;
+        h2 { font-size: 1rem;}
+
       }
 
     }
