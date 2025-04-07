@@ -17,6 +17,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
   const [selectedCharactersId , setSelectedCharactersId] = useState('');
   const prevCharacterRef = useRef('');
   const chatMessagesRef = useRef(null);
+  const [precomputedMessages, setPrecomputedMessages] = useState([]); // Separate state for precomputed messages
 
   const user = JSON.parse(localStorage.getItem('morp-login-user'));
 
@@ -32,7 +33,23 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
     const characterId = event.target.value;
     setSelectedCharactersId(characterId);
     setSelectedCharacter(characterId);
-    console.log(`Selected character: ${characterId}`);
+
+    // Fetch aliases for the selected character
+    const fetchAliases = async () => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/characterAliases.php?characterId=${characterId}`);
+        const data = await response.json();
+        console.log('Fetched aliases:', data); // Debug log for aliases
+        const updatedCharacters = verifiedCharacters.map((char) =>
+          char.id === characterId ? { ...char, aliases: data } : char
+        );
+        setVerifiedCharacters(updatedCharacters);
+      } catch (error) {
+        console.error('Error fetching aliases:', error);
+      }
+    };
+
+    fetchAliases();
   };
 
   const handleMessageChange = (event) => {
@@ -114,6 +131,16 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
     }
   }, [messages]);
 
+  useEffect(() => {
+    // Precompute aliases for all messages when messages or verifiedCharacters change
+    const computedMessages = messages.map((msg) => {
+      const character = verifiedCharacters.find((char) => char.id === msg.character_id);
+      const aliases = character && Array.isArray(character.aliases) ? character.aliases.map(alias => alias.name) : [];
+      return { ...msg, aliases };
+    });
+    setPrecomputedMessages(computedMessages);
+  }, [messages, verifiedCharacters]);
+
   return (
     <div className="chat-window">
       {roomDetails ? (
@@ -126,23 +153,18 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
 
           <div className='chat-messages-wrapper'>
             <div className='chat-messages' ref={chatMessagesRef}>
-              {messages
+              {precomputedMessages
                 .filter((msg) => msg.room_id == roomId) // Filter messages by selected room
                 .map((msg, index) => {
                   const showIconAndName = index === 0 || prevCharacterRef.current !== msg.character_id;
                   prevCharacterRef.current = msg.character_id; // Update prevCharacterRef to current msg.character_id
-
-                  // Ensure aliases is always an array
-                  const character = verifiedCharacters.find((char) => char.id === msg.character_id);
-                  const aliases = character && Array.isArray(character.aliases) ? character.aliases : [];
-                  console.log('Message aliases:', aliases); // Debug log to verify aliases structure
 
                   return (
                     <div key={index}>
                       <ChatMessage 
                         key={index} 
                         name={msg.character_name} 
-                        aliases={aliases.map(alias => alias.name)} // Extract alias names
+                        aliases={msg.aliases} // Use precomputed aliases
                         characterId={msg.character_id} 
                         message={msg.message} 
                         date={msg.date} 

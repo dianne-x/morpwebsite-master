@@ -17,11 +17,7 @@ export const connectWebSocket = (userId) => {
 
       // Check if message.content exists before processing
       if (message.content) {
-        // Convert emoji codes back to emojis for display
-        message.content = Object.keys(emojiMap).reduce((msg, emoji) => {
-          const code = emojiMap[emoji];
-          return msg.replace(new RegExp(code, 'g'), emoji);
-        }, message.content);
+        console.log('Message content:', message.content);
       }
 
       console.log('Message received from server:', message);

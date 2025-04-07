@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../../style/App/Server/ChatMessage.scss';
 import { convertEmojisToText, emojiMap } from '../../../utils/emojiConverter';
 
 const ChatMessage = ({ name, aliases, message, date, showIconAndName, characterId, character_pic_path, onCharacterClick }) => {
     const [isHovered, setIsHovered] = useState(false);
+    const [loadedAliases, setLoadedAliases] = useState([]);
 
-    // Debug log for aliases
-    console.log('Aliases for character:', name, aliases);
-    console.log('Aliases received in ChatMessage:', aliases);
+    useEffect(() => {
+        // Load aliases only when the component is mounted or the character changes
+        if (Array.isArray(aliases)) {
+            setLoadedAliases(aliases);
+        }
+    }, [aliases]);
 
     const handleMouseOver = () => {
         setIsHovered(true);
@@ -64,7 +68,7 @@ const ChatMessage = ({ name, aliases, message, date, showIconAndName, characterI
                             onClick={() => onCharacterClick(characterId, name, character_pic_path)} 
                             style={{color: characterId == null ? 'rgb(206, 32, 41)' : ''}}
                         >
-                            {characterId != null ? `${name}${Array.isArray(aliases) && aliases.length > 0 ? ` (${aliases.join(' / ')})` : ''}` : "[Deleted Character]"}
+                            {characterId != null ? `${name}${aliases.length > 0 ? ` (${aliases.join(' / ')})` : ''}` : "[Deleted Character]"}
                         </h3>
                         <span className='date'>{formatDate(date)}</span>
                     </div>
