@@ -51,7 +51,11 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
   useEffect(() => {
     if (roomId) {
       socket.emit('join_room', roomId);
+    }
+  }, [roomId]);
 
+  useEffect(() => {
+    
       // Fetch aliases for all characters in the room
       const fetchAllCharacterAliases = async () => {
         try {
@@ -65,8 +69,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
       };
 
       fetchAllCharacterAliases();
-    }
-  }, [roomId]);
+  }, [serverId])
 
   useEffect(() => {
     // Fetch the verified characters for the selected server
