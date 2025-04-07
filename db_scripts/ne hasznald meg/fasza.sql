@@ -45,8 +45,36 @@ CREATE TABLE `affiliation` (
 -- A tábla adatainak kiíratása `affiliation`
 --
 
+
 INSERT INTO `affiliation` (`id`, `affiliation`) VALUES
-(1, 'Group1');
+(1, 'League of Villains'),
+(2, 'U.A. High School'),
+(3, 'Paranormal Liberation Front'),
+(4, 'Endeavor Agency'),
+(5, 'Shiketsu High School'),
+(6, 'Wild, Wild Pussycats'),
+(7, 'Meta Liberation Army'),
+(8, 'Justice League'), 
+(9, 'Teen Titans'), 
+(10, 'Suicide Squad'), 
+(11, 'Justice Society of America'), 
+(12, 'The Bat Family'), 
+(13, 'The Rogues'),
+(14, 'Secret Society of Super Villains'), 
+(15, 'Legion of Doom'), 
+(16, 'Injustice League'), 
+(17, 'The Avengers'), 
+(18, 'S.H.I.E.L.D.'), 
+(19, 'Hydra'), 
+(20, 'The Fantastic Four'),
+(21, 'The Sinister Six'),
+(22, 'Brotherhood of Mutants'),
+(23, 'The Defenders'),
+(24, 'The Illuminati'),
+(25, 'The Hellfire Club'),
+(26, 'The Thunderbolts'),
+(27, 'The Dora Milaje'),
+(28, 'The Hand');
 
 -- --------------------------------------------------------
 
