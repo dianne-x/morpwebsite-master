@@ -15,7 +15,7 @@ const FriendList = ({ onFriendClick, friends }) => {
           />
         ))
       ) : (
-        <p>You have no friends gang</p>
+        <p>You have no friends</p>
       )}
     </>
   );
