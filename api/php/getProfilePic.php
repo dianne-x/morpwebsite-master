@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         exit();
     }
 
-    $stmt = $conn->prepare("SELECT profile_pic_path FROM Users WHERE uid = ?");
+    $stmt = $conn->prepare("SELECT profile_pic_path FROM users WHERE uid = ?");
     $stmt->bind_param('s', $uid);
     $stmt->execute();
     $result = $stmt->get_result();

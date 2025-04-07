@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['uid'])) {
     $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
 
     // Update the password in the database
-    $stmt = $conn->prepare("UPDATE Users SET password = ? WHERE uid = ?");
+    $stmt = $conn->prepare("UPDATE users SET password = ? WHERE uid = ?");
     $stmt->bind_param("ss", $hashedPassword, $uid);
 
     if ($stmt->execute()) {

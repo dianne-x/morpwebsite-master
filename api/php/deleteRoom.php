@@ -29,7 +29,7 @@ $roomId = $_GET['roomId'];
 error_log("Deleting room with roomId: " . $roomId);
 
 // Delete room based on room_id
-$sql = "DELETE FROM Room WHERE id = ?";
+$sql = "DELETE FROM room WHERE id = ?";
 $stmt = $conn->prepare($sql);
 if ($stmt === false) {
     error_log("Prepare failed: " . $conn->error);

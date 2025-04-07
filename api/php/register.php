@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if email or username is already in use
     if (empty($errors)) {
         // Query the database to check if the email or username already exists
-        $stmt = $conn->prepare("SELECT * FROM Users WHERE email = ? OR name = ?");
+        $stmt = $conn->prepare("SELECT * FROM users WHERE email = ? OR name = ?");
         $stmt->bind_param("ss", $email, $name);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $uid = uid();
 
         // If no errors, proceed with saving the user to the database
-        $stmt = $conn->prepare("INSERT INTO Users (uid, name, email, password) VALUES (?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO users (uid, name, email, password) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("ssss", $uid, $name, $email, $hashedPassword);
         
         if ($stmt->execute()) {

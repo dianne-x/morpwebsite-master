@@ -8,7 +8,7 @@ if (isset($_GET['uid'])) {
     $uid = $_GET['uid'];
 
     // Prepare the SQL statement to verify the user
-    $stmt = $conn->prepare("UPDATE Users SET verified = 1 WHERE uid = ?");
+    $stmt = $conn->prepare("UPDATE users SET verified = 1 WHERE uid = ?");
     $stmt->bind_param("s", $uid);
 
     // Execute the statement

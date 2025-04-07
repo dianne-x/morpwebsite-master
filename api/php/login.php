@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Prepare a SQL statement to retrieve the user by email
-    $stmt = $conn->prepare("SELECT uid, password, verified, timeout_until, isBanned FROM Users WHERE email = ?");
+    $stmt = $conn->prepare("SELECT uid, password, verified, timeout_until, isBanned FROM users WHERE email = ?");
     
     if ($stmt === false) {
         echo json_encode(['success' => false, 'message' => 'Failed to prepare the query.']);

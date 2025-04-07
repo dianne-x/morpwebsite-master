@@ -29,7 +29,7 @@ $sectionId = $_GET['sectionId'];
 error_log("Deleting section with sectionId: " . $sectionId);
 
 // Delete rooms associated with the section
-$sql = "DELETE FROM Room WHERE section_id = ?";
+$sql = "DELETE FROM room WHERE section_id = ?";
 $stmt = $conn->prepare($sql);
 if ($stmt === false) {
     error_log("Prepare failed: " . $conn->error);
@@ -47,7 +47,7 @@ if (!$stmt->execute()) {
 $stmt->close();
 
 // Delete section based on section_id
-$sql = "DELETE FROM Section WHERE id = ?";
+$sql = "DELETE FROM section WHERE id = ?";
 $stmt = $conn->prepare($sql);
 if ($stmt === false) {
     error_log("Prepare failed: " . $conn->error);

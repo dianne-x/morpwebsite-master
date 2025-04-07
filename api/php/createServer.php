@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 // Check if the UID is already taken
-                $stmt = $conn->prepare("SELECT COUNT(*) FROM Servers WHERE uid = ?");
+                $stmt = $conn->prepare("SELECT COUNT(*) FROM servers WHERE uid = ?");
                 if ($stmt === false) {
                     echo json_encode(['success' => false, 'message' => 'Failed to prepare the query to check UID: ' . $conn->error]);
                     exit();
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 try {
                     // Prepare a SQL statement to insert the new server
-                    $stmt = $conn->prepare("INSERT INTO Servers (uid, server_name, server_picture_path, invite_link) VALUES (?, ?, ?, ?)");
+                    $stmt = $conn->prepare("INSERT INTO servers (uid, server_name, server_picture_path, invite_link) VALUES (?, ?, ?, ?)");
                     
                     if ($stmt === false) {
                         throw new Exception('Failed to prepare the query: ' . $conn->error);
@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $stmt->close();
 
                     // Prepare a SQL statement to insert the user as a server member, owner, and moderator
-                    $stmt = $conn->prepare("INSERT INTO Server_Member (user_id, server_id, is_owner, is_moderator) VALUES (?, ?, ?, ?)");
+                    $stmt = $conn->prepare("INSERT INTO server_member (user_id, server_id, is_owner, is_moderator) VALUES (?, ?, ?, ?)");
                     
                     if ($stmt === false) {
                         throw new Exception('Failed to prepare the query: ' . $conn->error);

@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $serverUid = str_replace('morp.ru/', '', $inviteLink);
 
     // Check if the server exists
-    $stmt = $conn->prepare("SELECT id FROM Servers WHERE uid = ?");
+    $stmt = $conn->prepare("SELECT id FROM servers WHERE uid = ?");
     $stmt->bind_param('s', $serverUid);
     $stmt->execute();
     $stmt->store_result();
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->fetch();
 
         // Check if the user is already a member of the server
-        $stmt = $conn->prepare("SELECT id FROM Server_Member WHERE user_id = ? AND server_id = ?");
+        $stmt = $conn->prepare("SELECT id FROM server_member WHERE user_id = ? AND server_id = ?");
         $stmt->bind_param('si', $userId, $serverId);
         $stmt->execute();
         $stmt->store_result();
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode(['success' => false, 'message' => 'User is already a member of this server.']);
         } else {
             // Add the user to the server
-            $stmt = $conn->prepare("INSERT INTO Server_Member (user_id, server_id) VALUES (?, ?)");
+            $stmt = $conn->prepare("INSERT INTO server_member (user_id, server_id) VALUES (?, ?)");
             $stmt->bind_param('si', $userId, $serverId);
 
             if ($stmt->execute()) {
