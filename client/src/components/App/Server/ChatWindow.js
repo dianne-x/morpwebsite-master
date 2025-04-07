@@ -55,7 +55,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
       // Fetch aliases for all characters in the room
       const fetchAllCharacterAliases = async () => {
         try {
-          const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/getAllCharacterAliases.php?roomId=${roomId}`);
+          const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/getAllCharacterAliases.php?serverId=${serverId}`);
           const data = await response.json();
           console.log('Fetched all character aliases:', data); // Log the fetched data to verify structure
           setAllCharacterAliases(data.aliases); // Cache the aliases

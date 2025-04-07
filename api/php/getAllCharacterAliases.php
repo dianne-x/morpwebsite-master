@@ -14,10 +14,10 @@ if ($conn->connect_error) {
 }
 
 // Extract room ID from query parameters
-$roomId = isset($_GET['roomId']) ? intval($_GET['roomId']) : 0;
+$serverId = isset($_GET['serverId']) ? intval($_GET['serverId']) : 0;
 
-if ($roomId === 0) {
-    echo json_encode(["message" => "Invalid room ID"]);
+if ($serverId === 0) {
+    echo json_encode(["message" => "Invalid server ID"]);
     exit();
 }
 
@@ -28,7 +28,7 @@ try {
         FROM server_member 
         WHERE server_id = ?
     ");
-    $serverMemberStmt->bind_param("i", $roomId);
+    $serverMemberStmt->bind_param("i", $serverId);
     $serverMemberStmt->execute();
     $serverMemberResult = $serverMemberStmt->get_result();
 
