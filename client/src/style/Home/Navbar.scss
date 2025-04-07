@@ -1,6 +1,7 @@
 @import '../colors';
 
 .home-container {
+    overflow-x: hidden;
     header {
         background-color: rgba($color: $text-color, $alpha: .7);
         color: $main-color;
@@ -39,6 +40,7 @@
                     border: none;
                     transition: all .3s ease;
                     letter-spacing: .1vw;
+                    text-wrap: nowrap;
 
                     &:hover {
                         scale: 1.2;

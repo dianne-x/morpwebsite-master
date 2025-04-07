@@ -22,9 +22,9 @@ const Home = () => {
           <img src={morpHomepic} alt="Morp Home" />
         </div>
 
-        <button>
+        <a href='/MORPSetup.msi' download={true} className="download-link">
           <span>Download Desktop Client</span>
-        </button>
+        </a>
       </main>
     );
   };

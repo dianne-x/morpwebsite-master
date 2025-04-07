@@ -74,7 +74,8 @@ main.home-container {
         image-rendering: initial;
     }
 
-    button {
+    a.download-link {
+        text-decoration: none;
         align-self: center;
         padding: 10px 20px;
         margin-inline: 20px;
@@ -113,6 +114,7 @@ main.home-container {
             justify-content: center;
             color: $third-color;
             z-index: 3;
+            text-align: center;
         }
 
         &:hover {
