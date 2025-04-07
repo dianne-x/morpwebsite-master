@@ -7,9 +7,11 @@ const ChatMessage = ({ name, aliases, message, date, showIconAndName, characterI
     const [loadedAliases, setLoadedAliases] = useState([]);
 
     useEffect(() => {
-        // Load aliases only when the component is mounted or the character changes
+        // Load aliases only when the component is mounted or the aliases prop changes
         if (Array.isArray(aliases)) {
             setLoadedAliases(aliases);
+        } else {
+            setLoadedAliases([]); // Ensure it's an empty array if aliases are not valid
         }
     }, [aliases]);
 
@@ -68,7 +70,7 @@ const ChatMessage = ({ name, aliases, message, date, showIconAndName, characterI
                             onClick={() => onCharacterClick(characterId, name, character_pic_path)} 
                             style={{color: characterId == null ? 'rgb(206, 32, 41)' : ''}}
                         >
-                            {characterId != null ? `${name}${aliases.length > 0 ? ` (${aliases.join(' / ')})` : ''}` : "[Deleted Character]"}
+                            {characterId != null ? `${name}${loadedAliases.length > 0 ? ` (${loadedAliases.join(' / ')})` : ''}` : "[Deleted Character]"}
                         </h3>
                         <span className='date'>{formatDate(date)}</span>
                     </div>

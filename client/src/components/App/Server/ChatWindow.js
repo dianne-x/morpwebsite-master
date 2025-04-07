@@ -14,7 +14,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
   const [verifiedCharacters, setVerifiedCharacters] = useState([]);
   const prevCharacterRef = useRef('');
   const chatMessagesRef = useRef(null);
-  const [precomputedMessages, setPrecomputedMessages] = useState([]); // Separate state for precomputed messages
+  const [allCharacterAliases, setAllCharacterAliases] = useState({}); // Cache for all character aliases
 
   const user = JSON.parse(localStorage.getItem('morp-login-user'));
 
@@ -51,6 +51,20 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
   useEffect(() => {
     if (roomId) {
       socket.emit('join_room', roomId);
+
+      // Fetch aliases for all characters in the room
+      const fetchAllCharacterAliases = async () => {
+        try {
+          const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/getAllCharacterAliases.php?roomId=${roomId}`);
+          const data = await response.json();
+          console.log('Fetched all character aliases:', data); // Log the fetched data to verify structure
+          setAllCharacterAliases(data.aliases); // Cache the aliases
+        } catch (error) {
+          console.error('Error fetching all character aliases:', error);
+        }
+      };
+
+      fetchAllCharacterAliases();
     }
   }, [roomId]);
 
@@ -79,16 +93,6 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
     }
   }, [messages]);
 
-  useEffect(() => {
-    // Precompute aliases for all messages when messages or verifiedCharacters change
-    const computedMessages = messages.map((msg) => {
-      const character = verifiedCharacters.find((char) => char.id === msg.character_id);
-      const aliases = character && Array.isArray(character.aliases) ? character.aliases.map(alias => alias.name) : [];
-      return { ...msg, aliases };
-    });
-    setPrecomputedMessages(computedMessages);
-  }, [messages, verifiedCharacters]);
-
   return (
     <div className="chat-window">
       {roomDetails ? (
@@ -101,11 +105,9 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
 
           <div className='chat-messages-wrapper'>
             <div className='chat-messages' ref={chatMessagesRef}>
-              {precomputedMessages
+              {messages // Use messages directly instead of precomputedMessages
                 .filter((msg) => msg.room_id == roomId) // Filter messages by selected room
                 .map((msg, index) => {
-                  console.log('msg rendering');
-                  
                   const showIconAndName = index === 0 || prevCharacterRef.current !== msg.character_id;
                   prevCharacterRef.current = msg.character_id; // Update prevCharacterRef to current msg.character_id
 
@@ -114,7 +116,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
                       <ChatMessage 
                         key={index} 
                         name={msg.character_name} 
-                        aliases={msg.aliases} // Use precomputed aliases
+                        aliases={allCharacterAliases[msg.character_id] || []} // Pass aliases directly
                         characterId={msg.character_id} 
                         message={msg.message} 
                         date={msg.date} 
