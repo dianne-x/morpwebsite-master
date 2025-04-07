@@ -69,7 +69,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
       };
 
       fetchAllCharacterAliases();
-  }, [serverId])
+  }, [serverId, characterChangeTrigger])
 
   useEffect(() => {
     // Fetch the verified characters for the selected server
@@ -153,7 +153,14 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
 
 const ChatInput = ({ verifiedCharacters, roomId, user }) => {
   const [message, setMessage] = useState('');
-  const [selectedCharacter, setSelectedCharacter] = useState(verifiedCharacters[0]?.id || '');
+  const [selectedCharacter, setSelectedCharacter] = useState('');
+
+  useEffect(() => {
+    // Set the default selected character when verifiedCharacters is updated
+    if (verifiedCharacters.length > 0) {
+      setSelectedCharacter(verifiedCharacters[0].id); // Default to the first character in the list
+    }
+  }, [verifiedCharacters]);
 
   const handleMessageChange = (event) => {
     setMessage(event.target.value);
@@ -164,6 +171,11 @@ const ChatInput = ({ verifiedCharacters, roomId, user }) => {
   };
 
   const handleSendMessage = () => {
+    if (!selectedCharacter) {
+      console.error('No character selected. Cannot send message.');
+      return;
+    }
+
     const formattedMessage = convertEmojisToText(message);
     socket.emit("send_message", { roomId, userId: user.uid, characterId: selectedCharacter, message: formattedMessage });
     setMessage('');
