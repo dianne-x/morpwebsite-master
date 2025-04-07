@@ -49,13 +49,21 @@ const ManageServer = ({ serverTrigger }) => { // Destructure serverTrigger from 
         }
 
         const server = servers.find(s => s.id === serverId);
+
+        // Validate UID
+        const sanitizedUid = (server.uid || '').toLowerCase().replace(/\s+/g, '');
+        if (sanitizedUid !== server.uid) {
+            alert('UID must be lowercase and contain no spaces.');
+            return;
+        }
+
         const formData = new FormData();
         if (server.server_picture_file) {
             formData.append('server_picture', server.server_picture_file);
         }
         formData.append('id', serverId);
         formData.append('server_name', server.server_name || '');
-        formData.append('uid', server.uid || '');
+        formData.append('uid', sanitizedUid);
 
         try {
             const response = await axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/manage_servers.php`, formData, {
