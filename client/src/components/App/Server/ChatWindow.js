@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import '../../../style/App/Server/ChatWindow.scss';
 import io from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,11 +10,8 @@ const socket = io.connect(`${process.env.REACT_APP_SOCKET_URL}`);
 
 const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterClick, openServerInfo, openServerRooms, characterChangeTrigger }) => {
   const [selectedServer, setSelectedServer] = useState(serverId);
-  const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const [verifiedCharacters, setVerifiedCharacters] = useState([]);
-  const [selectedCharacter, setSelectedCharacter] = useState('');
-  const [selectedCharactersId , setSelectedCharactersId] = useState('');
   const prevCharacterRef = useRef('');
   const chatMessagesRef = useRef(null);
   const [precomputedMessages, setPrecomputedMessages] = useState([]); // Separate state for precomputed messages
@@ -28,46 +25,6 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
   useEffect(() => {
     handleServerChange(serverId);
   }, [serverId]);
-
-  const handleCharacterChange = (event) => {
-    const characterId = event.target.value;
-    setSelectedCharactersId(characterId);
-    setSelectedCharacter(characterId);
-
-    // Fetch aliases for the selected character
-    const fetchAliases = async () => {
-      try {
-        const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/characterAliases.php?characterId=${characterId}`);
-        const data = await response.json();
-        console.log('Fetched aliases:', data); // Debug log for aliases
-        const updatedCharacters = verifiedCharacters.map((char) =>
-          char.id === characterId ? { ...char, aliases: data } : char
-        );
-        setVerifiedCharacters(updatedCharacters);
-      } catch (error) {
-        console.error('Error fetching aliases:', error);
-      }
-    };
-
-    fetchAliases();
-  };
-
-  const handleMessageChange = (event) => {
-    setMessage(event.target.value);
-  };
-
-  const handleSendMessage = () => {
-    const formattedMessage = convertEmojisToText(message); // Convert emojis to text codes for saving
-    console.log('Sending message:', { roomId, userId: user.uid, characterId: selectedCharactersId, message: formattedMessage });
-    socket.emit("send_message", { roomId: roomId, userId: user.uid, characterId: selectedCharactersId, message: formattedMessage });
-    setMessage(''); // Clear the input after sending the message
-  };
-
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter' && message.trim().length > 0) {
-      handleSendMessage();
-    }
-  };
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
@@ -106,11 +63,6 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
         const data = await response.json();
         console.log('Fetched characters:', data); // Log the fetched data to verify structure
         setVerifiedCharacters(data);
-        if (data.length > 0) {
-          setSelectedCharacter(data[0].id);
-          setSelectedCharactersId(data[0].id);
-          console.log(data[0]);
-        }
       } catch (error) {
         console.error('Error fetching verified characters:', error);
       }
@@ -120,10 +72,6 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
       fetchVerifiedCharacters();
     }
   }, [selectedServer, user, characterChangeTrigger]);
-
-  useEffect(() => {
-    console.log('Verified Characters:', verifiedCharacters); // Log the state to verify aliases
-  }, [verifiedCharacters]);
 
   useEffect(() => {
     if (chatMessagesRef.current) {
@@ -156,6 +104,8 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
               {precomputedMessages
                 .filter((msg) => msg.room_id == roomId) // Filter messages by selected room
                 .map((msg, index) => {
+                  console.log('msg rendering');
+                  
                   const showIconAndName = index === 0 || prevCharacterRef.current !== msg.character_id;
                   prevCharacterRef.current = msg.character_id; // Update prevCharacterRef to current msg.character_id
 
@@ -178,29 +128,11 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
             </div>
           </div>
 
-          <div className='chat-input-wrapper'>
-
-            
-            <select value={selectedCharacter} onChange={handleCharacterChange}>
-              {verifiedCharacters.map((character) => (
-                <option key={character.id} value={character.id}>
-                  {character.character_name}
-                </option>
-              ))}
-            </select>
-            
-            <input
-              type="text"
-              value={message}
-              onChange={handleMessageChange}
-              onKeyDown={handleKeyDown}
-              placeholder="Type your message..."
-              maxLength="500"
-            />
-            <button onClick={handleSendMessage} style={{ cursor: 'pointer' }}>
-              <FontAwesomeIcon icon={faPaperPlane} />
-            </button>
-          </div>
+          <ChatInput
+            verifiedCharacters={verifiedCharacters}
+            roomId={roomId}
+            user={user}
+          />
         </>
       ) : (
         <>
@@ -210,6 +142,55 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
         </>
         
       )}
+    </div>
+  );
+};
+
+const ChatInput = ({ verifiedCharacters, roomId, user }) => {
+  const [message, setMessage] = useState('');
+  const [selectedCharacter, setSelectedCharacter] = useState(verifiedCharacters[0]?.id || '');
+
+  const handleMessageChange = (event) => {
+    setMessage(event.target.value);
+  };
+
+  const handleCharacterChange = (event) => {
+    setSelectedCharacter(event.target.value);
+  };
+
+  const handleSendMessage = () => {
+    const formattedMessage = convertEmojisToText(message);
+    socket.emit("send_message", { roomId, userId: user.uid, characterId: selectedCharacter, message: formattedMessage });
+    setMessage('');
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' && message.trim().length > 0) {
+      handleSendMessage();
+    }
+  };
+
+  return (
+    <div className='chat-input-wrapper'>
+      <select value={selectedCharacter} onChange={handleCharacterChange}>
+        {verifiedCharacters.map((character) => (
+          <option key={character.id} value={character.id}>
+            {character.character_name}
+          </option>
+        ))}
+      </select>
+
+      <input
+        type="text"
+        value={message}
+        onChange={handleMessageChange}
+        onKeyDown={handleKeyDown}
+        placeholder="Type your message..."
+        maxLength="500"
+      />
+      <button onClick={handleSendMessage} style={{ cursor: 'pointer' }}>
+        <FontAwesomeIcon icon={faPaperPlane} />
+      </button>
     </div>
   );
 };
