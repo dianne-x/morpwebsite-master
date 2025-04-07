@@ -146,6 +146,8 @@ const Profile = (props) => {
                     type="email"
                     name="email"
                     value={userData.email || ''} // Ensure value is not null
+                    disabled
+                    style={{opacity: .4}}
                     onChange={handleInputChange}
                 />
                 <label>
