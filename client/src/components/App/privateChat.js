@@ -5,6 +5,7 @@ import { faPaperPlane, faTimes } from '@fortawesome/free-solid-svg-icons';
 import io from 'socket.io-client';
 import { v4 as uuidv4 } from 'uuid'; // Import UUID library
 import '../../style/App/Server/privateChat.scss'; // Import the new stylesheet
+import { convertEmojisToText, emojiMap } from '../../utils/emojiConverter'; // Import emojiConverter
 
 const socket = io.connect(`${process.env.REACT_APP_SOCKET_URL}`);
 
@@ -24,10 +25,18 @@ const PrivateChat = ({ user2, onClose }) => {
 
   const formatMessage = (message) => {
     if (!message) return message; // Only format if there is some text
-    return message.replace(/((https?:\/\/|www\.)[^\s]+|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g, (match) => {
+
+    // Convert emoji codes back to emojis for display
+    let formattedMessage = Object.keys(emojiMap).reduce((msg, emoji) => {
+      const code = emojiMap[emoji];
+      return msg.replace(new RegExp(code, 'g'), emoji);
+    }, message);
+
+    formattedMessage = formattedMessage.replace(/((https?:\/\/|www\.)[^\s]+|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g, (match) => {
       const url = match.startsWith('http') ? match : `http://${match}`;
       return `<a href="${url}" target="_blank" rel="noopener noreferrer">${match}</a>`;
     });
+    return formattedMessage.trim();
   };
 
   useEffect(() => {
@@ -72,6 +81,13 @@ const PrivateChat = ({ user2, onClose }) => {
       socket.on('receive_direct_message', (messageData) => {
         console.log('Received direct message:', messageData);
         messageData.sentFrom = messageData.sent_from; // Ensure the field name matches
+
+        // Convert emoji codes back to emojis for display
+        messageData.message = Object.keys(emojiMap).reduce((msg, emoji) => {
+          const code = emojiMap[emoji];
+          return msg.replace(new RegExp(code, 'g'), emoji);
+        }, messageData.message);
+
         console.log('Current user ID:', user1.uid);
         console.log('Message sentFrom:', messageData.sentFrom);
         if (messageData.sentFrom !== user1.uid) {
@@ -107,12 +123,14 @@ const PrivateChat = ({ user2, onClose }) => {
   const handleSendMessage = async () => {
     if (message.trim() === '' || !roomId) return;
 
+    const formattedMessage = convertEmojisToText(message); // Convert emojis to text codes for saving
+
     const messageData = {
       id: uuidv4(), // Add a unique identifier to the message
       roomId: roomId,
       sentFrom: user1.uid,
       sentTo: user2.uid,
-      message: message,
+      message: formattedMessage,
       sent: new Date().toISOString(),
       isSentByCurrentUser: true // Add this flag to indicate the message is sent by the current user
     };

@@ -1,5 +1,3 @@
-import { emojiMap } from './emojiConverter';
-
 let ws = null;
 
 export const connectWebSocket = (userId) => {
