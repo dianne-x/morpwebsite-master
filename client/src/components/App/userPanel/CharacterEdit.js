@@ -42,6 +42,7 @@ const CharacterEdit = (props) => {
     const [aliases, setAliases] = useState([]);
     const [deleteExistingAliasIds, setDeleteExistingAliasIds] = useState([]);
     const [characterNeeds, setCharacterNeeds] = useState([]); // State to store character needs
+    const [visibleFields, setVisibleFields] = useState({}); // State to track field visibility
 
     const removeALias = (index, id) => {
         if (id == null) {
@@ -120,7 +121,31 @@ const CharacterEdit = (props) => {
             .catch(error => {
                 console.error('There was an error fetching the character details!', error);
             });
-    }, [props.characterId, props.server_id]);
+    }, [props.server_id, props.characterId]);
+
+    useEffect(() => {
+        // Initialize visibleFields based on characterNeeds
+        setVisibleFields({
+            name: true,
+            nickname: true,
+            gender: true,
+            species: characterNeeds.includes('species_need'),
+            status: true,
+            affiliation: characterNeeds.includes('affiliation_need'),
+            nationality: characterNeeds.includes('nationality_need'),
+            occupation: characterNeeds.includes('occupation_need'),
+            birthdate: characterNeeds.includes('birthdate_need'),
+            deathdate: characterNeeds.includes('deathdate_need'),
+            resurrected_date: characterNeeds.includes('resurrected_date_need'),
+            bio: true,
+            powers: characterNeeds.includes('powers_need'),
+            weaknesses: characterNeeds.includes('weaknesses_need'),
+            used_item: characterNeeds.includes('used_item_need'),
+            family: characterNeeds.includes('family_need'),
+            universe: characterNeeds.includes('universe_need'),
+            fc_type: characterNeeds.includes('fc_need'),
+        });
+    }, [characterNeeds]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -288,12 +313,12 @@ const CharacterEdit = (props) => {
                             id="character_pic_path"
                             onChange={handleFileChange}
                         />
-                        {formData.name && (
+                        {visibleFields.name && (
                             <>
                                 <label htmlFor="name">
                                     Name:
                                 </label>
-                                <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+                                <input type="text" name="name" value={formData.name || ''} onChange={handleChange} required />
                             </>
                         )}
                         <label>
@@ -332,20 +357,20 @@ const CharacterEdit = (props) => {
                         {aliases.length < 4 &&
                             <button type="button" className='save-character-btn' onClick={addAlias}>Add Alias</button>
                         }
-                        {formData.nickname && (
+                        {visibleFields.nickname && (
                             <>
                                 <label htmlFor="nickname">
                                     Nickname:
                                 </label>
-                                <input type="text" name="nickname" value={formData.nickname} onChange={handleChange} required/> 
+                                <input type="text" name="nickname" value={formData.nickname || ''} onChange={handleChange} required/> 
                             </>
                         )}
-                        {formData.gender && (
+                        {visibleFields.gender && (
                             <>
                                 <label>
                                     Gender:
                                 </label>
-                                <select name="gender" value={formData.gender} onChange={handleChange} required>
+                                <select name="gender" value={formData.gender || ''} onChange={handleChange} required>
                                     <option value="">Select Gender</option>
                                     {genders.map((gender) => (
                                         <option key={gender.id} value={gender.gender}>{gender.gender}</option>
@@ -353,7 +378,7 @@ const CharacterEdit = (props) => {
                                 </select>
                             </>
                         )}
-                        {characterNeeds.includes('species_need') && (
+                        {visibleFields.species && (
                             <>
                                 <label>Species:</label>
                                 <select name="species" value={formData.species || ''} onChange={handleChange} required>
@@ -364,12 +389,12 @@ const CharacterEdit = (props) => {
                                 </select>
                             </>
                         )}
-                        {formData.status && (
+                        {visibleFields.status && (
                             <>
                                 <label>
                                     Status:
                                 </label>
-                                <select name="status" value={formData.status} onChange={handleChange} required>
+                                <select name="status" value={formData.status || ''} onChange={handleChange} required>
                                     <option value="">Select Status</option>
                                     {statuses.map((status) => (
                                         <option key={status.id} value={status.status}>{status.status}</option>
@@ -377,7 +402,7 @@ const CharacterEdit = (props) => {
                                 </select>
                             </>
                         )}
-                        {characterNeeds.includes('affiliation_need') && (
+                        {visibleFields.affiliation && (
                             <>
                                 <label>Affiliation:</label>
                                 <select name="affiliation" value={formData.affiliation || ''} onChange={handleChange}>
@@ -388,7 +413,7 @@ const CharacterEdit = (props) => {
                                 </select>
                             </>
                         )}
-                        {characterNeeds.includes('nationality_need') && (
+                        {visibleFields.nationality && (
                             <>
                                 <label>Nationality:</label>
                                 <select name="nationality" value={formData.nationality || ''} onChange={handleChange} required>
@@ -399,7 +424,7 @@ const CharacterEdit = (props) => {
                                 </select>
                             </>
                         )}
-                        {characterNeeds.includes('occupation_need') && (
+                        {visibleFields.occupation && (
                             <>
                                 <label>Occupation:</label>
                                 <select name="occupation" value={formData.occupation || ''} onChange={handleChange} required>
@@ -410,75 +435,75 @@ const CharacterEdit = (props) => {
                                 </select>
                             </>
                         )}
-                        {characterNeeds.includes('birthdate_need') && (
+                        {visibleFields.birthdate && (
                             <>
                                 <label>Birthdate:</label>
-                                <input type="date" name="birthdate" value={formData.birthdate} onChange={handleChange} required />
+                                <input type="date" name="birthdate" value={formData.birthdate || ''} onChange={handleChange} required />
                             </>
                         )}
-                        {characterNeeds.includes('deathdate_need') && (
+                        {visibleFields.deathdate && (
                             <>
                                 <label>Died:</label>
                                 <input type="checkbox" name="died" checked={formData.died} onChange={handleChange} disabled={formData.status === 'Alive (Resurrected)' || formData.status === 'Deceased'} />
                                 {formData.died && (
                                     <>
                                         <label>Deathdate:</label>
-                                        <input type="date" name="deathdate" value={formData.deathdate} onChange={handleChange} required />
+                                        <input type="date" name="deathdate" value={formData.deathdate || ''} onChange={handleChange} required />
                                     </>
                                 )}
                             </>
                         )}
-                        {characterNeeds.includes('resurrected_date_need') && formData.died && (
+                        {visibleFields.resurrected_date && formData.died && (
                             <>
                                 <label>Resurrected:</label>
                                 <input type="checkbox" name="resurrected" checked={formData.resurrected} onChange={handleChange} disabled={formData.status === 'Alive (Resurrected)'} />
                                 {formData.resurrected && (
                                     <>
                                         <label>Resurrected Date:</label>
-                                        <input type="date" name="resurrected_date" value={formData.resurrected_date} onChange={handleChange} required />
+                                        <input type="date" name="resurrected_date" value={formData.resurrected_date || ''} onChange={handleChange} required />
                                     </>
                                 )}
                             </>
                         )}
-                        {formData.bio && (
+                        {visibleFields.bio && (
                             <>
                                 <label>
                                     Bio:
                                 </label>
-                                <textarea name="bio" value={formData.bio} onChange={handleChange} required></textarea>
+                                <textarea name="bio" value={formData.bio || ''} onChange={handleChange} required></textarea>
                             </>
                         )}
-                        {characterNeeds.includes('powers_need') && (
+                        {visibleFields.powers && (
                             <>
                                 <label>Powers:</label>
-                                <textarea name="powers" value={formData.powers} onChange={handleChange} required></textarea>
+                                <textarea name="powers" value={formData.powers || ''} onChange={handleChange} required></textarea>
                             </>
                         )}
-                        {characterNeeds.includes('weaknesses_need') && (
+                        {visibleFields.weaknesses && (
                             <>
                                 <label>Weaknesses:</label>
-                                <textarea name="weaknesses" value={formData.weaknesses} onChange={handleChange} required></textarea>
+                                <textarea name="weaknesses" value={formData.weaknesses || ''} onChange={handleChange} required></textarea>
                             </>
                         )}
-                        {characterNeeds.includes('used_item_need') && (
+                        {visibleFields.used_item && (
                             <>
                                 <label>Used Item:</label>
-                                <textarea name="used_item" value={formData.used_item} onChange={handleChange} required></textarea>
+                                <textarea name="used_item" value={formData.used_item || ''} onChange={handleChange} required></textarea>
                             </>
                         )}
-                        {characterNeeds.includes('family_need') && (
+                        {visibleFields.family && (
                             <>
                                 <label>Family:</label>
-                                <textarea name="family" value={formData.family} onChange={handleChange} required></textarea>
+                                <textarea name="family" value={formData.family || ''} onChange={handleChange} required></textarea>
                             </>
                         )}
-                        {characterNeeds.includes('universe_need') && (
+                        {visibleFields.universe && (
                             <>
                                 <label>Universe:</label>
-                                <input type="text" name="universe" value={formData.universe} onChange={handleChange} required></input>
+                                <input type="text" name="universe" value={formData.universe || ''} onChange={handleChange} required></input>
                             </>
                         )}
-                        {characterNeeds.includes('fc_need') && (
+                        {visibleFields.fc_type && (
                             <>
                                 <label>FC Type:</label>
                                 <select name="fc_type" value={formData.fc_type || ''} onChange={handleChange} required>
@@ -494,7 +519,7 @@ const CharacterEdit = (props) => {
                                         <label htmlFor="fc_name">
                                             FC Name:
                                         </label>
-                                        <input type="text" name="fc_name" value={formData.fc_name} onChange={handleChange} required />
+                                        <input type="text" name="fc_name" value={formData.fc_name || ''} onChange={handleChange} required />
                                     </>
                                 )}
                             </>
