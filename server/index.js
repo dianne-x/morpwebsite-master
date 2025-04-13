@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const http = require("http");
@@ -9,7 +10,7 @@ app.use(cors());
 const server = http.createServer(app);
 
 // Connect to MySQL using Sequelize
-const sequelize = new Sequelize('morpdatabase2', 'root', '', {
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
   host: 'localhost',
   dialect: 'mysql'
 });
@@ -153,7 +154,7 @@ RoomMessage.belongsTo(UserCharacter, { foreignKey: 'character_id' });
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.CORS_ORIGIN,
     methods: ["GET", "POST"]
   },
 });
