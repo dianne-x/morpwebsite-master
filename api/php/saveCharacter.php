@@ -221,7 +221,7 @@ if (!$stmt) {
     echo json_encode($response);
     exit();
 }
-$stmt->bind_param("ssiiiiiiisissssssssssssi", $name, $nickname, $genderId, $speciesId, $statusId, $affiliationId, $nationalityId, $occupationId, $fctypeId, $fcname, $servermember_id, $character_pic_path, $birthdate, $died, $deathdate, $resurrected, $resurrected_date, $bio, $powers, $weaknesses, $used_item, $family, $universe, $is_own_character);
+$stmt->bind_param("ssiiiiiiisissisisssssssi", $name, $nickname, $genderId, $speciesId, $statusId, $affiliationId, $nationalityId, $occupationId, $fctypeId, $fcname, $servermember_id, $character_pic_path, $birthdate, $died, $deathdate, $resurrected, $resurrected_date, $bio, $powers, $weaknesses, $used_item, $family, $universe, $is_own_character);
 
 if (!$stmt->execute()) {
     error_log("Error executing statement: " . $stmt->error);
