@@ -8,7 +8,7 @@ const UsersControl = ({ allUsers, onRoleReload, serverId }) => {
     const [selectedUserId, setSelectedUserId] = useState(null);
 
     useEffect(() => {
-        console.log('All users:', allUsers);
+        //console.log('All users:', allUsers);
         
         let usersList = [];
         if (filter === 'all') {
@@ -38,7 +38,7 @@ const UsersControl = ({ allUsers, onRoleReload, serverId }) => {
                 })
             });
             const data = await response.json();
-            console.log(data);
+            //console.log(data);
             onRoleReload();
             // Optionally, you can update the UI based on the response
         } catch (error) {
@@ -62,7 +62,7 @@ const UsersControl = ({ allUsers, onRoleReload, serverId }) => {
                 })
             });
             const data = await response.json();
-            console.log(data);
+            //console.log(data);
             onRoleReload();
         } catch (error) {
             console.error('Error kicking user:', error);

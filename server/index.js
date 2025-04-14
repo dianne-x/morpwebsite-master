@@ -160,12 +160,12 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("User connected", socket.id);
+  //console.log("User connected", socket.id);
 
   // Join a room
   socket.on("join_room", (roomId) => {
     socket.join(roomId);
-    console.log("User joined room: " + roomId);
+    //console.log("User joined room: " + roomId);
 
     // Send previous messages in the room
     RoomMessage.findAll({
@@ -186,7 +186,7 @@ io.on("connection", (socket) => {
         message: msg.message,
         date: msg.date
       }));
-      console.log('Previous messages:', messagesWithCharacterNames);
+      //console.log('Previous messages:', messagesWithCharacterNames);
       socket.emit('previous_messages', messagesWithCharacterNames);
     })
     .catch(err => console.error('Error fetching previous messages:', err));
@@ -195,7 +195,7 @@ io.on("connection", (socket) => {
   // Handle sending messages
   socket.on('send_message', (data) => {
     const { roomId, userId, characterId, message } = data;
-    console.log('Received message data:', data);
+    //console.log('Received message data:', data);
     RoomMessage.create({ room_id: roomId, character_id: characterId, message, date: new Date() })
       .then(newMessage => {
         return RoomMessage.findOne({
@@ -216,7 +216,7 @@ io.on("connection", (socket) => {
           message: newMessageWithCharacterName.message,
           date: newMessageWithCharacterName.date
         };
-        console.log('Message saved to database:', messageData);
+        //console.log('Message saved to database:', messageData);
         io.to(roomId).emit('receive_message', messageData);
       })
       .catch(err => {
@@ -228,7 +228,7 @@ io.on("connection", (socket) => {
 // Join a direct message room
   socket.on("join_direct_message_room", async (roomId) => {
     socket.join(roomId);
-    console.log("User joined direct message room: " + roomId);
+    //console.log("User joined direct message room: " + roomId);
 
     // Send previous direct messages in the room
     try {
@@ -247,7 +247,7 @@ io.on("connection", (socket) => {
         seen: msg.seen,
         seen_at: msg.seen_at
       }));
-      console.log('Previous direct messages:', messagesWithUserNames);
+      //console.log('Previous direct messages:', messagesWithUserNames);
       socket.emit('previous_direct_messages', messagesWithUserNames);
     } catch (err) {
       console.error('Error fetching previous direct messages:', err);
@@ -257,7 +257,7 @@ io.on("connection", (socket) => {
   // Handle sending direct messages
   socket.on('send_direct_message', async (data) => {
     const { roomId, sentFrom, sentTo, message } = data;
-    console.log('Received direct message data:', data);
+    //console.log('Received direct message data:', data);
 
     try {
      // Check if the DirectMessageRoom exists
@@ -296,7 +296,7 @@ io.on("connection", (socket) => {
         seen_at: newMessage.seen_at
       };
 
-      console.log('Direct message saved to database:', messageData);
+      //console.log('Direct message saved to database:', messageData);
       io.to(roomId).emit('receive_direct_message', messageData);
     } catch (err) {
       console.error('Error saving direct message to database:', err);

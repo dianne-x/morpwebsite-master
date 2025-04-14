@@ -42,7 +42,7 @@ const PrivateChat = ({ user2, onClose }) => {
   useEffect(() => {
     const fetchRoomId = async () => {
       try {
-        console.log('Fetching room ID for:', user1.uid, user2.uid); // Debug statement
+        //console.log('Fetching room ID for:', user1.uid, user2.uid); // Debug statement
         const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/getDirectMessageRoom.php`, {
           method: 'POST',
           headers: {
@@ -66,11 +66,11 @@ const PrivateChat = ({ user2, onClose }) => {
 
   useEffect(() => {
     if (roomId) {
-      console.log('Joining direct message room:', roomId);
+      //console.log('Joining direct message room:', roomId);
       socket.emit('join_direct_message_room', roomId);
 
       socket.on('previous_direct_messages', (messages) => {
-        console.log('Previous direct messages:', messages);
+        //console.log('Previous direct messages:', messages);
         const updatedMessages = messages.map((msg) => ({
           ...msg,
           sentFrom: msg.sent_from, // Ensure the field name matches
@@ -79,7 +79,7 @@ const PrivateChat = ({ user2, onClose }) => {
       });
 
       socket.on('receive_direct_message', (messageData) => {
-        console.log('Received direct message:', messageData);
+        //console.log('Received direct message:', messageData);
         messageData.sentFrom = messageData.sent_from; // Ensure the field name matches
 
         // Convert emoji codes back to emojis for display
@@ -88,21 +88,21 @@ const PrivateChat = ({ user2, onClose }) => {
           return msg.replace(new RegExp(code, 'g'), emoji);
         }, messageData.message);
 
-        console.log('Current user ID:', user1.uid);
-        console.log('Message sentFrom:', messageData.sentFrom);
+        //console.log('Current user ID:', user1.uid);
+        //console.log('Message sentFrom:', messageData.sentFrom);
         if (messageData.sentFrom !== user1.uid) {
-          console.log('Message is from another user:', messageData);
+          //console.log('Message is from another user:', messageData);
           setMessages((prevMessages) => {
             // Check if the message is already present in the state
             if (!prevMessages.some(msg => msg.id === messageData.id)) {
-              console.log('Adding message to state:', messageData);
+              //console.log('Adding message to state:', messageData);
               return [...prevMessages, messageData];
             }
-            console.log('Message already in state:', messageData);
+            //console.log('Message already in state:', messageData);
             return prevMessages;
           });
         } else {
-          console.log('Message is from the current user, not adding to state:', messageData);
+          //console.log('Message is from the current user, not adding to state:', messageData);
         }
       });
 
@@ -114,7 +114,7 @@ const PrivateChat = ({ user2, onClose }) => {
   }, [roomId]);
 
   useEffect(() => {
-    console.log('Messages updated:', messages);
+    //console.log('Messages updated:', messages);
     if (chatMessagesRef.current) {
         chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
     }
@@ -135,7 +135,7 @@ const PrivateChat = ({ user2, onClose }) => {
       isSentByCurrentUser: true // Add this flag to indicate the message is sent by the current user
     };
 
-    console.log('Sending direct message:', messageData);
+    //console.log('Sending direct message:', messageData);
 
     // Emit the message to the socket
     socket.emit('send_direct_message', messageData);

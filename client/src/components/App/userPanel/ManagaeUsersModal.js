@@ -7,8 +7,8 @@ const ManageUsersModal = ({ users, onClose, onRemoveUser }) => {
   // Function to handle kicking a user
   const handleKickUser = (userId) => {
     const ws = getWebSocket();
-    console.log('WebSocket:', ws);
-    console.log(`Attempting to kick user with ID: ${userId}`);
+    //console.log('WebSocket:', ws);
+    //console.log(`Attempting to kick user with ID: ${userId}`);
     // Send the "kick" action via WebSocket
     if (ws && ws.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify({ action: 'kick', userId }));
@@ -19,7 +19,7 @@ const ManageUsersModal = ({ users, onClose, onRemoveUser }) => {
 
   // Function to handle timing out a user
   const handleTimeoutUser = (userId, duration) => {
-    console.log(`Attempting to timeout user with ID: ${userId} for ${duration} minutes`);
+    //console.log(`Attempting to timeout user with ID: ${userId} for ${duration} minutes`);
     axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/timeoutUser.php`, { userId, duration })
       .then(response => {
         if (response.data.success) {
@@ -43,7 +43,7 @@ const ManageUsersModal = ({ users, onClose, onRemoveUser }) => {
 
   // Function to handle banning a user
   const handleBanUser = (userId) => {
-    console.log(`Attempting to ban user with ID: ${userId}`);
+    //console.log(`Attempting to ban user with ID: ${userId}`);
     axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/banUser.php`, { userId })
       .then(response => {
         if (response.data.success) {
@@ -64,7 +64,7 @@ const ManageUsersModal = ({ users, onClose, onRemoveUser }) => {
 
   // Function to handle unbanning a user
   const handleUnBanUser = (userId) => {
-    console.log(`Attempting to unban user with ID: ${userId}`);
+    //console.log(`Attempting to unban user with ID: ${userId}`);
     axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/unbanUser.php`, { userId })
       .then(response => {
         if (response.data.success) {
@@ -83,7 +83,7 @@ const ManageUsersModal = ({ users, onClose, onRemoveUser }) => {
 
   // Function to handle deleting a user
   const handleDeleteUser = (userId) => {
-    console.log(`Attempting to delete user with ID: ${userId}`);
+    //console.log(`Attempting to delete user with ID: ${userId}`);
     axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/deleteUser.php`, { userId })
       .then(response => {
         if (response.data.success) {

@@ -35,7 +35,7 @@ const Characters = () => {
                         <p className="explanation"><span style={{color: 'yellow'}}>Yellow border</span> means you have not been approved by the server's admin yet.</p>
                     
                         {servers.map((server) => {
-                            console.log(server);
+                            //console.log(server);
                             return (
                                 <ServerCharacterContainer 
                                     key={server.id}

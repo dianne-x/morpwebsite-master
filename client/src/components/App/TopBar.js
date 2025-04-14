@@ -48,7 +48,7 @@ const TopBar = ({ onServerClick, LogOut }) => {
       try {
         const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/viewFriends.php?user_id=${user}`);
         const data = await response.json();
-        console.log('Fetched friends:', data);
+        //console.log('Fetched friends:', data);
         setFriends(data);
       } catch (error) {
         console.error('Error fetching friends:', error);

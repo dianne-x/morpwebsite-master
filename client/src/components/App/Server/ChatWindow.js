@@ -61,7 +61,7 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
         try {
           const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/getAllCharacterAliases.php?serverId=${serverId}`);
           const data = await response.json();
-          console.log('Fetched all character aliases:', data); // Log the fetched data to verify structure
+          //console.log('Fetched all character aliases:', data); // Log the fetched data to verify structure
           setAllCharacterAliases(data.aliases); // Cache the aliases
         } catch (error) {
           console.error('Error fetching all character aliases:', error);
@@ -76,9 +76,9 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
     const fetchVerifiedCharacters = async () => {
       try {
         const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/useableCharacterForChat.php?serverId=${selectedServer}&userId=${user}`);
-        console.log(`fetch url: ${process.env.REACT_APP_PHP_BASE_URL}/useableCharacterForChat.php?serverId=${selectedServer}&userId=${user}`);
+        //console.log(`fetch url: ${process.env.REACT_APP_PHP_BASE_URL}/useableCharacterForChat.php?serverId=${selectedServer}&userId=${user}`);
         const data = await response.json();
-        console.log('Fetched characters:', data); // Log the fetched data to verify structure
+        //console.log('Fetched characters:', data); // Log the fetched data to verify structure
         setVerifiedCharacters(data);
       } catch (error) {
         console.error('Error fetching verified characters:', error);

@@ -15,7 +15,7 @@ const ServerInfo = ({ server, owners = [], moderators = [], regularUsers = [], o
     
     const getInviteLink = () => {
         const link = server.invite_link;
-        console.log(link);
+        //console.log(link);
         
         navigator.clipboard.writeText(link);
         alert('Invite link copied to clipboard!');
@@ -42,7 +42,7 @@ const ServerInfo = ({ server, owners = [], moderators = [], regularUsers = [], o
                 })
             });
             const data = await response.json();
-            console.log(data);
+            //console.log(data);
 
             window.location.reload();
         } catch (error) {
@@ -63,7 +63,7 @@ const ServerInfo = ({ server, owners = [], moderators = [], regularUsers = [], o
                     <ul>
                         {owners.length > 0 ? (
                             owners.map((user, userIndex) => (
-                                <li key={userIndex} className="user-item" onClick={() => {setSelectedUserId(user.uid); console.log(user);}}>
+                                <li key={userIndex} className="user-item" onClick={() => {setSelectedUserId(user.uid); /*console.log(user);*/}}>
                                     {user.name}
                                 </li>
                             ))
@@ -75,7 +75,7 @@ const ServerInfo = ({ server, owners = [], moderators = [], regularUsers = [], o
                     <ul>
                         {moderators.length > 0 ? (
                             moderators.map((user, userIndex) => (
-                                <li key={userIndex} className="user-item" onClick={() => {setSelectedUserId(user.uid); console.log(user);}}>
+                                <li key={userIndex} className="user-item" onClick={() => {setSelectedUserId(user.uid); /*console.log(user);*/}}>
                                     {user.name}
                                 </li>
                             ))
@@ -87,7 +87,7 @@ const ServerInfo = ({ server, owners = [], moderators = [], regularUsers = [], o
                     <ul>
                         {regularUsers.length > 0 ? (
                             regularUsers.map((user, userIndex) => (
-                                <li key={userIndex} className="user-item" onClick={() => {setSelectedUserId(user.uid); console.log(user);}}>
+                                <li key={userIndex} className="user-item" onClick={() => {setSelectedUserId(user.uid); /*console.log(user);*/}}>
                                     {user.name}
                                 </li>
                             ))

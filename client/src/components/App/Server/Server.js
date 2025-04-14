@@ -23,14 +23,14 @@ const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => 
     const [serverInfoOpen, setServerInfoOpen] = useState(false);
 
     const [characterChangeTrigger, setCharacterChangeTrigger] = useState(0);
-
+/*
     useEffect(() => {
         console.log("selected server next line:");
         
         console.log(selectedServer);
         console.log(sections);
     }, [selectedServer, sections]);
-
+*/
     useEffect(() => {
         if (sections && sections.length > 0 && sections[0].rooms && sections[0].rooms.length > 0) {
             setSelectedRoomId(sections[0].rooms[0].id);
@@ -46,10 +46,10 @@ const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => 
                 if (user.uid === JSON.parse(localStorage.getItem('morp-login-user'))) {
                     setIsModerator(user.is_moderator == 1);
                     setIsOwner(user.is_owner == 1);
-
+/*
                     if (isModerator) console.log('User is a moderator');
                     if (isOwner) console.log('User is an owner');
-                    
+*/                    
                     break;
                 }
             }
@@ -67,11 +67,11 @@ const Server = ({ selectedServer, sections, users, onReload, onRoleReload }) => 
             setRegularUsers(regularUsersList);
         }
     }, [users]);
-
+/*
     useEffect(() => {
         console.log("Selected room id:", selectedRoomId);
     }, [selectedRoomId]);
-
+*/
     const changeSelectedRoomId = (roomId) => {
         setSelectedRoomId(roomId);
     };

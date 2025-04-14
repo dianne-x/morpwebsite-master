@@ -24,7 +24,7 @@ const ResendPassword = ({changeLoading}) => {
             })
             .catch((error) => {
                 changeLoading(false);
-                console.log('Error:', error);
+                console.error('Error:', error);
                 setMessage('An error occurred while processing your request.');
             });
     };

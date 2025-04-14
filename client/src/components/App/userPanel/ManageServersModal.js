@@ -9,7 +9,7 @@ const ManageServersModal = ({ onClose }) => {
   const fetchServers = () => {
     axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/getServersManage.php`)
       .then(response => {
-        console.log('Raw response:', response); // Log the raw response
+        //console.log('Raw response:', response); // Log the raw response
         if (response.data.success) {
           setServers(response.data.servers); // Update the servers state with the fetched data
         } else {
@@ -23,7 +23,7 @@ const ManageServersModal = ({ onClose }) => {
 
   // Function to handle deleting a server
   const handleDeleteServer = (serverId) => {
-    console.log(`Attempting to delete server with ID: ${serverId}`);
+    //console.log(`Attempting to delete server with ID: ${serverId}`);
     axios.post(`${process.env.REACT_APP_PHP_BASE_URL}/deleteServer.php`, { serverId })
       .then(response => {
         if (response.data.success) {

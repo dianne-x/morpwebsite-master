@@ -9,10 +9,10 @@ const FriendRequests = ({friendTrigger}) => {
   useEffect(() => {
     const fetchFriendRequests = async () => {
       try {
-        console.log(`Fetching friend requests for user_id: ${user}`);
+        //console.log(`Fetching friend requests for user_id: ${user}`);
         const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/viewFriendRequests.php?user_id=${user}`);
         const data = await response.json();
-        console.log('Fetched friend requests:', data);
+        //console.log('Fetched friend requests:', data);
         setFriendRequests(data);
       } catch (error) {
         console.error('Error fetching friend requests:', error);
@@ -24,7 +24,7 @@ const FriendRequests = ({friendTrigger}) => {
 
   const handleAcceptRequest = async (requestId) => {
     try {
-      console.log(`Accepting friend request with id: ${requestId}`);
+      //console.log(`Accepting friend request with id: ${requestId}`);
       const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/acceptFriendRequest.php`, {
         method: 'POST',
         headers: {
@@ -33,7 +33,7 @@ const FriendRequests = ({friendTrigger}) => {
         body: JSON.stringify({ request_id: requestId }),
       });
       const data = await response.json();
-      console.log('Accept request response:', data);
+      //console.log('Accept request response:', data);
       if (data.success) {
         friendTrigger();
         alert('Friend request accepted!');
@@ -48,7 +48,7 @@ const FriendRequests = ({friendTrigger}) => {
 
   const handleRejectRequest = async (requestId) => {
     try {
-      console.log(`Rejecting friend request with id: ${requestId}`);
+      //console.log(`Rejecting friend request with id: ${requestId}`);
       const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/rejectFriendReqeust.php`, {
         method: 'POST',
         headers: {
@@ -57,7 +57,7 @@ const FriendRequests = ({friendTrigger}) => {
         body: JSON.stringify({ request_id: requestId }),
       });
       const data = await response.json();
-      console.log('Reject request response:', data);
+      //console.log('Reject request response:', data);
       if (data.success) {
         alert('Friend request rejected!');
         setFriendRequests(friendRequests.filter(request => request.id !== requestId));
