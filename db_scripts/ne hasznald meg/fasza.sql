@@ -780,8 +780,8 @@ CREATE TABLE `server_member` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` varchar(255) DEFAULT NULL,
   `server_id` int(11) DEFAULT NULL,
-  `is_owner` tinyint(1) DEFAULT NULL,
-  `is_moderator` tinyint(1) DEFAULT NULL,
+  `is_owner` tinyint(1) DEFAULT 0,
+  `is_moderator` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
