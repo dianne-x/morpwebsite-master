@@ -112,7 +112,7 @@ const UsersControl = ({ allUsers, onRoleReload, serverId }) => {
                 </div>
                 :
                 <div style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1000}}>
-                    <UserInfo userId={selectedUserId} onClose={() => setSelectedUserId(null)} />
+                    <UserInfo userId={selectedUserId} onClose={() => setSelectedUserId(null)} serverId={serverId} />
                 </div>
 
             }

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import UserInfo from '../User/UserInfo'; // Import UserInfo component
 
 const FriendRequests = ({friendTrigger}) => {
   const [friendRequests, setFriendRequests] = useState([]);
+  const [selectedUserId, setSelectedUserId] = useState(null); // State for selected user
   const user = JSON.parse(localStorage.getItem('morp-login-user'));
 
   useEffect(() => {
@@ -66,32 +68,42 @@ const FriendRequests = ({friendTrigger}) => {
       console.error('Error rejecting friend request:', error);
     }
   };
+
   return (
-    <div>
-      <h1>Friend Requests</h1>
-      <ul className='server-character-list-view'>
-        {friendRequests.length > 0 ? (
-          friendRequests.map((request) => (
-            <li key={request.id}>
-              <div className='info'>
-                <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${request.sender_profile_pic || 'user.png'}`} alt={request.sender_name} />
-                <span>{request.sender_name}</span>
-              </div>
-              <div className='modify'>
-                <button className='accept' onClick={() => handleAcceptRequest(request.id)}>
-                  Accept
-                </button>
-                <button className='reject' onClick={() => handleRejectRequest(request.id)}>
-                  Reject
-                </button>
-              </div>
-            </li>
-          ))
-        ) : (
-          <li>No friend requests</li>
-        )}
-      </ul>
-    </div>
+    <>
+      {!selectedUserId ? (
+        <>
+          <h1>Friend Requests</h1>
+          <ul className='server-character-list-view'>
+            {friendRequests.length > 0 ? (
+              friendRequests.map((request) => (
+                  <li key={request.id}>
+                    <div 
+                      className='info'
+                      onClick={() => setSelectedUserId(request.sender_id)} // Set selected user ID
+                      style={{ cursor: 'pointer' }}>
+                      <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${request.sender_profile_pic || 'user.png'}`} alt={request.sender_name} />
+                      <span>{request.sender_name}</span>
+                    </div>
+                    <div className='modify'>
+                      <button className='accept' onClick={() => handleAcceptRequest(request.id)}>
+                        Accept
+                      </button>
+                      <button className='reject' onClick={() => handleRejectRequest(request.id)}>
+                        Reject
+                      </button>
+                    </div>
+                  </li>
+              ))
+            ) : (
+              <li>No friend requests</li>
+            )}
+          </ul>
+        </>
+      ) : (
+        <UserInfo userId={selectedUserId} onClose={() => setSelectedUserId(null)} /> // Display UserInfo
+      )}
+    </>
   );
 };
 
