@@ -5,6 +5,7 @@ import SectionCreation from './SectionCreation';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { emojiMap } from '../../../utils/emojiConverter'; // Import emojiMap
 
 const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId, onReload, isModerator, closeServerRooms, serverRoomsOpen }) => {
   const [openRoomCreationId, setOpenRoomCreationId] = useState(null);
@@ -45,21 +46,46 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
     onReload();
   };
 
+  const escapeRegExp = (string) => {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escape special characters for RegExp
+  };
+
+  const encodeEmojis = (text) => {
+    if (!text) return text;
+    return Object.keys(emojiMap).reduce((msg, emoji) => {
+      const code = emojiMap[emoji];
+      const escapedEmoji = escapeRegExp(emoji); // Escape emoji for RegExp
+      return msg.replace(new RegExp(escapedEmoji, 'g'), code); // Replace emojis with their codes
+    }, text);
+  };
+
+  const decodeEmojis = (text) => {
+    if (!text) return text;
+    return Object.keys(emojiMap).reduce((msg, emoji) => {
+      const code = emojiMap[emoji];
+      const escapedCode = escapeRegExp(code); // Escape code for RegExp
+      return msg.replace(new RegExp(escapedCode, 'g'), emoji); // Replace codes with their emojis
+    }, text);
+  };
+
   const handleEditSection = (sectionId) => {
     if (editSectionName === "") return;
+
+    const encodedSectionName = encodeEmojis(editSectionName); // Encode emojis before saving
+
     fetch(`${process.env.REACT_APP_PHP_BASE_URL}/updateSectionName.php`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ sectionId, sectionName: editSectionName }),
+      body: JSON.stringify({ sectionId, sectionName: encodedSectionName }),
     })
     .then(response => response.json())
     .then(data => {
       if (data.success) {
         const updatedSections = sectionList.map(section => {
           if (section.id === sectionId) {
-            return { ...section, section_name: editSectionName };
+            return { ...section, section_name: encodedSectionName }; // Update with encoded name
           }
           return section;
         });
@@ -76,12 +102,15 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
 
   const handleEditRoom = (roomId) => {
     if (editRoomName === "") return;
+
+    const encodedRoomName = encodeEmojis(editRoomName); // Encode emojis before saving
+
     fetch(`${process.env.REACT_APP_PHP_BASE_URL}/updateRoomName.php`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ roomId, roomName: editRoomName }),
+      body: JSON.stringify({ roomId, roomName: encodedRoomName }),
     })
     .then(response => response.json())
     .then(data => {
@@ -91,7 +120,7 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
             ...section,
             rooms: section.rooms.map(room => {
               if (room.id === roomId) {
-                return { ...room, room_name: editRoomName };
+                return { ...room, room_name: encodedRoomName }; // Update with encoded name
               }
               return room;
             })
@@ -167,6 +196,14 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
     }
   };
 
+  const convertEmojisInText = (text) => {
+    if (!text) return text;
+    return Object.keys(emojiMap).reduce((msg, emoji) => {
+      const code = emojiMap[emoji];
+      return msg.replace(new RegExp(code, 'g'), emoji);
+    }, text);
+  };
+
   return (
     <div className={`channel-list server-side ${serverRoomsOpen ? 'open' : ''}`}>
       <div className='server-side-header'>
@@ -194,12 +231,12 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
                 </div>) 
                 : 
                 (<>
-                  <p>{section.section_name}</p>
+                  <p>{decodeEmojis(section.section_name)}</p> {/* Decode emojis for display */}
                   {isModerator && <>
                     <button title='Edit section name' className='change-btn' onClick={() => {
                       setSelectedEditRoomId(null);
                       setSelectedEditSectionId(section.id);
-                      setEditSectionName(section.section_name);
+                      setEditSectionName(decodeEmojis(section.section_name)); // Decode emojis for editing
                     }}>
                       <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
@@ -232,14 +269,14 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
                           </div>) 
                           : 
                           (<>
-                            <p>{room.room_name}</p>
+                            <p>{decodeEmojis(room.room_name)}</p> {/* Decode emojis for display */}
                             {
                             isModerator &&
                               <div>
                                 <button title='Edit room name' className='change-btn' onClick={() => {
                                   setSelectedEditSectionId(null);
                                   setSelectedEditRoomId(room.id);
-                                  setEditRoomName(room.room_name);
+                                  setEditRoomName(decodeEmojis(room.room_name)); // Decode emojis for editing
                                 }}>
                                   <FontAwesomeIcon icon={faPenToSquare} />
                                 </button>

@@ -96,13 +96,21 @@ const ChatWindow = ({ serverId, roomId, servers = [], roomDetails, onCharacterCl
     }
   }, [messages]);
 
+  const convertEmojisInText = (text) => {
+    if (!text) return text;
+    return Object.keys(emojiMap).reduce((msg, emoji) => {
+      const code = emojiMap[emoji];
+      return msg.replace(new RegExp(code, 'g'), emoji);
+    }, text);
+  };
+
   return (
     <div className="chat-window">
       {roomDetails ? (
         <>
           <div className='room-details-wrapper'>
             <FontAwesomeIcon icon={faBars} className='room-icon' onClick={openServerRooms} />
-            <h1>{roomDetails.room_name}</h1>
+            <h1>{convertEmojisInText(roomDetails.room_name)}</h1> {/* Convert emojis in room name */}
             <FontAwesomeIcon icon={faInfoCircle} className='room-icon' onClick={openServerInfo}/>
           </div>
 
