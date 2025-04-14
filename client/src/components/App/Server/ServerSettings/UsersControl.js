@@ -19,7 +19,7 @@ const UsersControl = ({ allUsers, onRoleReload, serverId }) => {
             usersList = allUsers.regularUsers;
         }
         setFilteredUsers(usersList);
-    }, [filter, allUsers]);
+    }, [filter, allUsers, serverId]);
 
     const changeRole = async (user, isPromotion) => {
         // eslint-disable-next-line no-restricted-globals
@@ -34,7 +34,7 @@ const UsersControl = ({ allUsers, onRoleReload, serverId }) => {
                 body: JSON.stringify({
                     user_id: user.uid,
                     isPromotion: isPromotion,
-                    owner_id: allUsers.owners[0].uid
+                    owner_id: JSON.parse(localStorage.getItem('morp-login-user'))
                 })
             });
             const data = await response.json();
