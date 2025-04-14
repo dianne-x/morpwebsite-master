@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import morpHomepic from '../../img/Morp_Home_pic.png';
 import morpHomeUFO from '../../img/MORP_Home_UFO.webp';
 import '../../style/Home/Home.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWindows } from '@fortawesome/free-brands-svg-icons';
 
 const Home = () => {
     return (
@@ -23,7 +25,8 @@ const Home = () => {
         </div>
 
         <a href='/MORPSetup.msi' download={true} className="download-link">
-          <span>Download Desktop Client</span>
+          <span><FontAwesomeIcon icon={faWindows}/></span>
+          <span className='text'>Download Desktop Client</span>
         </a>
       </main>
     );

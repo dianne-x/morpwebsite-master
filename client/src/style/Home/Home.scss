@@ -89,6 +89,14 @@ main.home-container {
         border: 1px solid $third-color;
         z-index: 1;
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        span.text {
+            flex: 1;
+            text-wrap: nowrap;
+        }
         
         &::before, span {
             transition: 200ms ease-in-out;
