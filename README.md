@@ -16,8 +16,8 @@ Az alkalmazás a következő főbb részekből áll:
 
 Az adatbázis inicializálásához futtasd a következő SQL fájlokat a megadott sorrendben:
 
-1.  `db_scripts/ne hasznald meg/fasza.sql`
-2.  `ideas/cascade` (a constraint-ek miatt külön importálni kell)
+1.  `db_scripts/morpdb.sql`
+2.  `db_scripts/cascade` (a constraint-ek miatt külön importálni kell)
 
 ## Lokális Telepítés
 
