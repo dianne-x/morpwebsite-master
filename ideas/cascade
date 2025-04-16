@@ -83,3 +83,20 @@ ALTER TABLE `direct_message_room`
 ALTER TABLE `direct_message_room`
   ADD CONSTRAINT `direct_message_room_ibfk_1` FOREIGN KEY (`user1_id`) REFERENCES `users` (`uid`),
   ADD CONSTRAINT `direct_message_room_ibfk_2` FOREIGN KEY (`user2_id`) REFERENCES `users` (`uid`);
+
+
+ALTER TABLE user_character
+DROP FOREIGN KEY user_character_ibfk_1;
+
+ALTER TABLE user_character
+ADD CONSTRAINT user_character_ibfk_1
+FOREIGN KEY (servermember_id) REFERENCES server_member(id)
+ON DELETE CASCADE;
+
+ALTER TABLE room_message
+DROP FOREIGN KEY room_message_ibfk_2;
+
+ALTER TABLE room_message
+ADD CONSTRAINT room_message_ibfk_2
+FOREIGN KEY (character_id) REFERENCES user_character(id)
+ON DELETE CASCADE;

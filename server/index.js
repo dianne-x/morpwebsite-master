@@ -5,6 +5,15 @@ const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
 const { Sequelize, DataTypes } = require("sequelize");
+const sanitizeHtml = require('sanitize-html');
+
+
+//CSP(Content Security Policy) header to prevent XSS attacks
+app.use((req, res, next) => {
+  res.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self'; frame-src 'none';");
+  next();
+});
+
 
 app.use(cors());
 const server = http.createServer(app);
@@ -162,6 +171,40 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("User connected", socket.id);
 
+  /*
+  // Handle serverKick event
+  socket.on('serverKick', async (data) => {
+    console.log('serverKick event received:', data);
+    const { userId, serverId } = data;
+
+    try {
+        // Log the database operation
+        console.log(`Removing user ${userId} from server ${serverId} in server_member table`);
+        // Remove the user from the server_member table
+        await ServerMember.destroy({
+            where: {
+                user_id: userId,
+                server_id: serverId
+            }
+        });
+
+        // Notify the kicked user
+        console.log(`Notifying user ${userId} about being kicked from server ${serverId}`);
+        io.to(userId).emit('kickedFromServer', { serverId });
+
+        // Optionally, notify other users in the server about the kick
+        console.log(`Notifying other users in server ${serverId} about user ${userId} being kicked`);
+        io.to(serverId).emit('userKicked', { userId });
+
+        console.log(`User ${userId} was kicked from server ${serverId}`);
+    } catch (error) {
+        console.error('Error kicking user from server:', error);
+    }
+  });
+  */
+
+
+
   // Join a room
   socket.on("join_room", (roomId) => {
     socket.join(roomId);
@@ -195,8 +238,19 @@ io.on("connection", (socket) => {
   // Handle sending messages
   socket.on('send_message', (data) => {
     const { roomId, userId, characterId, message } = data;
+
+    // Sanitize the message to remove harmful content
+    const sanitizedMessage = sanitizeHtml(message, {
+      allowedTags: ['b', 'i', 'em', 'strong', 'a'], // Allow specific tags
+      allowedAttributes: {
+        'a': ['href', 'target'] // Allow specific attributes for <a> tags
+      }
+    });
+
+
+
     console.log('Received message data:', data);
-    RoomMessage.create({ room_id: roomId, character_id: characterId, message, date: new Date() })
+    RoomMessage.create({ room_id: roomId, character_id: characterId, message:sanitizedMessage, date: new Date() })
       .then(newMessage => {
         return RoomMessage.findOne({
           where: { id: newMessage.id },
@@ -257,6 +311,33 @@ io.on("connection", (socket) => {
   // Handle sending direct messages
   socket.on('send_direct_message', async (data) => {
     const { roomId, sentFrom, sentTo, message } = data;
+
+
+    // Validate the message field
+    if (!message || typeof message !== 'string' || message.trim() === '') {
+      console.error('Invalid message received:', message);
+      return; // Exit the function if the message is invalid
+    }
+
+    // Sanitize the message to remove harmful content
+    const sanitizedMessage = sanitizeHtml(message, {
+        allowedTags: ['b', 'i', 'em', 'strong', 'a', 'span'], // Allow necessary tags
+        allowedAttributes: {
+            'a': ['href', 'target', 'rel'], // Allow attributes for <a> tags
+            'span': ['class', 'style', 'onclick'], // Allow attributes for <span> tags
+        },
+        allowedSchemes: ['http', 'https'], // Allow only http and https links
+        allowedSchemesByTag: {
+            'a': ['http', 'https'], // Ensure <a> tags only allow http/https
+        },
+    });
+
+    if (!sanitizedMessage || sanitizedMessage.trim() === '') {
+        console.error('Sanitized message is empty:', sanitizedMessage);
+        return; // Exit the function if the sanitized message is empty
+    }
+
+
     console.log('Received direct message data:', data);
 
     try {
@@ -281,9 +362,14 @@ io.on("connection", (socket) => {
         room_id: room.id,
         sent_from: sentFrom,
         sent_to: sentTo,
-        message,
+        message: sanitizedMessage,
         sent: new Date()
       });
+
+      if(!newMessage) {
+        console.error('Failed to create new direct message:', data);
+        return; // Exit the function if message creation failed
+      }
 
       const messageData = {
         id: newMessage.id,

@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faTimes } from '@fortawesome/free-solid-svg-icons';
 import io from 'socket.io-client';
 import { v4 as uuidv4 } from 'uuid'; // Import UUID library
+import DOMPurify from 'dompurify'; // Import DOMPurify for sanitization
 import '../../style/App/Server/privateChat.scss'; // Import the new stylesheet
 import { convertEmojisToText, emojiMap } from '../../utils/emojiConverter'; // Import emojiConverter
 
@@ -36,7 +37,8 @@ const PrivateChat = ({ user2, onClose }) => {
       const url = match.startsWith('http') ? match : `http://${match}`;
       return `<a href="${url}" target="_blank" rel="noopener noreferrer">${match}</a>`;
     });
-    return formattedMessage.trim();
+    //return formattedMessage.trim();
+    return DOMPurify.sanitize(formattedMessage.trim(), { USE_PROFILES: { html: true } });
   };
 
   useEffect(() => {
@@ -162,12 +164,15 @@ const PrivateChat = ({ user2, onClose }) => {
 
       <div className='chat-messages-wrapper' ref={chatMessagesRef}>
         <div className='chat-messages'>
-          {messages.map((msg, index) => (
+          {messages.map((msg, index) => {
+            const fmessage = formatMessage(msg.message);
+            return (
+              fmessage && // Only render if the formatted message is not empty
             <div key={index} className={`chat-message ${msg.sentFrom === user1.uid ? 'sent' : 'received'}`}>
-              <span dangerouslySetInnerHTML={{ __html: formatMessage(msg.message) }} />
+              <span dangerouslySetInnerHTML={{ __html: fmessage }} />
               <span className="chat-date">{formatDate(msg.sent)}</span>
-            </div>
-          ))}
+            </div>)
+    })}
         </div>
       </div>
 

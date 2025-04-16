@@ -73,22 +73,20 @@ const AddFriend = () => {
           <ul className='server-character-list-view'>
             {searchResults.length > 0 ? (
               searchResults.map((result) => (
-                <>
-                  <li key={result.uid}>
-                    <div 
-                      className='info'
-                      onClick={() => setSelectedUserId(result.uid)}
-                      style={{ cursor: 'pointer' }}>
-                      <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${result.profile_pic_path || 'user.png'}`} />
-                      <span>{result.name}</span>
-                    </div>
-                    <div className='modify'>
-                      <button className='accept' onClick={() => handleSendFriendRequest(result.uid)}>
-                        Add Friend
-                      </button>
-                    </div>
-                  </li>
-                </>
+                <li key={result.uid}>
+                  <div 
+                    className='info'
+                    onClick={() => setSelectedUserId(result.uid)}
+                    style={{ cursor: 'pointer' }}>
+                    <img src={`${process.env.REACT_APP_IMAGE_BASE_URL}/userPictures/${result.profile_pic_path || 'user.png'}`} />
+                    <span>{result.name}</span>
+                  </div>
+                  <div className='modify'>
+                    <button className='accept' onClick={() => handleSendFriendRequest(result.uid)}>
+                      Add Friend
+                    </button>
+                  </div>
+                </li>
               ))
             ) : (
               <span>User not found</span>
