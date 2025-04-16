@@ -48,7 +48,7 @@ const ServerCreationForm = ({serverTrigger}) => {
       });
 
       const text = await response.text(); // Get the response text
-      console.log(text); // Log the response text for debugging
+      //console.log(text); // Log the response text for debugging
 
       const result = JSON.parse(text); // Parse the response text as JSON
 

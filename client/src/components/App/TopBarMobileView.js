@@ -21,8 +21,8 @@ const TopBarMobileView = ({ onClose, onFriendClick, onServerClick, profilePicPat
         handleClose();
     };
 
-    console.log(friends);
-    console.log(servers);
+    //console.log(friends);
+    //console.log(servers);
 
     const friendList = <div className='friend-list-mobile'>
         {

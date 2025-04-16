@@ -16,10 +16,10 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
         // Fetch character information
         axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/getCharacterData.php?characterId=${characterId}`)
             .then(response => {
-                console.log('Response:', response); // Log the entire response
+                //console.log('Response:', response); // Log the entire response
                 if (response.data.success) {
                     setCharacterInfo(response.data.character);
-                    console.log(response.data.character);
+                    //console.log(response.data.character);
                     
                 } else {
                     console.error('Error fetching character data:', response.data.message);
@@ -43,7 +43,7 @@ const CharacterInfo = ({ characterId, onClose, name, picture }) => {
     };
 
     // Log the object for debugging
-    console.log('Character Picture Map:', characterPictureMap);
+    //console.log('Character Picture Map:', characterPictureMap);
 
     const characterDataTable = [
         { title: 'Nickname', content: characterInfo.nickname },

@@ -15,7 +15,7 @@ function App() {
     // Check for userId in localStorage
     const userId = JSON.parse(localStorage.getItem('morp-login-user'));
     if (userId) {
-      console.log('User is logged in, connecting to WebSocket...');
+      //console.log('User is logged in, connecting to WebSocket...');
       connectWebSocket(userId); // Establish WebSocket connection
     }
   }, []); // Run once when the app loads
@@ -23,7 +23,7 @@ function App() {
   const ProtectedRoute = ({ children }) => {
     const userId = JSON.parse(localStorage.getItem('morp-login-user'));
     if (!userId) {
-      console.log('No userId found, redirecting to login...');
+      //console.log('No userId found, redirecting to login...');
       return <Navigate to="/login" />;
     }
     return children;

@@ -20,7 +20,7 @@ const AddFriend = () => {
       const data = await response.json();
       const filteredResults = data.filter(user => user.uid !== currentUserId);
       setSearchResults(filteredResults);
-      console.log('Search results:', filteredResults); // Log the filtered search results
+      //console.log('Search results:', filteredResults); // Log the filtered search results
     } catch (error) {
       console.error('Error fetching search results:', error);
     }
@@ -28,7 +28,7 @@ const AddFriend = () => {
 
   const handleSendFriendRequest = async (receiverId) => {
     const senderId = JSON.parse(localStorage.getItem('morp-login-user'));
-    console.log('sender:', senderId); // Log the current user to verify the uid
+    //console.log('sender:', senderId); // Log the current user to verify the uid
 
     if (!senderId) {
       alert('User not logged in');

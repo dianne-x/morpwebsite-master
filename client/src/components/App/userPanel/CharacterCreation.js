@@ -47,7 +47,7 @@ const CharacterCreation = (props) => {
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/getCharacterCreation.php`)
             .then(response => {
-                console.log('API response:', response.data); // Debugging line
+                //console.log('API response:', response.data); // Debugging line
                 setGenders(response.data.genders || []);
                 setSpecies(response.data.species || []);
                 setStatuses(response.data.statuses || []);
@@ -55,12 +55,12 @@ const CharacterCreation = (props) => {
                 setNationalities(response.data.nationalities || []);
                 setOccupations(response.data.occupations || []);
                 setFcTypes(response.data.fc_types || []); // Correct the state name to fc_types
-                console.log('Genders:', response.data.genders); // Debugging line
-                console.log('Species:', response.data.species); // Debugging line
-                console.log('Affiliations:', response.data.affiliations); // Debugging line
-                console.log('Nationalities:', response.data.nationalities); // Debugging line
-                console.log('Occupations:', response.data.occupations); // Debugging line
-                console.log('FcTypes:', response.data.fc_types); // Debugging line
+                //console.log('Genders:', response.data.genders); // Debugging line
+                //console.log('Species:', response.data.species); // Debugging line
+                //console.log('Affiliations:', response.data.affiliations); // Debugging line
+                //console.log('Nationalities:', response.data.nationalities); // Debugging line
+                //console.log('Occupations:', response.data.occupations); // Debugging line
+                //console.log('FcTypes:', response.data.fc_types); // Debugging line
             })
             .catch(error => {
                 console.error('There was an error fetching the character data!', error);
@@ -180,7 +180,7 @@ const CharacterCreation = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Form data before submission:', formData);
+        //console.log('Form data before submission:', formData);
         
 
         const formDataToSend = new FormData();

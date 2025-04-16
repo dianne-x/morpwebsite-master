@@ -46,21 +46,21 @@ const Profile = (props) => {
         formData.append('nickname', userData.nickname);
         formData.append('about_me', userData.about_me);
 
-        console.log('Submitting form data:', formData); // Log the form data
+        //console.log('Submitting form data:', formData); // Log the form data
 
         fetch(`${process.env.REACT_APP_PHP_BASE_URL}/updateUser.php`, {
             method: 'POST',
             body: formData,
         })
             .then((response) => {
-                console.log('Response:', response); // Log the response
+                //console.log('Response:', response); // Log the response
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
             .then((data) => {
-                console.log('Response data:', data); // Log the response data
+                //console.log('Response data:', data); // Log the response data
                 if (data.success) {
                     alert('User data saved successfully.');
                     fetchUserProfile(); // Refresh the profile data
@@ -104,7 +104,7 @@ const Profile = (props) => {
         const ws = getWebSocket();
         if (ws && ws.readyState === WebSocket.OPEN) {
             ws.close(); // Close the WebSocket connection
-            console.log('WebSocket connection closed.');
+            //console.log('WebSocket connection closed.');
         }
 
         // Clear user data from localStorage

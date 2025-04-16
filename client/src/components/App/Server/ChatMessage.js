@@ -15,6 +15,12 @@ const ChatMessage = ({ name, aliases, message, date, showIconAndName, characterI
         }
     }, [aliases]);
 
+    const handleSpoilerClick = (event) => {
+        if (event.target.matches('.spoiler-span[data-spoiler]')) {
+            event.target.classList.add('shown');
+        }
+    };
+
     const handleMouseOver = () => {
         setIsHovered(true);
     };
@@ -40,7 +46,7 @@ const ChatMessage = ({ name, aliases, message, date, showIconAndName, characterI
         formattedMessage = formattedMessage.replace(/\*\*\*(.*?)\*\*\*/g, (match, p1) => p1.trim() != "" ? `<span style="font-style: italic; font-weight: bold;">${p1}</span>` : match);
         formattedMessage = formattedMessage.replace(/\*\*(.*?)\*\*/g, (match, p1) => p1.trim() != "" ? `<span style="font-weight: bold;">${p1}</span>` : match);
         formattedMessage = formattedMessage.replace(/\*(.*?)\*/g, (match, p1) => p1.trim() != "" ? `<span style="font-style: italic;">${p1}</span>` : match);
-        formattedMessage = formattedMessage.replace(/!spl\((.*?)\)/g, (match, p1) => p1.trim() != "" ? `<span class="spoiler-span" onclick="if (!this.classList.contains('shown')) this.classList.add('shown')">${p1}</span>` : match);
+        formattedMessage = formattedMessage.replace(/!spl\((.*?)\)/g, (match, p1) => p1.trim() != "" ? `<span class="spoiler-span" data-spoiler>${p1}</span>` : match);
         formattedMessage = formattedMessage.replace(/((https?:\/\/|www\.)[^\s]+|[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g, (match) => {
             const url = match.startsWith('http') ? match : `http://${match}`;
             return `<a href="${url}" target="_blank" rel="noopener noreferrer">${match}</a>`;
@@ -51,7 +57,7 @@ const ChatMessage = ({ name, aliases, message, date, showIconAndName, characterI
     return (
         formatMessage(message) === "" ? <></> : // If message is empty, return null
         <>
-            <div className="chat-message" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
+            <div className="chat-message" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave} onClick={handleSpoilerClick}>
                 <div className='chat-message-icon'>
                     {showIconAndName && (
                         <img 

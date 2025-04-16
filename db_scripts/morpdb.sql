@@ -32,20 +32,49 @@ USE morpdatabase2;
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `affilation`
+-- Tábla szerkezet ehhez a táblához `affiliation`
 --
 
-CREATE TABLE `affilation` (
-  `id` int(11) NOT NULL,
-  `affilation` varchar(250) DEFAULT NULL
+CREATE TABLE `affiliation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `affiliation` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- A tábla adatainak kiíratása `affilation`
+-- A tábla adatainak kiíratása `affiliation`
 --
 
-INSERT INTO `affilation` (`id`, `affilation`) VALUES
-(1, 'Group1');
+
+INSERT INTO `affiliation` (`id`, `affiliation`) VALUES
+(1, 'League of Villains'),
+(2, 'U.A. High School'),
+(3, 'Paranormal Liberation Front'),
+(4, 'Endeavor Agency'),
+(5, 'Shiketsu High School'),
+(6, 'Wild, Wild Pussycats'),
+(7, 'Meta Liberation Army'),
+(8, 'Justice League'), 
+(9, 'Teen Titans'), 
+(10, 'Suicide Squad'), 
+(11, 'Justice Society of America'), 
+(12, 'The Bat Family'), 
+(13, 'The Rogues'),
+(14, 'Secret Society of Super Villains'), 
+(15, 'Legion of Doom'), 
+(16, 'Injustice League'), 
+(17, 'The Avengers'), 
+(18, 'S.H.I.E.L.D.'), 
+(19, 'Hydra'), 
+(20, 'The Fantastic Four'),
+(21, 'The Sinister Six'),
+(22, 'Brotherhood of Mutants'),
+(23, 'The Defenders'),
+(24, 'The Illuminati'),
+(25, 'The Hellfire Club'),
+(26, 'The Thunderbolts'),
+(27, 'The Dora Milaje'),
+(28, 'The Hand');
 
 -- --------------------------------------------------------
 
@@ -54,18 +83,18 @@ INSERT INTO `affilation` (`id`, `affilation`) VALUES
 --
 
 CREATE TABLE `alias_character` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `character_id` int(11) DEFAULT NULL,
   `name` varchar(250) DEFAULT NULL,
-  `character_pic_path` varchar(100) DEFAULT NULL
+  `character_pic_path` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- A tábla adatainak kiíratása `alias_character`
 --
 
-INSERT INTO `alias_character` (`id`, `character_id`, `name`, `character_pic_path`) VALUES
-(1, 1, 'Alias1', '/path/to/alias_pic');
+
 
 -- --------------------------------------------------------
 
@@ -74,8 +103,9 @@ INSERT INTO `alias_character` (`id`, `character_id`, `name`, `character_pic_path
 --
 
 CREATE TABLE `character_fc` (
-  `id` int(11) NOT NULL,
-  `fc_type` varchar(255) DEFAULT NULL
+  `id` int NOT NULL AUTO_INCREMENT,
+  `fc_type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -83,7 +113,9 @@ CREATE TABLE `character_fc` (
 --
 
 INSERT INTO `character_fc` (`id`, `fc_type`) VALUES
-(1, 'Femboy face');
+(1, 'Fan Cast/ Face Claim'),
+(2, 'Voice Claim'),
+(3, 'Canon Cast');
 
 -- --------------------------------------------------------
 
@@ -92,8 +124,9 @@ INSERT INTO `character_fc` (`id`, `fc_type`) VALUES
 --
 
 CREATE TABLE `character_species` (
-  `id` int(11) NOT NULL,
-  `species` varchar(255) DEFAULT NULL
+  `id` int NOT NULL AUTO_INCREMENT,
+  `species` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -101,7 +134,33 @@ CREATE TABLE `character_species` (
 --
 
 INSERT INTO `character_species` (`id`, `species`) VALUES
-(1, 'Human');
+(1, 'Alien'),  
+(2, 'Amazonian'),  
+(3, 'Android'),  
+(4, 'Angel'),  
+(5, 'Asgardian'),  
+(6, 'Atlantean'),  
+(7, 'Cyborg'),  
+(8, 'Demon'),  
+(9, 'Deviant'),  
+(10, 'Dragon'),  
+(11, 'Dwarf'),  
+(12, 'Elf'),  
+(13, 'Ent'),  
+(14, 'Eternal'),  
+(15, 'Goblin'),  
+(16, 'God'),  
+(17, 'Human'),  
+(18, 'Inhuman'),  
+(19, 'Kryptonian'),  
+(20, 'Meta-Human'),  
+(21, 'Mutant'),  
+(22, 'Orc'),  
+(23, 'Shapeshifter'),  
+(24, 'Symbiote'),  
+(25, 'Troll'),  
+(26, 'Vampire'),  
+(27, 'Werewolf');
 
 -- --------------------------------------------------------
 
@@ -110,8 +169,9 @@ INSERT INTO `character_species` (`id`, `species`) VALUES
 --
 
 CREATE TABLE `character_status` (
-  `id` int(11) NOT NULL,
-  `status` varchar(255) DEFAULT NULL
+  `id` int NOT NULL AUTO_INCREMENT,
+  `status` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -119,7 +179,12 @@ CREATE TABLE `character_status` (
 --
 
 INSERT INTO `character_status` (`id`, `status`) VALUES
-(1, 'Active');
+(1, 'Alive'),
+(2, 'Alive (Resurrected)'),
+(3, 'Active'),
+(4, 'Deceased'),
+(5, 'In Custody'),
+(6, 'Unknown');
 
 -- --------------------------------------------------------
 
@@ -129,15 +194,14 @@ INSERT INTO `character_status` (`id`, `status`) VALUES
 
 CREATE TABLE `character_story` (
   `stories_id` int(11) DEFAULT NULL,
-  `character_id` int(11) DEFAULT NULL
+  `character_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`stories_id`, `character_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- A tábla adatainak kiíratása `character_story`
 --
 
-INSERT INTO `character_story` (`stories_id`, `character_id`) VALUES
-(1, 1);
 
 -- --------------------------------------------------------
 
@@ -146,21 +210,21 @@ INSERT INTO `character_story` (`stories_id`, `character_id`) VALUES
 --
 
 CREATE TABLE `direct_message` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `room_id` int(11) DEFAULT NULL,
-  `sent_from` int(11) DEFAULT NULL,
+  `sent_from` VARCHAR(255) DEFAULT NULL,
   `message` varchar(255) DEFAULT NULL,
   `sent` datetime DEFAULT NULL,
   `seen` tinyint(1) DEFAULT NULL,
-  `seen_at` datetime DEFAULT NULL
+  `seen_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- A tábla adatainak kiíratása `direct_message`
 --
 
-INSERT INTO `direct_message` (`id`, `room_id`, `sent_from`, `message`, `sent`, `seen`, `seen_at`) VALUES
-(1, 1, 1, 'Direct message', '2024-01-01 00:00:00', 1, '2024-01-01 00:00:00');
+
 
 -- --------------------------------------------------------
 
@@ -169,21 +233,21 @@ INSERT INTO `direct_message` (`id`, `room_id`, `sent_from`, `message`, `sent`, `
 --
 
 CREATE TABLE `direct_message_room` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user1_id` varchar(255) DEFAULT NULL,
   `user2_id` varchar(255) DEFAULT NULL,
   `main_color` varchar(7) DEFAULT '#000000',
   `text_color` varchar(7) DEFAULT '#FFFFFF',
   `header_image_path` varchar(255) DEFAULT NULL,
-  `is_friend` tinyint(1) DEFAULT NULL
+  `is_friend` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- A tábla adatainak kiíratása `direct_message_room`
 --
 
-INSERT INTO `direct_message_room` (`id`, `user1_id`, `user2_id`, `main_color`, `text_color`, `header_image_path`, `is_friend`) VALUES
-(1, 'user1', 'user1', '#000000', '#FFFFFF', '/path/to/header_image', 1);
+
 
 -- --------------------------------------------------------
 
@@ -192,8 +256,9 @@ INSERT INTO `direct_message_room` (`id`, `user1_id`, `user2_id`, `main_color`, `
 --
 
 CREATE TABLE `gender` (
-  `id` int(11) NOT NULL,
-  `gender` varchar(255) DEFAULT NULL
+  `id` int NOT NULL AUTO_INCREMENT,
+  `gender` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -201,7 +266,9 @@ CREATE TABLE `gender` (
 --
 
 INSERT INTO `gender` (`id`, `gender`) VALUES
-(1, 'Male');
+(1, 'Male'),
+(2, 'Female'),
+(3, 'Other');
 
 -- --------------------------------------------------------
 
@@ -210,8 +277,9 @@ INSERT INTO `gender` (`id`, `gender`) VALUES
 --
 
 CREATE TABLE `languages` (
-  `id` int(11) NOT NULL,
-  `language` varchar(255) DEFAULT NULL
+  `id` int NOT NULL AUTO_INCREMENT,
+  `language` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -219,7 +287,8 @@ CREATE TABLE `languages` (
 --
 
 INSERT INTO `languages` (`id`, `language`) VALUES
-(1, 'English');
+(1, 'English'),
+(2, 'Hungarian');
 
 -- --------------------------------------------------------
 
@@ -228,8 +297,9 @@ INSERT INTO `languages` (`id`, `language`) VALUES
 --
 
 CREATE TABLE `nationality` (
-  `id` int(11) NOT NULL,
-  `nationality` varchar(250) DEFAULT NULL
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nationality` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -237,7 +307,256 @@ CREATE TABLE `nationality` (
 --
 
 INSERT INTO `nationality` (`id`, `nationality`) VALUES
-(1, 'American');
+(1, 'Afghanistan'),
+(2, 'Åland Islands'),
+(3, 'Albania'),
+(4, 'Algeria'),
+(5, 'American Samoa'),
+(6, 'Andorra'),
+(7, 'Angola'),
+(8, 'Anguilla'),
+(9, 'Antarctica'),
+(10, 'Antigua & Barbuda'),
+(11, 'Argentina'),
+(12, 'Armenia'),
+(13, 'Aruba'),
+(14, 'Australia'),
+(15, 'Austria'),
+(16, 'Azerbaijan'),
+(17, 'Bahamas'),
+(18, 'Bahrain'),
+(19, 'Bangladesh'),
+(20, 'Barbados'),
+(21, 'Belarus'),
+(22, 'Belgium'),
+(23, 'Belize'),
+(24, 'Benin'),
+(25, 'Bermuda'),
+(26, 'Bhutan'),
+(27, 'Bolivia'),
+(28, 'Bosnia & Herzegovina'),
+(29, 'Botswana'),
+(30, 'Bouvet Island'),
+(31, 'Brazil'),
+(32, 'British Indian Ocean Territory'),
+(33, 'British Virgin Islands'),
+(34, 'Brunei'),
+(35, 'Bulgaria'),
+(36, 'Burkina Faso'),
+(37, 'Burundi'),
+(38, 'Cambodia'),
+(39, 'Cameroon'),
+(40, 'Canada'),
+(41, 'Cape Verde'),
+(42, 'Caribbean Netherlands'),
+(43, 'Cayman Islands'),
+(44, 'Central African Republic'),
+(45, 'Chad'),
+(46, 'Chile'),
+(47, 'China'),
+(48, 'Christmas Island'),
+(49, 'Cocos (Keeling) Islands'),
+(50, 'Colombia'),
+(51, 'Comoros'),
+(52, 'Congo - Brazzaville'),
+(53, 'Congo - Kinshasa'),
+(54, 'Cook Islands'),
+(55, 'Costa Rica'),
+(56, 'Côte d’Ivoire'),
+(57, 'Croatia'),
+(58, 'Cuba'),
+(59, 'Curaçao'),
+(60, 'Cyprus'),
+(61, 'Czechia'),
+(62, 'Denmark'),
+(63, 'Djibouti'),
+(64, 'Dominica'),
+(65, 'Dominican Republic'),
+(66, 'Ecuador'),
+(67, 'Egypt'),
+(68, 'El Salvador'),
+(69, 'Equatorial Guinea'),
+(70, 'Eritrea'),
+(71, 'Estonia'),
+(72, 'Eswatini'),
+(73, 'Ethiopia'),
+(74, 'Falkland Islands'),
+(75, 'Faroe Islands'),
+(76, 'Fiji'),
+(77, 'Finland'),
+(78, 'France'),
+(79, 'French Guiana'),
+(80, 'French Polynesia'),
+(81, 'French Southern Territories'),
+(82, 'Gabon'),
+(83, 'Gambia'),
+(84, 'Georgia'),
+(85, 'Germany'),
+(86, 'Ghana'),
+(87, 'Gibraltar'),
+(88, 'Greece'),
+(89, 'Greenland'),
+(90, 'Grenada'),
+(91, 'Guadeloupe'),
+(92, 'Guam'),
+(93, 'Guatemala'),
+(94, 'Guernsey'),
+(95, 'Guinea'),
+(96, 'Guinea-Bissau'),
+(97, 'Guyana'),
+(98, 'Haiti'),
+(99, 'Heard & McDonald Islands'),
+(100, 'Honduras'),
+(101, 'Hong Kong SAR China'),
+(102, 'Hungary'),
+(103, 'Iceland'),
+(104, 'India'),
+(105, 'Indonesia'),
+(106, 'Iran'),
+(107, 'Iraq'),
+(108, 'Ireland'),
+(109, 'Isle of Man'),
+(110, 'Israel'),
+(111, 'Italy'),
+(112, 'Jamaica'),
+(113, 'Japan'),
+(114, 'Jersey'),
+(115, 'Jordan'),
+(116, 'Kazakhstan'),
+(117, 'Kenya'),
+(118, 'Kiribati'),
+(119, 'Kuwait'),
+(120, 'Kyrgyzstan'),
+(121, 'Laos'),
+(122, 'Latvia'),
+(123, 'Lebanon'),
+(124, 'Lesotho'),
+(125, 'Liberia'),
+(126, 'Libya'),
+(127, 'Liechtenstein'),
+(128, 'Lithuania'),
+(129, 'Luxembourg'),
+(130, 'Macao SAR China'),
+(131, 'Madagascar'),
+(132, 'Malawi'),
+(133, 'Malaysia'),
+(134, 'Maldives'),
+(135, 'Mali'),
+(136, 'Malta'),
+(137, 'Marshall Islands'),
+(138, 'Martinique'),
+(139, 'Mauritania'),
+(140, 'Mauritius'),
+(141, 'Mayotte'),
+(142, 'Mexico'),
+(143, 'Micronesia'),
+(144, 'Moldova'),
+(145, 'Monaco'),
+(146, 'Mongolia'),
+(147, 'Montenegro'),
+(148, 'Montserrat'),
+(149, 'Morocco'),
+(150, 'Mozambique'),
+(151, 'Myanmar (Burma)'),
+(152, 'Namibia'),
+(153, 'Nauru'),
+(154, 'Nepal'),
+(155, 'Netherlands'),
+(156, 'New Caledonia'),
+(157, 'New Zealand'),
+(158, 'Nicaragua'),
+(159, 'Niger'),
+(160, 'Nigeria'),
+(161, 'Niue'),
+(162, 'Norfolk Island'),
+(163, 'North Korea'),
+(164, 'North Macedonia'),
+(165, 'Northern Mariana Islands'),
+(166, 'Norway'),
+(167, 'Oman'),
+(168, 'Pakistan'),
+(169, 'Palau'),
+(170, 'Palestinian Territories'),
+(171, 'Panama'),
+(172, 'Papua New Guinea'),
+(173, 'Paraguay'),
+(174, 'Peru'),
+(175, 'Philippines'),
+(176, 'Pitcairn Islands'),
+(177, 'Poland'),
+(178, 'Portugal'),
+(179, 'Puerto Rico'),
+(180, 'Qatar'),
+(181, 'Réunion'),
+(182, 'Romania'),
+(183, 'Russia'),
+(184, 'Rwanda'),
+(185, 'Samoa'),
+(186, 'San Marino'),
+(187, 'São Tomé & Príncipe'),
+(188, 'Saudi Arabia'),
+(189, 'Senegal'),
+(190, 'Serbia'),
+(191, 'Seychelles'),
+(192, 'Sierra Leone'),
+(193, 'Singapore'),
+(194, 'Sint Maarten'),
+(195, 'Slovakia'),
+(196, 'Slovenia'),
+(197, 'Solomon Islands'),
+(198, 'Somalia'),
+(199, 'South Africa'),
+(200, 'South Georgia & South Sandwich Islands'),
+(201, 'South Korea'),
+(202, 'South Sudan'),
+(203, 'Spain'),
+(204, 'Sri Lanka'),
+(205, 'St. Barthélemy'),
+(206, 'St. Helena'),
+(207, 'St. Kitts & Nevis'),
+(208, 'St. Lucia'),
+(209, 'St. Martin'),
+(210, 'St. Pierre & Miquelon'),
+(211, 'St. Vincent & Grenadines'),
+(212, 'Sudan'),
+(213, 'Suriname'),
+(214, 'Svalbard & Jan Mayen'),
+(215, 'Sweden'),
+(216, 'Switzerland'),
+(217, 'Syria'),
+(218, 'Taiwan'),
+(219, 'Tajikistan'),
+(220, 'Tanzania'),
+(221, 'Thailand'),
+(222, 'Timor-Leste'),
+(223, 'Togo'),
+(224, 'Tokelau'),
+(225, 'Tonga'),
+(226, 'Trinidad & Tobago'),
+(227, 'Tunisia'),
+(228, 'Türkiye'),
+(229, 'Turkmenistan'),
+(230, 'Turks & Caicos Islands'),
+(231, 'Tuvalu'),
+(232, 'U.S. Outlying Islands'),
+(233, 'U.S. Virgin Islands'),
+(234, 'Uganda'),
+(235, 'Ukraine'),
+(236, 'United Arab Emirates'),
+(237, 'United Kingdom'),
+(238, 'United States'),
+(239, 'Uruguay'),
+(240, 'Uzbekistan'),
+(241, 'Vanuatu'),
+(242, 'Vatican City'),
+(243, 'Venezuela'),
+(244, 'Vietnam'),
+(245, 'Wallis & Futuna'),
+(246, 'Western Sahara'),
+(247, 'Yemen'),
+(248, 'Zambia'),
+(249, 'Zimbabwe');
+
 
 -- --------------------------------------------------------
 
@@ -246,8 +565,9 @@ INSERT INTO `nationality` (`id`, `nationality`) VALUES
 --
 
 CREATE TABLE `occupation` (
-  `id` int(11) NOT NULL,
-  `occupation` varchar(250) DEFAULT NULL
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `occupation` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -255,7 +575,42 @@ CREATE TABLE `occupation` (
 --
 
 INSERT INTO `occupation` (`id`, `occupation`) VALUES
-(1, 'Warrior');
+(1, 'Adventurer'),  
+(2, 'Alchemist'),  
+(3, 'Assassin'),  
+(4, 'Bounty Hunter'),  
+(5, 'Chef'),  
+(6, 'Doctor'),  
+(7, 'Engineer'),  
+(8, 'Firefighter'),  
+(9, 'Guardian'),  
+(10, 'Healer'),  
+(11, 'Journalist'),  
+(12, 'Knight'),  
+(13, 'Lawyer'),  
+(14, 'Mage'),  
+(15, 'Mechanic'),  
+(16, 'Mercenary'),  
+(17, 'Monk'),  
+(18, 'Musician'),  
+(19, 'Necromancer'),  
+(20, 'Nurse'),  
+(21, 'Paladin'),  
+(22, 'Pirate'),  
+(23, 'Pilot'),  
+(24, 'Police Officer'),  
+(25, 'Ranger'),  
+(26, 'Rebel'),  
+(27, 'Rogue'),  
+(28, 'Scientist'),  
+(29, 'Sorcerer'),  
+(30, 'Soldier'),  
+(31, 'Squire'),  
+(32, 'Teacher'),  
+(33, 'Thief'),  
+(34, 'Warrior'),  
+(35, 'Wizard'),  
+(36, 'Writer');
 
 -- --------------------------------------------------------
 
@@ -264,21 +619,21 @@ INSERT INTO `occupation` (`id`, `occupation`) VALUES
 --
 
 CREATE TABLE `room` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `section_id` int(11) DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
+  `room_name` varchar(255) DEFAULT NULL,
   `text_color` varchar(7) DEFAULT '#FFFFFF',
   `main_color` varchar(7) DEFAULT '#000000',
   `header_image_path` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL
+  `description` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- A tábla adatainak kiíratása `room`
 --
 
-INSERT INTO `room` (`id`, `section_id`, `name`, `text_color`, `main_color`, `header_image_path`, `description`) VALUES
-(1, 1, 'Room1', '#FFFFFF', '#000000', '/path/to/header_image', 'Description');
+
 
 -- --------------------------------------------------------
 
@@ -287,19 +642,19 @@ INSERT INTO `room` (`id`, `section_id`, `name`, `text_color`, `main_color`, `hea
 --
 
 CREATE TABLE `room_message` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `room_id` int(11) DEFAULT NULL,
   `character_id` int(11) DEFAULT NULL,
-  `message` varchar(255) DEFAULT NULL,
-  `date` datetime DEFAULT NULL
+  `message` text(500) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- A tábla adatainak kiíratása `room_message`
 --
 
-INSERT INTO `room_message` (`id`, `room_id`, `character_id`, `message`, `date`) VALUES
-(1, 1, 1, 'Message1', '2024-01-01 00:00:00');
+
 
 -- --------------------------------------------------------
 
@@ -308,8 +663,9 @@ INSERT INTO `room_message` (`id`, `room_id`, `character_id`, `message`, `date`) 
 --
 
 CREATE TABLE `rp_category` (
-  `id` int(11) NOT NULL,
-  `rp_category` varchar(255) DEFAULT NULL
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rp_category` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -317,7 +673,25 @@ CREATE TABLE `rp_category` (
 --
 
 INSERT INTO `rp_category` (`id`, `rp_category`) VALUES
-(1, 'Fantasy');
+(1, 'Action'),  
+(2, 'Adventure'),  
+(3, 'Comedy'),  
+(4, 'Crime'),  
+(5, 'Drama'),  
+(6, 'Fantasy'),  
+(7, 'Historical'),  
+(8, 'Horror'),  
+(9, 'Mystery'),  
+(10, 'Romance'),  
+(11, 'Science Fiction'),  
+(12, 'Thriller'),  
+(13, 'Western'),  
+(14, 'Superhero'),  
+(15, 'Noir'),  
+(16, 'Anime');
+
+
+
 
 -- --------------------------------------------------------
 
@@ -326,18 +700,17 @@ INSERT INTO `rp_category` (`id`, `rp_category`) VALUES
 --
 
 CREATE TABLE `section` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `server_id` int(11) DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `text_color` varchar(7) DEFAULT NULL
+  `section_name` varchar(255) DEFAULT NULL,
+  `text_color` varchar(7) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- A tábla adatainak kiíratása `section`
 --
 
-INSERT INTO `section` (`id`, `server_id`, `name`, `text_color`) VALUES
-(1, 1, 'Section1', '#FFFFFF');
 
 -- --------------------------------------------------------
 
@@ -345,14 +718,14 @@ INSERT INTO `section` (`id`, `server_id`, `name`, `text_color`) VALUES
 -- Tábla szerkezet ehhez a táblához `servers`
 --
 
+-- Tábla szerkezet ehhez a táblához `servers`
 CREATE TABLE `servers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `uid` varchar(255) DEFAULT NULL,
   `server_name` varchar(255) DEFAULT NULL,
-  `server_picture_path` varchar(255) DEFAULT NULL,
+  `server_picture_path` varchar(255) DEFAULT 'server.png',
   `main_color` varchar(7) DEFAULT '#000000',
   `text_color` varchar(7) DEFAULT '#FFFFFF',
-  `server_font_style_id` int(11) DEFAULT 0,
   `invite_link` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -360,9 +733,7 @@ CREATE TABLE `servers` (
 --
 -- A tábla adatainak kiíratása `servers`
 --
-INSERT INTO `servers` (`uid`, `server_name`, `server_picture_path`, `main_color`, `text_color`, `server_font_style_id`, `invite_link`) VALUES
-('naci', 'nacivagyoj', '1dc312c1216ddeeffc37478d1800287b.png', '#000000', '#FFFFFF', 1, 'morp.ru/naci'),
-('server1', 'Server One', '/path/to/server_pic', '#000000', '#FFFFFF', 1, 'invite_link');
+
 
 -- --------------------------------------------------------
 
@@ -371,20 +742,20 @@ INSERT INTO `servers` (`uid`, `server_name`, `server_picture_path`, `main_color`
 --
 
 CREATE TABLE `server_bio` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `about_us` varchar(255) DEFAULT NULL,
   `about_us_color` varchar(7) DEFAULT '#000000',
   `about_us_text_color` varchar(7) DEFAULT '#FFFFFF',
   `about_us_header_picture_path` varchar(255) DEFAULT NULL,
-  `rp_category_id` int(11) DEFAULT 0
+  `rp_category_id` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- A tábla adatainak kiíratása `server_bio`
 --
 
-INSERT INTO `server_bio` (`id`, `about_us`, `about_us_color`, `about_us_text_color`, `about_us_header_picture_path`, `rp_category_id`) VALUES
-(1, 'About us', '#000000', '#FFFFFF', '/path/to/header_pic', 1);
+
 
 -- --------------------------------------------------------
 
@@ -392,17 +763,12 @@ INSERT INTO `server_bio` (`id`, `about_us`, `about_us_color`, `about_us_text_col
 -- Tábla szerkezet ehhez a táblához `server_font_style`
 --
 
-CREATE TABLE `server_font_style` (
-  `id` int(11) NOT NULL,
-  `font_stlye` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- A tábla adatainak kiíratása `server_font_style`
 --
 
-INSERT INTO `server_font_style` (`id`, `font_stlye`) VALUES
-(1, 'Arial');
+
 
 -- --------------------------------------------------------
 
@@ -411,20 +777,19 @@ INSERT INTO `server_font_style` (`id`, `font_stlye`) VALUES
 --
 
 CREATE TABLE `server_member` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `user_id` varchar(255) DEFAULT NULL,
   `server_id` int(11) DEFAULT NULL,
-  `is_owner` tinyint(1) DEFAULT NULL,
-  `is_moderator` tinyint(1) DEFAULT NULL
+  `is_owner` tinyint(1) DEFAULT 0,
+  `is_moderator` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- A tábla adatainak kiíratása `server_member`
 --
 
-INSERT INTO `server_member` (`id`, `user_id`, `server_id`, `is_owner`, `is_moderator`) VALUES
-(0, 'da7b35b5f18730449d5fd14f8dc59343', 0, 1, 1),
-(1, 'user1', 1, 1, 0);
+
 
 -- --------------------------------------------------------
 
@@ -433,16 +798,17 @@ INSERT INTO `server_member` (`id`, `user_id`, `server_id`, `is_owner`, `is_moder
 --
 
 CREATE TABLE `server_stories` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `stories_id` int(11) DEFAULT NULL,
-  `server_id` int(11) DEFAULT NULL
+  `server_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- A tábla adatainak kiíratása `server_stories`
 --
 
-INSERT INTO `server_stories` (`stories_id`, `server_id`) VALUES
-(1, 1);
+
 
 -- --------------------------------------------------------
 
@@ -451,18 +817,18 @@ INSERT INTO `server_stories` (`stories_id`, `server_id`) VALUES
 --
 
 CREATE TABLE `stories` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `story_name` varchar(255) DEFAULT NULL,
   `start_date` datetime DEFAULT NULL,
-  `end_date` datetime DEFAULT NULL
+  `end_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- A tábla adatainak kiíratása `stories`
 --
 
-INSERT INTO `stories` (`id`, `story_name`, `start_date`, `end_date`) VALUES
-(1, 'Story1', '2024-01-01 00:00:00', '2024-12-31 00:00:00');
+
 
 -- --------------------------------------------------------
 
@@ -471,19 +837,19 @@ INSERT INTO `stories` (`id`, `story_name`, `start_date`, `end_date`) VALUES
 --
 
 CREATE TABLE `thread` (
-  `thread_id` int(11) NOT NULL,
+  `thread_id` int(11) NOT NULL AUTO_INCREMENT,
   `thread_text` varchar(255) DEFAULT NULL,
   `thread_text_color` varchar(7) DEFAULT '#FFFFFF',
   `thread_color` varchar(7) DEFAULT '#000000',
-  `thread_post_date` datetime DEFAULT NULL
+  `thread_post_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`thread_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- A tábla adatainak kiíratása `thread`
 --
 
-INSERT INTO `thread` (`thread_id`, `thread_text`, `thread_text_color`, `thread_color`, `thread_post_date`) VALUES
-(1, 'Thread1', '#FFFFFF', '#000000', '2024-01-01 00:00:00');
+
 
 -- --------------------------------------------------------
 
@@ -496,28 +862,27 @@ CREATE TABLE `users` (
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `nickname` varchar(255) DEFAULT NULL,
+  `nickname` varchar(255) DEFAULT '',
   `gender_id` int(11) DEFAULT 0,
-  `profile_pic_path` varchar(255) DEFAULT NULL,
+  `profile_pic_path` varchar(255) DEFAULT 'user.png',
   `language_id` varchar(255) DEFAULT '0',
   `thread_id` int(11) DEFAULT NULL,
   `status_id` int(11) DEFAULT 0,
-  `about_me` varchar(255) DEFAULT NULL,
+  `about_me` varchar(255) DEFAULT '',
   `about_me_color` varchar(7) DEFAULT '#000000',
   `bio_main_color` varchar(7) DEFAULT '#000000',
   `bio_text_color` varchar(7) DEFAULT '#FFFFFF',
   `verified` tinyint(1) DEFAULT NULL,
-  `is_admin` tinyint(1) DEFAULT NULL
+  `is_admin` tinyint(1) DEFAULT NULL,
+  `timeout_until` DATETIME DEFAULT NULL,
+  `isBanned` TINYINT(1) DEFAULT 0,
+  PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- A tábla adatainak kiíratása `users`
 --
 
-INSERT INTO `users` (`uid`, `email`, `password`, `name`, `nickname`, `gender_id`, `profile_pic_path`, `language_id`, `thread_id`, `status_id`, `about_me`, `about_me_color`, `bio_main_color`, `bio_text_color`, `verified`, `is_admin`) VALUES
-('a853e4daa7c1975e9eeb73a66e919921', 'admin.admin@gmail.com', '$2y$10$x.5.wqKQV4WCc45jiN5fH.nVn2g3.fK0Yvek5HRz97CHmGbJQbeFS', 'pw:Matevok123$$', NULL, 0, NULL, '0', NULL, 0, NULL, '#000000', '#000000', '#FFFFFF', 1, NULL),
-('da7b35b5f18730449d5fd14f8dc59343', 'mate.dbvari@gmail.com', '$2y$10$.otVnLjc6xEzM/EeF5oZJOHQL9mLC99/GMzEUK.r/EEu0hZvyHSui', 'matevok', 'asd2', 0, NULL, '0', NULL, 0, 'asd2', '#000000', '#000000', '#FFFFFF', 1, NULL),
-('user1', 'user1@example.com', 'password', 'User One', 'U1', 1, '/path/to/profile_pic', 'en', 1, 1, 'About me', '#000000', '#000000', '#FFFFFF', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -526,7 +891,7 @@ INSERT INTO `users` (`uid`, `email`, `password`, `name`, `nickname`, `gender_id`
 --
 
 CREATE TABLE `user_character` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `servermember_id` int(11) DEFAULT NULL,
   `is_verified` tinyint(1) DEFAULT 0,
   `is_own_character` tinyint(1) DEFAULT 0,
@@ -541,27 +906,26 @@ CREATE TABLE `user_character` (
   `resurrected_date` datetime DEFAULT NULL,
   `species_id` int(11) DEFAULT 0,
   `occupation_id` int(11) DEFAULT 0,
-  `affilation_id` int(11) DEFAULT 0,
+  `affiliation_id` int(11) DEFAULT 0,
   `nationality_id` int(11) DEFAULT 0,
   `status_id` int(11) DEFAULT 0,
   `story_id` int(11) DEFAULT 0,
-  `bio` varchar(300) DEFAULT NULL,
-  `powers` varchar(300) DEFAULT NULL,
-  `weaknesses` varchar(300) DEFAULT NULL,
-  `used_item` varchar(300) DEFAULT NULL,
-  `family` varchar(300) DEFAULT NULL,
-  `universe` varchar(300) DEFAULT NULL,
+  `bio` varchar(3000) DEFAULT NULL,
+  `powers` varchar(3000) DEFAULT NULL,
+  `weaknesses` varchar(3000) DEFAULT NULL,
+  `used_item` varchar(3000) DEFAULT NULL,
+  `family` varchar(3000) DEFAULT NULL,
+  `universe` varchar(3000) DEFAULT NULL,
   `fc_type_id` int(11) DEFAULT 0,
-  `fc_name` varchar(250) DEFAULT NULL
+  `fc_name` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- A tábla adatainak kiíratása `user_character`
 --
 
-INSERT INTO `user_character` (`id`, `servermember_id`, `is_verified`, `is_own_character`, `character_name`, `nickname`, `gender_id`, `character_pic_path`, `birthdate`, `died`, `deathdate`, `resurrected`, `resurrected_date`, `species_id`, `occupation_id`, `affilation_id`, `nationality_id`, `status_id`, `story_id`, `bio`, `powers`, `weaknesses`, `used_item`, `family`, `universe`, `fc_type_id`, `fc_name`) VALUES
-(0, 0, 0, 0, 'asdsad', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, 1, 1, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL),
-(1, 1, 1, 1, 'Character1', 'Char1', 1, '/path/to/character_pic', '2000-01-01 00:00:00', 0, NULL, 0, NULL, 1, 1, 1, 1, 1, 1, 'Bio', 'Powers', 'Weaknesses', 'Used item', 'Family', 'Universe', 1, 'FC Name');
+
 
 -- --------------------------------------------------------
 
@@ -570,28 +934,29 @@ INSERT INTO `user_character` (`id`, `servermember_id`, `is_verified`, `is_own_ch
 --
 
 CREATE TABLE `user_character_need` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `server_id` int(11) DEFAULT NULL,
   `birthdate_need` tinyint(1) DEFAULT NULL,
   `deathdate_need` tinyint(1) DEFAULT NULL,
   `resurrected_date_need` tinyint(1) DEFAULT NULL,
   `species_need` tinyint(1) DEFAULT NULL,
-  `occuptaion_need` tinyint(1) DEFAULT NULL,
-  `affilation_need` tinyint(1) DEFAULT NULL,
+  `occupation_need` tinyint(1) DEFAULT NULL,
+  `affiliation_need` tinyint(1) DEFAULT NULL,
   `nationality_need` tinyint(1) DEFAULT NULL,
   `powers_need` tinyint(1) DEFAULT NULL,
   `weaknesses_need` tinyint(1) DEFAULT NULL,
   `used_item_need` tinyint(1) DEFAULT NULL,
   `family_need` tinyint(1) DEFAULT NULL,
   `universe_need` tinyint(1) DEFAULT NULL,
-  `fc_need` tinyint(1) DEFAULT NULL
+  `fc_need` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- A tábla adatainak kiíratása `user_character_need`
 --
 
-INSERT INTO `user_character_need` (`server_id`, `birthdate_need`, `deathdate_need`, `resurrected_date_need`, `species_need`, `occuptaion_need`, `affilation_need`, `nationality_need`, `powers_need`, `weaknesses_need`, `used_item_need`, `family_need`, `universe_need`, `fc_need`) VALUES
-(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+
 
 -- --------------------------------------------------------
 
@@ -600,51 +965,58 @@ INSERT INTO `user_character_need` (`server_id`, `birthdate_need`, `deathdate_nee
 --
 
 CREATE TABLE `user_status` (
-  `id` int(11) NOT NULL,
-  `status_type` varchar(255) DEFAULT NULL
+  `id` int NOT NULL AUTO_INCREMENT,
+  `status_type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Table to store friend requests
+CREATE TABLE `friend_requests` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `sender_id` varchar(255) NOT NULL,
+  `receiver_id` varchar(255) NOT NULL,
+  `status` varchar(50) DEFAULT 'pending', -- 'pending', 'accepted', 'rejected'
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`sender_id`) REFERENCES `users` (`uid`),
+  FOREIGN KEY (`receiver_id`) REFERENCES `users` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Table to store friendships
+CREATE TABLE `friendships` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user1_id` varchar(255) NOT NULL,
+  `user2_id` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user1_id`) REFERENCES `users` (`uid`),
+  FOREIGN KEY (`user2_id`) REFERENCES `users` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+
+
 
 --
 -- A tábla adatainak kiíratása `user_status`
 --
 
 INSERT INTO `user_status` (`id`, `status_type`) VALUES
-(1, 'Active');
+(1, 'Active'),
+(2, 'Offline'),
+(3, 'Away'),
+(4, 'Do not disturb');
 
 --
 -- Indexek a kiírt táblákhoz
 --
 
---
--- A tábla indexei `affilation`
---
-ALTER TABLE `affilation`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- A tábla indexei `alias_character`
 --
 ALTER TABLE `alias_character`
-  ADD PRIMARY KEY (`id`),
   ADD KEY `character_id` (`character_id`);
-
---
--- A tábla indexei `character_fc`
---
-ALTER TABLE `character_fc`
-  ADD PRIMARY KEY (`id`);
-
---
--- A tábla indexei `character_species`
---
-ALTER TABLE `character_species`
-  ADD PRIMARY KEY (`id`);
-
---
--- A tábla indexei `character_status`
---
-ALTER TABLE `character_status`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- A tábla indexei `character_story`
@@ -657,94 +1029,47 @@ ALTER TABLE `character_story`
 -- A tábla indexei `direct_message`
 --
 ALTER TABLE `direct_message`
-  ADD PRIMARY KEY (`id`),
   ADD KEY `room_id` (`room_id`);
 
 --
 -- A tábla indexei `direct_message_room`
 --
 ALTER TABLE `direct_message_room`
-  ADD PRIMARY KEY (`id`),
   ADD KEY `user1_id` (`user1_id`),
   ADD KEY `user2_id` (`user2_id`);
-
---
--- A tábla indexei `gender`
---
-ALTER TABLE `gender`
-  ADD PRIMARY KEY (`id`);
-
---
--- A tábla indexei `languages`
---
-ALTER TABLE `languages`
-  ADD PRIMARY KEY (`id`);
-
---
--- A tábla indexei `nationality`
---
-ALTER TABLE `nationality`
-  ADD PRIMARY KEY (`id`);
-
---
--- A tábla indexei `occupation`
---
-ALTER TABLE `occupation`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- A tábla indexei `room`
 --
 ALTER TABLE `room`
-  ADD PRIMARY KEY (`id`),
   ADD KEY `section_id` (`section_id`);
 
 --
 -- A tábla indexei `room_message`
 --
 ALTER TABLE `room_message`
-  ADD PRIMARY KEY (`id`),
   ADD KEY `room_id` (`room_id`),
   ADD KEY `character_id` (`character_id`);
 
 --
--- A tábla indexei `rp_category`
---
-ALTER TABLE `rp_category`
-  ADD PRIMARY KEY (`id`);
-
---
--- A tábla indexei `section`
---
-ALTER TABLE `section`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `server_id` (`server_id`);
-
---
 -- A tábla indexei `servers`
 --
-ALTER TABLE `servers`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `server_font_style_id` (`server_font_style_id`);
+
 
 --
 -- A tábla indexei `server_bio`
 --
 ALTER TABLE `server_bio`
-  ADD PRIMARY KEY (`id`),
   ADD KEY `rp_category_id` (`rp_category_id`);
 
 --
 -- A tábla indexei `server_font_style`
 --
-ALTER TABLE `server_font_style`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- A tábla indexei `server_member`
 --
 ALTER TABLE `server_member`
-  ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `server_id` (`server_id`);
 
@@ -755,35 +1080,22 @@ ALTER TABLE `server_stories`
   ADD KEY `stories_id` (`stories_id`),
   ADD KEY `server_id` (`server_id`);
 
---
--- A tábla indexei `stories`
---
-ALTER TABLE `stories`
-  ADD PRIMARY KEY (`id`);
-
---
--- A tábla indexei `thread`
---
-ALTER TABLE `thread`
-  ADD PRIMARY KEY (`thread_id`);
 
 --
 -- A tábla indexei `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`uid`),
   ADD KEY `thread_id` (`thread_id`);
 
 --
 -- A tábla indexei `user_character`
 --
 ALTER TABLE `user_character`
-  ADD PRIMARY KEY (`id`),
   ADD KEY `servermember_id` (`servermember_id`),
   ADD KEY `status_id` (`status_id`),
   ADD KEY `species_id` (`species_id`),
   ADD KEY `gender_id` (`gender_id`),
-  ADD KEY `affilation_id` (`affilation_id`),
+  ADD KEY `affiliation_id` (`affiliation_id`),
   ADD KEY `occupation_id` (`occupation_id`),
   ADD KEY `nationality_id` (`nationality_id`),
   ADD KEY `user_character_ibfk_3` (`fc_type_id`);
@@ -797,8 +1109,6 @@ ALTER TABLE `user_character_need`
 --
 -- A tábla indexei `user_status`
 --
-ALTER TABLE `user_status`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Megkötések a kiírt táblákhoz
@@ -852,8 +1162,6 @@ ALTER TABLE `section`
 --
 -- Megkötések a táblához `servers`
 --
-ALTER TABLE `servers`
-  ADD CONSTRAINT `servers_ibfk_1` FOREIGN KEY (`server_font_style_id`) REFERENCES `server_font_style` (`id`);
 
 --
 -- Megkötések a táblához `server_bio`
@@ -891,7 +1199,7 @@ ALTER TABLE `user_character`
   ADD CONSTRAINT `user_character_ibfk_3` FOREIGN KEY (`fc_type_id`) REFERENCES `character_fc` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `user_character_ibfk_4` FOREIGN KEY (`species_id`) REFERENCES `character_species` (`id`),
   ADD CONSTRAINT `user_character_ibfk_5` FOREIGN KEY (`gender_id`) REFERENCES `gender` (`id`),
-  ADD CONSTRAINT `user_character_ibfk_6` FOREIGN KEY (`affilation_id`) REFERENCES `affilation` (`id`),
+  ADD CONSTRAINT `user_character_ibfk_6` FOREIGN KEY (`affiliation_id`) REFERENCES `affiliation` (`id`),
   ADD CONSTRAINT `user_character_ibfk_7` FOREIGN KEY (`occupation_id`) REFERENCES `occupation` (`id`),
   ADD CONSTRAINT `user_character_ibfk_8` FOREIGN KEY (`nationality_id`) REFERENCES `nationality` (`id`);
 

@@ -67,7 +67,7 @@ const AppLayout = () => {
     fetch(`${process.env.REACT_APP_PHP_BASE_URL}/serverInfoUsers.php?server_id=${serverId}`)
       .then(response => response.json())
       .then(data => {
-        console.log("Fetched users:", data); // Log fetched users
+        //console.log("Fetched users:", data); // Log fetched users
         setUsers(data);
       })
       .catch(error => console.error('Error:', error));

@@ -2,7 +2,7 @@ main.whats-morp-container{
 .morp-content{
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   height: 100vh;
   padding: 20px;
   text-align: center;
@@ -27,7 +27,11 @@ main.whats-morp-container{
       align-items: flex-start;
       margin-left: 20%;
       margin-bottom: 5%;
-      
+
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+          
       &:hover span {
         transform: translateX(-100%);
         color: inherit;

@@ -42,7 +42,7 @@ const UserLogin = ({ changeLoading }) => {
               setLoggedIn(true);
       
               // Establish WebSocket connection
-              console.log('Login successful, connecting to WebSocket...');
+              //console.log('Login successful, connecting to WebSocket...');
               connectWebSocket(data.uid);
             } else {
               changeLoading(false);
@@ -51,7 +51,7 @@ const UserLogin = ({ changeLoading }) => {
           })
           .catch((error) => {
             changeLoading(false);
-            console.log('Error:', error);
+            console.error('Error:', error);
             setErrorMessage('An error occurred while processing your request.');
           });
       };

@@ -78,7 +78,7 @@ const CharacterEdit = (props) => {
                         .filter(([_, value]) => value === 1) // Filter fields where the column value is 1
                         .map(([key]) => key);
                     setCharacterNeeds(needs);
-                    console.log('Character needs:', needs); // Log the character needs for debugging
+                    //console.log('Character needs:', needs); // Log the character needs for debugging
                 } else {
                     console.warn('Unexpected response format or missing success flag:', response.data);
                 }
@@ -276,7 +276,7 @@ const CharacterEdit = (props) => {
             }
         })
             .then(response => {
-                console.log('Response:', response.data); // Log the full response for debugging
+                //console.log('Response:', response.data); // Log the full response for debugging
                 if (response.data.success) {
                     alert(response.data.message || 'Character updated successfully!');
                     if (response.data.character) {
@@ -324,7 +324,7 @@ const CharacterEdit = (props) => {
                         <label>
                             Aliases:
                         </label>
-                        {console.log(aliases)
+                        {//console.log(aliases)
                         }
                         {aliases.map((alias, index) => (
                             <div key={index} className="alias-container">

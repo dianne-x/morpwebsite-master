@@ -11,11 +11,11 @@ const CharacterControlPanel = ({ serverId, characterChanging }) => {
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_PHP_BASE_URL}/getCharacters.php?serverId=${serverId}`)
             .then(response => {
-                console.log('The server id is:',serverId);
-                console.log('API response:', response.data); // Log the response data
+                //console.log('The server id is:',serverId);
+                //console.log('API response:', response.data); // Log the response data
                 if (Array.isArray(response.data)) {
                     setCharacters(response.data);
-                    console.log('Characters state updated:', response.data); // Log the updated characters state
+                    //console.log('Characters state updated:', response.data); // Log the updated characters state
                 } else {
                     console.error('Unexpected response data:', response.data);
                 }
@@ -35,7 +35,7 @@ const CharacterControlPanel = ({ serverId, characterChanging }) => {
                 }
             })
             .then(response => {
-                console.log('Character accepted:', response.data);
+                //console.log('Character accepted:', response.data);
                 setCharacters(characters.map(character => 
                     character.id === characterId ? { ...character, is_verified: 1 } : character
                 ));
@@ -54,7 +54,7 @@ const CharacterControlPanel = ({ serverId, characterChanging }) => {
                 characterId
             })
             .then(response => {
-                console.log('Character rejected:', response.data);
+                //console.log('Character rejected:', response.data);
                 setCharacters(characters.filter(character => character.id !== characterId));
                 characterChanging();
             })
@@ -77,8 +77,8 @@ const CharacterControlPanel = ({ serverId, characterChanging }) => {
         return true;
     });
 
-    console.log('Filter:', filter); // Log the current filter
-    console.log('Filtered characters:', filteredCharacters); // Log the filtered characters
+    //console.log('Filter:', filter); // Log the current filter
+    //console.log('Filtered characters:', filteredCharacters); // Log the filtered characters
 
     return (
         <>

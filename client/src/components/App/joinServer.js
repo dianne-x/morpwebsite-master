@@ -22,8 +22,8 @@ const JoinServerForm = ({serverTrigger}) => {
 
 
     // Log the inviteLink and userId
-    console.log('Invite Link:', inviteLink);
-    console.log('User ID:', userId);
+    //console.log('Invite Link:', inviteLink);
+    //console.log('User ID:', userId);
 
     try {
       const response = await fetch(`${process.env.REACT_APP_PHP_BASE_URL}/joinServer.php?userId=${userId}`, {
@@ -34,7 +34,7 @@ const JoinServerForm = ({serverTrigger}) => {
         body: JSON.stringify({ inviteLink: inviteLink, userId: userId })
       });
 
-      console.log('Response:', response);
+      //console.log('Response:', response);
 
       const data = await response.json();
 

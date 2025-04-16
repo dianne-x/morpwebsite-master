@@ -8,7 +8,7 @@ const UsersControl = ({ allUsers, onRoleReload, serverId }) => {
     const [selectedUserId, setSelectedUserId] = useState(null);
 
     useEffect(() => {
-        console.log('All users:', allUsers);
+        //console.log('All users:', allUsers);
         
         let usersList = [];
         if (filter === 'all') {
@@ -19,7 +19,7 @@ const UsersControl = ({ allUsers, onRoleReload, serverId }) => {
             usersList = allUsers.regularUsers;
         }
         setFilteredUsers(usersList);
-    }, [filter, allUsers]);
+    }, [filter, allUsers, serverId]);
 
     const changeRole = async (user, isPromotion) => {
         // eslint-disable-next-line no-restricted-globals
@@ -34,11 +34,11 @@ const UsersControl = ({ allUsers, onRoleReload, serverId }) => {
                 body: JSON.stringify({
                     user_id: user.uid,
                     isPromotion: isPromotion,
-                    owner_id: allUsers.owners[0].uid
+                    owner_id: JSON.parse(localStorage.getItem('morp-login-user'))
                 })
             });
             const data = await response.json();
-            console.log(data);
+            //console.log(data);
             onRoleReload();
             // Optionally, you can update the UI based on the response
         } catch (error) {
@@ -62,7 +62,7 @@ const UsersControl = ({ allUsers, onRoleReload, serverId }) => {
                 })
             });
             const data = await response.json();
-            console.log(data);
+            //console.log(data);
             onRoleReload();
         } catch (error) {
             console.error('Error kicking user:', error);
@@ -112,7 +112,7 @@ const UsersControl = ({ allUsers, onRoleReload, serverId }) => {
                 </div>
                 :
                 <div style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1000}}>
-                    <UserInfo userId={selectedUserId} onClose={() => setSelectedUserId(null)} />
+                    <UserInfo userId={selectedUserId} onClose={() => setSelectedUserId(null)} serverId={serverId} />
                 </div>
 
             }

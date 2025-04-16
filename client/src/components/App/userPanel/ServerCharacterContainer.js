@@ -14,7 +14,7 @@ const ServerCharacterContainer = (props) => {
     const [characterInfoData, setCharacterInfoData] = useState(null);
 
     const fetchCharacters = () => {
-        console.log(`Fetching server members and characters for userId: ${userId} and serverId: ${props.id}`);
+        //console.log(`Fetching server members and characters for userId: ${userId} and serverId: ${props.id}`);
         
         // Verify userId
         if (!userId) {
@@ -23,7 +23,7 @@ const ServerCharacterContainer = (props) => {
         }
         
         const fetchUrl = `${process.env.REACT_APP_PHP_BASE_URL}/getServerMember.php?userId=${userId}&serverId=${props.id}`;
-        console.log(`Fetch URL: ${fetchUrl}`);
+        //console.log(`Fetch URL: ${fetchUrl}`);
         
         // Fetch server members and characters for the logged-in user
         fetch(fetchUrl)
@@ -38,7 +38,7 @@ const ServerCharacterContainer = (props) => {
                     console.error('Error:', responseData.error);
                     return;
                 }
-                console.log('Characters fetched:', responseData.data);
+                //console.log('Characters fetched:', responseData.data);
                 setCharacters(responseData.data);
                 
             })
@@ -51,7 +51,7 @@ const ServerCharacterContainer = (props) => {
 
     const handleDelete = (characterId) => {
         const deleteUrl = `${process.env.REACT_APP_PHP_BASE_URL}/deleteCharacter.php`;
-        console.log(`Delete URL: ${deleteUrl}`);
+        //console.log(`Delete URL: ${deleteUrl}`);
         
         fetch(deleteUrl, {
             method: 'DELETE',
@@ -66,7 +66,7 @@ const ServerCharacterContainer = (props) => {
                     console.error('Error:', responseData.error);
                     return;
                 }
-                console.log('Delete Response:', responseData);
+                //console.log('Delete Response:', responseData);
                 // Remove the deleted character from the state
                 setCharacters(characters.filter(character => character.id !== characterId));
                 setRefreshCharacters(!refreshCharacters); // Toggle the state to trigger refresh
