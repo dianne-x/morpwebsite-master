@@ -13,7 +13,7 @@ const UserLogin = ({ changeLoading }) => {
     const wsRef = useRef(null); // WebSocket reference
 
     function checkLogin() {
-        return localStorage.getItem('morp-login-user') !== null && localStorage.getItem('morp-login-admin') !== 'undefined';
+        return localStorage.getItem('morp-login-user') !== null && localStorage.getItem('morp-login-user') !== 'undefined';
     }
 
     const navigate = useNavigate();

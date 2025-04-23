@@ -35,7 +35,7 @@ const AppLayout = () => {
   }, [reloadRolesTrigger]);
 
   function checkLogin() {
-    return localStorage.getItem('morp-login-user') !== null && localStorage.getItem('morp-login-admin') !== 'undefined';
+    return localStorage.getItem('morp-login-user') !== null && localStorage.getItem('morp-login-user') !== 'undefined';
   }
 
   function LogOut() {
