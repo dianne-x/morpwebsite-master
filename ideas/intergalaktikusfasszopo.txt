@@ -1,7 +1,0 @@
-sztem nem kell eleg csak az installos composer.phar-os cuccot futtatni but anyways: C:\xampp\php\php.exe ../composer.phar require cboden/ratchet
-
-
-api/php>C:\xampp\php\php.exe WebSocketServer.php
-
-server>yarn start
-client>yarn start (npm works too but fuck you)
