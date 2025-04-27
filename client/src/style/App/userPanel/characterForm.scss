@@ -33,3 +33,16 @@
         }
     }
 }
+
+@media screen and (max-width: 481px) {
+    .user-panel.character-creation,
+    .user-panel.character-edit {
+        .alias-container {
+            grid-column: 1;
+        }
+
+        .character-container {
+            width: 100%;
+        }
+    }
+}

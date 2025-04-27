@@ -137,6 +137,8 @@
                     font-size: .9rem;
                     padding-bottom: 3px;
                 }
+                #alias-pic-label,
+                .remove-alias-btn { margin-top: 0 !important; }
 
                 #pic-label, button {
                     grid-column: 1 / 2;
