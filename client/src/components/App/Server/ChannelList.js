@@ -252,7 +252,6 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
                 section.rooms.map((room, roomIndex) => (
                   <li key={roomIndex} className="room-item">
                     <div 
-                      onClick={() => {changeSelectedRoomId(room.id); closeServerRooms()}}
                       className={`room-item-wrapper ${room.id === selectedRoomId ? 'selected' : ''}`}>
                         {
                           selectedEditRoomId === room.id ? 
@@ -269,7 +268,9 @@ const ChannelList = ({ sections, changeSelectedRoomId, selectedRoomId, serverId,
                           </div>) 
                           : 
                           (<>
-                            <p>{decodeEmojis(room.room_name)}</p> {/* Decode emojis for display */}
+                            <p onClick={() => {changeSelectedRoomId(room.id); closeServerRooms()}}>
+                              {decodeEmojis(room.room_name)}
+                            </p> {/* Decode emojis for display */}
                             {
                             isModerator &&
                               <div>
