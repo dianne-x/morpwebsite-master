@@ -85,7 +85,7 @@ const CharacterControlPanel = ({ serverId, characterChanging }) => {
             { 
             !characterInfoData 
             ? 
-            <div>
+            <div style={{ overflowY: 'auto' }}>
                 <h1>Character Control Panel</h1>
                 <p>Manage your character settings here.</p>
                 <select onChange={(e) => setFilter(e.target.value)} value={filter} className='server-character-list-view-select'>
@@ -93,7 +93,7 @@ const CharacterControlPanel = ({ serverId, characterChanging }) => {
                     <option value="verified">Verified</option>
                     <option value="not_verified">Not Verified</option>
                 </select>
-                <ul className='server-character-list-view'>
+                <ul className='server-character-list-view' style={{ height: 'auto'}}>
                     {filteredCharacters.map(character => (
                         <li key={character.id} className={character.is_verified === 0 ? 'not-verified' : ''}>
                             <div 

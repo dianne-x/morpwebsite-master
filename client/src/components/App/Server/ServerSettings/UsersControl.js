@@ -75,14 +75,14 @@ const UsersControl = ({ allUsers, onRoleReload, serverId }) => {
             {
                 !selectedUserId
                 ?
-                <div>
+                <div style={{ overflowY: 'auto' }}>
                     <h1>Users Control</h1>
                     <select onChange={(e) => setFilter(e.target.value)} value={filter} className='server-character-list-view-select'>
                         <option value="all">All</option>
                         <option value="moderators">Moderators</option>
                         <option value="users">Users</option>
                     </select>
-                    <ul className='server-character-list-view'>
+                    <ul className='server-character-list-view' style={{ height: 'auto' }}>
                         {filteredUsers.map(user => (
                             <li key={user.uid} className={user.is_moderator == 1 ? 'moderator' : 'user'}>
                                 <div className='info' onClick={() => setSelectedUserId(user.uid)} style={{ cursor: 'pointer' }}>
