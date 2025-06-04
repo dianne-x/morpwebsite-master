@@ -19,9 +19,10 @@ $data = json_decode(file_get_contents('php://input'), true);
 $user_id = $conn->real_escape_string($data['user_id']);
 $isPromotion = filter_var($data['isPromotion'], FILTER_VALIDATE_BOOLEAN);
 $owner_id = $conn->real_escape_string($data['owner_id']);
+$server_id = intval($data['server_id']); // Ensure server_id is an integer
 
 // Fetch the current role of the user
-$sql = "SELECT is_moderator FROM server_member WHERE user_id = '$user_id'";
+$sql = "SELECT is_moderator FROM server_member WHERE user_id = '$user_id' AND server_id = $server_id";
 $result = $conn->query($sql);
 
 if (!$result) {
@@ -34,21 +35,21 @@ if ($result->num_rows > 0) {
     if ($isPromotion) {
         if ($row['is_moderator']) {
             // Find the current owner and set its value to 0
-            $update_owner_sql = "UPDATE server_member SET is_owner = 0, is_moderator = 1 WHERE user_id = '$owner_id'";
+            $update_owner_sql = "UPDATE server_member SET is_owner = 0, is_moderator = 1 WHERE user_id = '$owner_id' AND server_id = $server_id";
             if ($conn->query($update_owner_sql) === TRUE) {
                 // Promote to owner
-                $update_sql = "UPDATE server_member SET is_owner = 1, is_moderator = 1 WHERE user_id = '$user_id'";
+                $update_sql = "UPDATE server_member SET is_owner = 1, is_moderator = 1 WHERE user_id = '$user_id' AND server_id = $server_id";
             } else {
                 echo json_encode(["message" => "Error updating current owner: " . $conn->error]);
                 exit();
             }
         } else {
             // Promote to moderator
-            $update_sql = "UPDATE server_member SET is_moderator = 1 WHERE user_id = '$user_id'";
+            $update_sql = "UPDATE server_member SET is_moderator = 1 WHERE user_id = '$user_id' AND server_id = $server_id";
         }
     } else {
         // Demote to regular user
-        $update_sql = "UPDATE server_member SET is_moderator = 0 WHERE user_id = '$user_id'";
+        $update_sql = "UPDATE server_member SET is_moderator = 0 WHERE user_id = '$user_id' AND server_id = $server_id";
     }
 
     if ($conn->query($update_sql) === TRUE) {

@@ -34,7 +34,8 @@ const UsersControl = ({ allUsers, onRoleReload, serverId }) => {
                 body: JSON.stringify({
                     user_id: user.uid,
                     isPromotion: isPromotion,
-                    owner_id: JSON.parse(localStorage.getItem('morp-login-user'))
+                    owner_id: JSON.parse(localStorage.getItem('morp-login-user')),
+                    server_id: serverId
                 })
             });
             const data = await response.json();
