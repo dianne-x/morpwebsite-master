@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['uid'])) {
     $uid = $_GET['uid'];
 
     // Validate the uid
-    $stmt = $conn->prepare("SELECT * FROM Users WHERE uid = ?");
+    $stmt = $conn->prepare("SELECT * FROM users WHERE uid = ?");
     $stmt->bind_param("s", $uid);
     $stmt->execute();
     $result = $stmt->get_result();
