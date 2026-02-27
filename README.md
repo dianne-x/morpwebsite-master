@@ -53,7 +53,7 @@ Local Ports
 
     WebSocket: ws://localhost:8080
 
-Deployment Notes
+## Deployment Notes
 
 * Build the client folder for production.
 * Update all .env files (api, client) with real credentials.
