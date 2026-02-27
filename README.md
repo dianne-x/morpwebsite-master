@@ -1,69 +1,65 @@
-# MORP Webes Alkalmazás
+# MORP Web Application
 
-Ez a dokumentum a MORP webes alkalmazás telepítési és használati útmutatója.
+Setup guide for the MORP web app — covering installation, configuration, and local run.
 
-## Szerkezet
+## Structure
 
-Az alkalmazás a következő főbb részekből áll:
+- **api:** PHP WebSocket server  
+- **client:** Web interface  
+- **server:** Socket.IO backend  
+- **storage:** Uploaded image storage  
+- **db_scripts:** MySQL database scripts  
 
-- **api:** PHP alapú websocket szerver.
-- **client:** A webes felhasználói felület.
-- **server:** Socket.IO szerver.
-- **storage:** Az alkalmazásból feltöltött képek tárolására szolgáló mappa.
-- **db scripts:** MySQL adatbázis létrehozásához szükséges szkriptek.
+## Database Setup (MySQL)
 
-## Adatbázis (MySQL)
+Run these in order:
 
-Az adatbázis inicializálásához futtasd a következő SQL fájlokat a megadott sorrendben:
+1. `db_scripts/morpdb.sql`
+2. `db_scripts/cascade` (run separately for constraints)
 
-1.  `db_scripts/morpdb.sql`
-2.  `db_scripts/cascade` (a constraint-ek miatt külön importálni kell)
+## Local Installation
 
-## Lokális Telepítés
-
-A lokális telepítéshez kövesd az alábbi lépéseket:
-
-1.  **Helyezd a `morpwebsite-master` mappát a XAMPP `htdocs` mappájába.**
-
-2.  **`api` mappa:**
-    ```bash
-    cd morpwebsite-master/api
-    c:/xampp/php/php.exe composer.phar install
+1. Move `morpwebsite-master` into your XAMPP `htdocs` folder.  
+2. **API:**
+   ```bash
+   cd morpwebsite-master/api
+   c:/xampp/php/php.exe composer.phar install
     ```
-    Másold át a `.env.example` fájlt `.env` néven, és konfiguráld a szükséges beállításokat.
-
-3.  **`client` mappa:**
+    Copy .env.example → .env and set credentials.
+3. Client:
     ```bash
-    cd /client
+    
+    cd client
     npm i
     yarn install
     ```
-    Másold át a `.env.example` fájlt `.env` néven, és konfiguráld a szükséges beállításokat.
+    Copy .env.example → .env and set environment variables.
+4. Server:
 
-4.  **`server` mappa:**
     ```bash
-    cd /server
+    cd server
     npm i
     yarn install
-    ```
 
-## Futtatás
+## Running
 
-A fejlesztői környezet elindításához használd a `runDevelopment.bat` fájlt a főkönyvtárban. Ez elindítja a websocket szervert, a Socket.IO szervert, az SQL adatbázist stb.
+Use runDevelopment.bat in the root folder to start servers and database connections.
 
-## Lokális Portok
+Local Ports
 
-Az alkalmazás lokálisan a következő portokon érhető el:
+    Client: http://localhost:3000
 
--   **Client:** `http://localhost:3000`
--   **Socket.IO Server:** `http://localhost:3001`
--   **Websocket Server:** `ws://localhost:8080`
+    Socket.IO: http://localhost:3001
 
-## Mire Figyelj a Felrakásnál (Élesítésnél)
+    WebSocket: ws://localhost:8080
 
--   **Client mappa lebuildelése:** Ha lehetséges, buildeld le a `client` mappát az optimális teljesítmény érdekében.
--   **.env fájlok konfigurálása:** Minden `.env` fájlban (`api`, `client`) írd át a példa adatokat a valós éles adatokra.
--   **`server/index.js` konfigurálása:**
-    -   A 12. sorban állítsd be a megfelelő MySQL kapcsolatot.
-    -   Ellenőrizd és szükség esetén módosítsd a szerver futtatási portját a fájl végén.
--   **Websocket port konfigurálása:** Ha a websocket szerver nem a `ws://localhost:8080` címen fog futni, akkor frissítsd a portot az `api/php/WebSocketServer.php` fájlban.
+Deployment Notes
+
+* Build the client folder for production.
+* Update all .env files (api, client) with real credentials.
+* In server/index.js:
+
+    * Set MySQL connection (around line 12).
+    * Adjust port if needed.
+
+* If using a different WebSocket port, update it in api/php/WebSocketServer.php.
